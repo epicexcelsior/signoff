@@ -1,6 +1,6 @@
 {
   "schema": "proof-of-ready/submission-evidence/v1",
-  "checkedAt": "2026-10-30T20:45:38.170979+00:00",
+  "checkedAt": "2026-10-30T22:56:44.788829+00:00",
   "readyForSubmission": false,
   "publicationAuthorized": false,
   "deadline": "2026-10-31T15:00:00+01:00",
@@ -56,21 +56,41 @@
       "status": "observed",
       "artifact": "application/submission/evidence/deployed-policy-helper.json",
       "scope": "Historical eth_call of actual deployed policy helper at deployment block. Native signature verified. 1.8.0 FAIL and1.9.0 PASS. No state override, no transaction, no mandatory judge-case completion."
+    },
+    {
+      "id": "masumi-hosted-execution-only",
+      "taskId": "01a18ec9-f3a1-73fc-8cc1-53c6413222d3",
+      "status": "completed",
+      "outcome": "REVIEW",
+      "taskCredits": 0,
+      "fixtureInput": true,
+      "paid": false,
+      "sellerPaid": false,
+      "physicalEvidence": false,
+      "qualificationScope": "Hosted transport and exact original input/result binding only. Synthetic evidence. No paid Cardano qualification or physical acceptance."
+    },
+    {
+      "id": "cardano-seller-registration",
+      "network": "Cardano Preprod",
+      "transactionHash": "125819c7d184382c18c0d4acfae697dae7cc77a72c12411d434f4d1ee76f7b74",
+      "status": "confirmed",
+      "blockNumber": 5354856,
+      "feeLovelace": "276826",
+      "qualificationScope": "Seller registration only. Not the paid inspection transaction or seller receipt."
     }
   ],
   "mandatoryEvidence": {
     "cardano": {
-      "status": "blocked",
+      "status": "in-progress",
       "network": "Cardano Preprod",
-      "taskId": null,
+      "taskId": "01a18f06-3ca7-707b-b8d6-0db33451e754",
       "transactionHash": null,
       "usefulReportSha256": null,
       "sellerReceiptSha256": null,
       "remaining": [
-        "Fund dedicated buyer and seller",
-        "TUM admin approves existing Coworker access and enables Task Seat eligibility",
-        "Confirm usable Workspace credits",
-        "Complete original useful paid inspection and verify actual seller receipt"
+        "Confirm original escrow transaction for paid hosted inspection",
+        "Deliver original useful REVIEW report with synthetic-input label",
+        "Verify original seller withdrawal and positive net receipt"
       ]
     },
     "api3": {

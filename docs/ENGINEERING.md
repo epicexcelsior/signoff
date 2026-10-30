@@ -210,7 +210,7 @@ Private setup uses `$HOME/.config/proof-ready/`. The directory mode is `0700`. C
 
 The existing access ledger pins a 20,000-atomic-unit total ceiling. One 10,000-unit call settled. The owner authorizes routine funded testnet transactions while preserving a 0.001 ETH reserve. Isolated API3 CLI commands consume their own env variables. The station does not sign these payments. Preserve the original access ledger and its settled first request. Do not replace a key or unresolved ledger to repeat an operation.
 
-The supplied Sokosumi account key passed `GET https://api.preprod.sokosumi.com/v1/users/me`. The Blockfrost key passed the authenticated Preprod `/api/v0/blocks/latest` read. Personal Workspace access returned 404 at the pinned CLI's `/v1/users/me/workspace-access` route. This result leaves access and credits unverified. It does not establish that the account lacks a workspace.
+The supplied Sokosumi account key passed `GET https://api.preprod.sokosumi.com/v1/users/me`. The Blockfrost key passed the authenticated Preprod `/api/v0/blocks/latest` read. The existing Personal Workspace and usable credits are verified. CLI 1.0.4 used the removed `/v1/users/me/workspace-access` route. The application now pins published CLI 1.1.0, which uses `/v1/users/me/workspaces`.
 
 An explicit private-env account check uses the installed CLI:
 
@@ -225,26 +225,17 @@ This command returns personal account fields. Inspect them locally. Keep them ou
 
 The inspector needs no model key. Dedicated Vendor/Coworker resources, workspace access, vault setup, seller wallet, registration, and scoped MPS keys remain separate prerequisites. Follow [the official setup guide](https://www.masumi.network/tum-hackathon). Routine private account setup and funded testnet transactions now have owner authorization within the task and reserve. Public release remains separate.
 
-### Resolve TUM Workspace permissions
+### Use the existing Personal Workspace
 
-The current account is a TUM Workspace `member` and platform `user`. It cannot approve organization Coworker grants or assign Task Seats. Using the same account key cannot bypass that boundary. A TUM Workspace owner/admin must resolve both permissions. The pinned CLI reports `taskSeatEligible:false`.
+The original Inspector Coworker has GRANTED Personal access. Reuse its OS-vault runtime key and private worker configuration. Leave organization selectors blank for Personal Tasks. No pooled TUM grant or organization Task Seat is required for this route.
 
-Send this request to a TUM organizer or Workspace administrator:
+The worker creates Tasks through the pinned CLI's account HTTP client. It disables brand, briefing, and memory context. Core otherwise prepends context and changes the exact inspection input. Task reads and completion still use the separately scoped Coworker credential. Lost-start reconciliation recognizes Core's `RUNNING` status.
 
-> Please approve Proof of Ready Inspector, Coworker `01a18ea5-25c9-7785-940c-20c977bfff2d`, in TUM-Hackathon. The access request is `01a18ea5-2622-774a-8e22-02c5a8801dd5`. Please enable Task Seat eligibility for my account and confirm usable credits.
+New execution-only Tasks have an explicit rehearsal/no-payment name. The ledger saves that name before dispatch. Older uncertain claims retain their original name during recovery. The exact request description remains unchanged for hash verification. Machine JSON in an email is Task input, not a human-readable acceptance report.
 
-An administrator signs into [Sokosumi Preprod](https://preprod.sokosumi.com/) and selects the TUM-Hackathon Workspace. They approve the existing Coworker access request through their Workspace administration interface. Exact button labels remain unverified. The [official Masumi guide](https://www.masumi.network/tum-hackathon) requires both granted access and Task eligibility before organization execution.
+One hosted execution-only Task completed with a useful REVIEW and no credit debit. Its input used synthetic physical evidence. See [the dated evidence](../research/EVIDENCE.md#personal-workspace-correction) for its identifier and limits. Do not rerun it to prove paid settlement.
 
-After approval, check the original resource rather than creating another:
-
-```sh
-cd application/integrations/masumi
-node --env-file="$HOME/.config/proof-ready/credentials.env" \
-  node_modules/@masumi_network/sokosumi/dist/bin/sokosumi.js \
-  --preprod workspaces check 01a17942-e6dd-724f-bae6-458b6a0f715a --json
-```
-
-Then reconnect the original Coworker with the saved Vendor and organization identifiers. Preserve its existing vault key. `PENDING` or `taskSeatEligible:false` blocks hosted execution. Neither status is a payment failure. No extra wallet key or repeated registration resolves it.
+The original shared TUM access request remains PENDING. The current account is an organization member and cannot approve that request. A TUM administrator is required only if the owner chooses organization Tasks. Do not create a duplicate inspector or key to resolve that separate permission.
 
 ### Fund the API3 wallet
 
@@ -267,9 +258,9 @@ Cardano escrow collection can outlast API3's five-minute source freshness window
 
 ### Fund Cardano separately
 
-Sokosumi workspace credits, test ADA for fees, and test USDM for the inspector are separate resources. A Blockfrost key reads the chain. It does not create or fund a wallet.
+Normal paid Sokosumi Tasks debit Personal credits. Core uses its managed buyer for the escrow purchase. Do not fund our separate local buyer wallet for this route. Both dedicated wallets are funded. Seller registration confirmed. The original paid Task and seller collection remain in progress. A Blockfrost key reads the chain. It does not create or fund a wallet.
 
-Prepare the dedicated seller wallet and registration before requesting funds. No such seller address exists in the current setup. Use the address from the reviewed MPS setup, never the EVM address.
+The dedicated seller wallet already exists. Use its saved Cardano Preprod address from the private wallet record. Review registration and collateral requirements before requesting seller funds. Preserve the original wallet and registration identifiers.
 
 [The Masumi dispenser](https://dispenser.masumi.network/) supplies test ADA and USDM. Select Testnet, enter the registration-email verification code, and use the dedicated Cardano Preprod receiver. The dispenser offers a separate five-ADA collateral option. [Cardano's faucet](https://docs.cardano.org/cardano-testnets/tools/faucet) supplies test ADA only. Neither faucet establishes a completed paid inspector job.
 
@@ -387,3 +378,11 @@ Escrow collection can take longer than the video. Use the original completed pai
 ### Recover presentation failures
 
 Preserve a recording of the actual physical attempt, original packet, paid report/receipt, source response, and deployed judge output. Use those exact artifacts during recovery. Keep their capture times and source labels visible. A rehearsal can explain workflow, but it cannot replace missing live evidence.
+
+### Judge evidence and presentation reset
+
+`GET /api/submission-evidence` reads the canonical submission manifest and computes exact-byte SHA-256 hashes. Artifact downloads use an explicit server allowlist: `manifest`, `nvd-original`, and `policy-helper`. The route never exposes private configuration or runtime directories. These saved records do not authorize the current installation.
+
+Select **Judge evidence** to inspect historical transactions, missing requirements and the five deployed policy cases. Select **Refresh evidence** after the canonical manifest changes. The panel performs no chain write or payment. Packet verification and edited-packet rejection apply to the selected attempt above.
+
+Select **Reset presentation** to stop the camera and reload an empty work-order screen. The reset changes browser session state only. Saved attempts, NVS identity, replay claims, receipt pins and financial ledgers remain intact. The history selector can reopen any saved attempt.

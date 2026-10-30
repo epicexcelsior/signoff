@@ -17,11 +17,11 @@ Workspace files and observed behavior take precedence over historical sessions. 
 
 The deterministic, operator-driven station uses fixed work orders. It integrates signed contact/optical/photo records, tracked camera samples, useful inspection, and evidence packets. Read-only bridges bind original Masumi reports and seller receipts to pinned contract commitments. Rehearsals return REVIEW or REWORK. No complete physical or live paid acceptance exists.
 
-Agent-generated requirements and autonomous orchestration remain goals. The receiving monitor shares the coordinator's trust boundary. Fixture Tasks do not establish hosted execution or seller payment.
+Agent-generated requirements and autonomous orchestration remain goals. The receiving monitor shares the coordinator's trust boundary. Local fixture runtimes do not establish hosted execution or seller payment. Hosted synthetic-input execution proves transport only.
 
 ESP32-C6 firmware and a Seeker debug APK compiled. No firmware flash, GPIO command, phone install, or physical optical test ran. Latest OS inventory exposes no camera device. [Available hardware](research/EVIDENCE.md#available-hardware) owns the carrier-board, parts, and wiring state.
 
-Supplied Sokosumi and Blockfrost keys reside in private configuration outside source. Both passed live read-only checks. Personal Workspace access returned404. TUM membership now exists. The Vendor/Coworker and OS-vault runtime key are prepared. TUM access is PENDING and Task Seat eligibility is false. Reuse the original resources in the private journal. The existing API3 wallet is funded. One mint, one paid NVD request, and the policy deployment confirmed. No separate API3 key was supplied. Account access does not establish worker-vault setup. See [private setup](docs/ENGINEERING.md#private-credentials-and-test-funding).
+Supplied Sokosumi and Blockfrost keys reside in private configuration outside source. Both passed live reads. Published CLI 1.1.0 resolves the obsolete workspace endpoint. The original Coworker has GRANTED Personal access, and Personal credits are verified. One zero-credit hosted Task completed REVIEW with synthetic input. No paid Cardano or physical claim follows. Shared TUM access remains separately pending and does not block Personal Tasks. Reuse original resources and the OS-vault runtime key. The API3 wallet is funded. One mint, one paid NVD request, and the policy deployment confirmed. No separate API3 key was supplied. See [private setup](docs/ENGINEERING.md#private-credentials-and-test-funding).
 
 The API3 paid client and unsigned deployment/judge tooling are integrated. One genuine NVD getCve response settled, and the pinned CommissioningPolicy is deployed on Base Sepolia. Preserve the first response for stale rejection. All five deployed cases still require genuine Cardano inspection commitments. The evidence manifest owns transaction and artifact identifiers.
 
@@ -31,9 +31,9 @@ The local overview embeds all nine current Markdown documents. HTML, combined Ma
 
 ## Continue work
 
-Main is the integration target. Keep the existing managed worktrees. All reviewed lane changes must be integrated before private main backup. Generated overviews, build artifacts, private wallets, env files, runtime ledgers, and local SDK/service state stay outside tracked source.
+Main is the integration target. Keep the existing managed worktrees. All reviewed lane changes must be integrated before private main backup. Generated overviews, build artifacts, private wallets, env files, runtime ledgers, and local SDK/service state stay outside tracked source. Read ignored `.local/README.md` for downloaded official references and local-only material. The owner requested no cache commit or push.
 
-The owner will supply board/component details and plans to connect the Seeker overnight. Phone arrival does not establish installation or native verification. The current account cannot approve its own pending TUM grant: it is a Workspace member and platform user. Follow engineering's exact administrator request.
+The owner will supply board/component details and plans to connect the Seeker overnight. Phone arrival does not establish installation or native verification. Use Personal credits for the selected route. Core supplies the managed buyer. Both dedicated wallets are funded and seller registration confirmed. The original paid Task is running. Preserve its uncertain and pending operations. Do not request local buyer funding or pooled TUM approval for this route.
 
 Follow README's four submission priorities. Defer Seeker expansion and autonomous orchestration. Routine funded testnet transactions are authorized with a 0.001 ETH reserve. Public release/submission and electrically unverified hardware actions remain separate. Follow README's execution index. Keep local software work independent from pending hardware and external grants. Separate the integrated fixture demonstration from genuine paid or physical acceptance.
 
@@ -62,4 +62,4 @@ Assign non-overlapping files before parallel edits. Use separate managed worktre
 - Keep camera frames, credentials, private keys, and runtime ledgers outside tracked source.
 - Test rejection, concurrency, restart, and recovery. Never present fixtures as live settlement or sponsor qualification.
 
-Local implementation and private reviewed commits/backups are authorized. External resources, payments, hardware actions, public deployment, publication, and submission require targeted authorization.
+Local implementation and private reviewed commits/backups are authorized. Routine private setup and funded testnet transactions have owner authorization within the documented reserve. Electrical review, public release, and submission remain separate gates.

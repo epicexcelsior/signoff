@@ -1,6 +1,6 @@
 # Proof of Ready and FieldProof evidence
 
-Checked October 30, 2026. Local implementation evidence and external availability evidence have separate scopes. One real API3 NVD payment and policy deployment confirmed. No paid Cardano inspection or authenticated physical contact/optical test ran through this port. A USB chip-identity query ran without a flash write.
+Checked October 30, 2026. Local implementation evidence and external availability evidence have separate scopes. One real API3 NVD payment and policy deployment confirmed. One zero-credit hosted inspector Task completed REVIEW with synthetic input. No paid Cardano inspection or authenticated physical contact/optical test ran through this port. A USB chip-identity query ran without a flash write.
 
 [README](../README.md) owns execution order. [Engineering](../docs/ENGINEERING.md) owns implemented interfaces and procedures. [The plan](../PROOF_OF_READY_IMPLEMENTATION_PLAN.md) owns goals. This document owns dated findings, check results, hardware state, and evidence gaps.
 
@@ -12,9 +12,9 @@ The current station is deterministic and operator-driven. Its work-order route i
 
 | Check                              | Observed result                                                                | Scope and limit                                                                                                                                                                                                                               |
 | ---------------------------------- | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Application and Chrome             | 60 tests passed                                                                | Device/phone signature fixtures, raw optical reconstruction, lifecycle, concurrent claims, restart, external-reader contracts and responsive overview, standalone offline export, and exact Markdown/ZIP preservation. No physical acceptance |
-| Masumi                             | 24 tests passed                                                                | Exact-text bindings, Task/payment recovery, seller-receipt and refund fixtures. No hosted execution or settlement                                                                                                                             |
-| API3 Node                          | 24 tests passed                                                                | Exact signed bytes, bounded CVE policy, unsigned calls and pinned commitment reader. Includes durable paid access and deployed-judge preparation                                                                                              |
+| Application and Chrome             | 61 tests passed                                                                | Device/phone signature fixtures, raw optical reconstruction, lifecycle, concurrent claims, restart, external-reader contracts and responsive overview, standalone offline export, and exact Markdown/ZIP preservation. No physical acceptance |
+| Masumi                             | 30 tests passed                                                                | Exact-text bindings, current CLI compatibility, Task naming/recovery, seller-receipt and refund fixtures. Hosted transport is verified separately. No paid Cardano settlement                                                                 |
+| API3 Node                          | 27 tests passed                                                                | Exact signed bytes, bounded CVE policy, unsigned calls and pinned commitment reader. Includes durable paid access and deployed-judge preparation                                                                                              |
 | Foundry                            | 29 tests passed, including two 256-case fuzz checks                            | Local operator, freshness, policy, replay, terminal-state and oracle rejection behavior                                                                                                                                                       |
 | Anvil                              | One actual local deployment/read test passed                                   | Local chain with disposable keys and source fixtures. This local Anvil check is separate from the later Base Sepolia deployment                                                                                                               |
 | ESP32 firmware host                | Four grouped C checks passed under ASan/UBSan                                  | Parser, HMAC wire vectors, replay restoration/capacity, chunks, ownership, timeout, waveform accounting and failure cleanup                                                                                                                   |
@@ -53,32 +53,32 @@ External reconciliation now checks the original prepared inspection, exact deliv
 
 [Masumi provenance](../application/integrations/masumi/PROVENANCE.json) and [API3 provenance](../application/api3/provenance.json) retain their exact upstream sources and limitations. MPS terms remain trusted without independent COSE verification. Contract Cardano records remain operator assertions rather than consensus verification. The bounded software policy covers CVE-2025-62235 only. Compiled artifacts do not prove installation or general software security.
 
-Remaining evidence: carrier-board/wiring review, mounted function, measured camera accuracy and throughput, actual signed optical execution, remote owner delivery, authorized phone install/native checks, hosted Task execution, genuine paid CVE response, actual seller receipt/refund collection, installed-build provenance, and deployed sponsor rejection cases. No fixture proves sponsor qualification.
+Remaining evidence: carrier-board/wiring review, mounted function, measured camera accuracy and throughput, actual signed optical execution, remote owner delivery, authorized phone install/native checks, genuine paid Task and fresh final CVE response, actual seller receipt/refund collection, installed-build provenance, and deployed sponsor rejection cases. No fixture proves sponsor qualification.
 
 ## Live access and private setup
 
 The previous session supplied two credentials: a Sokosumi account API key and a Blockfrost Cardano Preprod project key. It supplied no separate API3 API key. Both are saved in `$HOME/.config/proof-ready/credentials.env`, outside source. The directory mode is `0700`. Credential and wallet files use `0600`. No credential value or personal account field belongs in this document.
 
-| Check                   | Observed result                                                                             | Meaning and remaining gap                                                                                                                |
-| ----------------------- | ------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| Sokosumi account        | Authenticated `GET /v1/users/me` returned HTTP 200 at 16:07 UTC, October 30                 | Supplied key works against Preprod. Identity response contains no credit balance                                                         |
-| Pinned Sokosumi CLI     | `auth whoami --json` succeeded with the private env loaded                                  | Account access only. Worker subprocesses strip this key and need separate account/vault setup                                            |
-| Personal Workspace      | `GET /v1/users/me/workspace-access` returned HTTP 404                                       | The pinned CLI's access route did not work. Workspace eligibility and credits remain unverified. This does not prove no workspace exists |
-| Blockfrost Preprod      | Authenticated `GET /api/v0/blocks/latest` returned HTTP 200, height 5,353,775, at 16:07 UTC | Supplied project key works. No wallet, seller, escrow, or settlement follows                                                             |
-| API3 wallet             | Funded with 0.0019 ETH. Mint supplied 0.02 aUSD. One 0.01 aUSD NVD request settled          | Keep 0.001 ETH reserve and the second 0.01 aUSD for final fresh evidence                                                                 |
-| API3 client integration | Bounded paid access and deployed judge tooling integrated                                   | One genuine paid CVE delivered and settled. Five deployed cases await actual inspection prerequisites                                    |
+| Check                   | Observed result                                                                             | Meaning and remaining gap                                                                              |
+| ----------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| Sokosumi account        | Authenticated `GET /v1/users/me` returned HTTP 200 at 16:07 UTC, October 30                 | Supplied key works against Preprod. Identity response contains no credit balance                       |
+| Pinned Sokosumi CLI     | `auth whoami --json` succeeded with the private env loaded                                  | Account access only. Worker subprocesses strip this key and need separate account/vault setup          |
+| Personal Workspace      | Current `/v1/users/me/workspaces` returned the existing Personal Workspace                  | Personal grant and credits verified. Older CLI 1.0.4 used a removed endpoint. See the correction below |
+| Blockfrost Preprod      | Authenticated `GET /api/v0/blocks/latest` returned HTTP 200, height 5,353,775, at 16:07 UTC | Supplied project key works. No wallet, seller, escrow, or settlement follows                           |
+| API3 wallet             | Funded with 0.0019 ETH. Mint supplied 0.02 aUSD. One 0.01 aUSD NVD request settled          | Keep 0.001 ETH reserve and the second 0.01 aUSD for final fresh evidence                               |
+| API3 client integration | Bounded paid access and deployed judge tooling integrated                                   | One genuine paid CVE delivered and settled. Five deployed cases await actual inspection prerequisites  |
 
 Private `access-check.json`, `api3/wallet.json`, and `api3/balance-check.json` preserve timestamps and public check metadata. Private `api3/api3.env` retains a default false payment grant. Approved commands explicitly enable the grant in their process. The durable ledger pins a 20,000-atomic-unit total budget. One 10,000-unit request settled.
 
-Read-only resource discovery at 16:17 UTC returned zero organizations and zero Vendor memberships. `/v1/coworkers/me` returned HTTP 403. The account therefore lacks the verified organization/Vendor/Coworker setup required for the current hosted path. A 20:36 UTC recheck still found zero organization and Vendor memberships. These reads created no resources. They do not establish Personal Workspace credit balance.
+Historical discovery, superseded by the Personal correction below: read-only resource discovery at 16:17 UTC returned zero organizations and zero Vendor memberships. `/v1/coworkers/me` returned HTTP 403. At that time, the organization/Vendor/Coworker setup was absent. A 20:36 UTC recheck still found zero organization and Vendor memberships. These reads created no resources. They do not establish Personal Workspace credit balance.
 
 A fresh free `searchCpes` request returned HTTP 200 at **16:15:12 UTC, October 30, 2026**. The main package's native verifier authenticated the original response against the pinned NVD signer and request hash. It rejected edited data, another request, and another expected key. No payment header was sent. Private `api3/live-check/` preserves discovery, request, exact response text, and result metadata. This check establishes live free-response authenticity only. It does not establish paid CVE retrieval, freshness at later use, contract deployment, or sponsor qualification.
 
 [Base's official funding page](https://docs.base.org/get-started/get-funds#testnet-base-sepolia) lists Base Sepolia ETH faucets. [API3's official faucet](https://api3dao.github.io/airnodehub-hackathon/faucet/) requires ETH for mint gas and supports `mintFromFaucet(uint256)` without a browser wallet. Its served source names token `0xbeA34973e5f67F18F656A2C6070C64326C791808`. The subsequent approved mint confirmed. See the live transaction record below.
 
-[The Masumi dispenser](https://dispenser.masumi.network/) requests a registration-email verification code and a receiver address. It supplies test ADA and USDM and offers separate five-ADA collateral. [Cardano's faucet](https://docs.cardano.org/cardano-testnets/tools/faucet) supplies test ADA. Dedicated seller and buyer wallets now exist privately and still require funding. Sokosumi credits, ADA, and USDM are separate setup requirements.
+[The Masumi dispenser](https://dispenser.masumi.network/) requests a registration-email verification code and a receiver address. It supplies test ADA and USDM and offers separate five-ADA collateral. [Cardano's faucet](https://docs.cardano.org/cardano-testnets/tools/faucet) supplies test ADA. Dedicated seller and buyer wallets exist privately. The seller received test ADA and its registration confirmed. Normal paid Sokosumi Tasks use Personal credits and Core's managed buyer. The local buyer needs no funding for that route.
 
-The complete local workflow and live account/chain reads do not establish a live end-to-end paid or physical installation. Funding, usable Workspace access, configured worker/payment resources, and reviewed hardware remain necessary.
+The complete local workflow and live account/chain reads do not establish a live end-to-end paid or physical installation. Original escrow confirmation, positive seller receipt, and reviewed hardware remain necessary. Personal Workspace access and worker execution are now verified.
 
 ## Available hardware
 
@@ -245,11 +245,13 @@ Fresh ESP32-C6 disabled and compiler-coverage builds pass. Default app SHA-256: 
 
 The owner now authorizes routine funded testnet actions while preserving at least 0.001 ETH. Public release/submission remain separately authorized. Carrier-board/component identification remains necessary before safe wiring or flashing.
 
-## Continued account and camera checks
+## Earlier account and camera checks
+
+The organization findings below are historical. The later Personal Workspace correction supersedes them for the selected route.
 
 TUM organization membership now exists. The private Vendor and Inspector Coworker were created once through the supported CLI. Durable claims preceded each remote write. Coworker ID: `01a18ea5-25c9-7785-940c-20c977bfff2d`. Access request `01a18ea5-2622-774a-8e22-02c5a8801dd5` remains PENDING. The pinned CLI reports `taskSeatEligible:false`. A TUM Workspace admin must approve access and enable Task eligibility. Credits remain unverified.
 
-One Coworker-scoped runtime key entered the supported OS vault after a readiness probe. Read-back authentication returned the original Coworker ID. It expires November 2, 2026 at 00:00 UTC. No key appears in tracked source or output. Private resource-journal and worker configuration retain original IDs. No hosted Task or payment ran.
+One Coworker-scoped runtime key entered the supported OS vault after a readiness probe. Read-back authentication returned the original Coworker ID. It expires November 2, 2026 at 00:00 UTC. No key appears in tracked source or output. Private resource-journal and worker configuration retain original IDs. At this earlier checkpoint, no hosted Task or payment ran. The later execution-only Task does not establish payment.
 
 A private execution-only request is ready from an original sealed local rehearsal. Its source remains explicitly `fixture`. The immutable bridge reconstructed the original input successfully. This preparation establishes no hosted execution, paid Cardano result, or physical test. Do not present it as those outcomes.
 
@@ -262,3 +264,29 @@ Current role verification returned TUM Workspace role `member`, platform role `u
 The owner plans to connect the Seeker overnight. This is a future availability statement. No phone connection, installation, forwarding, instrumentation, camera, or BLE operation follows from it. Keep existing worktrees for continuation.
 
 The camera worktree's remaining LED sampling guide is integrated. It projects the approved marker-relative optical region and keeps its label outside marker bounds. Generated-marker browser checks verify rendering and suppression for missing/wrong markers, out-of-frame regions, and omitted options. This is browser/canvas evidence, not a physical camera or LED test.
+
+## Personal Workspace correction
+
+The owner's Personal credits and the shared TUM authorization are separate. The current official API `GET /v1/users/me/workspaces` returned the existing Personal Workspace. Published Sokosumi CLI 1.1.0 uses that endpoint. Pinned CLI 1.0.4 used the removed `/v1/users/me/workspace-access` endpoint and returned 404. This was a client/API mismatch, not proof that Personal access was absent.
+
+The original Coworker connected once to the verified Personal Workspace and returned GRANTED. The original OS-vault runtime key still authenticated. Personal credits were verified through `GET /v1/users/me/credits`; the exact balance remains in private local records. No pooled TUM administrator grant is required for Personal Tasks.
+
+Current Core source charges paid Task purchases against the Task owner's Personal credits and uses Core's managed buyer. The separate local buyer wallet is not a prerequisite for the normal Sokosumi paid-Task route. Seller test ADA, registration and actual positive receipt remain necessary. Execution-only events without payment/credit fields do not enter that paid purchase branch.
+
+Public website/repository/skill snapshots and their resource index are saved under ignored `.local/hackathon-resources/`. `.local/README.md` maps all local-only references, generated exports, preserved inputs, and links to original secure runtime locations. No local cache files are staged or committed.
+
+One actual hosted Task, `01a18ec9-f3a1-73fc-8cc1-53c6413222d3`, completed REVIEW. Its completion event is `01a18ec9-fdf3-7599-b452-65017cde49c0`. A 21:50 UTC read independently matched original input/result hashes and both evidence commitments. Task credits and balance delta were zero. `fixtureInput:true`, `paid:false`, `sellerPaid:false`, and `physicalEvidence:false` remain explicit. Private original Task/events and binding records preserve the result. The raw JSON email contains the request, not a physical acceptance certificate.
+
+The application pins CLI 1.1.0 and opts out of Core's automatic brand/briefing/memory context. Exact Task descriptions and result hashes remain required. Lost-start recovery recognizes Core's RUNNING status. New execution-only Task names identify rehearsal and no payment. Saved names preserve recovery, including older claims. Root integration passed 30 Masumi tests, syntax checks, formatting, and a production dependency audit with zero findings.
+
+## Funded inspection and presentation verification
+
+At 22:51 UTC, October 30, independent Blockfrost reads found 105 test ADA and 100 test USDM in each original dedicated wallet. No replacement wallet was created. The isolated official MPS imported only the original Preprod wallets. Auto-withdrawal and auto-refund started disabled.
+
+Seller registration confirmed in block 5,354,856 with two confirmations. Transaction: `125819c7d184382c18c0d4acfae697dae7cc77a72c12411d434f4d1ee76f7b74`. Its fee was 276,826 lovelace. Registration is not the qualifying paid inspection transaction. The original paid Task is `01a18f06-3ca7-707b-b8d6-0db33451e754`. Its input is a synthetic commissioning capture. A useful paid REVIEW cannot establish physical acceptance. Original private records remain outside source.
+
+The judge checker now requires the intended custom error for each negative case. All five simulations use one pinned block and detect a changed block hash. Historical replay preserves the original open job and freshness window. Mined finalization verification binds original calldata, source commitments, transaction and terminal state. Local checks passed 27 API3 Node tests, 29 Foundry tests and a real local Anvil deployment. None establishes deployed qualification.
+
+The station exposes the reviewed manifest and three explicit original-artifact downloads. SHA-256 hashes cover exact served bytes. No runtime-directory route exists. Desktop and 390-pixel browser checks verified missing evidence labels, five-case visibility, edited-packet rejection and reset without deleting attempts. The complete application suite passed 61 tests.
+
+A private exact-secret scan checked 12 saved credential/wallet values against 217 tracked paths and 313 reachable Git blobs. It found no matches. This check does not discover unknown secrets or keys held only in an OS vault. Production npm audits reported zero vulnerabilities. The four-scenario integration demonstration still uses fixtures, moves no funds and returns REVIEW or REWORK.

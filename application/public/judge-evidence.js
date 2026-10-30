@@ -17,6 +17,7 @@ const recordLabels = {
   "api3-policy-deployment": "Deployed security policy",
   "deployed-policy-helper-historical": "Historical policy evaluation",
   "masumi-hosted-execution-only": "Hosted execution-only inspection",
+  "cardano-seller-registration": "Cardano seller registration",
 };
 function element(tag, text, className) {
   const node = document.createElement(tag);
@@ -66,6 +67,16 @@ export async function refreshJudgeEvidence() {
       ) {
         const link = element("a", record.transactionHash);
         link.href = `https://sepolia.basescan.org/tx/${record.transactionHash}`;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        row.append(link);
+      }
+      if (
+        record.network === "Cardano Preprod" &&
+        /^[0-9a-f]{64}$/i.test(record.transactionHash ?? "")
+      ) {
+        const link = element("a", record.transactionHash);
+        link.href = `https://preprod.cardanoscan.io/transaction/${record.transactionHash}`;
         link.target = "_blank";
         link.rel = "noopener noreferrer";
         row.append(link);

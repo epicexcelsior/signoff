@@ -1,6 +1,8 @@
 # Project instructions
 
 - Read README.md for the execution index and documentation map. Use PROOF_OF_READY_IMPLEMENTATION_PLAN.md for goals and acceptance criteria, docs/ENGINEERING.md for implemented interfaces, and research/EVIDENCE.md for verified facts. Use PROOF_OF_READY_AGENT_HANDOFF.md for continuation routing.
+- Read `.local/README.md` and `.local/hackathon-resources/README.md` for ignored local references when present. Keep downloaded sources, snapshots, copied skills, and generated artifacts out of Git. Keep active wallets and ledgers at their original secure locations.
+- For Sokosumi setup, check the existing Personal Workspace and credits before requesting pooled TUM access. CLI 1.0.4 uses the removed `/v1/users/me/workspace-access` route. Verify the current published CLI/API when a route returns 404 instead of treating it as missing account permission.
 - The user authorizes local commits and saving this project's reviewed source and documentation to a private GitHub repository. Keep the remote private. Do not commit into the sibling FieldProof project.
 - Do not publish publicly, submit, deploy publicly, spend, sign payments or actuate hardware without separate explicit authorization.
 - Proof of Ready is the selected product heading. The user authorizes ambitious software implementation alongside documentation, parallel agents, and local execution. No time gate remains. Customer interviews and commercial validation do not block engineering.
