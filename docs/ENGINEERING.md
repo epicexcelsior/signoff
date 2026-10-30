@@ -79,6 +79,44 @@ The installed SDK enforces minimum deadline intervals of 5, 15, and 15 minutes. 
 
 Do not add an unverified escrow flag to the direct adapter. Do not claim automatic refunds from an x402 lock alone. See [evidence](../research/EVIDENCE.md) for the primary sources.
 
+## Proposed Proof of Ready slice
+
+Status: feasibility recommendation. This section does not describe implemented product behavior. Keep the existing application and ledger. Do not replace them with the draft's multi-service layout before a complete acceptance path exists.
+
+The proposed workflow checks a cabinet-door monitor from physical action through the owner's receiving application. The owner approves one immutable work order. The verifier evaluates recorded predicates. A separate owner-controlled witness supports claims about the actual asset and physical actions. The contractor cannot satisfy the witness requirement alone.
+
+Add one acceptance specification with the enrolled device key, asset reference, required state transitions, destination, response deadline, evidence classes, and witness policy. Freeze and hash that specification before capture. Preserve the existing device wire format where its semantics fit. A new report envelope must bind the policy hash, original challenges, raw receipt digests, monitoring acknowledgments, witness evidence, and verifier version.
+
+The existing signature does not cover a firmware measurement, camera frame, mounting reference, or arbitrary work-order specification. A surrounding report cannot retroactively make those fields device-signed. Label each signer and trust assumption explicitly.
+
+Proposed outcomes:
+
+- PASS: every mandatory predicate and evidence class passed.
+- FAIL: evidence establishes a required predicate violation.
+- REVIEW: evidence is missing, unsupported, unavailable, or too weak for the requested claim.
+
+Adapter claims remain distinct. Simulation supplies synthetic evidence. A computer key identifies a software signer. A phone records browser-supplied images. The current ESP32 identifies the provisioned signing key and a contact report under trusted-firmware assumptions. None establishes physical location or uncompromised firmware by itself. Required physical evidence cannot be replaced with a simulation merely to complete a job.
+
+The existing contact input reads CLOSED when grounded and OPEN for an open circuit. It cannot distinguish a broken wire. Five stable samples cover about 40 milliseconds. The proposed monitor must treat open circuit as an alert condition. Acceptance requires both expected states and end-to-end transitions. Supervised wiring requires different hardware and a changed measurement contract.
+
+Use an owner-observed sequence chosen after the session starts. Do not reveal expected future states to the device as evidence of what it measured. Each settled state needs a fresh challenge. A timeout or interrupted sequence prevents acceptance. This reduces accidental stale or stuck-state approval. It does not defeat collusion, relay, compromised firmware, or camera substitution.
+
+Camera geometry is optional context until a real placement requirement exists. A fiducial establishes geometry relative to a reference under calibration assumptions. It does not authenticate the asset, marker placement, or camera. Avoid millimeter and proximity claims without the necessary measurement and trust model.
+
+Inspection payment and contractor acceptance remain separate state machines. A useful negative report completes paid inspection. It does not approve contractor work. An EVM approval does not atomically release Cardano funds. The coordinator remains trusted to enforce the selected acceptance policy.
+
+## Conditional API3 security gate
+
+The official Airnode source binds operation, parameters, response projection, signing time, and exact data bytes. It does not bind a job, chain, contract, or installed software build. A future policy contract must separately bind the work order, inspection digest, enrolled build, approved source request, and authorization domain. A terminal job guard prevents repeated acceptance. Shared current source facts can legitimately serve different jobs.
+
+The native verifier does not impose application freshness, future-time bounds, or job authorization. Add those controls in a product consumer. NVD's response-generation timestamp differs from a CVE's historical publication and modification timestamps. Old vulnerability metadata is not automatically stale lookup data.
+
+One concrete research candidate is Apache NimBLE CVE-2025-62235, with affected releases through 1.8.0 and a fix in 1.9.0. No evidence establishes that the available ESP32 runs an affected build or configuration. The current receipt contains no firmware measurement. A reported version string cannot fill that gap.
+
+The saved candidate projection is not an approved applicability evaluator. It selects one configuration node and one metric. A consumer must check the complete relevant Boolean applicability and metric provenance. It must return REVIEW for unsupported shapes or absent required fields. Missing KEV fields cannot be interpreted as signed false values.
+
+Enable this gate only after a real paid CVE response passes the native and product-contract verifier, build provenance supports the declared claim, and downstream acceptance actually obeys contract state. Required invalid cases remain edited data, genuinely stale data, another request, and a response genuinely signed by an unexpected key. Source signatures are portable across chains. Wrong-chain rejection comes from product authorization, not the Airnode signature itself.
+
 ## Verification and remaining work
 
 The declared checks cover formatting, syntax, signed observations, HTTP boundaries, payment confirmation decisions, idempotency, concurrency, interrupted work, and real process restart. Browser tests use installed Chrome with desktop and 390-pixel viewports. They exercise keyboard activation, edited receipts, stalled requests, expiry, reload, and history. Screenshots remain outside source.

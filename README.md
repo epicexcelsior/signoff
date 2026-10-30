@@ -1,12 +1,47 @@
-# FieldProof on Cardano
+# Proof of Ready review and FieldProof prototype
 
-An agent buys a fresh gate-contact observation before it makes a dispatch decision. The service checks the device signature, original request, sample agreement, and observation age. An open contact permits a dispatch decision. A closed, invalid, missing, or expired observation keeps the decision at WAIT. No decision actuates hardware.
+The existing prototype lets an agent buy a fresh gate-contact observation before a software dispatch decision. The service checks the device signature, original request, sample agreement, and observation age. Its current example maps an open contact to DISPATCH. That mapping does not establish installation acceptance or safe physical dispatch. The contact circuit cannot distinguish an open contact from a broken wire. No decision actuates hardware.
 
 The local application is in [application/](application/). Simulation runs without credentials or hardware. The Preprod adapter and Bluetooth reader exist, but no live payment or physical observation passed through this port yet.
 
 **Direction under review:** Proof of Ready proposes acceptance of contractor commissioning work. The [implementation proposal](PROOF_OF_READY_IMPLEMENTATION_PLAN.md) and [execution proposal](PROOF_OF_READY_AGENT_HANDOFF.md) are supplied drafts. They do not establish implemented features, validated demand, or permission for payments and public deployments. This README, engineering, and evidence remain the current sources of truth.
 
 The private GitHub backup contains reviewed source, tests, current documentation, and both supplied proposals. It excludes credentials, runtime files, historical private notes, the original workbook, and the original handoff. Those original inputs remain local and unchanged. Do not change repository visibility without explicit authorization.
+
+## Feasibility verdict
+
+**Conditional go for one remote functional-acceptance workflow. Do not build the full draft as written.** The broad commissioning market already has collaborative tests, AI-generated forms, visual installation evidence, and payment-review workflows. These are established features. The possible distinction is a portable acceptance record backed by fresh, work-order-bound execution of an actual physical test. Demand and durable differentiation remain unvalidated.
+
+Recommended first buyer: an IoT integrator that subcontracts non-safety monitoring retrofits across unattended storage sites. The operations lead needs evidence that an installation reaches the owner's monitoring system before accepting a batch. The proposed paid deliverable is an inspectable acceptance report. A useful FAIL or REVIEW report still completes the inspection service.
+
+The first specimen is a cabinet-door contact monitor. The business product is the acceptance workflow and verifier API. The ESP32 supplies one evidence adapter. A board is available, but a mounted contact, magnet, actual firmware state, and end-to-end function remain unverified.
+
+| Judge's objection | Required repair |
+|---|---|
+| Existing commissioning software already does this | Integrate a machine-executed evidence check into existing work orders. Do not sell another checklist platform |
+| A detached sensor can sign convincing readings | Require an owner-controlled witness or trusted asset-side evidence for mounting and physical action |
+| The founder controls every role | Disclose prototype role control. Offer verification outside the service. Separate keys do not establish independent organizations |
+| A CVE signature proves nothing about installed firmware | Require credible enrolled-build provenance. Otherwise return REVIEW for that predicate or omit the security gate |
+| Blockchains add friction | Keep physical acceptance useful independently. Cardano pays for the inspection. It does not prove physical truth |
+| An enormous platform will obscure the result | Complete one functional test and portable report before geometry, more device types, or extra services |
+
+The proposed interaction is concrete:
+
+1. The owner approves the device, asset reference, physical test, monitoring destination, timeout, and witness requirement.
+2. The verifier starts a session and selects an unpredictable open/close sequence.
+3. An owner-controlled witness observes the mounted contact and actual door motion.
+4. Each settled state receives a fresh challenge and signed reading.
+5. The owner's monitoring endpoint must receive the matching state within the approved deadline.
+6. A stuck contact, missing transition, wrong key, stale receipt, or missing witness prevents acceptance.
+7. The service returns PASS, FAIL, or REVIEW with exact predicates and an independently verifiable evidence package.
+
+This workflow is proposed, not implemented. It verifies witnessed function during the inspection. It does not defeat collusion, prove permanent mounting, certify safety, or establish continuing operation.
+
+**Cardano:** retain one useful paid inspection and verified settlement as the primary sponsor path. Masumi adds value when result delivery, collection, and failed-service recovery are actually reproduced. An escrow lock alone is insufficient.
+
+**API3:** the protocol is feasible, but NVD is conditional product scope. A genuine free signed product lookup and native rejection checks passed. The candidate CVE lookup returned HTTP 402. No signed CVE projection, deployed policy contract, affected installed build, or product acceptance gate exists yet. A CVE lookup is not firmware attestation. See [the verified findings and competitors](research/EVIDENCE.md).
+
+The next direction gate is one real mounted-contact acceptance test and a report that another verifier can reproduce. The commercial gate is an operator with an actual handover problem that this evidence resolves. No customer interview, price validation, or savings measurement exists yet. Do not claim a winning business from a working tabletop test.
 
 ## Run locally
 
@@ -96,6 +131,6 @@ A failed or interrupted observation does not run again automatically. The reader
 
 The next payment extension is Masumi result submission, collection, and refund recovery. Live Cardano settlement, physical-board compatibility, and an end-to-end paid observation still require verification. Fixtures do not establish these outcomes or sponsor qualification.
 
-Cardano is the primary track. API3 and peaq are not integrated. Buyer, reality-compiler, and learning-machine concepts do not govern this implementation. Preserve the sibling FieldProof project and original inputs. Do not commit, publish, deploy publicly, spend, or prepare submission materials without explicit instructions.
+Cardano is the primary track. API3 and peaq are not integrated. Buyer, reality-compiler, and learning-machine concepts do not govern this implementation. Preserve the sibling FieldProof project and original inputs. Local commits and pushes to this private repository are authorized. Public publication, spending, deployment, and submission preparation remain gated.
 
 Read [engineering](docs/ENGINEERING.md) for interfaces and recovery behavior. Read [evidence](research/EVIDENCE.md) for sources, versions, and verification limits.

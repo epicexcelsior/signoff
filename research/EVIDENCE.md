@@ -1,6 +1,62 @@
-# FieldProof evidence
+# Proof of Ready and FieldProof evidence
 
 Checked October 30, 2026. Local implementation evidence and external availability evidence have separate scopes. No live payment or board read ran through this port.
+
+## Proof of Ready feasibility review
+
+The implementation plan and handoff are supplied proposals. Current research supports one bounded acceptance workflow. It does not validate broad autonomous outsourcing, commercial demand, or a mandatory two-chain product.
+
+### Existing alternatives
+
+| Primary source | Established capability | Product consequence |
+|---|---|---|
+| [CxAlloy documentation](https://support.cxalloy.com/article/419-welcome) | Collaborative commissioning, asset records, installation tracking, checklists, and tests | Cross-company commissioning alone is insufficient differentiation |
+| [Facility Grid AI questionnaires](https://facilitygrid.com/kb/tests/generate-questionnaires-with-ai/) | Generates commissioning forms from instructions, equipment context, and manuals, with review | AI-generated acceptance criteria are already an existing feature |
+| [Siemens commissioning documentation](https://sid.siemens.com/api/khub/documents/oBkSnjzHLaHU8eoyqVBabw/content) | Live wiring and function tests for supported equipment | A sensor transition alone does not establish a novel category |
+| [Buildots installation/payment review](https://pages.buildots.com/completed-quantities-webinar) | Site imagery and installed quantities support payment applications | Visual evidence before payment has direct commercial prior art |
+| [Dynamics 365 inspections](https://learn.microsoft.com/en-us/dynamics365/field-service/inspections-overview) | Asset-bound pass/fail forms, attachments, offline operation, versions, and dispatcher review | A normal SaaS workflow remains a strong alternative |
+
+Vendor documentation establishes available features, not comparative effectiveness or demand for this proposal. The proposed distinction is portable, independently reproducible evaluation of a fresh physical function test under an explicit evidence policy. No evidence establishes that this combination is first-ever or defensible against incumbents.
+
+The recommended buyer hypothesis is an integrator accepting subcontracted, non-safety monitoring retrofits across unattended sites. No interviews, willingness-to-pay evidence, measured revisit reduction, or commercial pricing validation exists. Per-report fees and enterprise integration remain business hypotheses.
+
+### Physical evidence limits
+
+Read-only firmware inspection found an input-to-ground contact circuit that cannot distinguish an open contact from a broken wire. Five samples span approximately 40 milliseconds. The receipt key uses persistent software-backed NVS storage. No secure element or enabled remote firmware attestation was established.
+
+The current application maps open contact to DISPATCH. That demonstration policy cannot establish physical safety or installation acceptance. A proposed commissioning test requires both physical states, timing, the owner's receiving endpoint, and adequate asset-side evidence.
+
+[RFC 9334 freshness semantics](https://www.rfc-editor.org/rfc/rfc9334.html#section-10.4) distinguish generating fresh signed evidence from when its underlying claims were collected. A nonce alone does not prove that an untrusted program measured its values afterward. [Espressif Secure Boot](https://docs.espressif.com/projects/esp-idf/en/stable/esp32c6/security/secure-boot-v2.html) checks authorized boot code. It does not establish an implemented remote measured-attestation flow for this board.
+
+An owner-controlled witness can support mounting and observed motion. A contractor-controlled camera does not establish independent physical truth. [OpenCV ArUco](https://docs.opencv.org/4.13.0/d5/dae/tutorial_aruco_detection.html) supplies marker geometry under calibration and dimension assumptions. It does not authenticate the marker, camera, asset, or physical location.
+
+The user confirms an ESP32 is available for connection when needed. Contact/magnet availability, mounted wiring, actual board firmware, and a physical end-to-end test remain unverified. No hardware action occurred in this review.
+
+### API3/NVD experiment
+
+The [NVD Airnode listing](https://airnodehub.api3.org/explore/nvd) identifies an API3-operated wrapper over NVD. Its signature is from the configured Airnode, not NIST. The current [machine-readable schema](https://airnode-nvd.fly.dev/) exposes free `searchCpes` and `listSources` operations. CVE lookup and match operations are priced at 0.01 aUSD.
+
+A genuine free NimBLE CPE response signed at **2026-10-30 11:37:09 UTC** passed the unmodified official native verifier at revision `52933ae1fb9371446a927338473466c3d320e19a`. Its pinned signer is `0x41dd84D5B6503D9aA3c374a49F546e335423a1b8`. Its request hash is `0xcb527c8b970e9d8bc2db6d2432e280011142b21f7749619c83956a41215f1276`.
+
+The [request](fixtures/nvd-cpe-request.json) and [original signed response](fixtures/nvd-cpe-signed-response.json) are saved as public research fixtures. The response identifies a product entry. It does not provide vulnerability severity or establish installed software.
+
+With the official starter's dependencies installed at the pinned revision, run this from the project root:
+
+```sh
+node research/verify-nvd-fixture.mjs PATH_TO_PINNED_API3_STARTER
+```
+
+Replace `PATH_TO_PINNED_API3_STARTER` with the checkout path. The script rejects a changed verifier source. It checks signature and request binding, then checks rejection of edited data and another expected request. It uses no wallet or network. It deliberately makes no freshness, Solidity, product acceptance, or sponsor-qualification claim.
+
+Two CVE requests returned HTTP 402 without payment. The [saved candidate request](fixtures/nvd-cve-candidate-request.json) for CVE-2025-62235 also returned 402. Its request hash is `0xf28aed06e9cbf7d70e5bedbfd4c36c54c12e3f36e04914a276c864cc08a7dd06`. No signed CVE projection was obtained. One early free CPE call returned upstream HTTP 503. Later requests succeeded. Availability remains an operational dependency.
+
+The [Apache vulnerability table](https://mynewt.apache.org/cve/) identifies NimBLE through 1.8.0 as affected by CVE-2025-62235 and 1.9.0 as fixed. The [direct NVD record](https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=CVE-2025-62235) supplied a secondary CISA CVSS 3.1 score of 8.1 and an affected range ending before 1.9.0. This direct response is not API3 attestation evidence. No evidence establishes that the available board contains the affected code or configuration.
+
+The candidate request selects one applicability branch and one metric. It is not proof of complete applicability semantics. Missing KEV fields cannot be projected as signed false values. Product policy must validate the complete relevant context or return REVIEW.
+
+The [attestation specification](https://airnodehub-docs.api3.org/airnode/attestation) binds the operation, parameters, projection, signing time, and exact response bytes. Job, contract, and chain binding require separate consumer state and authorization. The starter does not itself enforce product freshness or terminal-job semantics. Source signatures are portable across chains. NVD response generation, CVE publication, and CVE modification are different timestamps.
+
+Verdict: API3 protocol feasibility is established at native-verifier level. Mandatory NVD product scope is not established. Enable it only with credible software-build provenance, a genuine signed CVE response, a consequential product contract, and all required deployed rejection cases.
 
 ## Cardano and Masumi
 
