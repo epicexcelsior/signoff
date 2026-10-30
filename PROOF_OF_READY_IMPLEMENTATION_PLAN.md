@@ -81,19 +81,30 @@ Carrier-board identity and safe GPIO remain unknown. Chip identity does not esta
 | Seeker             | APK compiled. Phone not installed or tested                                             | Explicit install, forwarding, and native checks                 |
 | Sokosumi           | Account key passes identity check. Personal Workspace endpoint returns 404              | Workspace execution, credits, resources, and worker vault setup |
 | Blockfrost         | Preprod key passes authenticated latest-block check                                     | Dedicated payment resource configuration                        |
-| Masumi payment     | Seller, registration, scoped keys, and fees unresolved                                  | Bounded paid-task grant for one test USDM plus fees             |
-| API3 wallet        | Dedicated wallet exists. Last ETH and aUSD balances are zero                            | ETH funding, reviewed mint, and paid-data grant                 |
-| API3 client        | Paid-access draft remains outside main                                                  | Review, tests, and integration before live retrieval            |
+| Masumi payment     | Dedicated local wallets and MPS runtime prepared. Funding/registration pending          | Funded buyer/seller and actual registered source                |
+| API3 wallet        | Wallet funded. Mint, paid NVD call, and policy deployment confirmed                     | Reserve check and final fresh source near judging               |
+| API3 client        | Paid-access and judge tools integrated. Actual policy deployed                          | Genuine inspection prerequisites and five deployed judge cases  |
 | Publication        | Private development continues                                                           | Explicit public-release and submission approval                 |
 
 Use [README's owner actions](README.md#owner-actions-on-the-critical-path) and [private setup](docs/ENGINEERING.md#private-credentials-and-test-funding). Keep credentials, wallet addresses, and runtime records in private configuration. No model key is required for deterministic inspection.
 
-The unpaid quote prices two CVE requests at 0.02 test aUSD. Minting and contract transactions need separately estimated gas. Cardano escrow can outlast API3 freshness. Obtain fresh CVE evidence near finalization.
+The approved budget prices two CVE requests at 0.02 test aUSD. One request already settled. The CommissioningPolicy deployment confirmed. Minting and contract transactions need separately estimated gas. Cardano escrow can outlast API3 freshness. Obtain fresh CVE evidence near finalization.
 
-Local implementation, dependencies, fixtures, test keys, and private reviewed backup are authorized. External resources, payments, hardware actions, public deployment, publication, and submission require targeted authorization.
+Local implementation and private reviewed commits are authorized. Routine funded testnet transactions are authorized with a 0.001 ETH reserve. Public release/submission remain separate. Resolve electrical details before hardware actions.
 
 ## Documentation maintenance
 
 Update behavior in engineering, verified findings in evidence, next actions in README, and target criteria here. Keep the handoff short and link to those sources. Regenerate the private overview after changes.
 
 Preserve original inputs and archived research. They do not override current code, owner steering, or verified evidence. Do not create another status, summary, plan, or audit collection.
+
+## After the submission baseline
+
+Defer these goals until the four submission priorities have genuine evidence:
+
+- Agent-proposed work orders and repeated autonomous workflows.
+- Independent remote owner delivery.
+- Native Seeker installation, camera and BLE evidence.
+- Broader work orders, device providers and vulnerability policies.
+
+Keep current claims bounded to deterministic operator-driven commissioning, one supported CVE policy, and actual observed evidence. Do not trade required paid/physical proof for more features.

@@ -14,6 +14,7 @@ const names = [
   "application/firmware/README.md",
   "application/mobile/README.md",
   "AGENTS.md",
+  "application/api3/README.md",
 ];
 const docs = Object.fromEntries(
   names.map((name) => [name, readFileSync(new URL(name, root), "utf8")]),
@@ -160,7 +161,7 @@ const html = `<!doctype html>
 <section id="next"><p class="eyebrow">Next actions</p><h2>Use the working path.</h2>${markdown(section("README.md", "Owner actions on the critical path"))}<details><summary>Further execution context</summary>${markdown(section("README.md", "Current execution index"))}</details><details><summary>Owner inputs and external actions</summary>${markdown(section("PROOF_OF_READY_IMPLEMENTATION_PLAN.md", "Owner decisions and preparation"))}</details></section></div>
 <section class="run"><p class="eyebrow">Reproduce</p><h2>Open the station. Inspect a defect.</h2>${markdown(section("README.md", "Run the commissioning station"))}<div class="links"><a href="http://127.0.0.1:4021/mobile/">Seeker setup ↗</a><a download="proof-ready-target.svg" href="${download(readFileSync(new URL("../public/vision/target.svg", import.meta.url)), "image/svg+xml")}">Printable marker target ↗</a><a href="http://127.0.0.1:4021/observation.html">Retained observation lab ↗</a></div></section>
 <section><details><summary>Coordinator interface and recovery</summary>${markdown(section("docs/ENGINEERING.md", "Commissioning HTTP interface"))}</details></section>
-<section id="documents"><p class="eyebrow">Complete offline context</p><h2>Full Markdown documents</h2><p>All eight source documents are embedded below. Expand a document to read or download its original Markdown. External services, source code, and the running station remain separate.</p>${fullDocuments}</section>
+<section id="documents"><p class="eyebrow">Complete offline context</p><h2>Full Markdown documents</h2><p>All nine source documents are embedded below. Expand a document to read or download its original Markdown. External services, source code, and the running station remain separate.</p>${fullDocuments}</section>
 <section id="sources"><p class="eyebrow">Canonical source snapshot</p><h2>Generated from the current project documents.</h2><p>Run <code>npm run overview</code> after documentation changes. These source hashes identify this snapshot. They do not certify the claims.</p><ul class="sources">${sources}</ul></section>
 </main><footer>Private local development · No public submission or deployment · No fixture proves physical acceptance or live settlement.</footer></body></html>\n`;
 const formatted = await format(html, { parser: "html" });

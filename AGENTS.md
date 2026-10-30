@@ -30,3 +30,11 @@
 - Preserve sibling projects as read-only references. Do not flash, sign payments, actuate equipment, create external resources, publish, or submit without targeted authorization.
 
 - Keep owner-confirmed resources and wiring state in research/EVIDENCE.md under Available hardware. Read that inventory before selecting hardware work. Do not infer pin safety or part models from chip identity.
+
+## Submission priority and current transaction authority
+
+- Focus exclusively on one real paid Cardano Preprod inspection, genuine paid NVD/deployed-policy judge evidence, actual ESP32 button/LED/camera verification, and submission materials. Defer Seeker expansion and autonomous-agent features.
+- Reuse saved credentials and wallets. The owner authorizes routine funded testnet payments and contract transactions without repeated approval. Preserve at least 0.001 ETH in the EVM wallet. Stop before an action threatens the reserve or exhausts a token budget.
+- The existing API3 access ledger retains its 0.02 aUSD total ceiling. Preserve original uncertain operations. Never replace a nonce or resend uncertain work automatically.
+- Prepare required private account resources within task scope. Public publication and Devfolio submission still require separate authorization. Electrical review remains mandatory before wiring, flashing or GPIO operation.
+- Keep the evidence manifest and Devfolio draft in application/submission/. Record actual artifacts and missing requirements. Never replace missing real evidence with fixtures or simulated inspection prerequisites.

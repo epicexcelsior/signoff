@@ -21,15 +21,17 @@ Agent-generated requirements and autonomous orchestration remain goals. The rece
 
 ESP32-C6 firmware and a Seeker debug APK compiled. No firmware flash, GPIO command, phone install, or physical optical test ran. [Available hardware](research/EVIDENCE.md#available-hardware) owns the carrier-board, parts, and wiring state.
 
-Supplied Sokosumi and Blockfrost keys reside in private configuration outside source. Both passed live read-only checks. Personal Workspace access returned 404. The dedicated API3 wallet exists but its last balance check found zero ETH and aUSD. No separate API3 key was supplied. Account access does not establish worker-vault setup. See [private setup](docs/ENGINEERING.md#private-credentials-and-test-funding).
+Supplied Sokosumi and Blockfrost keys reside in private configuration outside source. Both passed live read-only checks. Personal Workspace access returned 404. The existing API3 wallet is funded. One mint, one paid NVD request, and the policy deployment confirmed. No separate API3 key was supplied. Account access does not establish worker-vault setup. See [private setup](docs/ENGINEERING.md#private-credentials-and-test-funding).
 
-The paid API3 client remains an unfinished draft in a separate worktree. Main provides verification, policy, unsigned calls, and reads only. Preserve draft changes. Review and test them before integration. Never cite draft tests as main verification.
+The API3 paid client and unsigned deployment/judge tooling are integrated. One genuine NVD getCve response settled, and the pinned CommissioningPolicy is deployed on Base Sepolia. Preserve the first response for stale rejection. All five deployed cases still require genuine Cardano inspection commitments. The evidence manifest owns transaction and artifact identifiers.
 
-The local overview embeds all eight current Markdown documents. HTML, combined Markdown, and ZIP exports are generated snapshots. Regenerate it after changes. [Evidence](research/EVIDENCE.md#current-local-implementation-evidence) owns check results. Do not duplicate test counts here.
+The isolated MPS runtime and dedicated PostgreSQL database build and migrate. Both remain stopped. Upstream MPS starts chain jobs independently of adapter grants. Do not start it with funded credentials until job/withdrawal settings and original registration are reviewed.
+
+The local overview embeds all nine current Markdown documents. HTML, combined Markdown, and ZIP exports are generated snapshots. Regenerate it after changes. [Evidence](research/EVIDENCE.md#current-local-implementation-evidence) owns check results. Do not duplicate test counts here.
 
 ## Continue work
 
-Follow README's execution index. Keep local software work independent from pending hardware and external grants. Separate the integrated fixture demonstration from genuine paid or physical acceptance.
+Follow README's four submission priorities. Defer Seeker expansion and autonomous orchestration. Routine funded testnet transactions are authorized with a 0.001 ETH reserve. Public release/submission and electrically unverified hardware actions remain separate. Follow README's execution index. Keep local software work independent from pending hardware and external grants. Separate the integrated fixture demonstration from genuine paid or physical acceptance.
 
 Reuse original resources and identifiers. Prepare the exact network, resource, recipient, amount, fee estimate, recovery path, and configuration before requesting a targeted grant. Keep keys and personal account data out of documentation and tool output.
 

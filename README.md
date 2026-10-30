@@ -19,19 +19,20 @@ Start here, then open the document for your task. Keep each fact in its canonica
 | [Agent handoff](PROOF_OF_READY_AGENT_HANDOFF.md)             | Resume work with the correct boundaries and reading order                                   |
 | [Firmware guide](application/firmware/README.md)             | ESP32 builds, provisioning boundaries, BLE transport, and device recovery                   |
 | [Seeker guide](application/mobile/README.md)                 | Android build, phone enrollment, USB preparation, and native test procedures                |
+| [API3 guide](application/api3/README.md)                     | Paid NVD access, deployment preparation, deployed judge checks, and payment recovery        |
 | [AGENTS.md](AGENTS.md)                                       | Repository instructions, permissions, and file ownership                                    |
 
-The private HTML overview embeds all eight current Markdown documents and its styling. It is a generated snapshot, not another source of truth. Original inputs and archived notes remain historical references. Check current code and observable behavior when documents conflict with them.
+The private HTML overview embeds all nine current Markdown documents and its styling. It is a generated snapshot, not another source of truth. Original inputs and archived notes remain historical references. Check current code and observable behavior when documents conflict with them.
 
 ## Export documentation offline
 
 From `application/`, run `npm run overview`. The command generates three private local artifacts:
 
-| Artifact                                 | Contents                                                                                                                           |
-| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `application/public/overview.html`       | Standalone overview, embedded styling, complete text of all eight documents, and original Markdown downloads                       |
-| `application/public/overview.md`         | Combined Markdown context for processing or export                                                                                 |
-| `application/public/overview-export.zip` | HTML, combined Markdown, eight original Markdown files with repository paths, linked local reference files, and a SHA-256 manifest |
+| Artifact                                 | Contents                                                                                                                          |
+| ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `application/public/overview.html`       | Standalone overview, embedded styling, complete text of all nine documents, and original Markdown downloads                       |
+| `application/public/overview.md`         | Combined Markdown context for processing or export                                                                                |
+| `application/public/overview-export.zip` | HTML, combined Markdown, nine original Markdown files with repository paths, linked local reference files, and a SHA-256 manifest |
 
 Copy `overview.html` alone to read the overview and full document text offline. Select **Export Markdown** for combined context. Expand a full document to download its original Markdown. External services and the running application remain separate. The ZIP preserves referenced local files but does not contain the complete application or archived originals.
 
@@ -64,30 +65,28 @@ The fixed policy uses markers 0 and 10, a 60 mm reference, and a target 100 mm t
 
 ## Current execution index
 
-| Workstream         | Next action                                                                              | Completion evidence                                                                              |
-| ------------------ | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| Local workflow     | Run the integrated inspector demonstration and inspect exported packets                  | Original request/report binding, useful negative reports, duplicate handling, and edit rejection |
-| Physical specimen  | Identify the carrier board, LED, button, and current-limiting resistor                   | Reviewed wiring and GPIO profile before authorized provisioning or flashing                      |
-| Camera and optical | Measure webcam throughput, then run the signed optical sequence with authorized hardware | Complete tracked capture and matching original device receipt                                    |
-| Seeker             | Prepare one explicit installation and forwarding plan                                    | Authorized install, native SQLite checks, camera lifecycle, and read-only BLE preflight          |
-| Masumi             | Resolve Personal Workspace access, then prepare dedicated worker and payment resources   | Useful hosted Task, original paid request, and positive seller receipt                           |
-| API3               | Fund the dedicated Base Sepolia test wallet and review the separate paid-access draft    | Genuine paid CVE response, approved deployed policy, and required rejection evidence             |
+| Priority   | Current evidence                                                                                      | Next required result                                                                                          |
+| ---------- | ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Cardano    | Useful inspector and payment recovery pass local checks. Isolated MPS builds. Dedicated wallets exist | Fund wallets, resolve Workspace access, run one real paid inspection, verify transaction and seller receipt   |
+| API3       | One genuine paid signed NVD response settled. CommissioningPolicy deployed on Base Sepolia            | Bind genuine paid-inspection commitments, run all five deployed judge cases, broadcast the valid finalization |
+| Hardware   | Both ESP32-C6 build profiles pass. Safe preparation and read-only flash review exist                  | Identify carrier/parts, review pins, provision and run actual button/LED/camera verification                  |
+| Submission | Public-safe setup instructions, evidence manifest, Devfolio draft, and video procedure exist          | Fill missing real evidence, record video, then obtain public-release/submission authorization                 |
 
-Main contains the API3 verifier, policy evaluator, unsigned calls, and contract reader. The unfinished paid-access client remains in a separate worktree. Its commands are unavailable in this checkout. Inspect Git state before integration. Preserve inherited uncommitted work.
+The API3 paid-access client and deployed judge tooling are integrated. Save the first paid response for the stale case. Preserve the remaining 0.01 aUSD for a fresh response near finalization. [The evidence manifest](application/submission/evidence-manifest.json) distinguishes confirmed live artifacts from missing requirements.
 
 Owner-confirmed hardware and wiring state live in [Available hardware](research/EVIDENCE.md#available-hardware). Local engineering continues while external actions remain pending.
 
 ## Integration status
 
-| Component               | Verified local behavior                                                                                                                             | Remaining evidence                                                                                    |
-| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| Coordinator             | Immutable approval, signed contact/optical/photo records, durable claims, original inspector bindings, pinned contract reads, packet reconstruction | Complete physical installation and genuine external evidence                                          |
-| Camera                  | OpenCV marker detection, planar guidance, tracked optical sampling, phase reconstruction, cleanup, printable target                                 | Physical accuracy, real-time throughput, and camera/emitter matching                                  |
-| Masumi                  | Useful deterministic inspector, exact transport hashes, durable Task/payment recovery, seller-receipt and refund fixtures                           | Worker/account resources, hosted execution, settlement, seller receipt, and refund collection         |
-| API3                    | Native verifier, bounded CVE evaluator, commissioning contract, unsigned calls, pinned reader, actual local Anvil deployment                        | Integrated paid-access client, genuine paid CVE response, external deployment, and rejection evidence |
-| ESP32                   | Default-disabled and compiler-coverage ESP32-C6 builds, signed protocol, persistent replay claims, bounded BLE transport                            | Carrier board, safe wiring, authorized flash, installed-build enrollment, and physical tests          |
-| Seeker                  | API 36 debug APK, signed photo claims, request reservation, restricted WebView, read-only BLE preflight                                             | Authorized install, Android SQLite instrumentation, lifecycle, camera, and BLE checks                 |
-| Direct Cardano baseline | Retained x402 adapter, payment ledger, and restart checks                                                                                           | Live Preprod settlement and physical-board compatibility                                              |
+| Component               | Verified local behavior                                                                                                                             | Remaining evidence                                                                            |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| Coordinator             | Immutable approval, signed contact/optical/photo records, durable claims, original inspector bindings, pinned contract reads, packet reconstruction | Complete physical installation and genuine external evidence                                  |
+| Camera                  | OpenCV marker detection, planar guidance, tracked optical sampling, phase reconstruction, cleanup, printable target                                 | Physical accuracy, real-time throughput, and camera/emitter matching                          |
+| Masumi                  | Useful deterministic inspector, exact transport hashes, durable Task/payment recovery, seller-receipt and refund fixtures                           | Worker/account resources, hosted execution, settlement, seller receipt, and refund collection |
+| API3                    | Native verifier, bounded CVE evaluator, durable paid-fetch client, genuine paid CVE response, deployed policy, pinned reader                        | Five deployed judge cases and valid finalization tied to genuine paid inspection              |
+| ESP32                   | Default-disabled and compiler-coverage ESP32-C6 builds, signed protocol, persistent replay claims, bounded BLE transport                            | Carrier board, safe wiring, authorized flash, installed-build enrollment, and physical tests  |
+| Seeker                  | API 36 debug APK, signed photo claims, request reservation, restricted WebView, read-only BLE preflight                                             | Authorized install, Android SQLite instrumentation, lifecycle, camera, and BLE checks         |
+| Direct Cardano baseline | Retained x402 adapter, payment ledger, and restart checks                                                                                           | Live Preprod settlement and physical-board compatibility                                      |
 
 Masumi remains separate from direct x402. Its fixtures do not establish seller payment. The API3 policy covers **CVE-2025-62235 only** for explicitly enrolled NimBLE reference builds. It does not establish general security or identify the installed ESP32 build.
 
@@ -121,23 +120,25 @@ After isolated dependency installation, run `npm run test:integrations`. [Engine
 
 ## Owner actions on the critical path
 
-The supplied Sokosumi and Blockfrost Preprod keys are saved outside source in a private env file. Live identity and block checks returned HTTP 200. Personal Workspace access returned HTTP 404 and remains unresolved. Valid account credentials do not establish a configured worker or paid execution.
+1. Join the TUM organization through [the Masumi setup guide](https://www.masumi.network/tum-hackathon).
+2. Confirm usable Personal Workspace access and test credits.
+3. Fund the dedicated Cardano buyer with at least one test USDM plus test ADA.
+4. Fund the dedicated Cardano seller with test ADA.
+5. Supply clear carrier-board photos, button/LED details, and resistor markings before wiring.
 
-Read-only discovery found no organization or Vendor memberships. Coworker access returned HTTP 403. Complete account setup before hosted Task testing.
+Use [the Masumi dispenser](https://dispenser.masumi.network/) with the registration-email code in your browser. Public funding addresses remain in private wallet metadata. No new account API key or model key is needed. Existing Sokosumi and Blockfrost keys work. The last account check found zero organization and Vendor memberships. The Personal Workspace access endpoint returned 404.
 
-1. Check Personal Workspace access and test credits in [Sokosumi Preprod](https://preprod.sokosumi.com/).
-2. Use the TUM invitation in [the official Masumi setup guide](https://www.masumi.network/tum-hackathon).
-3. Request Base Sepolia ETH for the dedicated wallet from [a Base-listed faucet](https://docs.base.org/get-started/get-funds#testnet-base-sepolia).
-4. Review test aUSD minting through [API3's official faucet](https://api3dao.github.io/airnodehub-hackathon/faucet/).
-5. Identify the ESP32 carrier-board marking and current-limiting resistor.
+The EVM wallet is funded. An approved mint supplied 0.02 test aUSD. One 0.01 aUSD NVD request settled. [The deployed contract](https://sepolia.basescan.org/address/0x98023c425670a9690ab362c00fbea1bc11dce2cb) has the expected NVD signer, exact request, and 300-second limits. Deployment alone does not establish all five mandatory judge cases.
 
-The wallet exists locally. Its last balance check found zero ETH and zero aUSD. Its address and private key remain in private runtime files. API3 uses wallet-based x402 access. No separate API3 API key was supplied in the previous session.
+Routine funded testnet transactions are authorized. Keep at least 0.001 ETH in reserve. Stop before a new action threatens that reserve. Public release, Devfolio submission, and electrically unverified hardware actions remain separate.
 
-[Private setup](docs/ENGINEERING.md#private-credentials-and-test-funding) explains env loading, faucets, and the separate Cardano funding path. No model key is required for the deterministic inspector.
+[Private setup](docs/ENGINEERING.md#private-credentials-and-test-funding) defines credentials, scoped worker resources, and recovery. [Evidence](research/EVIDENCE.md#live-access-and-private-setup) records actual transactions and remaining gaps. The Cardano track still requires a real paid Preprod inspection. Five deployed API3 cases remain pending genuine paid-inspection commitments.
 
-The [Cardano track](https://hackathon.tum-blockchain.com/prizes#cardano) requires a real paid Preprod job or request. The prepared Masumi route requests one test USDM plus unestimated fees. Its escrow deadlines span approximately 36–52 minutes.
+## Prepare submission
 
-The live unpaid NVD quote charges 0.01 test aUSD per CVE request. Two requests total 0.02 test aUSD, excluding gas. [API3's challenge](https://api3dao.github.io/airnodehub-hackathon/) also requires an externally deployed verifier, valid-response acceptance, four rejection cases, and a public repository. Publication remains a separate owner decision.
+Use [the evidence manifest](application/submission/evidence-manifest.json) and [the Devfolio draft](application/submission/devfolio-draft.json). Both explicitly mark missing evidence. [The submission and video procedure](docs/ENGINEERING.md#submission-and-video-procedure) defines the final review and 150-second recording.
+
+The deadline is **October 31, 2026 at 15:00 CET**. The organizer requires a public repository and a video no longer than 2.5 minutes. Preparation does not authorize publication or submission. Higher-ambition work remains in [the product plan](PROOF_OF_READY_IMPLEMENTATION_PLAN.md#after-the-submission-baseline).
 
 ## Camera, hardware, and external acceptance
 
@@ -159,4 +160,4 @@ Without that digest, verification establishes internal consistency only. Offline
 
 The original paid-observation lab remains at <http://127.0.0.1:4021/observation.html>. Its direct Preprod route costs 2 tADA plus fees. Simulation moves no funds. Its DISPATCH result does not establish commissioning acceptance or physical safety. See [the retained workflow](docs/ENGINEERING.md#retained-direct-payment-observation-workflow).
 
-Keep runtime state, keys, wallets, camera images, and receipt pins outside tracked source. The station defaults to laptop loopback. Local implementation and private reviewed backup are authorized. Payments, external resources, flashing, GPIO actions, public deployment, publication, and submission require targeted authorization.
+Keep runtime state, keys, wallets, camera images, and receipt pins outside tracked source. The station defaults to laptop loopback. Local implementation and private reviewed backup are authorized. Routine funded testnet transactions follow the approved reserve. Physical wiring/flash operations require resolved electrical review. Public release and submission require separate authorization.

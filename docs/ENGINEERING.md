@@ -126,7 +126,7 @@ From `application/integrations/masumi/`, run `npm run setup:plan` for an unexecu
 
 `application/api3/` pins viem 2.57.3. Its native verifier preserves exact signed data bytes. The bounded evaluator supports CVE-2025-62235, complete approved NimBLE applicability structure, approved CVSS provenance, timestamp bounds, and explicit unsupported-shape REVIEW. Declared 1.8.0 and 1.9.0 are reference builds. They are not claims about the current board or general software security.
 
-The paid-fetch client remains an unfinished draft in a separate worktree. Main has no `access` script, access ledger, or paid-fetch command. Its private wallet/configuration preparation does not establish integrated access or a paid response. Review and test the draft before integration.
+The bounded paid-fetch client is integrated. `application/api3/README.md` defines `npm run access` and `npm run judge`. It preserves original signing/submission claims, source bytes, and transfer/nonce reconciliation. One real paid NVD request settled. The deployed policy matches its signer/request/freshness pins. Five deployed judge cases remain pending genuine paid-inspection commitments. Unsigned judge preparation never substitutes fixture inspection records.
 
 `application/contracts/` contains `CommissioningPolicy` and `NvdPolicy`, with licensed pinned dependencies. The operator enrolls immutable build manifests, opens jobs, and records the inspection and Cardano payment assertion. Permissionless finalization checks the pinned Airnode signer/request, source freshness, job deadline, inspection prerequisite, policy, and terminal-state guard. Accepted, rejected, and REVIEW decisions are terminal. No contract holds or releases funds.
 
@@ -190,7 +190,7 @@ Unsigned plans derive the contract job ID from the work-order digest and capture
 
 ## Local overview and demonstration
 
-`npm run overview` generates standalone `/overview.html`, combined `/overview.md`, and `/overview-export.zip` from eight explicitly selected current Markdown documents. `npm run overview:check` verifies all three reproducible artifacts, including ZIP bytes. The ZIP preserves original document paths, linked unignored repository reference files, and a SHA-256 manifest. It excludes archived originals and private runtime files. The page embeds full document text, exact Markdown downloads, styling, printable target, and source hashes. Reading and Markdown export require no server or network. Links to external services and the running station remain optional. All three generated artifacts are ignored by Git. Keep the generator, CSS, and canonical source documents in source control. `npm test` regenerates exports before browser checks. Only the overview route permits its exact embedded style through a SHA-256 CSP hash. The parent script policy remains unchanged. The offline browser check copies only HTML to a temporary directory, disables networking, and checks original Markdown bytes and layout. `/project-docs/:name` serves only explicitly allowed current documents. It cannot expose arbitrary repository files.
+`npm run overview` generates standalone `/overview.html`, combined `/overview.md`, and `/overview-export.zip` from nine explicitly selected current Markdown documents. `npm run overview:check` verifies all three reproducible artifacts, including ZIP bytes. The ZIP preserves original document paths, linked unignored repository reference files, and a SHA-256 manifest. It excludes archived originals and private runtime files. The page embeds full document text, exact Markdown downloads, styling, printable target, and source hashes. Reading and Markdown export require no server or network. Links to external services and the running station remain optional. All three generated artifacts are ignored by Git. Keep the generator, CSS, and canonical source documents in source control. `npm test` regenerates exports before browser checks. Only the overview route permits its exact embedded style through a SHA-256 CSP hash. The parent script policy remains unchanged. The offline browser check copies only HTML to a temporary directory, disables networking, and checks original Markdown bytes and layout. `/project-docs/:name` serves only explicitly allowed current documents. It cannot expose arbitrary repository files.
 
 `npm run demo:integration` connects the actual coordinator SQLite bridge to four fixture inspector Tasks. It checks original input/report binding, useful defects, duplicate creation, packet reconstruction, and edit rejection. It saves ledgers and packets in a new private user-state directory. It performs no network writes, hardware operations, or payments.
 
@@ -204,11 +204,11 @@ Private setup uses `$HOME/.config/proof-ready/`. The directory mode is `0700`. C
 | `access-check.json`       | Timestamped read-only credential checks. No keys or personal identity fields                                            |
 | `api3/test-wallet-key`    | Dedicated local EVM test private key. Never print it                                                                    |
 | `api3/wallet.json`        | Public address, Base Sepolia chain ID 84532, purpose, and private-key file reference                                    |
-| `api3/api3.env`           | Private draft-client paths with `PROOFREADY_API3_PAYMENTS_AUTHORIZED=false`                                             |
+| `api3/api3.env`           | Private isolated-client paths with `PROOFREADY_API3_PAYMENTS_AUTHORIZED=false`                                          |
 | `api3/access-config.json` | Dedicated payer, private ledger path, public RPC, and proposed 20,000-atomic-unit aUSD ceiling                          |
 | `api3/balance-check.json` | Timestamped read-only ETH and aUSD balances                                                                             |
 
-The proposed ceiling is configuration for review. It does not authorize spending. The API3 draft's env variables are not consumed by main. Keep its original ledger if access later starts. Do not replace a key or unresolved ledger to repeat an operation.
+The existing access ledger pins a 20,000-atomic-unit total ceiling. One 10,000-unit call settled. The owner authorizes routine funded testnet transactions while preserving a 0.001 ETH reserve. Isolated API3 CLI commands consume their own env variables. The station does not sign these payments. Preserve the original access ledger and its settled first request. Do not replace a key or unresolved ledger to repeat an operation.
 
 The supplied Sokosumi account key passed `GET https://api.preprod.sokosumi.com/v1/users/me`. The Blockfrost key passed the authenticated Preprod `/api/v0/blocks/latest` read. Personal Workspace access returned 404 at the pinned CLI's `/v1/users/me/workspace-access` route. This result leaves access and credits unverified. It does not establish that the account lacks a workspace.
 
@@ -221,13 +221,13 @@ node --env-file="$HOME/.config/proof-ready/credentials.env" \
   --preprod auth whoami --json
 ```
 
-This command returns personal account fields. Inspect them locally. Keep them out of shared output. The worker deliberately strips account-key environment variables from CLI subprocesses. Its Task reads require a separately imported Coworker runtime credential in the supported vault. A successful account check does not configure that worker.
+This command returns personal account fields. Inspect them locally. Keep them out of shared output. The worker now forwards only an explicitly supplied `SOKOSUMI_API_KEY` to CLI subprocesses. It still strips unrelated keys. Task reads require a separately imported Coworker runtime credential in the supported vault. A successful account check does not configure that worker.
 
-The inspector needs no model key. Dedicated Vendor/Coworker resources, workspace access, vault setup, seller wallet, registration, and scoped MPS keys remain separate prerequisites. Follow [the official setup guide](https://www.masumi.network/tum-hackathon). Resource creation and payments require targeted authorization.
+The inspector needs no model key. Dedicated Vendor/Coworker resources, workspace access, vault setup, seller wallet, registration, and scoped MPS keys remain separate prerequisites. Follow [the official setup guide](https://www.masumi.network/tum-hackathon). Routine private account setup and funded testnet transactions now have owner authorization within the task and reserve. Public release remains separate.
 
 ### Fund the API3 wallet
 
-Read the public address from private `api3/wallet.json`. The latest recorded balance is zero ETH and zero aUSD. The previous session supplied no separate API3 API key. Priced Airnode access uses x402 with aUSD on Base Sepolia.
+Read the public address from private `api3/wallet.json`. The wallet received 0.0019 ETH. The approved mint supplied 0.02 aUSD, and the first 0.01 aUSD NVD request settled. Reserve the remaining 0.01 aUSD for fresh finalization evidence. The previous session supplied no separate API3 API key. Priced Airnode access uses x402 with aUSD on Base Sepolia.
 
 1. Open [a Base-listed testnet faucet](https://docs.base.org/get-started/get-funds#testnet-base-sepolia).
 2. Select **Base Sepolia**.
@@ -238,7 +238,7 @@ Read the public address from private `api3/wallet.json`. The latest recorded bal
 7. Review the mint amount and gas before authorizing the transaction.
 8. Verify the aUSD balance before preparing a paid request.
 
-The dedicated wallet is a local key file, not an installed browser wallet. Browser minting requires the owner to import that test key locally. The faucet also documents `mintFromFaucet(uint256)` for a separately reviewed CLI transaction. Do not print or upload the key to obtain a mint.
+The approved first mint confirmed. The dedicated wallet is a local key file, not an installed browser wallet. Browser minting requires the owner to import that test key locally. The faucet also documents `mintFromFaucet(uint256)` for a separately reviewed CLI transaction. Do not print or upload the key to obtain a mint.
 
 The official faucet's token is `0xbeA34973e5f67F18F656A2C6070C64326C791808`. aUSD uses six decimals. The observed CVE quote requests 10,000 atomic units, or 0.01 aUSD. Two calls total 0.02 aUSD. Minting and contract transactions require ETH. Access-transfer gas is paid by the x402 facilitator. These amounts do not estimate deployment gas.
 
@@ -320,3 +320,49 @@ After isolated installs, run each integration's `format:check`, `check`, `test`,
 Run Foundry `fmt --check` and `test` from `application/contracts/`. The local Anvil deployment/read integration runs with `FIELDPROOF_FOUNDRY_BIN=/path/to/foundry/bin npm run test:contract` from `application/`. The variable names a directory containing genuine `forge` and `anvil` binaries. Bare `forge` on this host is unrelated.
 
 Browser tests use installed Chrome at desktop and phone widths. They test the commissioning journey, keyboard approval, changed evidence, history, camera-controller shape, actual generated marker detection, print-target detection, and stream cleanup. Subprocess tests cover persistent read claims and the original application's process death/restart. No fixture establishes physical accuracy, live settlement, deployed sponsor evidence, or safety certification.
+
+## Submission and video procedure
+
+The submission baseline has four priorities: one real paid Cardano inspection, genuine NVD/deployed-policy judge evidence, actual physical commissioning, and a reproducible submission. Higher-ambition work stays deferred.
+
+### Prepare the public release candidate
+
+1. Run the checks in [Verification commands](#verification-commands).
+2. Run the integrated local demonstration and preserve its fixture labels.
+3. Update `application/submission/evidence-manifest.json` with actual artifact and transaction references.
+4. Preserve exact original signed source bytes under `application/submission/evidence/` after a secret review.
+5. Record the real Cardano Task, useful report, payment transaction, and positive seller receipt together.
+6. Record the deployed network, contract, runtime-code hash, job commitments, and five actual judge results.
+7. Export the original physical evidence packet and independently trusted work-order digest.
+8. Check the README commands from a clean local checkout.
+9. Review tracked files, Git history, and release artifacts for secrets and private runtime data.
+10. Prepare the public repository and video links without publishing them.
+11. Obtain owner authorization before public release and Devfolio submission.
+
+The documentation ZIP contains private development context and is not the public source release. Never publish wallet mnemonics, private env files, runtime ledgers, signed payment authorizations, provisioned firmware, or raw private phone images. A path-boundary check is not a complete secret audit.
+
+### Fill the Devfolio project
+
+The official organizer source requires one team submission, selected partner tracks, a detailed description, public repository, and video. The deadline is October 31, 2026 at 15:00 CET. The video limit is 150 seconds. The TUM Blockchain Track applies automatically.
+
+Use `application/submission/devfolio-draft.json` as draft content. Map it to the actual authenticated form. Field labels and owner/team metadata remain unverified until that form is opened. Enter Cardano and API3 only. Add the actual contract address, paid Cardano transaction, report, and evidence links. Keep any unfinished requirement explicit. Never present a local Anvil address or fixture Task as live evidence.
+
+### Record a video no longer than 150 seconds
+
+Before recording, complete the real paid and physical runs. Keep their original identifiers visible. Record the application window and cropped public CLI results. Hide credentials, account menus, private directories, and unrelated desktop content. Test microphone levels and readable text first.
+
+| Time     | Capture and narration                                                                                         |
+| -------- | ------------------------------------------------------------------------------------------------------------- |
+| 0–15s    | State the operator's commissioning problem and the useful inspection being purchased                          |
+| 15–35s   | Show the approved work order, placement policy, actual markers, and camera guidance                           |
+| 35–65s   | Show the real button sequence and complete 18-second LED challenge. Keep each required step visible           |
+| 65–95s   | Show the original useful paid Cardano report, Task/request ID, transaction explorer, and seller receipt       |
+| 95–130s  | Show the deployed API3 policy, valid state change, and edited/stale/other-request/wrong-key rejection results |
+| 130–145s | Export and verify the physical packet. State the remaining evidence limits                                    |
+| 145–150s | Close with the operator outcome and repository/demo references                                                |
+
+Escrow collection can take longer than the video. Use the original completed paid record and a clear time caption. Do not imply that a previous transaction settled during a newly recorded request. Use cuts to shorten waiting, never to conceal required failures or substitute a fixture. If a live requirement remains incomplete, name it and leave its manifest gate incomplete.
+
+### Recover presentation failures
+
+Preserve a recording of the actual physical attempt, original packet, paid report/receipt, source response, and deployed judge output. Use those exact artifacts during recovery. Keep their capture times and source labels visible. A rehearsal can explain workflow, but it cannot replace missing live evidence.

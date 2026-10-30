@@ -93,7 +93,7 @@ test("documentation export preserves Markdown bytes and opens offline as one HTM
       true,
     );
     const documents = page.locator("#documents details");
-    assert.equal(await documents.count(), 8);
+    assert.equal(await documents.count(), 9);
     const exported = page.waitForEvent("download");
     await page
       .getByRole("link", { name: "Export Markdown", exact: true })
@@ -139,7 +139,7 @@ test("documentation export preserves Markdown bytes and opens offline as one HTM
 root=pathlib.Path.cwd().parent
 with zipfile.ZipFile('public/overview-export.zip') as archive:
  manifest=json.loads(archive.read('manifest.json'))
- assert len(manifest['documents']) == 8
+ assert len(manifest['documents']) == 9
  for name,digest in manifest['files'].items():
   content=archive.read(name)
   assert hashlib.sha256(content).hexdigest() == digest
