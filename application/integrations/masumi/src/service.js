@@ -70,7 +70,9 @@ export function createInspectionService({
   });
   const save = (state, changes) =>
     ledger.update(state.taskId, state.version, changes);
-  const name = (state) => `Proof of Ready ${state.taskId}`;
+  // Older claims retain their original name for uncertain-operation recovery.
+  const name = (state) =>
+    state.remoteTaskName ?? `Proof of Ready ${state.taskId}`;
   function assertRemoteInput(task, state) {
     if (
       !task ||
@@ -362,7 +364,7 @@ export function createInspectionService({
       if (state.stage === "TASK_STARTING") {
         const task = await runtime.readTask(state.remoteTaskId);
         assertRemoteInput(task, state);
-        return task.status === "IN_PROGRESS"
+        return task.status === "RUNNING"
           ? save(state, { stage: state.paid ? "STARTED" : "EVALUATION_READY" })
           : state;
       }

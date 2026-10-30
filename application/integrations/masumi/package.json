@@ -18,7 +18,7 @@
     "format:check": "prettier --check src scripts test fixtures package.json .env.example PROVENANCE.json --ignore-unknown"
   },
   "dependencies": {
-    "@masumi_network/sokosumi": "1.0.4",
+    "@masumi_network/sokosumi": "1.1.0",
     "zod": "4.6.6"
   },
   "devDependencies": {

@@ -46,8 +46,12 @@ export function openLedger(path) {
           db.exec("COMMIT");
           return { state: decode(existing), created: false };
         }
+        const taskId = randomUUID();
         const state = {
-          taskId: randomUUID(),
+          taskId,
+          remoteTaskName: context.paid
+            ? `Proof of Ready ${taskId}`
+            : `Proof of Ready execution-only rehearsal (no payment) ${taskId}`,
           version: 1,
           stage: "CREATED",
           request,

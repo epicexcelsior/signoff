@@ -54,6 +54,7 @@ export function createSokosumiRuntime({
   writesAuthorized = false,
   runCommand = execute,
   core: suppliedCore,
+  accountCore: suppliedAccountCore,
 }) {
   const target = taskTarget({ coworkerId, organizationId, organizationSlug });
   if (
@@ -113,31 +114,37 @@ export function createSokosumiRuntime({
       );
     }
   }
+  let sdkRoot;
+  async function getSdkRoot() {
+    if (sdkRoot) return sdkRoot;
+    let skills;
+    try {
+      skills = (
+        await runCommand(binary, ["skills", "path"], {
+          encoding: "utf8",
+          timeout: 30_000,
+          maxBuffer: 10_000,
+          env: commandEnv,
+        })
+      ).stdout.trim();
+    } catch {
+      throw new IntegrationError(
+        "RUNTIME_UNAVAILABLE",
+        "The pinned local CLI cannot locate its supported runtime modules.",
+      );
+    }
+    if (!isAbsolute(skills) || !skills.endsWith("/skills"))
+      throw new IntegrationError(
+        "INVALID_RUNTIME_PATH",
+        "The CLI returned an invalid runtime package path.",
+      );
+    sdkRoot = join(dirname(skills), "dist", "src");
+    return sdkRoot;
+  }
   let core = suppliedCore;
   async function getCore() {
     if (!core) {
-      let skills;
-      try {
-        skills = (
-          await runCommand(binary, ["skills", "path"], {
-            encoding: "utf8",
-            timeout: 30_000,
-            maxBuffer: 10_000,
-            env: commandEnv,
-          })
-        ).stdout.trim();
-      } catch {
-        throw new IntegrationError(
-          "RUNTIME_UNAVAILABLE",
-          "The pinned local CLI cannot locate its supported runtime modules.",
-        );
-      }
-      if (!isAbsolute(skills) || !skills.endsWith("/skills"))
-        throw new IntegrationError(
-          "INVALID_RUNTIME_PATH",
-          "The CLI returned an invalid runtime package path.",
-        );
-      const root = join(dirname(skills), "dist", "src");
+      const root = await getSdkRoot();
       const credentials = await import(
         pathToFileURL(join(root, "coworker/runtime-credentials.js")).href
       );
@@ -149,6 +156,30 @@ export function createSokosumiRuntime({
       });
     }
     return core;
+  }
+  let accountCore = suppliedAccountCore;
+  async function getAccountCore() {
+    if (!accountCore) {
+      const root = await getSdkRoot();
+      const { bootstrapCliSession } = await import(
+        pathToFileURL(join(root, "auth/bootstrap.js")).href
+      );
+      const { createCoreHttpClient } = await import(
+        pathToFileURL(join(root, "api/http-client.js")).href
+      );
+      const session = bootstrapCliSession({
+        environment: commandEnv,
+        loadFiles: false,
+        preprod: true,
+      });
+      accountCore = createCoreHttpClient({
+        ...session.config,
+        authManager: session.authManager,
+        environment: session.env,
+        organizationSlug: target.organizationSlug ?? undefined,
+      });
+    }
+    return accountCore;
   }
   async function readTask(id) {
     const { data } = await (
@@ -186,24 +217,28 @@ export function createSokosumiRuntime({
       organizationId: target.organizationId,
     },
     async createTask({ name, description }) {
-      const response = await cli(
-        [
-          "tasks",
-          "create",
-          ...target.taskArgs,
-          "--coworker-id",
-          target.coworkerId,
-          "--name",
+      if (!writesAuthorized)
+        throw new IntegrationError(
+          "EXTERNAL_AUTHORIZATION_REQUIRED",
+          "The owner must authorize Sokosumi account and Task writes.",
+        );
+      // Core otherwise prepends context links and changes the exact inspector input.
+      // The CLI cannot express these supported API flags, so use its account client.
+      const response = await (
+        await getAccountCore()
+      ).post(
+        "/v1/tasks",
+        {
           name,
-          "--description",
           description,
-          "--status",
-          "READY",
-        ],
-        true,
+          assigneeId: target.coworkerId,
+          status: "READY",
+          context: { brand: false, briefing: false, memory: false },
+        },
+        AbortSignal.timeout(30_000),
       );
-      const task = response.task ?? response;
-      if (typeof task.id !== "string" || !task.id)
+      const task = response.data;
+      if (typeof task?.id !== "string" || !task.id)
         throw new IntegrationError(
           "INVALID_TASK_RESPONSE",
           "Task creation did not return an identifier. Reconcile before retrying.",
@@ -322,7 +357,7 @@ export function createFixtureRuntime() {
     },
     async startTask(id) {
       const task = tasks.get(id);
-      task.status = "IN_PROGRESS";
+      task.status = "RUNNING";
       counts.started += 1;
       return { description: task.description };
     },

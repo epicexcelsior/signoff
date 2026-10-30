@@ -50,28 +50,49 @@ test("runtime uses pinned local CLI arguments and strips unrelated credentials f
       args = command;
       assert.match(binary, /masumi\/node_modules\/\.bin\/sokosumi$/);
       assert.equal(options.env.MPS_RUNTIME_TOKEN, undefined);
-      return { stdout: JSON.stringify({ task: { id: "new-task" } }) };
+      return { stdout: JSON.stringify({ tasks: [] }) };
     },
   });
-  assert.deepEqual(
-    await runtime.createTask({ name: "test", description: "unchanged" }),
-    { id: "new-task" },
+  assert.equal(
+    await runtime.findTask({ name: "test", description: "unchanged" }),
+    null,
   );
   assert.deepEqual(args, [
     "--preprod",
     "tasks",
-    "create",
+    "list",
     "--personal",
     "--coworker-id",
     "chosen",
-    "--name",
-    "test",
-    "--description",
-    "unchanged",
-    "--status",
-    "READY",
     "--json",
   ]);
+});
+
+test("Task creation preserves exact inspector input by disabling automatic Core context", async () => {
+  const description = '{"original":"exact bytes"}\n';
+  let calls = 0;
+  const runtime = createSokosumiRuntime({
+    coworkerId: "chosen",
+    writesAuthorized: true,
+    accountCore: {
+      post: async (path, body) => {
+        calls += 1;
+        assert.equal(path, "/v1/tasks");
+        assert.deepEqual(body, {
+          name: "inspect",
+          description,
+          assigneeId: "chosen",
+          status: "READY",
+          context: { brand: false, briefing: false, memory: false },
+        });
+        return { data: { id: "original-task" } };
+      },
+    },
+  });
+  assert.deepEqual(await runtime.createTask({ name: "inspect", description }), {
+    id: "original-task",
+  });
+  assert.equal(calls, 1);
 });
 
 test("runtime explicitly forwards only the configured account key and keeps write authorization separate", async () => {

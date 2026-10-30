@@ -34,6 +34,9 @@ test("execution-only fixture delivers a useful negative report without claiming 
   assert.equal(done.paid, false);
   assert.equal(runtime.counts.created, 1);
   assert.equal(runtime.counts.completed, 1);
+  const remote = await runtime.readTask(done.remoteTaskId);
+  assert.match(remote.name, /execution-only rehearsal \(no payment\)/);
+  assert.equal(remote.description, created.exactInput);
   await service.advance(created.taskId);
   assert.equal(runtime.counts.completed, 1);
 });
@@ -88,6 +91,50 @@ test("lost Task creation response reconciles the same Task after reopening the l
   assert.equal((await service.reconcile(taskId)).stage, "TASK_CREATED");
   await until(service, taskId, "COMPLETE");
   assert.equal(runtime.counts.created, 1);
+});
+
+test("legacy uncertain Task creation retains its original name during reconciliation", async (t) => {
+  const path = join(temporary(t), "legacy.sqlite");
+  const ledger = openLedger(path);
+  t.after(() => ledger.close());
+  const runtime = createFixtureRuntime();
+  const service = createInspectionService({
+    ledger,
+    runtime,
+    loadArtifact: async () => artifact(),
+  });
+  const state = service.create(request());
+  ledger.update(state.taskId, state.version, {
+    remoteTaskName: undefined,
+    stage: "TASK_CREATING",
+  });
+  const original = await runtime.createTask({
+    name: `Proof of Ready ${state.taskId}`,
+    description: state.exactInput,
+  });
+  const recovered = await service.reconcile(state.taskId);
+  assert.equal(recovered.remoteTaskId, original.id);
+  assert.equal(recovered.stage, "TASK_CREATED");
+  assert.equal(runtime.counts.created, 1);
+});
+
+test("lost runtime-start response reconciles Core RUNNING without starting the Task twice", async (t) => {
+  const runtime = createFixtureRuntime();
+  const start = runtime.startTask;
+  runtime.startTask = async (id) => {
+    await start(id);
+    throw new Error("reply lost after Core RUNNING");
+  };
+  const { service } = fixture(t, { runtime });
+  const { taskId } = service.create(request());
+  await service.advance(taskId);
+  await assert.rejects(service.advance(taskId), {
+    code: "OPERATION_UNCERTAIN",
+  });
+  assert.equal(service.get(taskId).stage, "TASK_STARTING");
+  assert.equal((await service.reconcile(taskId)).stage, "EVALUATION_READY");
+  await until(service, taskId, "COMPLETE");
+  assert.equal(runtime.counts.started, 1);
 });
 
 test("process restart preserves a write claim and reconciliation never sends another Task", async (t) => {

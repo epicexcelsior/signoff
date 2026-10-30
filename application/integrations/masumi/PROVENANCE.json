@@ -19,5 +19,19 @@
     "scope": "External service prerequisite only. No payment-service implementation is vendored."
   },
   "dependencyChange": "Zod 4.6.6 replaces the starter's 4.6.5. Eve and its model stack are not imported. A bounded optional HTTP model adapter explains deterministic findings.",
-  "evidence": "Local fixtures do not establish live task execution, registration, escrow funding, seller payment, refunds, or sponsor qualification."
+  "evidence": "Local fixtures do not establish live task execution, registration, escrow funding, seller payment, refunds, or sponsor qualification.",
+  "sokosumiCli": {
+    "version": "1.1.0",
+    "integrity": "sha512-VPaASgvzuY6d8PN91Uzba9QGlW9xyM8CN180FESbYRBLxxiYftXx/UmNx8okZhw8rPs5M+hCEN0Z4jGSd/y9Kw==",
+    "checkedAt": "2026-10-30",
+    "reason": "The guide pins 1.0.4, whose removed Personal Workspace access endpoint returns 404. Published 1.1.0 uses /v1/users/me/workspaces and preserves the original runtime credential interface. Core context opt-outs preserve exact Task input bytes.",
+    "sources": [
+      "https://registry.npmjs.org/@masumi_network%2fsokosumi/1.1.0",
+      "https://github.com/masumi-network/sokosumi/blob/dace90b50824f6bb3fbfcbc8a6010061e66e5c85/apps/cli/src/api/services/personal-workspace-service.ts",
+      "https://github.com/masumi-network/sokosumi/blob/dace90b50824f6bb3fbfcbc8a6010061e66e5c85/apps/core/src/schemas/task.schema.ts"
+    ],
+    "reviewedSourceRevision": "dace90b50824f6bb3fbfcbc8a6010061e66e5c85",
+    "publishedGitHead": null,
+    "sourceRelation": "The npm metadata does not report gitHead. The reviewed Git revision is a source reference, not an attestation of the published build. Exact published bytes are pinned by the registry SHA-512 integrity."
+  }
 }
