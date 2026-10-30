@@ -5,7 +5,15 @@ import { AppError } from "./store.js";
 import { CommissioningService } from "./commissioning.js";
 
 export class Service {
-  constructor({ store, config, profile, payment, observe }) {
+  constructor({
+    store,
+    config,
+    profile,
+    payment,
+    observe,
+    external = null,
+    emitOptical = null,
+  }) {
     Object.assign(this, { store, config, profile, payment, observe });
     this.inFlight = new Map();
     this.commissioning = new CommissioningService({
@@ -13,10 +21,18 @@ export class Service {
       config,
       profile,
       observe,
+      external,
+      emitOptical,
     });
   }
 
   create(body) {
+    if (this.config.mode === "physical")
+      throw new AppError(
+        "PAYMENT_DISABLED",
+        "Use the commissioning station for physical tests without payments.",
+        403,
+      );
     if (
       !body ||
       Object.keys(body).some(

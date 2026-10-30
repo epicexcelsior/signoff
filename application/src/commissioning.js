@@ -1,4 +1,4 @@
-import { randomInt } from "node:crypto";
+import { randomInt, randomBytes } from "node:crypto";
 import { AppError } from "./store.js";
 import { CommissioningStore } from "./commissioning-store.js";
 import { artifactDigest, canonicalJson, isDigest } from "./artifacts.js";
@@ -9,6 +9,22 @@ import {
   normalizePolicy,
 } from "../public/vision/geometry.js";
 import { inspectVerifiedChecks } from "../integrations/masumi/src/inspector.js";
+import {
+  makeInspectionRequest,
+  inspectionJobId,
+  contractExpectations,
+  externalAcceptance,
+} from "./inspection-binding.js";
+import { createOpticalChallenge, verifyOpticalExecution } from "./optical.js";
+import {
+  opticalCheck,
+  phoneCheck,
+  phoneRequestId,
+} from "./capture-evaluation.js";
+import {
+  verifyPhoneEvidence,
+  PhoneEvidenceError,
+} from "../mobile/src/phone-evidence.mjs";
 
 const SCHEMA = "proof-of-ready";
 const nowSeconds = (milliseconds) => Math.floor(milliseconds / 1000);
@@ -33,6 +49,11 @@ const check = (id, outcome, reason, evidenceRefs = []) => ({
   reason,
   evidenceRefs,
 });
+const configSoftware = (config) =>
+  config.externalConfig?.software ?? {
+    state: "unenrolled",
+    manifestDigest: null,
+  };
 const defaultVision = () => ({
   referenceMarkerId: 0,
   deviceMarkerId: 10,
@@ -192,13 +213,8 @@ export function evaluateCommissioning(workOrder, bundle) {
       bundle.vision ? [artifactDigest(bundle.vision)] : [],
     ),
   );
-  checks.push(
-    check(
-      "optical",
-      "REVIEW",
-      "A signed optical execution and matching camera samples are not present.",
-    ),
-  );
+  checks.push(opticalCheck(workOrder, bundle));
+  if (workOrder.requirements?.phone) checks.push(phoneCheck(workOrder, bundle));
   return checks;
 }
 
@@ -214,6 +230,7 @@ export function inspectionArtifact(workOrder, bundle) {
       "delivery",
       "vision",
       "optical",
+      ...(workOrder.requirements?.phone ? ["phone"] : []),
     ],
     checks: evaluateCommissioning(workOrder, bundle),
     limitations: [
@@ -231,39 +248,8 @@ export function inspectionArtifact(workOrder, bundle) {
   };
 }
 
-export function acceptanceFor(report, sourceMode) {
-  const predicates = [
-    check(
-      "inspection",
-      report.outcome,
-      `Local inspection returned ${report.outcome}.`,
-      [artifactDigest(report)],
-    ),
-    check(
-      "physical-origin",
-      sourceMode === "physical" ? "PASS" : "REVIEW",
-      sourceMode === "physical"
-        ? "The configured physical adapter supplied the reads."
-        : "Fixture evidence cannot approve a physical installation.",
-    ),
-    check(
-      "paid-inspection",
-      "REVIEW",
-      "No verified Masumi seller receipt binds this inspection.",
-    ),
-    check(
-      "software-policy",
-      "REVIEW",
-      "No pinned deployed contract decision binds this work order and inspection.",
-    ),
-  ];
-  return {
-    schema: `${SCHEMA}/acceptance/v1`,
-    decision: report.outcome === "FAIL" ? "REWORK" : "REVIEW",
-    predicates,
-    liveSettlement: false,
-    contractVerified: false,
-  };
+export function acceptanceFor(report, sourceMode, external = null) {
+  return externalAcceptance(report, sourceMode, external);
 }
 
 export function verifyPacket(packet, expectedWorkOrderDigest) {
@@ -320,12 +306,17 @@ export function verifyPacket(packet, expectedWorkOrderDigest) {
   const report = inspectVerifiedChecks(
     inspectionArtifact(packet.workOrder, packet.evidence),
   );
-  const acceptance = acceptanceFor(report, packet.evidence.sourceMode);
+  const acceptance = acceptanceFor(
+    report,
+    packet.evidence.sourceMode,
+    packet.external ?? null,
+  );
   const digests = {
     workOrder: workOrderDigest,
     evidence: bundleDigest,
     report: artifactDigest(report),
     acceptance: artifactDigest(acceptance),
+    ...(packet.external ? { external: artifactDigest(packet.external) } : {}),
   };
   if (
     canonicalJson(packet.digests) !== canonicalJson(digests) ||
@@ -340,7 +331,9 @@ export function verifyPacket(packet, expectedWorkOrderDigest) {
   return {
     verified: true,
     ownerPinned: Boolean(expectedWorkOrderDigest),
-    decision: acceptance.decision,
+    decision: acceptance.decision === "READY" ? "REVIEW" : acceptance.decision,
+    recordedDecision: acceptance.decision,
+    externalRevalidated: false,
     report: report.outcome,
     digests,
     limitation:
@@ -349,10 +342,44 @@ export function verifyPacket(packet, expectedWorkOrderDigest) {
 }
 
 export class CommissioningService {
-  constructor({ store, config, profile, observe, now = Date.now }) {
-    Object.assign(this, { config, profile, observe, now });
+  constructor({
+    store,
+    config,
+    profile,
+    observe,
+    external = null,
+    emitOptical = null,
+    now = Date.now,
+  }) {
+    Object.assign(this, {
+      config,
+      profile,
+      observe,
+      external,
+      emitOptical,
+      now,
+    });
     this.store = new CommissioningStore(store);
     this.inFlight = new Map();
+    this.freshAcceptance = new Map();
+  }
+
+  view(session) {
+    const checked = this.freshAcceptance.get(session.id);
+    if (
+      session.acceptance?.decision !== "READY" ||
+      (checked?.refreshId === session.external?.refreshId &&
+        this.now() >= checked.at &&
+        this.now() - checked.at <= 30000)
+    )
+      return session;
+    const acceptance = acceptanceFor(session.report, session.sourceMode);
+    return {
+      ...session,
+      recordedDecision: session.acceptance.decision,
+      acceptance,
+      externalRevalidationRequired: true,
+    };
   }
 
   createOrder(body) {
@@ -379,6 +406,10 @@ export class CommissioningService {
           publicKey: this.profile.publicKey,
         },
         vision: defaultVision(),
+        optical: {
+          roi: { x: 1.1, y: 0.25, width: 0.35, height: 0.35 },
+          halfSymbolMs: 250,
+        },
         function: {
           transitions: 3,
           destination: "local-owner-monitor",
@@ -390,8 +421,13 @@ export class CommissioningService {
           delivery: true,
           paidInspection: true,
           softwarePolicy: true,
+          ...(this.config.phonePublicKey ? { phone: true } : {}),
         },
-        software: { state: "unenrolled", manifestDigest: null },
+        software: configSoftware(this.config),
+        phone: {
+          provider: "seeker-inspector",
+          publicKey: this.config.phonePublicKey ?? null,
+        },
         authority: "local-operator-session",
         sourceMode: this.config.mode === "simulation" ? "fixture" : "physical",
       };
@@ -440,6 +476,7 @@ export class CommissioningService {
           delivery: [],
           vision: null,
           optical: null,
+          phone: null,
           pending: null,
           evidence: null,
           report: null,
@@ -476,7 +513,11 @@ export class CommissioningService {
     if (this.inFlight.has(key)) return this.inFlight.get(key);
     const claimed = this.store.change(id, (current) => {
       this.active(current);
-      if (current.pending || current.device.length !== body.step)
+      if (
+        current.pending ||
+        current.optical?.stage === "EXECUTING" ||
+        current.device.length !== body.step
+      )
         throw new AppError(
           "CAPTURE_PENDING",
           "The original read is pending or interrupted. It cannot run again.",
@@ -649,10 +690,213 @@ export class CommissioningService {
     });
   }
 
+  prepareOptical(id) {
+    return this.store.change(id, (session) => {
+      this.active(session);
+      if (session.optical) return session;
+      if (this.now() + 45000 > session.expiresAt)
+        throw new AppError(
+          "SESSION_EXPIRED",
+          "Start a new attempt with time for the complete optical capture.",
+        );
+      return {
+        ...session,
+        optical: {
+          challenge: createOpticalChallenge(session, nowSeconds(this.now())),
+          stage: "PREPARED",
+          receipt: null,
+          capture: null,
+          error: null,
+        },
+      };
+    }).optical.challenge;
+  }
+
+  async executeOptical(id) {
+    const key = `${id}:optical`;
+    if (this.inFlight.has(key)) return this.inFlight.get(key);
+    if (this.config.mode !== "simulation" && !this.config.opticalAuthorized)
+      throw new AppError(
+        "OPTICAL_DISABLED",
+        "Physical emission requires explicit authorization and a configured board driver.",
+        403,
+      );
+    if (!this.emitOptical)
+      throw new AppError(
+        "OPTICAL_UNAVAILABLE",
+        "Configure the signed optical adapter before execution.",
+        503,
+      );
+    const original = this.store.change(id, (session) => {
+      this.active(session);
+      if (session.optical?.receipt) return session;
+      if (session.optical?.stage !== "PREPARED" || session.pending)
+        throw new AppError(
+          "OPTICAL_PENDING",
+          "The original emission is pending, interrupted, or unprepared. Start a new attempt for another execution.",
+        );
+      if (nowSeconds(this.now()) + 19 > session.optical.challenge.expires_at)
+        throw new AppError(
+          "OPTICAL_EXPIRED",
+          "The original optical challenge expired. Start a new attempt.",
+        );
+      return {
+        ...session,
+        optical: { ...session.optical, stage: "EXECUTING" },
+      };
+    });
+    if (original.optical.receipt) return original;
+    const promise = (async () => {
+      const workOrder = this.store.get("orders", original.workOrderId);
+      let changes;
+      try {
+        const receipt = await this.emitOptical({
+          challenge: original.optical.challenge,
+          contact: workOrder.device.contact,
+        });
+        const verifiedAt = nowSeconds(this.now());
+        verifyOpticalExecution({
+          receipt,
+          challenge: original.optical.challenge,
+          provider: workOrder.device.contact.provider,
+          publicKey: workOrder.device.publicKey,
+          verifiedAt,
+        });
+        changes = { stage: "EXECUTED", receipt, verifiedAt };
+      } catch (error) {
+        changes = {
+          stage: "FAILED",
+          error: {
+            code:
+              error instanceof EvidenceError
+                ? error.code
+                : "OPTICAL_EXECUTION_FAILED",
+            message:
+              "The original emission did not produce a valid signed execution. No automatic repeat occurs.",
+          },
+        };
+      }
+      return this.store.change(id, (current) => {
+        if (
+          current.optical?.stage !== "EXECUTING" ||
+          current.state !== "CAPTURING"
+        )
+          throw new AppError(
+            "CAPTURE_CONFLICT",
+            "The optical capture changed during execution.",
+          );
+        return { ...current, optical: { ...current.optical, ...changes } };
+      });
+    })().finally(() => this.inFlight.delete(key));
+    this.inFlight.set(key, promise);
+    return promise;
+  }
+
+  captureOptical(id, body) {
+    if (
+      !exact(body, ["capture"]) ||
+      !plain(body.capture) ||
+      !boundedJson(body, 1000000)
+    )
+      invalid("Use one bounded optical camera capture.");
+    return this.store.change(id, (session) => {
+      this.active(session);
+      if (session.optical?.stage !== "EXECUTED" || session.optical.capture)
+        throw new AppError(
+          "OPTICAL_BOUND",
+          "Save one camera capture after the original signed optical execution.",
+        );
+      const optical = {
+        ...session.optical,
+        capture: body.capture,
+        capturedAt: this.now(),
+      };
+      const order = this.store.get("orders", session.workOrderId);
+      const evaluation = opticalCheck(order, {
+        ...session,
+        optical,
+        sessionId: session.id,
+        closedAt: this.now(),
+      });
+      return { ...session, optical: { ...optical, evaluation } };
+    });
+  }
+
+  preparePhone(id) {
+    return this.store.change(id, (session) => {
+      this.active(session);
+      const order = this.store.get("orders", session.workOrderId);
+      if (!order.phone?.publicKey)
+        throw new AppError(
+          "PHONE_UNENROLLED",
+          "Enroll the Seeker public key before approving the work order.",
+          403,
+        );
+      if (session.phone) return session;
+      const requested_at = nowSeconds(this.now());
+      const challenge = {
+        schema: "proof-of-ready/phone-challenge/v1",
+        work_order_digest: session.workOrderDigest,
+        session_id: session.id,
+        request_id: phoneRequestId(session.workOrderDigest, session.id),
+        provider: "seeker-inspector",
+        nonce: randomInt(1, 0x7fffffff),
+        requested_at,
+        expires_at: Math.min(requested_at + 60, nowSeconds(session.expiresAt)),
+      };
+      if (challenge.expires_at <= requested_at)
+        throw new AppError(
+          "SESSION_EXPIRED",
+          "Start a fresh phone capture attempt.",
+        );
+      return { ...session, phone: { challenge, envelope: null } };
+    }).phone.challenge;
+  }
+
+  capturePhone(id, body) {
+    if (!plain(body) || !boundedJson(body, 12000))
+      invalid("Use the enrolled phone's bounded signed photo envelope.");
+    return this.store.change(id, (session) => {
+      if (!session.phone?.challenge)
+        throw new AppError(
+          "PHONE_UNPREPARED",
+          "Prepare the original phone challenge first.",
+        );
+      if (session.phone.envelope) {
+        if (canonicalJson(body) !== canonicalJson(session.phone.envelope))
+          throw new AppError(
+            "PHONE_BOUND",
+            "The original signed photo claim cannot change. Start a new attempt.",
+          );
+        return session;
+      }
+      this.active(session);
+      const order = this.store.get("orders", session.workOrderId);
+      const verifiedAt = nowSeconds(this.now());
+      let verification;
+      try {
+        verification = verifyPhoneEvidence({
+          envelope: body,
+          challenge: session.phone.challenge,
+          publicKey: order.phone.publicKey,
+          now: verifiedAt,
+        });
+      } catch (error) {
+        if (error instanceof PhoneEvidenceError)
+          throw new AppError(error.code, error.message, 422);
+        throw error;
+      }
+      return {
+        ...session,
+        phone: { ...session.phone, envelope: body, verifiedAt, verification },
+      };
+    });
+  }
+
   inspect(id) {
     return this.store.change(id, (session) => {
       if (session.state === "INSPECTED") return session;
-      if (session.pending)
+      if (session.pending || session.optical?.stage === "EXECUTING")
         throw new AppError(
           "CAPTURE_PENDING",
           "The original read is pending or interrupted. Start a new attempt for another read.",
@@ -671,12 +915,162 @@ export class CommissioningService {
         delivery: session.delivery,
         vision: session.vision,
         optical: session.optical,
+        ...(session.phone ? { phone: session.phone } : {}),
       };
       const report = inspectVerifiedChecks(
         inspectionArtifact(workOrder, evidence),
       );
       const acceptance = acceptanceFor(report, session.sourceMode);
       return { ...session, state: "INSPECTED", evidence, report, acceptance };
+    });
+  }
+
+  prepareInspection(id) {
+    return this.store.change(id, (session) => {
+      if (session.state !== "INSPECTED")
+        throw new AppError(
+          "NOT_INSPECTED",
+          "Seal the physical evidence before preparing specialist inspection.",
+        );
+      const order = this.store.get("orders", session.workOrderId);
+      const request = makeInspectionRequest(
+        session,
+        inspectionArtifact(order, session.evidence),
+      );
+      if (
+        session.inspectionRequest &&
+        canonicalJson(session.inspectionRequest) !== canonicalJson(request)
+      )
+        throw new AppError(
+          "INSPECTION_BINDING_MISMATCH",
+          "The original prepared inspection no longer matches the sealed evidence.",
+          422,
+        );
+      return { ...session, inspectionRequest: request };
+    }).inspectionRequest;
+  }
+
+  async reconcileAcceptance(id) {
+    const key = `${id}:acceptance`;
+    if (this.inFlight.has(key)) return this.inFlight.get(key);
+    const request = this.prepareInspection(id);
+    const refreshId = randomBytes(16).toString("hex");
+    const original = this.store.change(id, (current) => ({
+      ...current,
+      acceptanceRefresh: refreshId,
+    }));
+    const order = this.store.get("orders", original.workOrderId);
+    const promise = (async () => {
+      let paid = {
+        outcome: "REVIEW",
+        reason:
+          "No configured inspector reader supplies the original delivered result and seller receipt.",
+        evidence: null,
+      };
+      if (this.external?.readInspection) {
+        try {
+          paid = (await this.external.readInspection(
+            request,
+            original.report,
+          )) ?? {
+            ...paid,
+            reason:
+              "The prepared inspection is not present in the configured inspector ledger.",
+          };
+        } catch (error) {
+          paid = {
+            ...paid,
+            code: error.code ?? "INSPECTOR_UNAVAILABLE",
+            reason: `Inspection reconciliation failed (${error.code ?? "INSPECTOR_UNAVAILABLE"}). Inspect the original task and configured services.`,
+          };
+        }
+      }
+      let contract = {
+        verdict: "REVIEW",
+        reason:
+          "A pinned contract, enrolled build, original source response, and verified paid result are required.",
+      };
+      try {
+        const source = this.external?.sourceDigest
+          ? await this.external.sourceDigest()
+          : null;
+        const expected = contractExpectations(order, original, paid, source);
+        if (this.external?.readContract && expected) {
+          const read = await this.external.readContract({
+            jobId: inspectionJobId(original),
+            expected,
+          });
+          contract = {
+            verdict: read.verdict,
+            reason: read.reason,
+            ...(read.chainId
+              ? {
+                  chainId: read.chainId,
+                  contract: read.contract,
+                  jobId: read.jobId,
+                  acceptanceHash: read.acceptanceHash,
+                }
+              : {}),
+          };
+          if (!["PASS", "FAIL", "REVIEW"].includes(contract.verdict))
+            throw new Error("Invalid contract decision");
+        }
+      } catch {
+        contract = {
+          verdict: "REVIEW",
+          reason:
+            "The pinned contract or original source response is unavailable. No cached acceptance authorizes this installation.",
+        };
+      }
+      const external = {
+        schema: "proof-of-ready/external-evidence/v1",
+        refreshId,
+        checkedAt: this.now(),
+        paid,
+        contract,
+      };
+      const updated = this.store.change(id, (current) => {
+        if (current.acceptanceRefresh !== refreshId)
+          throw new AppError(
+            "ACCEPTANCE_CONFLICT",
+            "Another reconciliation superseded this read. Read the latest acceptance state.",
+          );
+        if (artifactDigest(current.report) !== artifactDigest(original.report))
+          throw new AppError(
+            "INSPECTION_BINDING_MISMATCH",
+            "The sealed inspection changed during reconciliation.",
+            422,
+          );
+        return {
+          ...current,
+          external,
+          acceptance: acceptanceFor(
+            current.report,
+            current.sourceMode,
+            external,
+          ),
+        };
+      });
+      this.freshAcceptance.set(id, { refreshId, at: external.checkedAt });
+      return updated;
+    })().finally(() => this.inFlight.delete(key));
+    this.inFlight.set(key, promise);
+    return promise;
+  }
+
+  async prepareContract(id) {
+    if (!this.external?.prepareContract)
+      throw new AppError(
+        "CONTRACT_UNCONFIGURED",
+        "Configure the pinned contract reader before preparing unsigned calls.",
+        422,
+      );
+    const session = await this.reconcileAcceptance(id);
+    const order = this.store.get("orders", session.workOrderId);
+    return this.external.prepareContract({
+      jobId: inspectionJobId(session),
+      order,
+      session,
     });
   }
 
@@ -694,11 +1088,15 @@ export class CommissioningService {
       evidence: session.evidence,
       report: session.report,
       acceptance: session.acceptance,
+      ...(session.external ? { external: session.external } : {}),
       digests: {
         workOrder: artifactDigest(workOrder),
         evidence: artifactDigest(session.evidence),
         report: artifactDigest(session.report),
         acceptance: artifactDigest(session.acceptance),
+        ...(session.external
+          ? { external: artifactDigest(session.external) }
+          : {}),
       },
     };
   }

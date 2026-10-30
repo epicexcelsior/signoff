@@ -69,7 +69,14 @@ export function createApp(service) {
     }
     next();
   });
-  app.use(express.json({ limit: "48kb", strict: true }));
+  const smallJson = express.json({ limit: "48kb", strict: true });
+  const captureJson = express.json({ limit: "1mb", strict: true });
+  app.use((req, res, next) =>
+    (/^\/api\/commissioning\/sessions\/[0-9a-f]{16}\/optical$/.test(req.path) ||
+      req.path === "/api/commissioning/verify"
+      ? captureJson
+      : smallJson)(req, res, next),
+  );
   const route = (run) => (req, res, next) =>
     Promise.resolve()
       .then(() => run(req, res))
@@ -82,6 +89,8 @@ export function createApp(service) {
       contact: service.profile.contact,
       price: "2 tADA",
       spend_authorized: service.config.spendAuthorized,
+      optical_authorized: service.config.opticalAuthorized === true,
+      phone_enrolled: Boolean(service.config.phonePublicKey),
     }),
   );
   app.get("/api/jobs", (_req, res) => res.json(service.store.list().map(view)));
@@ -163,7 +172,9 @@ export function createApp(service) {
   app.get("/api/commissioning", (_req, res) =>
     res.json({
       workOrders: commissioning.store.list("orders"),
-      sessions: commissioning.store.list("sessions"),
+      sessions: commissioning.store
+        .list("sessions")
+        .map((session) => commissioning.view(session)),
     }),
   );
   app.post(
@@ -183,7 +194,35 @@ export function createApp(service) {
   app.get(
     "/api/commissioning/sessions/:id",
     route((req, res) =>
-      res.json(commissioning.store.get("sessions", req.params.id)),
+      res.json(
+        commissioning.view(commissioning.store.get("sessions", req.params.id)),
+      ),
+    ),
+  );
+  app.post(
+    "/api/commissioning/sessions/:id/optical-challenge",
+    route((req, res) => res.json(commissioning.prepareOptical(req.params.id))),
+  );
+  app.post(
+    "/api/commissioning/sessions/:id/optical-execution",
+    route(async (req, res) =>
+      res.json(await commissioning.executeOptical(req.params.id)),
+    ),
+  );
+  app.post(
+    "/api/commissioning/sessions/:id/optical",
+    route((req, res) =>
+      res.json(commissioning.captureOptical(req.params.id, req.body)),
+    ),
+  );
+  app.post(
+    "/api/commissioning/sessions/:id/phone-challenge",
+    route((req, res) => res.json(commissioning.preparePhone(req.params.id))),
+  );
+  app.post(
+    "/api/commissioning/sessions/:id/phone-evidence",
+    route((req, res) =>
+      res.json(commissioning.capturePhone(req.params.id, req.body)),
     ),
   );
   app.post(
@@ -217,6 +256,24 @@ export function createApp(service) {
     }),
   );
   app.post(
+    "/api/commissioning/sessions/:id/inspection-request",
+    route((req, res) =>
+      res.json(commissioning.prepareInspection(req.params.id)),
+    ),
+  );
+  app.post(
+    "/api/commissioning/sessions/:id/reconcile-acceptance",
+    route(async (req, res) =>
+      res.json(await commissioning.reconcileAcceptance(req.params.id)),
+    ),
+  );
+  app.post(
+    "/api/commissioning/sessions/:id/contract-plan",
+    route(async (req, res) =>
+      res.json(await commissioning.prepareContract(req.params.id)),
+    ),
+  );
+  app.post(
     "/api/commissioning/verify",
     route((req, res) =>
       res.json(verifyPacket(req.body.packet, req.body.expectedWorkOrderDigest)),
@@ -228,6 +285,27 @@ export function createApp(service) {
       "default-src 'none'; script-src 'self' 'unsafe-eval'; connect-src 'none'",
     );
     next();
+  });
+  const projectDocuments = {
+    "README.md": "README.md",
+    "ENGINEERING.md": "docs/ENGINEERING.md",
+    "EVIDENCE.md": "research/EVIDENCE.md",
+    "PLAN.md": "PROOF_OF_READY_IMPLEMENTATION_PLAN.md",
+    "DIRECTIVE.md": "PROOF_OF_READY_AGENT_HANDOFF.md",
+    "FIRMWARE.md": "application/firmware/README.md",
+    "MOBILE.md": "application/mobile/README.md",
+  };
+  app.get("/project-docs/:name", (req, res, next) => {
+    const path = Object.hasOwn(projectDocuments, req.params.name)
+      ? projectDocuments[req.params.name]
+      : null;
+    if (!path)
+      return next(
+        new AppError("NOT_FOUND", "This project document does not exist.", 404),
+      );
+    res
+      .type("text/plain")
+      .sendFile(fileURLToPath(new URL(`../../${path}`, import.meta.url)));
   });
   app.use(
     express.static(fileURLToPath(new URL("../public", import.meta.url)), {
@@ -253,7 +331,7 @@ export function createApp(service) {
     ) {
       return res.status(error.status).json({
         code: "INVALID_BODY",
-        error: "Send valid JSON within the 48 KB limit.",
+        error: "Send valid JSON within this route's body limit.",
       });
     }
     // Do not send upstream bodies, paths, authorization secrets, or stack traces to the browser.

@@ -6,6 +6,8 @@ import { simulationIdentity, makeObserver } from "./observation.js";
 import { makePayment, requirements } from "./payment.js";
 import { Service } from "./service.js";
 import { createApp } from "./app.js";
+import { makeOpticalEmitter } from "./optical.js";
+import { createExternalAcceptance } from "./external-acceptance.js";
 
 process.umask(0o077);
 const config = loadConfig();
@@ -23,7 +25,7 @@ const profile = {
   },
   publicKey: config.publicKey ?? identity.publicKey,
   requirements: requirements(
-    config.mode === "simulation" ? "simulation-no-funds" : config.sellerAddress,
+    config.mode === "preprod" ? config.sellerAddress : "simulation-no-funds",
   ),
 };
 const store = new Store(join(config.stateDir, "ledger.sqlite"));
@@ -32,8 +34,10 @@ const service = new Service({
   store,
   config,
   profile,
-  payment: makePayment(config),
+  payment: config.mode === "physical" ? null : makePayment(config),
   observe: makeObserver(config, identity),
+  emitOptical: makeOpticalEmitter(config, identity),
+  external: createExternalAcceptance(config.externalConfig),
 });
 const server = createApp(service).listen(config.port, "127.0.0.1", () => {
   console.log(

@@ -2,18 +2,19 @@ import { homedir } from "node:os";
 import { resolve } from "node:path";
 import { readFileSync } from "node:fs";
 import { receiptPublicKey, validateContact } from "./evidence.js";
+import { loadExternalConfig } from "./external-acceptance.js";
 
 export function loadConfig(env = process.env) {
   const mode = env.FIELDPROOF_MODE ?? "simulation";
   const port = Number(env.FIELDPROOF_PORT ?? 4021);
   if (
-    !["simulation", "preprod"].includes(mode) ||
+    !["simulation", "physical", "preprod"].includes(mode) ||
     !Number.isInteger(port) ||
     port < 0 ||
     port > 65535
   ) {
     throw new Error(
-      "Configure simulation or preprod mode and a port from 0 through 65535.",
+      "Configure simulation, physical, or preprod mode and a port from 0 through 65535.",
     );
   }
   const config = {
@@ -25,6 +26,8 @@ export function loadConfig(env = process.env) {
     ),
     spendAuthorized: env.FIELDPROOF_SPEND_AUTHORIZED === "true",
     python: env.FIELDPROOF_PYTHON ?? "python3",
+    opticalAuthorized: env.PROOFREADY_OPTICAL_AUTHORIZED === "true",
+    externalConfig: loadExternalConfig(env.PROOFREADY_EXTERNAL_CONFIG),
     sellerAddress: env.SELLER_ADDRESS,
     projectId: env.BLOCKFROST_PROJECT_ID,
     facilitatorUrl:
@@ -56,10 +59,14 @@ export function loadConfig(env = process.env) {
         "Use an HTTPS facilitator or a local HTTP facilitator without URL credentials.",
       );
     }
+  }
+  if (mode !== "simulation") {
     const pins = JSON.parse(readFileSync(env.FIELDPROOF_RECEIPT_PINS, "utf8"));
     config.contact = validateContact(pins.contact);
     if (config.contact.sensor === "simulated-contact")
-      throw new Error("Preprod mode requires a physical contact sensor.");
+      throw new Error(
+        "Physical reads require an enrolled physical contact sensor.",
+      );
     receiptPublicKey(pins.publicKey);
     config.publicKey = pins.publicKey;
     if (
@@ -72,6 +79,13 @@ export function loadConfig(env = process.env) {
         "Preprod mode requires the configured board address and authorization secret.",
       );
     }
+  }
+  if (env.PROOFREADY_PHONE_PUBLIC_KEY_FILE) {
+    const pin = JSON.parse(
+      readFileSync(env.PROOFREADY_PHONE_PUBLIC_KEY_FILE, "utf8"),
+    );
+    receiptPublicKey(pin.publicKeySec1Hex);
+    config.phonePublicKey = pin.publicKeySec1Hex;
   }
   return config;
 }
