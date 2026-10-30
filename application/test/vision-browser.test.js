@@ -300,3 +300,52 @@ test(
     });
   },
 );
+
+test(
+  "printable reference contains the genuine marker IDs at the declared size ratio",
+  { timeout: 40000 },
+  async (t) => {
+    const page = await visionBrowser(t);
+    const markers = await page.evaluate(async () => {
+      const { createMarkerDetector } = await import("/vision/detector.js");
+      const detector = createMarkerDetector();
+      try {
+        await detector.ready;
+        const image = new Image();
+        image.src = "/vision/target.svg";
+        await image.decode();
+        const canvas = document.createElement("canvas");
+        canvas.width = 794;
+        canvas.height = 1123;
+        const context = canvas.getContext("2d");
+        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        return (
+          await detector.detect({
+            width: canvas.width,
+            height: canvas.height,
+            pixels: context.getImageData(0, 0, canvas.width, canvas.height).data
+              .buffer,
+          })
+        ).markers;
+      } finally {
+        detector.close();
+      }
+    });
+    assert.deepEqual(
+      markers.map(({ id }) => id).sort((a, b) => a - b),
+      [0, 10],
+    );
+    const edge = (marker) =>
+      Math.hypot(
+        marker.corners[1].x - marker.corners[0].x,
+        marker.corners[1].y - marker.corners[0].y,
+      );
+    assert(
+      Math.abs(
+        edge(markers.find(({ id }) => id === 0)) /
+          edge(markers.find(({ id }) => id === 10)) -
+          2,
+      ) < 0.03,
+    );
+  },
+);

@@ -1,5 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { createHash } from "node:crypto";
 import {
   evaluateGeometry,
   normalizePolicy,
@@ -195,5 +197,24 @@ test("optical evaluator matches full 32-bit Manchester capture and rejects defec
   assert.throws(
     () => encodeOpticalChallenge({ bits: "a19bf030", halfSymbolMs: 1 }),
     TypeError,
+  );
+});
+
+test("vendored OpenCV and license match the pinned official artifacts", () => {
+  const directory = new URL("../public/vendor/opencv-4.13.0/", import.meta.url);
+  const provenance = JSON.parse(
+    readFileSync(new URL("provenance.json", directory), "utf8"),
+  );
+  const artifact = readFileSync(new URL("opencv.js", directory));
+  assert.equal(artifact.byteLength, provenance.bytes);
+  assert.equal(
+    createHash("sha256").update(artifact).digest("hex"),
+    provenance.sha256,
+  );
+  assert.equal(
+    createHash("sha256")
+      .update(readFileSync(new URL("LICENSE", directory)))
+      .digest("hex"),
+    provenance.licenseSha256,
   );
 });
