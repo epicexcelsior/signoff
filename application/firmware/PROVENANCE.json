@@ -53,6 +53,13 @@
   "ws2812": {
     "reference": "https://github.com/espressif/esp-idf/blob/fff9895c82d744c7237be8847347bdd1b07c6643/examples/peripherals/rmt/led_strip/main/led_strip_encoder.c",
     "scope": "Original bounded one-pixel RMT backend using official bit timing and GRB order. 300 us latch. Default disabled. No third-party production dependency.",
-    "carrier": "GPIO8 remains a candidate. Actual SuperMini routing and physical operation remain unverified."
+    "carrier": "GPIO8 remains a candidate. Actual SuperMini routing and physical operation remain unverified.",
+    "carrierReferences": {
+      "manufacturerRepository": "https://github.com/NologoTech/ESP32C6-SuperMIni/tree/b9f64e2d7dda5d768b8afeb66f9465d22c7304ae",
+      "manufacturerGuide": "https://www.nologo.tech/product/esp32/esp32c6/esp32c6supermini/ESP32C6_SuperMini_Getting_Started.html",
+      "seller": "https://www.tinytronics.nl/en/development-boards/microcontroller-boards/with-wi-fi/esp32-c6-supermini-development-board",
+      "sellerLedReference": "https://forum.hobbycomponents.com/viewtopic.php?f=134&p=9078&t=3163",
+      "limits": "Manufacturer repository contains only README heading. Chinese guide remains under update. English served asset references a different Seeed XIAO board. Seller diagram downloads returned HTTP 403 and remain visually unverified. Owner photographs remain unavailable for matching."
+    }
   }
 }

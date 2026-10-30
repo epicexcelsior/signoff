@@ -71,6 +71,12 @@ The firmware checks all selected pins before configuring any GPIO. It rejects pi
 
 Espressif's [generic C6 Arduino variant](https://github.com/espressif/arduino-esp32/blob/master/variants/esp32c6/pins_arduino.h) selects RGB GPIO8. Its [DevKitM schematic](https://dl.espressif.com/dl/schematics/esp32-c6-devkitm-1-schematics.pdf) connects a WS2812B to GPIO8. These are independent references for the candidate circuit. They do not identify the owner's SuperMini carrier.
 
+The [Nologo manufacturer repository](https://github.com/NologoTech/ESP32C6-SuperMIni/tree/b9f64e2d7dda5d768b8afeb66f9465d22c7304ae) contains only a README heading. Its [Chinese product guide](https://www.nologo.tech/product/esp32/esp32c6/esp32c6supermini/ESP32C6_SuperMini_Getting_Started.html) states that documentation is under update. Neither source supplies a schematic or board revision. The English page's [served content asset](https://www.nologo.tech/assets/ESP32C6_SuperMini_Getting_Started.html-CJAPcTds.js) contains Seeed XIAO instructions. Do not apply its GPIO3/GPIO14 antenna assignments to this SuperMini.
+
+[TinyTronics' Nologo listing](https://www.tinytronics.nl/en/development-boards/microcontroller-boards/with-wi-fi/esp32-c6-supermini-development-board) describes a black 26 × 18 mm carrier with 4 MB flash, WS2812B, and battery pads. Its linked pinout and schematic downloads returned HTTP 403 locally. Their diagrams remain visually unverified. Keep battery pads disconnected for this USB-only test.
+
+The [Hobby Components seller guide](https://forum.hobbycomponents.com/viewtopic.php?f=134&p=9078&t=3163) names RGB GPIO8 and separately demonstrates an ordinary LED on GPIO15. These are separate candidate LED circuits. The GPIO15 blink program cannot drive the GPIO8 WS2812. The selected physical profile uses GPIO8 for the onboard RGB LED and GPIO2 for the button only after carrier/header confirmation. Keep BOOT GPIO9, ordinary LED GPIO15, and USB GPIO12/13 unused by external wiring. No physical header position is approved yet.
+
 Match the front/back silkscreen, header order, USB connector, LED package, and component positions to the actual seller schematic. If that source is unavailable, obtain a power-disconnected continuity measurement of the onboard LED data route. Do not approve GPIO8 solely from the ESP32-C6FH4 chip label.
 
 Chip identity does not resolve these inputs. An ESP32-C6 chip label is not a carrier-board model. Never copy GPIO 2/3 from `test/compile-only.defaults` into a physical profile.
