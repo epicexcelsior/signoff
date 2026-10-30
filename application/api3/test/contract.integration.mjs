@@ -192,6 +192,81 @@ test(
         },
       });
       expected.sourceResponseDigest = sourceResponseDigest(response);
+      const judgeBlock = await client.getBlock();
+      const simulate = (candidate) =>
+        client.simulateContract({
+          address: config.contract,
+          abi: commissioningAbi,
+          functionName: "finalize",
+          args: [
+            jobId,
+            BigInt(candidate.timestamp),
+            stringToHex(candidate.data),
+            candidate.signature,
+          ],
+          blockNumber: judgeBlock.number,
+        });
+      await simulate(response);
+      const signedNegative = async (
+        timestamp,
+        requestHash,
+        signer = account,
+      ) => ({
+        ...response,
+        timestamp: String(timestamp),
+        requestHash,
+        signature: await signer.signMessage({
+          message: {
+            raw: keccak256(
+              encodePacked(
+                ["bytes32", "uint256", "bytes"],
+                [requestHash, BigInt(timestamp), stringToHex(body)],
+              ),
+            ),
+          },
+        }),
+      });
+      const wrongRequest = await signedNegative(
+        signedAt,
+        commitment("another request"),
+      );
+      const wrongKey = await signedNegative(
+        signedAt,
+        NVD_REQUEST_HASH,
+        privateKeyToAccount(generatePrivateKey()),
+      );
+      const stale = await signedNegative(signedAt - 301n, NVD_REQUEST_HASH);
+      for (const [name, negative, intendedError] of [
+        ["edited", { ...response, data: body + " " }, "NotSignedByAirnode"],
+        ["stale", stale, "InvalidOracle"],
+        ["other-request", wrongRequest, "NotSignedByAirnode"],
+        ["wrong-key", wrongKey, "NotSignedByAirnode"],
+      ]) {
+        await assert.rejects(
+          simulate(negative),
+          (error) => {
+            for (let cause = error; cause; cause = cause.cause)
+              if (cause.name === "ContractFunctionRevertedError")
+                return cause.data?.errorName === intendedError;
+            return false;
+          },
+          `${name} must fail for its intended evidence defect`,
+        );
+      }
+      assert.equal(
+        Number(
+          (
+            await client.readContract({
+              address: config.contract,
+              abi: commissioningAbi,
+              functionName: "getJob",
+              args: [jobId],
+            })
+          ).decision,
+        ),
+        1,
+        "Negative simulations must leave the job open",
+      );
       await send(prepareFinalize(config, { jobId, response }));
       const accepted = await readAcceptance({
         ...config,
