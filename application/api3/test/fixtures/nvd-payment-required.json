@@ -1,0 +1,35 @@
+{
+  "schema": "proof-of-ready/api3-unpaid-probe/v1",
+  "endpoint": "https://airnode-nvd.fly.dev/",
+  "requestHash": "0x3f0881fb062ac6b989c133e0b5651d19947e38aebe4d94750627fa612f447d15",
+  "requestText": "{\"operation\":\"getCve\",\"parameters\":{\"cveId\":\"CVE-2025-62235\"},\"responseProjection\":{\"configurations\":\"/vulnerabilities/0/cve/configurations\",\"cveId\":\"/vulnerabilities/0/cve/id\",\"cvssV31\":\"/vulnerabilities/0/cve/metrics/cvssMetricV31\",\"lastModified\":\"/vulnerabilities/0/cve/lastModified\",\"sourceGeneratedAt\":\"/timestamp\",\"status\":\"/vulnerabilities/0/cve/vulnStatus\",\"totalResults\":\"/totalResults\"}}",
+  "checkedAt": 1793370385,
+  "status": 402,
+  "requiredHeader": "eyJ4NDAyVmVyc2lvbiI6MiwiZXJyb3IiOiJQYXltZW50IHJlcXVpcmVkIiwicmVzb3VyY2UiOnsidXJsIjoiaHR0cHM6Ly9haXJub2RlLW52ZC5mbHkuZGV2LyIsImRlc2NyaXB0aW9uIjoiQWlybm9kZUh1YiBvcGVyYXRpb24gXCJnZXRDdmVcIiIsIm1pbWVUeXBlIjoiYXBwbGljYXRpb24vanNvbiJ9LCJhY2NlcHRzIjpbeyJzY2hlbWUiOiJleGFjdCIsIm5ldHdvcmsiOiJlaXAxNTU6ODQ1MzIiLCJhbW91bnQiOiIxMDAwMCIsImFzc2V0IjoiMHhiZUEzNDk3M2U1ZjY3RjE4RjY1NkEyQzYwNzBDNjQzMjZDNzkxODA4IiwicGF5VG8iOiIweDE1MDVGRDU2MkFDMkZiNDMwN0I4NUJDNmM2NzJGZmVhZkI0ZDU3QTciLCJtYXhUaW1lb3V0U2Vjb25kcyI6MzAwLCJleHRyYSI6eyJuYW1lIjoiQWlybm9kZUh1YiBVU0QiLCJ2ZXJzaW9uIjoiMSJ9fV19",
+  "responseText": "{\"error\":\"Payment required\"}",
+  "required": {
+    "x402Version": 2,
+    "error": "Payment required",
+    "resource": {
+      "url": "https://airnode-nvd.fly.dev/",
+      "description": "AirnodeHub operation \"getCve\"",
+      "mimeType": "application/json"
+    },
+    "accepts": [
+      {
+        "scheme": "exact",
+        "network": "eip155:84532",
+        "amount": "10000",
+        "asset": "0xbeA34973e5f67F18F656A2C6070C64326C791808",
+        "payTo": "0x1505FD562AC2Fb4307B85BC6c672FfeafB4d57A7",
+        "maxTimeoutSeconds": 300,
+        "extra": {
+          "name": "AirnodeHub USD",
+          "version": "1"
+        }
+      }
+    ]
+  },
+  "price": "0.01 aUSD",
+  "paid": false
+}

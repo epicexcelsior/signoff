@@ -9,7 +9,8 @@
   "scripts": {
     "test": "node --test test/*.test.mjs",
     "test:contract": "node --test test/contract.integration.mjs",
-    "check": "node --check src/index.mjs && node --check src/policy.mjs && node --check src/abi.mjs",
+    "check": "node --check src/index.mjs && node --check src/policy.mjs && node --check src/abi.mjs && node --check src/access-policy.mjs && node --check src/access-ledger.mjs && node --check src/access.mjs && node --check scripts/access.mjs",
+    "access": "node --env-file-if-exists=.env scripts/access.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

@@ -70,5 +70,13 @@
     "liveCveResponse": false,
     "publicDeployment": false,
     "liveCardanoReceipt": false
+  },
+  "accessClient": {
+    "reviewedStarterRevision": "52933ae1fb9371446a927338473466c3d320e19a",
+    "reviewDate": "2026-10-30",
+    "source": "https://github.com/api3dao/airnodehub-hackathon-starter/blob/52933ae1fb9371446a927338473466c3d320e19a/src/x402.ts",
+    "compatibility": "Latest fetched starter revision matches the existing native verifier pin. Starter uses viem ^2.57.3 and x402 ^2.28.0. This isolated client uses existing pinned viem 2.57.3 for EIP-3009 and durable one-claim recovery. No production dependency added.",
+    "livePayment": false,
+    "limits": "Pinned 0.01 aUSD per NVD CVE request and original EIP-3009 terms. New quote or recipient changes reject. Existing ledger pins total budget and payer."
   }
 }
