@@ -1,0 +1,23 @@
+{
+  "upstream": "https://github.com/masumi-network/tum-hackathon-quickstart",
+  "revision": "d93783b907a5b0b7008c67496c6e093faa70553f",
+  "adaptedComponents": [
+    "paid-task.mjs",
+    "settlement.mjs",
+    "sokosumi-runtime.mjs",
+    "task-target.mjs",
+    "standard-hash.mjs"
+  ],
+  "scope": "Coworker task/payment protocol, exact-byte commitments, scoped runtime loading, and independent seller receipt verification",
+  "licenseNote": "The pinned quickstart has no LICENSE file. Its AGENTS.md explicitly instructs use and adaptation of the template. No additional upstream license grant is asserted.",
+  "masumiPaymentService": {
+    "upstream": "https://github.com/masumi-network/masumi-payment-service",
+    "revision": "a846392ccfc8f5a85aee594ad9441dc90820dab0",
+    "license": "MIT",
+    "node": ">=24.22.1 <25",
+    "packageManager": "pnpm@10.30.2",
+    "scope": "External service prerequisite only. No payment-service implementation is vendored."
+  },
+  "dependencyChange": "Zod 4.6.6 replaces the starter's 4.6.5. Eve and its model stack are not imported. A bounded optional HTTP model adapter explains deterministic findings.",
+  "evidence": "Local fixtures do not establish live task execution, registration, escrow funding, seller payment, refunds, or sponsor qualification."
+}
