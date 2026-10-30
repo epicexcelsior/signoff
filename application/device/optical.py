@@ -7,20 +7,25 @@ import hashlib
 import hmac
 import json
 import os
+from pathlib import Path
 import re
-import struct
 import sys
 import time
 
-MANIFEST = "0000cb01-0000-1000-8000-00805f9b34fb"
-INVOKE = "0000cb02-0000-1000-8000-00805f9b34fb"
-RECEIPT = "0000cb03-0000-1000-8000-00805f9b34fb"
-PAGES = "0000cb04-0000-1000-8000-00805f9b34fb"
-MAX_RECEIPT = 1536
-
-
-class OpticalError(ValueError):
-    """A bounded public error with no private configuration values."""
+# Support both direct script execution and package imports from local checks.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from device.ble_transport import (  # noqa: E402
+    MANIFEST,
+    INVOKE as INVOKE,
+    RECEIPT,
+    PAGES,
+    MAX_RECEIPT as MAX_RECEIPT,
+    TransportError as OpticalError,
+    parse_json,
+    encode_chunks as encode_chunks,
+    read_receipt,
+    write_request,
+)
 
 
 class OpticalAuthorizationError(OpticalError, PermissionError):
@@ -37,27 +42,6 @@ CHALLENGE_FIELDS = {
     "requested_at",
     "expires_at",
 }
-
-
-def _unique(pairs):
-    result = {}
-    for key, value in pairs:
-        if key in result:
-            raise OpticalError("Duplicate JSON fields are invalid.")
-        result[key] = value
-    return result
-
-
-def parse_json(raw, limit):
-    if not isinstance(raw, (str, bytes, bytearray)) or len(raw) > limit:
-        raise OpticalError("The device message exceeds its size limit.")
-    return json.loads(
-        raw,
-        object_pairs_hook=_unique,
-        parse_constant=lambda _value: (_ for _ in ()).throw(
-            ValueError("Invalid JSON number.")
-        ),
-    )
 
 
 def validate_request(envelope, now=None):
@@ -150,47 +134,6 @@ def make_payload(challenge, provider, boot_id, secret):
             ).hexdigest(),
         },
     }
-
-
-def encode_chunks(payload, mtu):
-    raw = json.dumps(payload, separators=(",", ":"), ensure_ascii=True).encode()
-    if len(raw) > 1536:
-        raise OpticalError("The optical request exceeds its size limit.")
-    size = max(20, min(512, mtu - 3))
-    for offset in range(0, len(raw), size - 8):
-        yield (
-            struct.pack(">2sBBHH", b"PR", 1, 0, len(raw), offset)
-            + raw[offset : offset + size - 8]
-        )
-
-
-async def read_receipt(client, request_id):
-    raw = bytes(await client.read_gatt_char(RECEIPT))
-    value = parse_json(raw, MAX_RECEIPT)
-    if value.get("protocol") != "proof-of-ready/receipt-pages/v1":
-        return value
-    length, digest = value.get("length"), value.get("sha256")
-    if (
-        value.get("request_id") != request_id
-        or type(length) is not int
-        or not 1 <= length <= MAX_RECEIPT
-        or not isinstance(digest, str)
-        or not re.fullmatch(r"[0-9a-f]{64}", digest)
-    ):
-        raise OpticalError("The receipt page index differs from the original request.")
-    result = bytearray()
-    while len(result) < length:
-        command = {"request_id": request_id, "offset": len(result)}
-        await client.write_gatt_char(
-            PAGES, json.dumps(command, separators=(",", ":")).encode(), response=True
-        )
-        page = bytes(await client.read_gatt_char(PAGES))
-        if not page or len(page) > 384 or len(result) + len(page) > length:
-            raise OpticalError("The original receipt page is incomplete.")
-        result.extend(page)
-    if not hmac.compare_digest(hashlib.sha256(result).hexdigest(), digest):
-        raise OpticalError("The original receipt pages changed during retrieval.")
-    return parse_json(result, MAX_RECEIPT)
 
 
 def validate_receipt(receipt, challenge, provider):
@@ -290,8 +233,7 @@ async def _execute(envelope, env, scanner=None, client_factory=None):
         await client.start_notify(RECEIPT, lambda _sender, _data: ready.set())
         try:
             # There is exactly one write sequence. Failure never restarts it.
-            for chunk in encode_chunks(payload, client.mtu_size):
-                await client.write_gatt_char(INVOKE, chunk, response=True)
+            await write_request(client, payload, manifest)
             deadline = time.monotonic() + min(25, c["expires_at"] - time.time())
             while time.monotonic() < deadline:
                 try:
