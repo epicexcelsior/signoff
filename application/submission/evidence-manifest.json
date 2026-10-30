@@ -1,0 +1,115 @@
+{
+  "schema": "proof-of-ready/submission-evidence/v1",
+  "checkedAt": "2026-10-30T20:45:38.170979+00:00",
+  "readyForSubmission": false,
+  "publicationAuthorized": false,
+  "deadline": "2026-10-31T15:00:00+01:00",
+  "sources": {
+    "organizer": "https://hackathon.tum-blockchain.com/prizes#how-to-submit",
+    "organizerRevision": "f61c409acb3242facaac6fdf9a25a91adc34bb52",
+    "masumiSkill": "https://www.masumi.network/tum-hackathon/skill/SKILL.md",
+    "masumiSkillSha256": "9bdc7d32ed20edfb975164f560e74dfa6dd4dcc883b8db6cf98a5d8300d058fe",
+    "api3StarterRevision": "52933ae1fb9371446a927338473466c3d320e19a"
+  },
+  "liveEvidence": [
+    {
+      "id": "api3-faucet-mint",
+      "chainId": 84532,
+      "transactionHash": "0x28c410b46dd8952c2c5e76b658d929963f6840afe22239fb0109486fb36854b7",
+      "status": "confirmed",
+      "amountAUsd": "0.02",
+      "qualificationScope": "Funding only. Not a paid NVD request or Cardano inspection."
+    },
+    {
+      "id": "api3-paid-nvd-first",
+      "chainId": 84532,
+      "transactionHash": "0x3181a67600791341a237df0b1131fe0da7ddae30b5206cdfb2c9ff821b16945f",
+      "status": "settled-and-delivered",
+      "amountAUsd": "0.01",
+      "cveId": "CVE-2025-62235",
+      "requestHash": "0x3f0881fb062ac6b989c133e0b5651d19947e38aebe4d94750627fa612f447d15",
+      "expectedAirnode": "0x41dd84D5B6503D9aA3c374a49F546e335423a1b8",
+      "originalResponseSha256": "54ffd855925dc58cce9fb4f37680f0f4a5f8b740f60fe8f3175c3b1250324f4b",
+      "signedAt": "1793393013",
+      "verification": "Native source verification at original ingestion. Reconciliation matched token, payer, recipient, amount, original authorization nonce and confirmation depth.",
+      "currentFreshnessClaim": false,
+      "originalResponsePublicPath": "application/submission/evidence/nvd-paid-first-original.json"
+    },
+    {
+      "id": "api3-policy-deployment",
+      "chainId": 84532,
+      "contract": "0x98023c425670a9690ab362c00fbea1bc11dce2cb",
+      "transactionHash": "0x44eec5fc19615ad7d0060d1ec71dc47242a58e8e7fc297e5060bf0481ae16d3b",
+      "runtimeCodeHash": "0x4bb4ff98ff0dadd2bd529eb0330e84d8d0dcc8ad38ca51d2ede63b5b7d702366",
+      "bytecodeHash": "0x6002c9a4bc14e21d96c152b5ce7fb47b050304fbe7795141507758ff59e7202f",
+      "initCodeHash": "0x592400696bdb0de436d81b5c589ae4f8c5865cb1c03472740d0f205385534cca",
+      "requestHash": "0x3f0881fb062ac6b989c133e0b5651d19947e38aebe4d94750627fa612f447d15",
+      "airnode": "0x41dd84D5B6503D9aA3c374a49F546e335423a1b8",
+      "maxAttestationAge": 300,
+      "maxSourceAge": 300,
+      "blockNumber": "52355879",
+      "status": "confirmed-constructor-verified",
+      "qualificationScope": "Deployed policy only. No paid-inspection job finalized yet."
+    }
+  ],
+  "mandatoryEvidence": {
+    "cardano": {
+      "status": "blocked",
+      "network": "Cardano Preprod",
+      "taskId": null,
+      "transactionHash": null,
+      "usefulReportSha256": null,
+      "sellerReceiptSha256": null,
+      "remaining": [
+        "Fund dedicated buyer and seller",
+        "Join TUM organization and verify Personal Workspace credits/access",
+        "Provision scoped Coworker/MPS registration",
+        "Complete original useful paid inspection and verify actual seller receipt"
+      ]
+    },
+    "api3": {
+      "status": "partial",
+      "contract": "0x98023c425670a9690ab362c00fbea1bc11dce2cb",
+      "judgeCases": {
+        "valid-causes-state-change": "not-run-on-deployed-paid-inspection-job",
+        "edited-rejects": "not-run-on-deployed-paid-inspection-job",
+        "stale-rejects": "not-run-on-deployed-paid-inspection-job",
+        "other-request-rejects": "not-run-on-deployed-paid-inspection-job",
+        "wrong-key-rejects": "not-run-on-deployed-paid-inspection-job"
+      },
+      "remaining": [
+        "Genuine paid-inspection commitments",
+        "Fresh final CVE and wrong-request response near judging",
+        "Run five deployed cases and broadcast valid finalization"
+      ]
+    },
+    "hardware": {
+      "status": "blocked",
+      "physicalEvidencePacketSha256": null,
+      "remaining": [
+        "Identify exact carrier board and LED/button/resistor",
+        "Review wiring and GPIO profile",
+        "Provision and enroll actual device",
+        "Execute original signed button/LED/camera attempt"
+      ]
+    },
+    "submission": {
+      "status": "draft",
+      "publicRepositoryUrl": null,
+      "demoVideoUrl": null,
+      "devfolioProjectUrl": null,
+      "remaining": [
+        "Complete missing genuine evidence",
+        "Review public release candidate",
+        "Owner authorizes publication and Devfolio submission",
+        "Record video no longer than150seconds"
+      ]
+    }
+  },
+  "limits": [
+    "Local fixtures and Anvil results do not establish live settlement or physical truth.",
+    "First paid CVE response is preserved for authenticity and stale rejection, not indefinitely current policy.",
+    "Contract payment evidence is an operator assertion, not Cardano consensus verification.",
+    "No five-case success claim exists until genuine inspection prerequisites and actual test results are recorded."
+  ]
+}

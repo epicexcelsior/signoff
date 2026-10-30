@@ -1,0 +1,21 @@
+{
+  "schema": "proof-of-ready/deployed-contract/v1",
+  "checkedAt": "2026-10-30T20:44:05.876Z",
+  "chainId": 84532,
+  "contract": "0x98023c425670a9690ab362c00fbea1bc11dce2cb",
+  "transactionHash": "0x44eec5fc19615ad7d0060d1ec71dc47242a58e8e7fc297e5060bf0481ae16d3b",
+  "runtimeCodeHash": "0x4bb4ff98ff0dadd2bd529eb0330e84d8d0dcc8ad38ca51d2ede63b5b7d702366",
+  "bytecodeHash": "0x6002c9a4bc14e21d96c152b5ce7fb47b050304fbe7795141507758ff59e7202f",
+  "initCodeHash": "0x592400696bdb0de436d81b5c589ae4f8c5865cb1c03472740d0f205385534cca",
+  "operator": "0x5AB1B25d13bd13Ebd3c9480F438CF0530F37e831",
+  "airnode": "0x41dd84D5B6503D9aA3c374a49F546e335423a1b8",
+  "requestHash": "0x3f0881fb062ac6b989c133e0b5651d19947e38aebe4d94750627fa612f447d15",
+  "maxAttestationAge": 300,
+  "maxSourceAge": 300,
+  "blockNumber": "52355879",
+  "gasUsed": "3425556",
+  "effectiveGasPrice": "6000000",
+  "l1Fee": "220165",
+  "constructorVerified": true,
+  "judgeTestsComplete": false
+}

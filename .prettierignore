@@ -1,0 +1,3 @@
+
+# Preserve exact original evidence bytes.
+application/submission/evidence/*-original.json

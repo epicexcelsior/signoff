@@ -1,0 +1,50 @@
+{
+  "schema": "proof-of-ready/devfolio-draft/v1",
+  "status": "draft-not-submitted",
+  "formMapping": "Draft content. Confirm field names and required links in the actual Devfolio form.",
+  "projectName": "Proof of Ready",
+  "tagline": "Commission monitoring installations with fresh signed tests and paid inspection.",
+  "selectedPartnerTracks": ["Cardano", "API3"],
+  "automaticTrack": "TUM Blockchain Track",
+  "problem": "Operators accepting subcontracted monitoring installations need evidence that equipment is placed correctly, responds to physical tests, and meets the declared software policy.",
+  "solution": "An operator approves an immutable work order. A technician captures marker-guided placement and signed button/LED tests. A deterministic inspector explains defects. A policy contract verifies signed NVD data before an evidence-bound acceptance decision.",
+  "currentImplementation": "The local station, signed protocols, inspector adapter, packet verifier, native API3 consumer and policy contract exist. One real paid NVD request settled and the policy contract is deployed. Paid Cardano inspection, physical commissioning and all five deployed judge cases remain incomplete.",
+  "howItWorks": [
+    "Approve a fixed work-order template and start a fresh attempt.",
+    "Capture signed contact transitions and camera-observed optical evidence.",
+    "Inspect immutable evidence through a useful paid service.",
+    "Verify the original source signature, request, timing and enrolled software policy on chain.",
+    "Reconcile original receipts and contract commitments before READY. Missing evidence returns REVIEW."
+  ],
+  "whySignedDataMatters": "A forged or substituted vulnerability response can misstate software acceptance. The contract checks the configured Airnode, exact CVE request and source age. NVD signatures do not identify firmware installed on a physical device.",
+  "tools": [
+    "Node.js24/Express/SQLite",
+    "P-256 device receipts",
+    "OpenCV.js4.13.0",
+    "Sokosumi/Masumi and Cardano Preprod",
+    "API3 AirnodeHub NVD",
+    "Solidity/Foundry/viem/Base Sepolia",
+    "ESP-IDF6.1"
+  ],
+  "businessCase": "Hypothesis: an integrator accepting remote monitoring installations pays for a reproducible specialist report and fewer ambiguous handovers. Customer demand, pricing and reduced revisits remain unvalidated.",
+  "challenges": [
+    "BLE fragmentation and original receipt binding",
+    "Fresh capture versus later report/escrow validity",
+    "Durable claims before uncertain external operations",
+    "Exact signed bytes and independent payment/source reconciliation"
+  ],
+  "dataWantedButUnavailable": "An authenticated manufacturer build/provenance record tied to this physical board. The current enrolled build remains an operator declaration.",
+  "links": {
+    "repository": null,
+    "video": null,
+    "devfolioProject": null,
+    "evidenceManifest": "application/submission/evidence-manifest.json",
+    "deployedContract": "https://sepolia.basescan.org/address/0x98023c425670a9690ab362c00fbea1bc11dce2cb"
+  },
+  "nextAfterBaseline": [
+    "Agent-proposed work orders",
+    "Independent remote receiving monitor",
+    "Native Seeker evidence",
+    "Repeated authorized autonomous workflows"
+  ]
+}
