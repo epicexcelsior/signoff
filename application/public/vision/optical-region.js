@@ -35,6 +35,28 @@ export function normalizeOpticalRoi(roi) {
   return { x: roi.x, y: roi.y, width: roi.width, height: roi.height };
 }
 
+/** Project the same marker-relative region used by optical pixel sampling. */
+export function projectOpticalRoi({ corners, roi: suppliedRoi }) {
+  const roi = normalizeOpticalRoi(suppliedRoi);
+  const matrix = homography(UNIT_CORNERS, corners);
+  const region = [
+    { x: roi.x, y: roi.y },
+    { x: roi.x + roi.width, y: roi.y },
+    { x: roi.x + roi.width, y: roi.y + roi.height },
+    { x: roi.x, y: roi.y + roi.height },
+  ];
+  // An extrapolated region cannot cross the projection horizon and stay usable.
+  const denominators = [...UNIT_CORNERS, ...region].map(
+    ({ x, y }) => matrix[6] * x + matrix[7] * y + matrix[8],
+  );
+  if (
+    !denominators.every((value) => value > 1e-10) &&
+    !denominators.every((value) => value < -1e-10)
+  )
+    throw new RangeError("The optical region leaves the usable marker plane.");
+  return region.map((point) => transformPoint(matrix, point));
+}
+
 /** Check marker evidence independently from a browser-proposed tracked flag. */
 export function validateOpticalTracking({ samples, resolution, policy, roi }) {
   try {

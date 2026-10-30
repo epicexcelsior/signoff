@@ -1,6 +1,7 @@
 import { createMarkerDetector, VisionError } from "./detector.js";
 import { evaluateGeometry, normalizePolicy } from "./geometry.js";
 import { createOpticalCapture } from "./optical-capture.js";
+import { normalizeOpticalRoi, projectOpticalRoi } from "./optical-region.js";
 
 const digest = async (bytes) =>
   `0x${Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", bytes)), (value) => value.toString(16).padStart(2, "0")).join("")}`;
@@ -33,7 +34,86 @@ function cameraGeometry(video, track) {
   };
 }
 
-function drawOverlay(canvas, measurement) {
+function drawOpticalGuide(context, measurement, policy, roi) {
+  if (
+    !roi ||
+    !measurement.quality.markerQuality.length ||
+    !measurement.quality.markerQuality.every((quality) => quality.usable)
+  )
+    return;
+  const device = measurement.markers.find(
+    (marker) => marker.id === policy.deviceMarkerId,
+  );
+  if (!device) return;
+  let region;
+  try {
+    region = projectOpticalRoi({ corners: device.corners, roi });
+  } catch (error) {
+    // A projection horizon makes only this optional guide unusable.
+    if (error instanceof RangeError) return;
+    throw error;
+  }
+  const { width, height } = measurement.calibration.resolution;
+  if (region.some(({ x, y }) => x < 0 || y < 0 || x >= width || y >= height))
+    return;
+  const left = Math.min(...region.map(({ x }) => x));
+  const right = Math.max(...region.map(({ x }) => x));
+  const top = Math.min(...region.map(({ y }) => y));
+  const bottom = Math.max(...region.map(({ y }) => y));
+  context.save();
+  context.font = "bold 14px sans-serif";
+  const label = "LED sample";
+  const labelWidth = Math.ceil(context.measureText(label).width) + 12;
+  const labelHeight = 24;
+  const markers = measurement.markers.map(({ corners }) => ({
+    left: Math.min(...corners.map(({ x }) => x)) - 4,
+    right: Math.max(...corners.map(({ x }) => x)) + 4,
+    top: Math.min(...corners.map(({ y }) => y)) - 4,
+    bottom: Math.max(...corners.map(({ y }) => y)) + 4,
+  }));
+  const position = [
+    { x: right + 6, y: top },
+    { x: left - labelWidth - 6, y: top },
+    { x: left, y: top - labelHeight - 6 },
+    { x: left, y: bottom + 6 },
+  ]
+    .map(({ x, y }) => ({
+      x: Math.max(0, Math.min(width - labelWidth, x)),
+      y: Math.max(0, Math.min(height - labelHeight, y)),
+    }))
+    .find(
+      ({ x, y }) =>
+        !markers.some(
+          (marker) =>
+            x < marker.right &&
+            x + labelWidth > marker.left &&
+            y < marker.bottom &&
+            y + labelHeight > marker.top,
+        ),
+    );
+  context.beginPath();
+  region.forEach(({ x, y }, index) =>
+    index ? context.lineTo(x, y) : context.moveTo(x, y),
+  );
+  context.closePath();
+  context.fillStyle = "rgba(255,189,74,0.18)";
+  context.fill();
+  context.lineWidth = 5;
+  context.strokeStyle = "#142920";
+  context.stroke();
+  context.lineWidth = 3;
+  context.strokeStyle = "#ffbd4a";
+  context.stroke();
+  if (position) {
+    context.fillStyle = "#142920";
+    context.fillRect(position.x, position.y, labelWidth, labelHeight);
+    context.fillStyle = "#ffffff";
+    context.fillText(label, position.x + 6, position.y + 17);
+  }
+  context.restore();
+}
+
+function drawOverlay(canvas, measurement, policy, opticalRoi) {
   if (!canvas) return;
   const { width, height } = measurement.calibration.resolution;
   canvas.width = width;
@@ -68,6 +148,7 @@ function drawOverlay(canvas, measurement) {
     context.lineTo(targetAxis.x, targetAxis.y);
     context.stroke();
   }
+  drawOpticalGuide(context, measurement, policy, opticalRoi);
 }
 
 /**
@@ -78,12 +159,17 @@ export function createVisionController({
   video,
   canvas = null,
   policy: suppliedPolicy,
+  opticalRoi: suppliedOpticalRoi = null,
   onState = () => {},
   onMeasurement = () => {},
 }) {
   if (!video || typeof video.play !== "function")
     throw new TypeError("Supply a camera video element.");
   const policy = normalizePolicy(suppliedPolicy);
+  const opticalRoi =
+    suppliedOpticalRoi === null
+      ? null
+      : normalizeOpticalRoi(suppliedOpticalRoi);
   const sourceCanvas = document.createElement("canvas");
   const context = sourceCanvas.getContext("2d", { willReadFrequently: true });
   let state = {
@@ -205,7 +291,7 @@ export function createVisionController({
         ...measurement,
       };
       state = { ...state, lastMeasurement: evidence };
-      drawOverlay(canvas, evidence);
+      drawOverlay(canvas, evidence, policy, opticalRoi);
       onMeasurement(clone(evidence));
       return evidence;
     })();
