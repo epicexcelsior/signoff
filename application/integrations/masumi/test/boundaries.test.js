@@ -365,4 +365,25 @@ test("setup plan records unresolved seller and fees without creating resources",
   assert.equal(plan.proposedPaidTask.seller, null);
   assert.match(plan.proposedPaidTask.fees, /Not estimated/);
   assert.equal(plan.paymentService.node, ">=24.22.1 <25");
+  assert.equal(
+    plan.paymentService.startupBoundary.automaticWithdrawalDefault,
+    true,
+  );
+  assert.equal(
+    plan.paymentService.startupBoundary.adapterAuthorizationControlsMpsJobs,
+    false,
+  );
+  assert.equal(
+    plan.paymentService.startupBoundary.explicitEnvironment
+      .AUTO_WITHDRAW_PAYMENTS,
+    "false",
+  );
+  assert.equal(
+    plan.paymentService.startupBoundary.explicitEnvironment
+      .AUTO_WITHDRAW_REFUNDS,
+    "false",
+  );
+  assert.equal(plan.provisioningStages.length, 4);
+  assert.ok(plan.provisioningStages.every((stage) => stage.executed === false));
+  assert.match(plan.accountAccess.worker, /independent|Independent/);
 });

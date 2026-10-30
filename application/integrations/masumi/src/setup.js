@@ -82,7 +82,69 @@ export function setupPlan(env = process.env) {
         "Dedicated PostgreSQL database and encrypted wallet state outside tracked source.",
       runtimeRule:
         "Use the pinned MPS Node range in an isolated runtime. The parent app runtime is insufficient.",
+      startupBoundary: {
+        automaticWithdrawalDefault: true,
+        explicitEnvironment: {
+          AUTO_WITHDRAW_PAYMENTS: "false",
+          AUTO_WITHDRAW_REFUNDS: "false",
+        },
+        adapterAuthorizationControlsMpsJobs: false,
+        rule: "MPS startup initializes blockchain jobs. Keep the service stopped or isolate its network until its dedicated database and pending actions receive review. Adapter payment grants do not disable MPS background jobs.",
+      },
     },
+    accountAccess: {
+      account:
+        "Explicit SOKOSUMI_API_KEY from private configuration, or supported CLI account login.",
+      worker:
+        "Independent Coworker runtime credential imported once through the supported CLI vault.",
+      permission:
+        "A valid account key does not prove Workspace credits, Vendor ownership, Task Seat eligibility, or Coworker access.",
+    },
+    provisioningStages: [
+      {
+        name: "account-resources",
+        executed: false,
+        grant:
+          "One dedicated Proof of Ready Vendor and Coworker, Personal Workspace connection, and one scoped Coworker credential import. Inspect existing resources before each write.",
+        requiredOwnerInputs: [
+          "TUM organization membership",
+          "Usable Personal Workspace credits",
+          "Confirmed agent author name",
+        ],
+      },
+      {
+        name: "local-payment-runtime",
+        executed: false,
+        grant:
+          "A dedicated local PostgreSQL database, isolated compatible Node/pnpm runtime, independent encryption/admin keys, and reviewed Preprod wallet import. No shared database or legacy project wallets.",
+        commands: [
+          "pnpm install --frozen-lockfile",
+          "pnpm run prisma:generate",
+          "pnpm run prisma:migrate",
+        ],
+        separateApproval:
+          "Do not seed, register, or start MPS jobs with chain access until their exact scope receives review. The upstream seed prints generated mnemonics when none exist. Supply the dedicated private wallet mnemonics and keep logs private.",
+      },
+      {
+        name: "execution-only-inspection",
+        executed: false,
+        grant:
+          "One original useful inspector Task without payment. Keep PAID_TASKS_ENABLED=false and save its original input, output, and Task ID.",
+      },
+      {
+        name: "registration-and-paid-inspection",
+        executed: false,
+        grant:
+          "Review the actual seller/buyer addresses, confirmed source, registration transaction estimate, one test USDM quote, fees, and escrow deadlines before a bounded payment grant.",
+        evidence: [
+          "Original Task ID",
+          "Useful delivered inspection result",
+          "Original transaction hash",
+          "Independent chain confirmation",
+          "Positive seller receipt in the quoted token",
+        ],
+      },
+    ],
     proposedPaidTask: {
       amountAtomicUnits: "1000000",
       unit: TEST_USDM,
