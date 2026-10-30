@@ -1,10 +1,41 @@
 # Proof of Ready
 
-Proof of Ready coordinates equipment commissioning. An operator approves a work order. A technician supplies camera measurements and fresh signed contact tests. An inspector explains the result and the remaining acceptance requirements.
+Proof of Ready coordinates equipment commissioning. An operator approves a work order. A technician supplies camera measurements and signed contact tests. An inspector explains defects and missing evidence.
 
-The local commissioning station now supports immutable work orders, capture attempts, three-state contact tests, planar camera guidance, receiving-application checks, inspection reports, and verifiable evidence packets. Generated rehearsals demonstrate correct placement, misplaced devices, stuck contacts, and missing delivery.
+The goal is agent-orchestrated commissioning with a useful paid inspector and an evidence-bound acceptance decision. **The current station is deterministic and operator-driven.** It uses a fixed work-order template. Agent-generated requirements and autonomous orchestration remain planned.
 
-**Current acceptance stays REVIEW or REWORK.** Physical optical binding, a paid Masumi seller receipt, an enrolled installed build, and a deployed policy decision remain missing. Local fixtures and contract tests do not establish those outcomes. No hardware operation, payment signature, external Task, or public deployment ran during this continuation.
+**Current demonstrations return REVIEW or REWORK.** READY requires complete physical evidence, a freshly checked seller receipt, an enrolled declared build, and a matching pinned contract decision. No complete physical installation or live paid acceptance exists through this port.
+
+## Documentation map
+
+Start here, then open the document for your task. Keep each fact in its canonical document.
+
+| Document                                                     | Purpose and source of truth                                                                 |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------------------------- |
+| [README](README.md)                                          | Run the project, find context, and select the next action                                   |
+| [Implementation plan](PROOF_OF_READY_IMPLEMENTATION_PLAN.md) | Product goals, completion criteria, and owner decisions                                     |
+| [Engineering reference](docs/ENGINEERING.md)                 | Implemented architecture, interfaces, configuration, operating procedures, and recovery     |
+| [Evidence](research/EVIDENCE.md)                             | Verified checks, dated external findings, hardware inventory, provenance, and evidence gaps |
+| [Agent handoff](PROOF_OF_READY_AGENT_HANDOFF.md)             | Resume work with the correct boundaries and reading order                                   |
+| [Firmware guide](application/firmware/README.md)             | ESP32 builds, provisioning boundaries, BLE transport, and device recovery                   |
+| [Seeker guide](application/mobile/README.md)                 | Android build, phone enrollment, USB preparation, and native test procedures                |
+| [AGENTS.md](AGENTS.md)                                       | Repository instructions, permissions, and file ownership                                    |
+
+The private HTML overview embeds all eight current Markdown documents and its styling. It is a generated snapshot, not another source of truth. Original inputs and archived notes remain historical references. Check current code and observable behavior when documents conflict with them.
+
+## Export documentation offline
+
+From `application/`, run `npm run overview`. The command generates three private local artifacts:
+
+| Artifact                                 | Contents                                                                                                                           |
+| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `application/public/overview.html`       | Standalone overview, embedded styling, complete text of all eight documents, and original Markdown downloads                       |
+| `application/public/overview.md`         | Combined Markdown context for processing or export                                                                                 |
+| `application/public/overview-export.zip` | HTML, combined Markdown, eight original Markdown files with repository paths, linked local reference files, and a SHA-256 manifest |
+
+Copy `overview.html` alone to read the overview and full document text offline. Select **Export Markdown** for combined context. Expand a full document to download its original Markdown. External services and the running application remain separate. The ZIP preserves referenced local files but does not contain the complete application or archived originals.
+
+Run `npm run overview:check` to verify every generated artifact against current source. Exports contain no private credentials or runtime state. They remain outside Git. Regenerate them after document changes.
 
 ## Run the commissioning station
 
@@ -13,10 +44,11 @@ Use Node.js 24 and npm. Browser tests require installed Google Chrome, or `FIELD
 ```sh
 cd application
 npm ci
+npm run overview
 npm start
 ```
 
-Open <http://127.0.0.1:4021>.
+Open <http://127.0.0.1:4021>. The private overview is at <http://127.0.0.1:4021/overview.html>.
 
 1. Enter the installation reference.
 2. Select **Approve work order**.
@@ -26,36 +58,51 @@ Open <http://127.0.0.1:4021>.
 6. Select **Verify packet** or **Test an edited packet**.
 7. Select **Export evidence packet** to save the original evidence.
 
-A correct rehearsal passes session, device, function, delivery, and placement checks. Optical binding remains REVIEW. A misplaced device or stuck contact returns REWORK. A corrected attempt preserves the previous record.
+A correct rehearsal returns REVIEW because optical and external evidence remain incomplete. Misplacement, a stuck contact, or missing delivery returns REWORK. A corrected attempt preserves the previous record. Rehearsals move no funds and make no hardware calls.
 
-The work order fixes marker IDs 0 and 10, a 60 mm reference, and a target 100 mm to the right. Placement tolerances are 8 mm and 8 degrees. The receiving destination is the local owner monitor with a five-second deadline. These are prototype policy values.
+The fixed policy uses markers 0 and 10, a 60 mm reference, and a target 100 mm to the right. Tolerances are 8 mm and 8 degrees. The receiving destination is a local monitor with a five-second deadline. This monitor shares the coordinator's trust boundary.
 
-## Use the laptop camera
+## Current execution index
 
-Print [the supplied target](application/public/vision/target.svg) at actual size. Check its ruler and measured dimensions. Keep the reference and device markers in the same plane.
+| Workstream         | Next action                                                                              | Completion evidence                                                                              |
+| ------------------ | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| Local workflow     | Run the integrated inspector demonstration and inspect exported packets                  | Original request/report binding, useful negative reports, duplicate handling, and edit rejection |
+| Physical specimen  | Identify the carrier board, LED, button, and current-limiting resistor                   | Reviewed wiring and GPIO profile before authorized provisioning or flashing                      |
+| Camera and optical | Measure webcam throughput, then run the signed optical sequence with authorized hardware | Complete tracked capture and matching original device receipt                                    |
+| Seeker             | Prepare one explicit installation and forwarding plan                                    | Authorized install, native SQLite checks, camera lifecycle, and read-only BLE preflight          |
+| Masumi             | Resolve Personal Workspace access, then prepare dedicated worker and payment resources   | Useful hosted Task, original paid request, and positive seller receipt                           |
+| API3               | Fund the dedicated Base Sepolia test wallet and review the separate paid-access draft    | Genuine paid CVE response, approved deployed policy, and required rejection evidence             |
 
-1. Approve the work order.
-2. Select **Start laptop camera**.
-3. Select **Start capture attempt**.
-4. Align the markers with the guidance.
-5. Select **Save camera measurement**.
-6. In rehearsal mode, select **Run rehearsal** to complete the simulated contact sequence.
+Main contains the API3 verifier, policy evaluator, unsigned calls, and contract reader. The unfinished paid-access client remains in a separate worktree. Its commands are unavailable in this checkout. Inspect Git state before integration. Preserve inherited uncommitted work.
 
-Camera frames stay in the browser. The server receives marker corners, measurements, camera/calibration identities, and a frame digest. It recomputes geometry. Planar guidance does not establish calibrated physical accuracy, mounting, or authenticated camera origin. Changed camera geometry invalidates the capture. Android remains later work.
+Owner-confirmed hardware and wiring state live in [Available hardware](research/EVIDENCE.md#available-hardware). Local engineering continues while external actions remain pending.
 
-The pinned local OpenCV.js Worker detects genuine generated markers in Chrome. The printable target also passes detector tests. Physical camera accuracy and the exact starter-kit components remain unverified.
+## Integration status
 
-## Verify an exported packet
+| Component               | Verified local behavior                                                                                                                             | Remaining evidence                                                                                    |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Coordinator             | Immutable approval, signed contact/optical/photo records, durable claims, original inspector bindings, pinned contract reads, packet reconstruction | Complete physical installation and genuine external evidence                                          |
+| Camera                  | OpenCV marker detection, planar guidance, tracked optical sampling, phase reconstruction, cleanup, printable target                                 | Physical accuracy, real-time throughput, and camera/emitter matching                                  |
+| Masumi                  | Useful deterministic inspector, exact transport hashes, durable Task/payment recovery, seller-receipt and refund fixtures                           | Worker/account resources, hosted execution, settlement, seller receipt, and refund collection         |
+| API3                    | Native verifier, bounded CVE evaluator, commissioning contract, unsigned calls, pinned reader, actual local Anvil deployment                        | Integrated paid-access client, genuine paid CVE response, external deployment, and rejection evidence |
+| ESP32                   | Default-disabled and compiler-coverage ESP32-C6 builds, signed protocol, persistent replay claims, bounded BLE transport                            | Carrier board, safe wiring, authorized flash, installed-build enrollment, and physical tests          |
+| Seeker                  | API 36 debug APK, signed photo claims, request reservation, restricted WebView, read-only BLE preflight                                             | Authorized install, Android SQLite instrumentation, lifecycle, camera, and BLE checks                 |
+| Direct Cardano baseline | Retained x402 adapter, payment ledger, and restart checks                                                                                           | Live Preprod settlement and physical-board compatibility                                              |
+
+Masumi remains separate from direct x402. Its fixtures do not establish seller payment. The API3 policy covers **CVE-2025-62235 only** for explicitly enrolled NimBLE reference builds. It does not establish general security or identify the installed ESP32 build.
+
+## Run the integrated local demonstration
+
+From `application/`, install the isolated Masumi dependencies and run:
 
 ```sh
-npm run verify:packet -- /path/to/packet.json APPROVED_WORK_ORDER_DIGEST
+npm --prefix integrations/masumi ci --ignore-scripts
+npm run demo:integration
 ```
 
-Use the approved work-order digest from an independent trusted source. Without that argument, the verifier checks internal consistency only. It reconstructs receipt verification at the original capture time, placement, inspection, acceptance limits, and artifact digests. It rejects edited commitments. It does not establish independent owner approval, physical truth, live payment, or current contract state.
+The command creates four local attempts and fixture inspector Tasks through the actual coordinator bridge. Correct evidence remains REVIEW. Placement, contact, and delivery defects return REWORK. It checks duplicate requests, delivered reports, packet commitments, and edit rejection. It creates no hosted resource or payment. Ledgers and packets stay outside source.
 
-Artifacts use SHA-256 over sorted JSON with lowercase `0x` digests. Contact request identifiers derive from the work-order digest, capture identifier, and step. The signed receipt therefore binds to one attempt. Later inspection does not refresh the original reading.
-
-## Verify the implementation
+## Check locally
 
 From `application/`:
 
@@ -63,59 +110,53 @@ From `application/`:
 npm run format:check
 npm run check
 npm test
+npm run overview:check
+npm run submission:check
 npm audit --omit=dev --audit-level=high
 ```
 
-Tests run serially to keep browser lifecycle checks isolated. They cover the retained observation lab, commissioning interface, tampering, concurrent capture, subprocess restart, marker detection, camera cleanup, and optical evaluation. The app serves browser modules directly. No compilation or type-check command exists.
+Tests run serially to isolate browser lifecycle checks. Browser modules require no compilation. No base-application type-check command exists.
 
-Install the isolated integration dependencies before their checks:
+After isolated dependency installation, run `npm run test:integrations`. [Engineering](docs/ENGINEERING.md#verification-commands) lists package, Foundry, firmware, Python, and Android commands. [Evidence](research/EVIDENCE.md#current-local-implementation-evidence) records observed results and their limits. `submission:check` checks tracked artifact boundaries. It does not publish or establish submission readiness.
+
+## Owner actions on the critical path
+
+The supplied Sokosumi and Blockfrost Preprod keys are saved outside source in a private env file. Live identity and block checks returned HTTP 200. Personal Workspace access returned HTTP 404 and remains unresolved. Valid account credentials do not establish a configured worker or paid execution.
+
+Read-only discovery found no organization or Vendor memberships. Coworker access returned HTTP 403. Complete account setup before hosted Task testing.
+
+1. Check Personal Workspace access and test credits in [Sokosumi Preprod](https://preprod.sokosumi.com/).
+2. Use the TUM invitation in [the official Masumi setup guide](https://www.masumi.network/tum-hackathon).
+3. Request Base Sepolia ETH for the dedicated wallet from [a Base-listed faucet](https://docs.base.org/get-started/get-funds#testnet-base-sepolia).
+4. Review test aUSD minting through [API3's official faucet](https://api3dao.github.io/airnodehub-hackathon/faucet/).
+5. Identify the ESP32 carrier-board marking and current-limiting resistor.
+
+The wallet exists locally. Its last balance check found zero ETH and zero aUSD. Its address and private key remain in private runtime files. API3 uses wallet-based x402 access. No separate API3 API key was supplied in the previous session.
+
+[Private setup](docs/ENGINEERING.md#private-credentials-and-test-funding) explains env loading, faucets, and the separate Cardano funding path. No model key is required for the deterministic inspector.
+
+The [Cardano track](https://hackathon.tum-blockchain.com/prizes#cardano) requires a real paid Preprod job or request. The prepared Masumi route requests one test USDM plus unestimated fees. Its escrow deadlines span approximately 36–52 minutes.
+
+The live unpaid NVD quote charges 0.01 test aUSD per CVE request. Two requests total 0.02 test aUSD, excluding gas. [API3's challenge](https://api3dao.github.io/airnodehub-hackathon/) also requires an externally deployed verifier, valid-response acceptance, four rejection cases, and a public repository. Publication remains a separate owner decision.
+
+## Camera, hardware, and external acceptance
+
+Use [the camera and physical procedure](docs/ENGINEERING.md#operate-the-camera-and-physical-station) after reading its prerequisites. Print [the marker target](application/public/vision/target.svg) at actual size. Keep the board unwired until its carrier and resistor are identified.
+
+[The firmware guide](application/firmware/README.md) defines safe builds and transport. [The Seeker guide](application/mobile/README.md) defines phone preparation. Open `/mobile/` for the local setup page. Neither compiled artifact establishes installed hardware behavior.
+
+Select **Export inspector request** after sealing a capture. **Check external acceptance** reads configured original inspection and contract evidence. **Export unsigned contract calls** prepares calls without signing or broadcasting. [Engineering](docs/ENGINEERING.md#private-acceptance-reader-configuration) defines private reader configuration.
+
+## Verify a packet or use the retained lab
+
+From `application/`, verify an exported packet with an independently trusted approved work-order digest:
 
 ```sh
-npm --prefix integrations/masumi ci --ignore-scripts
-npm --prefix api3 ci
-npm run test:integrations
+npm run verify:packet -- /path/to/packet.json APPROVED_WORK_ORDER_DIGEST
 ```
 
-Both integration packages declare their own formatting, syntax, and audit commands. See [engineering](docs/ENGINEERING.md) for exact commands and interface details.
+Without that digest, verification establishes internal consistency only. Offline verification turns recorded READY into REVIEW. Current external evidence requires another configured reader check.
 
-The Solidity suite requires the Foundry `forge` and `anvil` executables. Set `FIELDPROOF_FOUNDRY_BIN` to their directory for the actual local deployment test:
+The original paid-observation lab remains at <http://127.0.0.1:4021/observation.html>. Its direct Preprod route costs 2 tADA plus fees. Simulation moves no funds. Its DISPATCH result does not establish commissioning acceptance or physical safety. See [the retained workflow](docs/ENGINEERING.md#retained-direct-payment-observation-workflow).
 
-```sh
-FIELDPROOF_FOUNDRY_BIN=/path/to/foundry/bin npm run test:contract
-```
-
-From `application/contracts/`, run that directory's Foundry executable with `fmt --check` and `test`. On this host, bare `forge` names an unrelated tool. Use the explicit Foundry path.
-
-## Integration status
-
-| Component | Verified local behavior | Remaining evidence |
-|---|---|---|
-| Coordinator | Immutable approval, fresh signed transitions, durable claims, export and independent reconstruction | Complete physical installation and external acceptance integration |
-| Camera | Real OpenCV detection, planar guidance, calibration-change rejection, cleanup, printable target | Measured physical accuracy and authenticated optical execution |
-| Masumi | Useful deterministic inspector, exact transport hashes, durable Task/payment recovery, seller-receipt checks, refund fixtures | Authorized account/resources, actual execution, settlement, seller receipt and refund collection |
-| API3 | Native verifier, bounded CVE evaluator, commissioning contract, unsigned calls, pinned commitment reader, actual local Anvil deployment | Genuine paid CVE response, deployed target contract and live rejection evidence |
-| Direct Cardano baseline | Original x402 adapter, payment ledger and restart checks | Live Preprod settlement and physical-board compatibility |
-
-The Masumi adapter remains separate from direct x402. Its fixture runner returns a useful FAIL report with `sellerPaid:false`. The adapter trusts the configured Masumi Payment Service for signed terms. It does not independently verify their COSE signature.
-
-The API3 policy addresses **CVE-2025-62235 only** for explicitly enrolled NimBLE reference builds. A 1.9.0 result does not establish general software security. The current board's installed build remains unknown. Contract inspection/payment records are operator assertions about Cardano. They do not verify Cardano consensus.
-
-## Retained observation lab
-
-Open <http://127.0.0.1:4021/observation.html> for the original paid-observation interface. Its direct Preprod adapter uses 2 tADA per observation plus fees. Simulation moves no funds.
-
-The lab retains the original P-256 verifier, direct-payment ledger, Python Bluetooth reader, buyer CLI, and ten-second dispatch expiry. Its open-contact DISPATCH mapping does not establish commissioning acceptance or safe physical dispatch. No decision actuates equipment.
-
-The [configuration example](application/.env.example) describes the separately authorized physical/direct-payment path. Keep receipt pins, board secrets, wallets, provider keys, and runtime records outside source. Both server and buyer require `FIELDPROOF_SPEND_AUTHORIZED=true` before payment. See [engineering](docs/ENGINEERING.md) for recovery rules.
-
-Runtime data defaults to the user state directory. `FIELDPROOF_STATE_DIR` selects another location. Use a separate directory for a changed mode, provider, key, or payment recipient. Preserve unresolved payment records. No destructive reset exists.
-
-## Current execution index
-
-The [implementation plan](PROOF_OF_READY_IMPLEMENTATION_PLAN.md) defines the full target and owner decisions. The [execution directive](PROOF_OF_READY_AGENT_HANDOFF.md) defines ownership. [Engineering](docs/ENGINEERING.md) defines actual interfaces. [Evidence](research/EVIDENCE.md) records verified facts and limits.
-
-Continue with board identification and a measured camera test, then a board-specific optical driver. Prepare authorized Masumi resources and genuine API3 data independently. Connect the resulting paid report and pinned contract decision to coordinator acceptance. The current interface does not expose a shortcut to READY.
-
-A full starter kit is available. Its exact board and components remain unknown. Laptop webcam comes first. Equipment connection can wait. Commercial validation remains a hypothesis and does not block engineering.
-
-Reviewed source and documentation remain in a private GitHub repository. Original inputs, private historical notes, secrets, and runtime records remain local. Preserve the sibling FieldProof and capmesh projects. Public release, payments, account/resource creation, hardware flashing, actuation, deployment, and submission require targeted authorization.
+Keep runtime state, keys, wallets, camera images, and receipt pins outside tracked source. The station defaults to laptop loopback. Local implementation and private reviewed backup are authorized. Payments, external resources, flashing, GPIO actions, public deployment, publication, and submission require targeted authorization.

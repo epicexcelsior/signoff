@@ -1,5 +1,6 @@
 import express from "express";
-import { randomBytes, timingSafeEqual } from "node:crypto";
+import { readFileSync } from "node:fs";
+import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import { paymentRequired } from "./payment.js";
 import { EvidenceError } from "./evidence.js";
@@ -285,6 +286,27 @@ export function createApp(service) {
       "default-src 'none'; script-src 'self' 'unsafe-eval'; connect-src 'none'",
     );
     next();
+  });
+  app.get("/overview.html", (_req, res, next) => {
+    try {
+      const html = readFileSync(
+        new URL("../public/overview.html", import.meta.url),
+        "utf8",
+      );
+      const style = html.match(/<style>([\s\S]*?)<\/style>/)?.[1];
+      if (!style) throw new Error("Regenerate the standalone overview.");
+      const hash = createHash("sha256").update(style).digest("base64");
+      res.set(
+        "Content-Security-Policy",
+        res
+          .get("Content-Security-Policy")
+          .replace("style-src 'self'", `style-src 'self' 'sha256-${hash}'`),
+      );
+      res.type("html").send(html);
+    } catch (error) {
+      if (error.code === "ENOENT") return next();
+      next(error);
+    }
   });
   const projectDocuments = {
     "README.md": "README.md",

@@ -22,3 +22,9 @@
 /archive/
 /TUM_Hackathon_Autonomous_Agent_Master_Handoff.md
 /crypto-worlds-fair-hackathon-projects.xlsx
+
+# Generated local overview snapshot. Commit its generator and canonical sources.
+/application/public/overview.html
+
+/application/public/overview.md
+/application/public/overview-export.zip

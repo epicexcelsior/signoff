@@ -24,7 +24,7 @@ npm run build
 
 The build writes a debug APK and its debug signing key outside the repository. Its default directory is `$XDG_STATE_HOME/proof-of-ready/seeker-build`, or `$HOME/.local/state/proof-of-ready/seeker-build`. `PROOFREADY_MOBILE_BUILD_DIR` selects another directory outside source. The package name is `com.proofofready.seeker`. It targets API 36 and supports API 28 or later. This is a local debug artifact, not a distribution release.
 
-The six host tests cover original request/key binding, optional JPEG-byte verification, edited claims, timing boundaries, malformed input, restricted URLs, and USB authorization. They compile the actual Java signature and URL classes. Java generates 256 P-256 signatures and checks their P1363 conversion. A Java-generated signature also passes the Node envelope verifier.
+The host tests cover original request/key binding, optional JPEG-byte verification, edited claims, timing boundaries, malformed input, restricted URLs, and USB authorization. They compile the actual Java signature and URL classes. Java generates 256 P-256 signatures and checks their P1363 conversion. A Java-generated signature also passes the Node envelope verifier. [Evidence](../../research/EVIDENCE.md#current-local-implementation-evidence) owns current check counts and observed results.
 
 After the parent application dependencies exist, run `npm run format:check`. No Java formatter or Android lint task exists in this offline build. The Android compiler reports compatibility deprecations for pre-33 BLE callbacks and pre-30 window insets. These branches preserve the declared minimum SDK.
 

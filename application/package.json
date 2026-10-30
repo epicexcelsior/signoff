@@ -8,6 +8,7 @@
   },
   "scripts": {
     "start": "node --env-file-if-exists=.env src/main.js",
+    "pretest": "node scripts/overview.js",
     "buyer": "node --env-file-if-exists=.env scripts/buyer.js",
     "test": "node --test --test-concurrency=1 test/*.test.js",
     "check": "node scripts/check.js",
@@ -16,6 +17,10 @@
     "format:check": "prettier --check src scripts public test package.json .env.example requirements-ble.txt --ignore-unknown",
     "test:browser": "node --test test/browser.test.js",
     "verify:packet": "node scripts/verify-packet.js",
+    "overview": "node scripts/overview.js",
+    "overview:check": "node scripts/overview.js --check",
+    "demo:integration": "node scripts/demo-integration.js",
+    "submission:check": "node scripts/submission-check.js",
     "test:integrations": "npm --prefix integrations/masumi test && npm --prefix api3 test",
     "test:contract": "npm --prefix api3 run test:contract"
   },

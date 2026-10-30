@@ -13,7 +13,7 @@ python3 application/firmware/test/run.py --sanitize
 python3 -m unittest discover -s application/device/test -v
 ```
 
-The C harness compiles the actual parser, replay storage, request transport, and optical encoder. AddressSanitizer and UndefinedBehaviorSanitizer check those host paths. Four grouped checks cover malformed input, exact wire vectors, time boundaries, replay restoration, capacity, concurrent transport ownership, and emission cleanup. Eight Python tests cover the driver, receipt paging, binding rejection, authorization, and uncertain writes.
+The C harness compiles the actual parser, replay storage, request transport, and optical encoder. AddressSanitizer and UndefinedBehaviorSanitizer check those host paths. Grouped checks cover malformed input, exact wire vectors, time boundaries, replay restoration, capacity, concurrent transport ownership, and emission cleanup. Python tests cover contact and optical drivers, receipt paging, binding rejection, authorization, and uncertain writes. [Evidence](../../research/EVIDENCE.md#current-local-implementation-evidence) records current check counts and results.
 
 These checks use host functions and fake Bluetooth clients. They do not establish NVS durability on a physical board, actual GPIO timing, receipt signing on that board, or optical accuracy.
 
@@ -54,12 +54,12 @@ The encoder emits an eight-symbol preamble and 32 Manchester bits. Each half-sym
 
 The BLE service uses these Bluetooth-base UUID suffixes:
 
-| Characteristic | Operation |
-|---|---|
-| `cb01` | Read manifest, current boot identity, capability availability, remaining claims |
-| `cb02` | Write one request or sequential request chunks |
-| `cb03` | Read receipt or page index, subscribe for completion signal |
-| `cb04` | Select and read exact receipt pages |
+| Characteristic | Operation                                                                       |
+| -------------- | ------------------------------------------------------------------------------- |
+| `cb01`         | Read manifest, current boot identity, capability availability, remaining claims |
+| `cb02`         | Write one request or sequential request chunks                                  |
+| `cb03`         | Read receipt or page index, subscribe for completion signal                     |
+| `cb04`         | Select and read exact receipt pages                                             |
 
 The optical JSON exceeds BLE's 512-byte attribute limit. Each request chunk starts with `50 52 01 00`, total length as uint16 big-endian, and offset as uint16 big-endian. The remaining bytes contain UTF-8 JSON. Each write is at most 512 bytes. Total input is at most 1,536 bytes. The manifest identifies this framing as `proof-of-ready/request-chunks/v1`.
 

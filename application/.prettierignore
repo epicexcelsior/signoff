@@ -1,1 +1,4 @@
 public/vendor/
+
+# Generated documentation snapshots preserve original Markdown bytes.
+public/overview.md

@@ -1,41 +1,101 @@
 # Proof of Ready and FieldProof evidence
 
-Checked October 30, 2026. Local implementation evidence and external availability evidence have separate scopes. No live payment or board read ran through this port.
+Checked October 30, 2026. Local implementation evidence and external availability evidence have separate scopes. No live payment or authenticated physical contact/optical test ran through this port. A USB chip-identity query ran without a flash write.
+
+[README](../README.md) owns execution order. [Engineering](../docs/ENGINEERING.md) owns implemented interfaces and procedures. [The plan](../PROOF_OF_READY_IMPLEMENTATION_PLAN.md) owns goals. This document owns dated findings, check results, hardware state, and evidence gaps.
 
 ## Current local implementation evidence
 
-The selected Proof of Ready direction now has an implemented local commissioning workflow. The full paid physical acceptance target remains incomplete. The implementation plan and execution directive now describe the authorized target and decision register.
+The local commissioning path now connects work orders, signed contact/optical/photo records, tracked camera samples, useful inspector input/result binding, pinned contract reads, and portable evidence packets. Actual physical acceptance and genuine external settlement remain incomplete. Current demonstrations return REVIEW or REWORK.
 
-The integrated run passed **39 application tests**, **23 Masumi tests**, **10 API3 Node tests**, **29 Foundry tests**, and **one actual local Anvil deployment/read test**. Both Foundry fuzz tests ran 256 cases. The application count includes the original 21 tests, ten commissioning tests, and eight vision tests.
+The current station is deterministic and operator-driven. Its work-order route instantiates a fixed template from an asset name. Agent-generated requirements and autonomous orchestration remain goals. The optional model helper is not called by the current worker. The local receiving monitor shares coordinator trust.
 
-Reproduction commands:
+| Check                              | Observed result                                                                | Scope and limit                                                                                                                                                                                                                               |
+| ---------------------------------- | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Application and Chrome             | 58 tests passed                                                                | Device/phone signature fixtures, raw optical reconstruction, lifecycle, concurrent claims, restart, external-reader contracts and responsive overview, standalone offline export, and exact Markdown/ZIP preservation. No physical acceptance |
+| Masumi                             | 23 tests passed                                                                | Exact-text bindings, Task/payment recovery, seller-receipt and refund fixtures. No hosted execution or settlement                                                                                                                             |
+| API3 Node                          | 10 tests passed                                                                | Exact signed bytes, bounded CVE policy, unsigned calls and pinned commitment reader. Unintegrated paid-access draft excluded                                                                                                                  |
+| Foundry                            | 29 tests passed, including two 256-case fuzz checks                            | Local operator, freshness, policy, replay, terminal-state and oracle rejection behavior                                                                                                                                                       |
+| Anvil                              | One actual local deployment/read test passed                                   | Local chain with disposable keys and source fixtures. No external deployment                                                                                                                                                                  |
+| ESP32 firmware host                | Four grouped C checks passed under ASan/UBSan                                  | Parser, HMAC wire vectors, replay restoration/capacity, chunks, ownership, timeout, waveform accounting and failure cleanup                                                                                                                   |
+| Python device drivers              | 19 tests passed                                                                | Legacy and paged contacts, small-MTU chunks, original request/receipt binding, Node/Python signature interoperability, authorization and uncertain-write fences                                                                               |
+| Seeker host                        | Six tests passed, including 256 Java signature conversions                     | Actual Java-to-Node signature interoperability, URL limits and USB plan. No phone installation or native runtime claim                                                                                                                        |
+| Firmware builds                    | ESP-IDF 6.1 default-disabled and compiler-coverage ESP32-C6 builds passed      | No flash, GPIO execution, installed-firmware provenance or physical NVS/timing evidence                                                                                                                                                       |
+| Android build                      | API 36 debug APK built and apksigner verification passed                       | Android SQLite instrumentation compiles but remains unexecuted. No emulator, USB forwarding, camera or BLE operation                                                                                                                          |
+| Integrated inspector demonstration | Four useful reports delivered, original requests reused, packet edits rejected | Actual local coordinator/inspector bridge with fixture Tasks. Correct REVIEW, three defect REWORK results, sellerPaid false. Repeated after restoring the documented npm command                                                              |
+
+Reproduce from `application/`:
 
 ```sh
-cd application
 npm run format:check
 npm run check
 npm test
 npm run test:integrations
+npm --prefix mobile test
+npm --prefix mobile run build
+npm run demo:integration
+npm run overview:check
+npm run submission:check
 FIELDPROOF_FOUNDRY_BIN=/path/to/foundry/bin npm run test:contract
 ```
 
-Install each isolated integration package first. Run the selected Foundry executable with `fmt --check` and `test` from `application/contracts/`. The verified toolchain used Node 24.10.0, Foundry 1.8.7, and Solidity 0.8.37. Bare `forge` on this host names an unrelated tool.
+Run each isolated package's formatting/syntax checks after installation. Run Foundry `fmt --check` and `test` from `application/contracts/`. Bare `forge` on this host names an unrelated tool. Node 24.10.0, Foundry 1.8.7 and Solidity 0.8.37 were used. Production audits reported zero vulnerabilities for the base, Masumi and API3 packages.
 
-Formatting and syntax checks passed for the base application and both isolated packages. Production dependency audits reported zero vulnerabilities in all three packages. The Masumi fixture returned a useful FAIL report with `networkWrites:false` and `sellerPaid:false`. Its setup plan returned `executed:false`.
+From the repository root, run `python3 application/firmware/test/run.py --sanitize` and `python3 -m unittest discover -s application/device/test -v`. [Firmware provenance](../application/firmware/PROVENANCE.json) pins ESP-IDF, its NimBLE fork, compiler and cJSON. The ESP-IDF fork is not automatically an Apache NimBLE 1.9.0 reference build. [The Seeker guide](../application/mobile/README.md) defines its offline toolchain and unexecuted runtime checks.
 
-The commissioning tests verify immutable approval, changed-input rejection, serialized capture claims across connections, subprocess recovery fences, session-bound signed requests, historical capture-time verification, malformed camera input, exact timing boundaries, packet edits, and all rehearsal defects. A real server process-death/restart test also preserves the commissioning packet. A receipt cannot retain a valid device predicate after substitution into another session.
+A read-only USB chip query identified **ESP32-C6FH4 revision 0.2, 4 MB embedded flash, 40 MHz crystal**. The query loaded the standard RAM stub and reset the board back to its existing firmware. It wrote no flash. Carrier-board model, kit components, safe GPIO, enrolled device key and installed build remain unverified. Unique device identifiers stay outside source.
 
-Desktop and 390-pixel Chrome flows passed approval, defect inspection, correction, packet verification/tampering, history, reload, and overflow checks. Desktop and phone screenshots received visual inspection. The legacy observation lab remains at `/observation.html`.
+OpenCV.js 4.13.0 detected genuine generated markers and the printable target. Its SHA-256 remains `63366510248adf3a7eddf3e793dd825404efb7df3749f4d6f8557c7fa4ca8aa0`. The optical browser test detected and measured 391 synthetic canvas frames through the actual Worker. Accelerated callbacks represent an 18-second waveform. They do not establish real-time throughput, webcam accuracy or actual emitter execution. [OpenCV provenance](../application/public/vendor/opencv-4.13.0/provenance.json) records its source and license.
 
-OpenCV.js 4.13.0 detected genuine generated markers and the rendered printable target. Its pinned SHA-256 is `63366510248adf3a7eddf3e793dd825404efb7df3749f4d6f8557c7fa4ca8aa0`. [Artifact provenance](../application/public/vendor/opencv-4.13.0/provenance.json) records the official URL and license. Camera tests cover stream cleanup, late permission completion, changed resolution, concurrent capture, wrong/missing markers, and planar geometry. Optical tests evaluate complete synthetic Manchester captures. No physical accuracy or emitter execution passed.
+A Node-to-Python protocol test reproduced and corrected a receipt-tag mismatch. A separate 483-byte signed contact fixture reproduced a paging mismatch in the retained reader. The shared transport now supports negotiated chunks and hash-verified pages while preserving legacy raw writes. Firmware, Python and Node now use the exact `protocol` field. The shared schema lists every receipt field.
 
-The API3 contract and consumer now implement bounded policy, operator authority, immutable commitments, source freshness, paid-inspection assertion, replay rejection, terminal decisions, unsigned calls, and pinned state reads. The full approved request hash is `0x3f0881fb062ac6b989c133e0b5651d19947e38aebe4d94750627fa612f447d15`. [API3 provenance](../application/api3/provenance.json) records source revisions, licenses, hashes, fixture scope, and the exact supported shape. Signed CVE tests use disposable local keys. The genuine saved CPE response remains an authenticity smoke test only.
+External reconciliation now checks the original prepared inspection, exact delivered result, pinned service configuration, confirmed withdrawal, positive seller net, original source-response digest and contract commitments. Missing readers return REVIEW. A superseded refresh cannot overwrite a newer result. READY loses current authorization after 30 seconds or restart. Offline packets never revalidate external state. Successful trusted-reader tests use disposable fixtures, not genuine settlement.
 
-[Masumi provenance](../application/integrations/masumi/PROVENANCE.json) pins the official TUM quickstart and MPS sources. The adapter checks exact Coworker/Standard commitments, uncertain writes, result bindings, withdrawal, positive seller receipt, and refund fixtures. It trusts configured MPS terms and does not independently verify their COSE signature. No hosted Task or actual settlement ran.
+[Masumi provenance](../application/integrations/masumi/PROVENANCE.json) and [API3 provenance](../application/api3/provenance.json) retain their exact upstream sources and limitations. MPS terms remain trusted without independent COSE verification. Contract Cardano records remain operator assertions rather than consensus verification. The bounded software policy covers CVE-2025-62235 only. Compiled artifacts do not prove installation or general software security.
 
-A correct station rehearsal passes available function, delivery, device, and placement predicates. Optical binding remains REVIEW. Fixture origin, missing seller receipt, and absent deployed policy keep acceptance at REVIEW. Demonstrated defects produce REWORK. The coordinator does not yet consume live Masumi and deployed-contract outcomes.
+Remaining evidence: carrier-board/wiring review, mounted function, measured camera accuracy and throughput, actual signed optical execution, remote owner delivery, authorized phone install/native checks, hosted Task execution, genuine paid CVE response, actual seller receipt/refund collection, installed-build provenance, and deployed sponsor rejection cases. No fixture proves sponsor qualification.
 
-Remaining evidence: exact kit/board identification, mounted function, measured camera accuracy, signed optical execution, remote owner delivery, external Task execution, genuine paid CVE data, live seller receipt/refund collection, enrolled installed-build provenance, and deployed sponsor rejection cases. No fixture establishes sponsor qualification.
+## Live access and private setup
+
+The previous session supplied two credentials: a Sokosumi account API key and a Blockfrost Cardano Preprod project key. It supplied no separate API3 API key. Both are saved in `$HOME/.config/proof-ready/credentials.env`, outside source. The directory mode is `0700`. Credential and wallet files use `0600`. No credential value or personal account field belongs in this document.
+
+| Check                   | Observed result                                                                                              | Meaning and remaining gap                                                                                                                |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Sokosumi account        | Authenticated `GET /v1/users/me` returned HTTP 200 at 16:07 UTC, October 30                                  | Supplied key works against Preprod. Identity response contains no credit balance                                                         |
+| Pinned Sokosumi CLI     | `auth whoami --json` succeeded with the private env loaded                                                   | Account access only. Worker subprocesses strip this key and need separate account/vault setup                                            |
+| Personal Workspace      | `GET /v1/users/me/workspace-access` returned HTTP 404                                                        | The pinned CLI's access route did not work. Workspace eligibility and credits remain unverified. This does not prove no workspace exists |
+| Blockfrost Preprod      | Authenticated `GET /api/v0/blocks/latest` returned HTTP 200, height 5,353,775, at 16:07 UTC                  | Supplied project key works. No wallet, seller, escrow, or settlement follows                                                             |
+| API3 wallet             | Dedicated local EVM key/address created. Chain 84532 confirmed. ETH and aUSD balances both zero at 16:07 UTC | Wallet exists outside source. Funding, minting, payment, and deployment remain pending                                                   |
+| API3 client integration | Main contains verifier, policy, unsigned-call, and reader modules                                            | Paid-fetch implementation remains an unfinished separate-worktree draft. Draft commands and tests are excluded from main results         |
+
+Private `access-check.json`, `api3/wallet.json`, and `api3/balance-check.json` preserve timestamps and public check metadata. Private `api3/api3.env` keeps `PROOFREADY_API3_PAYMENTS_AUTHORIZED=false`. Its access configuration proposes 20,000 atomic aUSD units for later review. A proposed ceiling is not a spending grant.
+
+Read-only resource discovery at 16:17 UTC returned zero organizations and zero Vendor memberships. `/v1/coworkers/me` returned HTTP 403. The account therefore lacks the verified organization/Vendor/Coworker setup required for the current hosted path. These reads created no resources. They do not establish Personal Workspace credit balance.
+
+A fresh free `searchCpes` request returned HTTP 200 at **16:15:12 UTC, October 30, 2026**. The main package's native verifier authenticated the original response against the pinned NVD signer and request hash. It rejected edited data, another request, and another expected key. No payment header was sent. Private `api3/live-check/` preserves discovery, request, exact response text, and result metadata. This check establishes live free-response authenticity only. It does not establish paid CVE retrieval, freshness at later use, contract deployment, or sponsor qualification.
+
+[Base's official funding page](https://docs.base.org/get-started/get-funds#testnet-base-sepolia) lists Base Sepolia ETH faucets. [API3's official faucet](https://api3dao.github.io/airnodehub-hackathon/faucet/) requires ETH for mint gas and supports `mintFromFaucet(uint256)` without a browser wallet. Its served source names token `0xbeA34973e5f67F18F656A2C6070C64326C791808`. No faucet request or mint ran.
+
+[The Masumi dispenser](https://dispenser.masumi.network/) requests a registration-email verification code and a receiver address. It supplies test ADA and USDM and offers separate five-ADA collateral. [Cardano's faucet](https://docs.cardano.org/cardano-testnets/tools/faucet) supplies test ADA. A dedicated reviewed seller wallet remains absent. Sokosumi credits, ADA, and USDM are separate setup requirements.
+
+The complete local workflow and live account/chain reads do not establish a live end-to-end paid or physical installation. Funding, usable Workspace access, configured worker/payment resources, and reviewed hardware remain necessary.
+
+## Available hardware
+
+Owner-confirmed inventory, October 30, 2026. These are available resources, not tested capabilities.
+
+| Resource             | Confirmed state                                                                                      | Selected role or next evidence                                                                                               |
+| -------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| ESP32 kit            | Connected by USB only. No external wiring. USB query identifies ESP32-C6FH4 revision 0.2, 4 MB flash | First signed contact and optical test. Carrier-board marking, safe pins, provisioning and flash authorization remain pending |
+| LEDs and buttons     | Available in the starter kit. Exact part types are unknown                                           | First button-contact fixture and camera-observed LED challenge. Confirm a current-limiting resistor before wiring            |
+| Distance sensor      | Available. Model, supply and signal voltage are unknown                                              | Later range-based function test after part identification and electrical review                                              |
+| Potentiometer        | Available. Resistance and pinout are unknown                                                         | Later measured analog-input adapter. No current acceptance claim                                                             |
+| Speakers             | Available. Driver, impedance and power requirements are unknown                                      | Optional later feedback. No current actuator or audio test                                                                   |
+| Raspberry Pi Zero W  | Available. Power, storage, OS and network readiness are unknown                                      | Candidate separate owner receiving monitor. No deployment or device operation is authorized or verified                      |
+| Laptop webcam        | Selected first camera                                                                                | Marker guidance and optical sampling. Physical accuracy and throughput remain unverified                                     |
+| Solana Mobile Seeker | Confirmed Android phone                                                                              | Built native companion, photo witness and read-only BLE preflight. Install and real-device checks remain pending             |
+
+Use the button and LED for the first complete physical sequence. Preserve the rest of the inventory for explicit follow-up capabilities. Device ownership does not authorize flashing, GPIO changes, payments, public deployment, or new chain integration.
 
 ## Product research context
 
@@ -43,13 +103,13 @@ Research supports a bounded acceptance workflow. It does not validate broad auto
 
 ### Existing alternatives
 
-| Primary source | Established capability | Product consequence |
-|---|---|---|
-| [CxAlloy documentation](https://support.cxalloy.com/article/419-welcome) | Collaborative commissioning, asset records, installation tracking, checklists, and tests | Cross-company commissioning alone is insufficient differentiation |
-| [Facility Grid AI questionnaires](https://facilitygrid.com/kb/tests/generate-questionnaires-with-ai/) | Generates commissioning forms from instructions, equipment context, and manuals, with review | AI-generated acceptance criteria are already an existing feature |
-| [Siemens commissioning documentation](https://sid.siemens.com/api/khub/documents/oBkSnjzHLaHU8eoyqVBabw/content) | Live wiring and function tests for supported equipment | A sensor transition alone does not establish a novel category |
-| [Buildots installation/payment review](https://pages.buildots.com/completed-quantities-webinar) | Site imagery and installed quantities support payment applications | Visual evidence before payment has direct commercial prior art |
-| [Dynamics 365 inspections](https://learn.microsoft.com/en-us/dynamics365/field-service/inspections-overview) | Asset-bound pass/fail forms, attachments, offline operation, versions, and dispatcher review | A normal SaaS workflow remains a strong alternative |
+| Primary source                                                                                                   | Established capability                                                                       | Product consequence                                               |
+| ---------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| [CxAlloy documentation](https://support.cxalloy.com/article/419-welcome)                                         | Collaborative commissioning, asset records, installation tracking, checklists, and tests     | Cross-company commissioning alone is insufficient differentiation |
+| [Facility Grid AI questionnaires](https://facilitygrid.com/kb/tests/generate-questionnaires-with-ai/)            | Generates commissioning forms from instructions, equipment context, and manuals, with review | AI-generated acceptance criteria are already an existing feature  |
+| [Siemens commissioning documentation](https://sid.siemens.com/api/khub/documents/oBkSnjzHLaHU8eoyqVBabw/content) | Live wiring and function tests for supported equipment                                       | A sensor transition alone does not establish a novel category     |
+| [Buildots installation/payment review](https://pages.buildots.com/completed-quantities-webinar)                  | Site imagery and installed quantities support payment applications                           | Visual evidence before payment has direct commercial prior art    |
+| [Dynamics 365 inspections](https://learn.microsoft.com/en-us/dynamics365/field-service/inspections-overview)     | Asset-bound pass/fail forms, attachments, offline operation, versions, and dispatcher review | A normal SaaS workflow remains a strong alternative               |
 
 Vendor documentation establishes available features, not comparative effectiveness or demand for this proposal. The proposed distinction is portable, independently reproducible evaluation of a fresh physical function test under an explicit evidence policy. No evidence establishes that this combination is first-ever or defensible against incumbents.
 
@@ -65,7 +125,7 @@ The retained observation lab maps open contact to DISPATCH. That demonstration p
 
 An owner-controlled witness can support mounting and observed motion. A contractor-controlled camera does not establish independent physical truth. [OpenCV ArUco](https://docs.opencv.org/4.13.0/d5/dae/tutorial_aruco_detection.html) supplies marker geometry under calibration and dimension assumptions. It does not authenticate the marker, camera, asset, or physical location.
 
-The user confirms an ESP32 and full starter kit. Exact models and parts remain unknown. Laptop webcam comes first. Android and equipment connection come later. Mounted wiring, actual firmware, and physical end-to-end function remain unverified.
+The user confirms a full starter kit and Solana Mobile Seeker. USB identifies an ESP32-C6FH4 chip. Carrier-board model and kit parts remain unknown. Laptop webcam comes first. Mounted wiring, installed firmware, native phone behavior and physical end-to-end function remain unverified.
 
 ### API3/NVD experiment
 
@@ -150,7 +210,9 @@ Verification commands and implementation limits live in [README](../README.md) a
 
 ## Track requirements and excluded directions
 
-The organizer source previously checked was revision `f61c409acb3242facaac6fdf9a25a91adc34bb52`. Its [prize criteria](https://github.com/TUM-Blockchain-Club/hackathon-website/blob/f61c409acb3242facaac6fdf9a25a91adc34bb52/src/content/prizes.ts) permit useful deterministic Cardano services. An LLM is not mandatory. The supplied checklist requires a genuine paid Preprod job or request. No such transaction exists for this port yet.
+The [current Cardano prize criteria](https://hackathon.tum-blockchain.com/prizes#cardano), rechecked October 30, require one genuine paid Cardano Preprod job or request. Useful deterministic services qualify without an LLM. The [Masumi setup guide](https://www.masumi.network/tum-hackathon) labels payment optional for its execution-only setup milestone. That milestone does not replace the organizer track requirement. No qualifying transaction exists for this port yet.
+
+The initial Sokosumi CLI query lacked credentials. The supplied account key now passes identity and explicit-env CLI checks. [Live access](#live-access-and-private-setup) records the unresolved Workspace result. The live unpaid NVD getCve probe returned HTTP 402 with Base Sepolia chain 84532, 10,000 atomic aUSD units at six decimals, and a 300-second timeout. The EIP-712 domain is AirnodeHub USD, version 1. No authorization was signed. Terms and recipient remain subject to review before payment. The [API3 guide](https://api3dao.github.io/airnodehub-hackathon/) requires Base Sepolia aUSD for priced access and ETH for minting. Qualification includes a deployed verifier, valid-response success, and all four rejection cases. Public repository release remains separately gated.
 
 API3 is not entered through an irrelevant price feed. Its supplied checklist requires a deployed verifier and valid, edited, stale, other-request, and wrong-key authenticated-data cases. The local device rejection tests do not satisfy that API3 requirement. Custom AirnodeHub onboarding remains unverified.
 
