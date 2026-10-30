@@ -49,6 +49,15 @@ class FirmwarePlanTests(unittest.TestCase):
             save_review(self.build, output)
         self.assertEqual(json.loads(output.read_text()), plan)
 
+    def test_review_records_addressable_emitter_configuration(self):
+        with (self.build / "sdkconfig").open("a") as stream:
+            stream.write("CONFIG_PROOFREADY_OPTICAL_WS2812=y\n"
+                         "CONFIG_PROOFREADY_OPTICAL_BRIGHTNESS=32\n")
+        plan = inspect_build(self.build)
+        self.assertEqual(plan["configuredProfile"]["optical_ws2812"], "y")
+        self.assertEqual(plan["configuredProfile"]["optical_brightness"], "32")
+        self.assertFalse(plan["flashAuthorized"])
+
     def test_wrong_target_and_empty_artifacts_reject(self):
         self.flash["extra_esptool_args"]["chip"] = "esp32"
         self.write_flash()

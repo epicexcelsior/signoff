@@ -1,6 +1,6 @@
-idf_component_register(SRCS "main.c" "runtime.c" "ble_transport.c" "receipt_identity.c" "../core/protocol.c" "../core/transfer.c"
+idf_component_register(SRCS "main.c" "runtime.c" "optical_output.c" "ble_transport.c" "receipt_identity.c" "../core/protocol.c" "../core/transfer.c" "../core/ws2812.c" "../core/c6_pins.c"
     INCLUDE_DIRS "." "../core"
-    PRIV_REQUIRES nvs_flash bootloader_support esp_driver_gpio bt cjson mbedtls esp_timer esp_hw_support)
+    PRIV_REQUIRES nvs_flash bootloader_support esp_driver_gpio esp_driver_rmt bt cjson mbedtls esp_timer esp_hw_support)
 set(PR_SECRET_BYTES "0")
 set(PR_SECRET_LENGTH 0)
 if(DEFINED PROOFREADY_AUTH_SECRET_FILE)

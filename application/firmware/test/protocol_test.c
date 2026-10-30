@@ -1,6 +1,8 @@
 #include "cJSON.h"
 #include "protocol.h"
 #include "transfer.h"
+#include "ws2812.h"
+#include "c6_pins.h"
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
@@ -219,10 +221,46 @@ static void optical_tests(void) {
   puts("PASS Manchester vectors, complete emission accounting and failure "
        "cleanup");
 }
+static void ws2812_tests(void) {
+  pr_ws2812_symbol symbols[PR_WS2812_SYMBOLS];
+  for (unsigned brightness = 1; brightness <= 64; brightness++) {
+    for (unsigned active = 0; active < 2; active++) {
+      pr_ws2812_frame(active, brightness, symbols);
+      for (unsigned channel = 0; channel < 3; channel++) {
+        unsigned decoded = 0;
+        for (unsigned bit = 0; bit < 8; bit++) {
+          pr_ws2812_symbol pulse = symbols[channel * 8 + bit];
+          assert(pulse.first_high && !pulse.second_high);
+          assert(pulse.first_ticks + pulse.second_ticks == 12);
+          assert(pulse.first_ticks == 3 || pulse.first_ticks == 9);
+          decoded = (decoded << 1) | (pulse.first_ticks == 9);
+        }
+        assert(decoded == (active ? brightness : 0));
+      }
+      assert(!symbols[24].first_high && !symbols[24].second_high);
+      assert(symbols[24].first_ticks + symbols[24].second_ticks == 3000);
+    }
+  }
+  puts("PASS WS2812 complete GRB white/off vectors, bit order, timing and latch");
+}
+static void c6_pin_tests(void) {
+  const int allowed[] = {0, 1, 2, 3, 6, 7, 14, 16, 17, 18, 19, 20, 21, 22, 23};
+  for (int gpio = -1; gpio <= 48; gpio++) {
+    bool expected = false;
+    for (unsigned i = 0; i < sizeof(allowed) / sizeof(allowed[0]); i++)
+      expected |= gpio == allowed[i];
+    assert(pr_c6_contact_gpio_allowed(gpio) == expected);
+    assert(pr_c6_optical_gpio_allowed(gpio, false) == expected);
+    assert(pr_c6_optical_gpio_allowed(gpio, true) == (expected || gpio == 8));
+  }
+  puts("PASS C6FH4 strap, native USB, unexposed and flash GPIO rejection");
+}
 int main(void) {
   parser_tests();
   replay_tests();
   transfer_tests();
   optical_tests();
+  ws2812_tests();
+  c6_pin_tests();
   return 0;
 }

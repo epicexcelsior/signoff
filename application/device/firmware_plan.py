@@ -10,6 +10,10 @@ import json
 import os
 from pathlib import Path
 import re
+try:
+    from .flash_preservation import PreservationError, verify_preservation
+except ImportError:
+    from flash_preservation import PreservationError, verify_preservation
 
 
 class PlanError(ValueError):
@@ -22,7 +26,7 @@ def _outside_source(path):
         raise PlanError("Keep build artifacts and review records outside source.")
 
 
-def inspect_build(build):
+def inspect_build(build, backup=None):
     build = Path(build).resolve(strict=True)
     _outside_source(build)
     description = json.loads((build / "project_description.json").read_text())
@@ -78,8 +82,18 @@ def inspect_build(build):
             "CONFIG_PROOFREADY_OPTICAL_ENABLED",
             "CONFIG_PROOFREADY_OPTICAL_GPIO",
             "CONFIG_PROOFREADY_OPTICAL_ACTIVE_LOW",
+            "CONFIG_PROOFREADY_OPTICAL_WS2812",
+            "CONFIG_PROOFREADY_OPTICAL_BRIGHTNESS",
         )
     }
+    preservation = {"status": "UNVERIFIED", "flashAuthorized": False,
+                    "reason": "Compare a current complete device backup before flash approval."}
+    if backup is not None:
+        try:
+            preservation = verify_preservation(build, backup, files,
+                int(config.get("CONFIG_PARTITION_TABLE_OFFSET", "0x8000"), 0))
+        except PreservationError as error:
+            raise PlanError(str(error)) from error
     return {
         "schema": "proof-of-ready/firmware-flash-review/v1",
         "flashAuthorized": False,
@@ -89,6 +103,7 @@ def inspect_build(build):
         "target": "esp32c6",
         "configuredProfile": profile,
         "flashSettings": flash.get("flash_settings"),
+        "storagePreservation": preservation,
         "artifacts": sorted(artifacts, key=lambda item: int(item["offset"], 16)),
         "blockedBy": [
             "Identify carrier board and manufacturer pinout.",
@@ -110,12 +125,12 @@ def inspect_build(build):
     }
 
 
-def save_review(build, output):
+def save_review(build, output, backup=None):
     output = Path(output)
     if not output.is_absolute():
         raise PlanError("Use an absolute private review-record path.")
     _outside_source(output.resolve())
-    plan = inspect_build(build)
+    plan = inspect_build(build, backup)
     encoded = json.dumps(plan, indent=2, sort_keys=True) + "\n"
     descriptor = os.open(output, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
     with os.fdopen(descriptor, "w") as stream:
@@ -129,9 +144,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("build_directory")
     parser.add_argument("private_review_file")
+    parser.add_argument("--backup-image", help="Current complete private 4 MB device backup for offline data-layout checks")
     args = parser.parse_args()
     try:
-        plan = save_review(args.build_directory, args.private_review_file)
+        plan = save_review(args.build_directory, args.private_review_file, args.backup_image)
     except PlanError as error:
         parser.exit(1, f"{error} No device operation ran.\n")
     except FileExistsError:

@@ -33,6 +33,8 @@ with tempfile.TemporaryDirectory(prefix="proofready-host-") as temporary:
             "test/protocol_test.c",
             "core/protocol.c",
             "core/transfer.c",
+            "core/ws2812.c",
+            "core/c6_pins.c",
             "components/cjson/cJSON.c",
         )
     ]

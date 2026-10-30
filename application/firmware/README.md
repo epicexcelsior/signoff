@@ -2,7 +2,7 @@
 
 This package prepares signed contact reads and challenge-bound optical emission for an ESP32. The default build initializes no GPIO. It advertises no operation until a secret and an explicitly reviewed hardware profile exist.
 
-A read-only USB query identified the connected chip as **ESP32-C6FH4, revision 0.2, with 4 MB embedded flash**. The carrier board, starter-kit model, wiring, and safe pins remain unknown. No firmware from this package was flashed. No GPIO command from this package ran.
+A read-only USB query identified the connected chip as **ESP32-C6FH4, revision 0.2, with 4 MB embedded flash**. The owner identifies an ESP32-C6 SuperMini carrier. Front/back photos are unavailable in this session, so the carrier revision, exact routing, wiring, and safe header pins remain unverified. No firmware from this package was flashed. No GPIO command from this package ran.
 
 ## Check without hardware
 
@@ -40,7 +40,11 @@ Flashing, GPIO enablement, and security-fuse changes require targeted authorizat
 
 ## Prepare the first physical test
 
-The first specimen uses one button, one discrete LED, one current-limiting resistor, and the printed camera target. Keep external wiring disconnected now. The owner must identify the carrier board and components before a pin assignment exists.
+The first optical candidate is the onboard WS2812-compatible RGB LED, commonly connected to GPIO8 on C6 SuperMini carriers. Confirm the actual carrier before selecting it. An onboard LED needs no external LED wiring.
+
+The firmware now supports one WS2812-compatible LED through ESP-IDF RMT. Plain GPIO writes cannot drive this addressable LED. The default build keeps both optical and contact capabilities disabled. The external button comes after the first optical test.
+
+Keep external wiring disconnected until the carrier and button terminals receive review. Use the printed camera target for the optical test.
 
 ### Resolve the hardware inputs
 
@@ -53,7 +57,21 @@ The first specimen uses one button, one discrete LED, one current-limiting resis
 | Resistor markings or measured resistance                   | Calculate LED current and compare it with the LED and GPIO limits                                    |
 | Actual build profile                                       | Select separate input/output GPIOs without conflicts, strapping hazards, or board-attached functions |
 
-[Espressif's GPIO reference](https://docs.espressif.com/projects/esp-idf/en/v6.1/esp32c6/api-reference/peripherals/gpio.html) identifies strapping, USB-JTAG, and flash restrictions. The exact carrier can add other restrictions.
+[Espressif's GPIO reference](https://docs.espressif.com/projects/esp-idf/en/v6.1/esp32c6/api-reference/peripherals/gpio.html) identifies USB and flash restrictions. The [C6 datasheet](https://www.espressif.com/sites/default/files/documentation/esp32-c6_datasheet_en.pdf) identifies the strapping pins. The exact carrier can add restrictions.
+
+| C6FH4 pins | Restriction for this commissioning profile |
+| --- | --- |
+| GPIO4, 5, 8, 9, 15 | Boot straps. Do not attach the contact button. GPIO9 commonly connects to BOOT. |
+| GPIO8 | Permit optical output only in WS2812 mode after carrier confirmation. Do not add external loads. |
+| GPIO12, 13 | Preserve native USB Serial/JTAG. Firmware rejects these pins. |
+| GPIO10, 11 and flash GPIO24–30 | Not exposed on C6FH4. Firmware rejects these pins. |
+| GPIO2 | Candidate contact input at chip level. Confirm the actual carrier header and absence of other loads first. |
+
+The firmware checks all selected pins before configuring any GPIO. It rejects pin sharing between contact and optical functions. These checks enforce chip restrictions. They do not prove carrier routing.
+
+Espressif's [generic C6 Arduino variant](https://github.com/espressif/arduino-esp32/blob/master/variants/esp32c6/pins_arduino.h) selects RGB GPIO8. Its [DevKitM schematic](https://dl.espressif.com/dl/schematics/esp32-c6-devkitm-1-schematics.pdf) connects a WS2812B to GPIO8. These are independent references for the candidate circuit. They do not identify the owner's SuperMini carrier.
+
+Match the front/back silkscreen, header order, USB connector, LED package, and component positions to the actual seller schematic. If that source is unavailable, obtain a power-disconnected continuity measurement of the onboard LED data route. Do not approve GPIO8 solely from the ESP32-C6FH4 chip label.
 
 Chip identity does not resolve these inputs. An ESP32-C6 chip label is not a carrier-board model. Never copy GPIO 2/3 from `test/compile-only.defaults` into a physical profile.
 
@@ -65,6 +83,8 @@ reviewed optical output -- current-limiting resistor -- LED -- reviewed GND
 ```
 
 This LED arrangement assumes an active-high output and correct LED polarity. A carrier-board LED can require different wiring or polarity. Review the actual circuit before setting `CONFIG_PROOFREADY_OPTICAL_ACTIVE_LOW`.
+
+After carrier/header confirmation, connect the normally-open button between the reviewed GPIO2 header and GND. Confirm the switch terminal pairs with a continuity meter first. Disconnect USB power before wiring. This is a candidate circuit, not authorization to wire it.
 
 The contact input enables its internal pull-up. A released button means OPEN. A pressed button connects the reviewed input to ground and means CLOSED. Never connect an external voltage to that input. For an external LED, calculate `I = (V_GPIO - V_LED) / R` using documented limits and the actual parts. Never connect an LED directly to a GPIO without its reviewed current-limiting circuit.
 
@@ -85,6 +105,12 @@ CONFIG_PROOFREADY_OPTICAL_ENABLED=y
 CONFIG_PROOFREADY_OPTICAL_GPIO=REVIEWED_OPTICAL_GPIO
 # CONFIG_PROOFREADY_OPTICAL_ACTIVE_LOW is not set
 ```
+
+For a carrier-confirmed onboard WS2812, add `CONFIG_PROOFREADY_OPTICAL_WS2812=y` and `CONFIG_PROOFREADY_OPTICAL_BRIGHTNESS=32`. Select the confirmed GPIO8 route. Keep active-low disabled. The contact capability can remain disabled during the initial optical test.
+
+The WS2812 backend uses a 10 MHz RMT clock, one 24-bit equal-channel GRB pixel, and a 300 µs low latch. It sends dim white for ON and zero for OFF. ESP-IDF's [official RMT example](https://github.com/espressif/esp-idf/blob/fff9895c82d744c7237be8847347bdd1b07c6643/examples/peripherals/rmt/led_strip/main/led_strip_encoder.c) supplies the bit timing reference. The backend waits for each transfer. A missed symbol deadline invalidates emission. An uncertain RMT completion blocks later writes until reviewed recovery. Disconnect USB if an emitter remains lit after a failure.
+
+`test/ws2812-compile-only.defaults` exercises this backend with synthetic pins. Never flash it. Host vectors and compilation do not prove LED compatibility or physical timing.
 
 This shape is explanatory. The GPIO placeholders are not compilable values. Replace them only after board review. The active-high example does not establish the actual LED polarity.
 
@@ -113,6 +139,10 @@ python3 application/device/firmware_plan.py \
 
 The output file must be an unused absolute private path outside source. The command reads `project_description.json`, `sdkconfig`, `flasher_args.json`, and mapped binaries. It saves actual SHA-256 hashes, byte lengths, offsets, and profile settings. It rejects another target, missing/empty files, overlapping ranges, or files outside the build directory. It never reads the secret file or opens a serial/BLE connection.
 
+Without a current device backup, the record reports `storagePreservation.status:UNVERIFIED`. After a separately authorized full backup, add `--backup-image /absolute/private/current-backup.bin`. The offline check verifies partition-table checksums, identical data-partition layouts, flash bounds, and write-sector exclusion from all data partitions. It rejects a truncated backup, moved NVS, and writes that erase stored data. This check never opens a device.
+
+The backup must belong to the connected board and reflect its current state. Compare its hash and acquisition record before approval. The check cannot establish that identity from bytes alone. An older NVS backup can roll back consumed replay claims.
+
 The record always returns `flashAuthorized:false`, `hardwareEvidence:false`, and `boardReviewVerified:false`. A Kconfig `BOARD_REVIEWED=y` value does not prove a hardware review. The compiler-coverage profile remains unsuitable for flashing even when this inspection succeeds.
 
 The current default and coverage builds use **DIO, 2 MB, 80 MHz** flash settings. The USB chip query found 4 MB flash. Review these configured settings and the partition table against the exact carrier before approving a physical image. Compilation does not establish electrical suitability.
@@ -137,6 +167,10 @@ python -m esptool --chip esp32c6 --port "${REVIEWED_SERIAL_PORT:?}" \
 ```
 
 This command is prepared but unexecuted. Select an unused backup filename. It enters the bootloader and can reset the device. [Espressif's esptool reference](https://docs.espressif.com/projects/esptool/en/latest/esp32c6/esptool/basic-commands.html) defines flash read/write semantics. The local esptool 5.6.0 help confirms the `read-flash ADDRESS SIZE OUTPUT` arguments. Preserve the backup hash and the existing firmware's provenance. The backup can contain credentials and device identity.
+
+Before flash approval, compare the current backup with the actual proposed partition table. Preserve the original backup, its hash, provisioned key, NVS authorization secret, and replay state. A different partition layout requires a reviewed migration. Never erase storage to bypass this check.
+
+For failed boot, disconnect external wiring and power. Enter the ROM downloader with the carrier's reviewed BOOT/RESET sequence. Preserve GPIO8's required strap state. Do not drive USB pins. Request review before any recovery write. A full backup restore can roll back replay claims, so preserve the latest state first.
 
 After explicit flash authorization, use the command from the private review record with the actual reviewed port. Its generic form is:
 

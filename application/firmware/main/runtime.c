@@ -1,12 +1,14 @@
 #include "runtime.h"
 #include "bootloader_random.h"
 #include "cJSON.h"
+#include "c6_pins.h"
 #include "driver/gpio.h"
 #include "esp_random.h"
 #include "esp_timer.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "nvs.h"
+#include "optical_output.h"
 #include "proofready_secret.h"
 #include "protocol.h"
 #include "psa/crypto.h"
@@ -120,6 +122,24 @@ esp_err_t pr_runtime_init(void) {
     secret[0] = '\0';
   else if (status != ESP_OK || size < 17 || size > sizeof(secret))
     return ESP_FAIL;
+  // Validate every selected pin before configuring any GPIO.
+#ifdef CONFIG_PROOFREADY_CONTACT_ENABLED
+  if (!pr_c6_contact_gpio_allowed(CONFIG_PROOFREADY_CONTACT_GPIO))
+    return ESP_ERR_INVALID_ARG;
+#endif
+#ifdef CONFIG_PROOFREADY_OPTICAL_ENABLED
+#ifdef CONFIG_PROOFREADY_OPTICAL_WS2812
+  const bool ws2812 = true;
+#else
+  const bool ws2812 = false;
+#endif
+  if (!pr_c6_optical_gpio_allowed(CONFIG_PROOFREADY_OPTICAL_GPIO, ws2812))
+    return ESP_ERR_INVALID_ARG;
+#ifdef CONFIG_PROOFREADY_CONTACT_ENABLED
+  if (CONFIG_PROOFREADY_OPTICAL_GPIO == CONFIG_PROOFREADY_CONTACT_GPIO)
+    return ESP_ERR_INVALID_ARG;
+#endif
+#endif
   // No GPIO is initialized by the default build. Profile review and explicit
   // pin selection are required.
 #ifdef CONFIG_PROOFREADY_CONTACT_ENABLED
@@ -137,24 +157,7 @@ esp_err_t pr_runtime_init(void) {
 #ifdef CONFIG_PROOFREADY_OPTICAL_ENABLED
   if (!GPIO_IS_VALID_OUTPUT_GPIO(CONFIG_PROOFREADY_OPTICAL_GPIO))
     return ESP_ERR_INVALID_ARG;
-#ifdef CONFIG_PROOFREADY_CONTACT_ENABLED
-  if (CONFIG_PROOFREADY_OPTICAL_GPIO == CONFIG_PROOFREADY_CONTACT_GPIO)
-    return ESP_ERR_INVALID_ARG;
-#endif
-  gpio_config_t output = {.pin_bit_mask = 1ULL
-                                          << CONFIG_PROOFREADY_OPTICAL_GPIO,
-                          .mode = GPIO_MODE_OUTPUT,
-                          .pull_up_en = GPIO_PULLUP_DISABLE,
-                          .pull_down_en = GPIO_PULLDOWN_DISABLE,
-                          .intr_type = GPIO_INTR_DISABLE};
-#ifdef CONFIG_PROOFREADY_OPTICAL_ACTIVE_LOW
-  const bool idle_level = true;
-#else
-  const bool idle_level = false;
-#endif
-  // Set the output latch before enabling its GPIO output mode.
-  if (gpio_set_level(CONFIG_PROOFREADY_OPTICAL_GPIO, idle_level) != ESP_OK ||
-      gpio_config(&output) != ESP_OK)
+  if (pr_optical_output_init() != ESP_OK)
     return ESP_FAIL;
   optical_ready = true;
 #endif
@@ -191,21 +194,12 @@ int pr_manifest(char *out, size_t capacity) {
 }
 static int set_optical(void *unused, bool active) {
   (void)unused;
-#ifdef CONFIG_PROOFREADY_OPTICAL_ENABLED
-#ifdef CONFIG_PROOFREADY_OPTICAL_ACTIVE_LOW
-  active = !active;
-#endif
-  return gpio_set_level(CONFIG_PROOFREADY_OPTICAL_GPIO, active) == ESP_OK ? 0
-                                                                          : -1;
-#else
-  (void)active;
-  return -1;
-#endif
+  return pr_optical_output_set(active) == ESP_OK ? 0 : -1;
 }
 static int wait_symbol(void *context, uint32_t milliseconds) {
   TickType_t *last_wake = context;
-  vTaskDelayUntil(last_wake, pdMS_TO_TICKS(milliseconds));
-  return 0;
+  /* A missed symbol deadline invalidates the emission instead of catching up. */
+  return xTaskDelayUntil(last_wake, pdMS_TO_TICKS(milliseconds)) ? 0 : -1;
 }
 static int observe(const pr_request *request, uint32_t started, char *out,
                    size_t capacity) {
