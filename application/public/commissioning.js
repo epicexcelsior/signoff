@@ -59,21 +59,54 @@ function renderControls() {
   $("history").disabled = busy;
   $("new-order").hidden = !order;
   const active = current?.state === "CAPTURING";
+  const expired = active && Date.now() > current.expiresAt;
+  $("capture-deadline").textContent = !active
+    ? ""
+    : expired
+      ? "Capture window expired. Start a new attempt, or close this attempt to preserve its result."
+      : `Capture window: ${Math.max(0, Math.ceil((current.expiresAt - Date.now()) / 1000))} seconds remain.`;
   $("capture-frame").disabled =
     busy ||
+    expired ||
     !active ||
     Boolean(current?.vision) ||
     camera?.getState().phase !== "ACTIVE";
   $("contact-step").disabled =
-    busy || !active || Boolean(current?.pending) || current?.device.length >= 3;
-  $("inspect").disabled = busy || !active || Boolean(current?.pending);
+    busy ||
+    expired ||
+    !active ||
+    Boolean(current?.pending) ||
+    current?.device.length >= 3;
+  $("inspect").disabled =
+    busy ||
+    !active ||
+    Boolean(current?.pending) ||
+    current?.optical?.stage === "EXECUTING";
+  $("capture-optical").disabled =
+    busy ||
+    expired ||
+    !active ||
+    !order?.optical ||
+    !current?.vision ||
+    current?.vision.source !== "browser-camera" ||
+    Boolean(current?.optical && current.optical.stage !== "PREPARED") ||
+    camera?.getState().phase !== "ACTIVE" ||
+    !config?.optical_authorized;
+  for (const id of [
+    "prepare-inspection",
+    "reconcile-acceptance",
+    "contract-plan",
+  ])
+    $(id).disabled = busy || !current?.report;
   $("verify").disabled = busy || !current?.report;
   $("tamper").disabled = busy || !current?.report;
-  const instruction = current?.pending
-    ? "The original contact read is pending or interrupted. Start a new attempt for another read."
-    : active && current.device.length < 3
-      ? `Set the contact ${current.sequence[current.device.length] ? "CLOSED" : "OPEN"}, then read step ${current.device.length + 1} of 3.`
-      : "The contact sequence is complete. Close the capture for inspection.";
+  const instruction = expired
+    ? "The capture window expired. Start a new attempt for another physical read."
+    : current?.pending
+      ? "The original contact read is pending or interrupted. Start a new attempt for another read."
+      : active && current.device.length < 3
+        ? `Set the contact ${current.sequence[current.device.length] ? "CLOSED" : "OPEN"}, then read step ${current.device.length + 1} of 3.`
+        : "The contact sequence is complete. Close the capture for inspection.";
   $("contact-instruction").textContent = instruction;
 }
 function showOrder() {
@@ -101,6 +134,12 @@ function showSession(session) {
   );
   $("record-reference").textContent =
     `Attempt ${session.id} · ${session.sourceMode === "fixture" ? "synthetic rehearsal" : "configured physical adapter"}`;
+  $("optical-status").textContent =
+    session.optical?.evaluation?.reason ??
+    session.optical?.error?.message ??
+    (session.optical
+      ? `Optical ${session.optical.stage.toLowerCase()}`
+      : "Place the LED beside the device marker in the approved optical region. Emission requires explicit authorization.");
   $("results").replaceChildren();
   $("acceptance-gates").replaceChildren();
   $("acceptance-gates").hidden = !session.report;
@@ -114,11 +153,13 @@ function showSession(session) {
     ? `Local inspection: ${session.report.outcome}`
     : "Capture in progress";
   $("report-description").textContent =
-    session.report?.outcome === "FAIL"
-      ? "A required check failed. Correct the defect and start a new attempt."
-      : session.report
-        ? "Inspect the missing evidence before accepting this installation."
-        : "Follow the contact sequence and save the camera measurement before inspection.";
+    session.acceptance?.decision === "READY"
+      ? "The configured readers verified every acceptance requirement. Check external evidence again before using an expired decision."
+      : session.report?.outcome === "FAIL"
+        ? "A required check failed. Correct the defect and start a new attempt."
+        : session.report
+          ? "Inspect the missing evidence before accepting this installation."
+          : "Follow the contact sequence and save the camera measurement before inspection.";
   if (session.report) {
     for (const predicate of session.report.predicates) {
       const row = document.createElement("div");
@@ -338,6 +379,7 @@ $("start-camera").addEventListener("click", () =>
       video: $("camera"),
       canvas: $("overlay"),
       policy: order.vision,
+      opticalRoi: order.optical?.roi,
       onState: (state) => {
         $("camera-status").textContent =
           state.error?.message ?? `Camera ${state.phase.toLowerCase()}`;
@@ -397,6 +439,114 @@ $("capture-frame").addEventListener("click", () =>
   }),
 );
 window.addEventListener("pagehide", () => camera?.stop());
+
+function downloadJson(value, name) {
+  const url = URL.createObjectURL(
+    new Blob([JSON.stringify(value, null, 2) + "\n"], {
+      type: "application/json",
+    }),
+  );
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = name;
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+$("prepare-inspection").addEventListener("click", () =>
+  act(async () => {
+    const request = await api(
+      `/api/commissioning/sessions/${current.id}/inspection-request`,
+      {},
+    );
+    downloadJson(request, `proof-of-ready-inspection-${current.id}.json`);
+    feedback(
+      "Original inspection request exported. No external Task or payment started.",
+    );
+  }),
+);
+$("reconcile-acceptance").addEventListener("click", () =>
+  act(async () => {
+    showSession(
+      await api(
+        `/api/commissioning/sessions/${current.id}/reconcile-acceptance`,
+        {},
+      ),
+    );
+    await refreshHistory();
+    feedback(
+      "External evidence checked through the configured readers. Inspect each acceptance requirement.",
+    );
+  }),
+);
+$("contract-plan").addEventListener("click", () =>
+  act(async () => {
+    const plan = await api(
+      `/api/commissioning/sessions/${current.id}/contract-plan`,
+      {},
+    );
+    downloadJson(plan, `proof-of-ready-unsigned-${current.id}.json`);
+    feedback(
+      "Unsigned contract calls exported. No transaction was signed or broadcast.",
+    );
+  }),
+);
+$("capture-optical").addEventListener("click", () =>
+  act(async () => {
+    const challenge = await api(
+      `/api/commissioning/sessions/${current.id}/optical-challenge`,
+      {},
+    );
+    const capture = await camera.startOpticalCapture({
+      sessionId: current.id,
+      challenge: {
+        bits: challenge.bits,
+        halfSymbolMs: challenge.half_symbol_ms,
+      },
+      roi: order.optical.roi,
+      maxDurationMs: 40000,
+      onSample: (state) => {
+        $("optical-status").textContent =
+          `Keep both markers visible · ${state.sampleCount} camera samples`;
+      },
+    });
+    try {
+      await capture.ready;
+      feedback(
+        "Optical capture is ready. Keep the camera steady throughout the signed test.",
+      );
+      const executed = await api(
+        `/api/commissioning/sessions/${current.id}/optical-execution`,
+        {},
+      );
+      showSession(executed);
+      if (executed.optical.stage !== "EXECUTED")
+        throw new Error(
+          executed.optical.error?.message ??
+            "The signed optical execution did not complete.",
+        );
+      const evidence = await capture.finish();
+      showSession(
+        await api(`/api/commissioning/sessions/${current.id}/optical`, {
+          capture: evidence,
+        }),
+      );
+      feedback(
+        "Original optical samples saved. The server reconstructed the complete signed test.",
+      );
+    } catch (error) {
+      await capture.cancel();
+      throw error;
+    }
+  }),
+);
+setInterval(() => {
+  renderControls();
+  if (current?.acceptance?.decision === "READY" && !busy)
+    void act(async () => {
+      showSession(await api(`/api/commissioning/sessions/${current.id}`));
+      await refreshHistory();
+    });
+}, 1000);
 
 try {
   config = await api("/api/config");

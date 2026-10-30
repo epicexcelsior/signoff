@@ -146,10 +146,21 @@
             ><button class="secondary" id="inspect" disabled>
               Close capture and inspect
             </button>
+            <button class="secondary" id="capture-optical" disabled>
+              Capture signed optical test
+            </button>
+            <p class="note" id="optical-status">
+              The optical emitter needs a configured board driver and explicit
+              authorization.
+            </p>
+            <a class="text-button" href="/mobile/"
+              >Prepare the Seeker inspector</a
+            >
           </div>
           <p id="feedback" class="feedback" role="status" aria-live="polite">
             Connecting to the local coordinator.
           </p>
+          <p id="capture-deadline" class="note"></p>
         </section>
       </div>
       <section class="report-panel" aria-labelledby="report-heading">
@@ -188,6 +199,15 @@
             ><button id="tamper" class="text-button" disabled>
               Test an edited packet
             </button>
+            <button id="prepare-inspection" class="secondary" disabled>
+              Export inspector request
+            </button>
+            <button id="reconcile-acceptance" class="secondary" disabled>
+              Check external acceptance
+            </button>
+            <button id="contract-plan" class="text-button" disabled>
+              Export unsigned contract calls
+            </button>
           </div>
         </div>
         <p id="packet-status" class="note" role="status" aria-live="polite"></p>
@@ -210,10 +230,10 @@
       </section>
     </main>
     <footer>
-      <span>Proof of Ready / local commissioning station</span
-      ><span id="footer-mode"
-        >No hardware actuation · no public deployment</span
-      >
+      <span
+        >Proof of Ready / local commissioning station ·
+        <a href="/overview.html">Project overview</a></span
+      ><span id="footer-mode">No equipment actuation · local station</span>
     </footer>
   </body>
 </html>

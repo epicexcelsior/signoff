@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { chromium } from "@playwright/test";
-import { mkdirSync } from "node:fs";
+import { mkdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fixture, server } from "./helpers.js";
 
@@ -86,6 +86,26 @@ test("commissioning desktop and phone: approve, inspect defects, verify packets,
         await page.locator("#acceptance-gates").textContent(),
         /No verified Masumi seller receipt/,
       );
+      const downloadPromise = page.waitForEvent("download");
+      await page
+        .getByRole("button", { name: "Export inspector request" })
+        .click();
+      const download = await downloadPromise;
+      const request = JSON.parse(readFileSync(await download.path(), "utf8"));
+      assert.match(request.inspectionId, /^por-[0-9a-f]{16}$/);
+      assert.equal(JSON.parse(request.inputText).mode, "simulation");
+      await page
+        .getByRole("button", { name: "Check external acceptance" })
+        .click();
+      await page.waitForFunction(() =>
+        document
+          .getElementById("feedback")
+          .textContent.includes("External evidence checked"),
+      );
+      assert.equal(
+        await page.locator("#acceptance-decision").textContent(),
+        "REVIEW",
+      );
       const overflow = await page.evaluate(() =>
         [...document.querySelectorAll("body *")]
           .filter((el) => el.getBoundingClientRect().right > innerWidth + 1)
@@ -162,6 +182,25 @@ test("camera UI saves the controller frame shape and backend recomputes placemen
         { exact: true },
       )
       .waitFor();
+    const originalNow = await page.evaluate(() => Date.now());
+    const active = service.commissioning.store.list("sessions")[0];
+    await page.evaluate((value) => {
+      Date.now = () => value;
+    }, active.expiresAt + 1);
+    await page.waitForFunction(() =>
+      document
+        .getElementById("capture-deadline")
+        .textContent.includes("expired"),
+    );
+    assert.equal(
+      await page
+        .getByRole("button", { name: "Save camera measurement" })
+        .isDisabled(),
+      true,
+    );
+    await page.evaluate((value) => {
+      Date.now = () => value;
+    }, originalNow);
     await page.getByRole("button", { name: "Run rehearsal" }).click();
     await page.getByText("Local inspection: REVIEW", { exact: true }).waitFor();
     const [session] = service.commissioning.store.list("sessions");

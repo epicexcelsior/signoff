@@ -7,11 +7,7 @@ import { DatabaseSync } from "node:sqlite";
 import { fixture, server } from "./helpers.js";
 import { Store } from "../src/store.js";
 import { CommissioningService, verifyPacket } from "../src/commissioning.js";
-import {
-  createOpticalChallenge,
-  opticalMessage,
-  verifyOpticalExecution,
-} from "../src/optical.js";
+import { opticalMessage } from "../src/optical.js";
 import { encodeOpticalChallenge } from "../public/vision/optical.js";
 import { artifactDigest, canonicalJson } from "../src/artifacts.js";
 import {
