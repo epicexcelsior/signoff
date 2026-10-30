@@ -5,7 +5,13 @@ import {
   stringToHex,
 } from "viem";
 import { estimateL1Fee, estimateOperatorFee } from "viem/op-stack";
-import { commissioningAbi, prepareCall, sourceResponseDigest } from "./abi.mjs";
+import {
+  commissioningAbi,
+  prepareCall,
+  sourceResponseDigest,
+  acceptanceHash,
+  DECISIONS,
+} from "./abi.mjs";
 import {
   NVD_SIGNER,
   NVD_REQUEST_HASH,
@@ -124,15 +130,16 @@ const finalization = (config, jobId, response) =>
     stringToHex(response.data),
     response.signature,
   ]);
-const revert = (error) => {
+// Only the intended custom error counts as rejection evidence.
+const revertName = (error) => {
   for (let e = error; e; e = e.cause)
     if (
       ["ContractFunctionRevertedError", "ExecutionRevertedError"].includes(
         e.name,
       )
     )
-      return true;
-  return false;
+      return e.data?.errorName ?? null;
+  return null;
 };
 
 export async function judgeReadOnly({
@@ -144,13 +151,34 @@ export async function judgeReadOnly({
   staleResponse,
   wrongRequestResponse,
   wrongKeyResponse,
+  blockNumber,
   verifyResponse = verifyNvdResponse,
   verifySignature = verifySignedResponse,
 }) {
   contract = address(contract);
   if ((await client.getChainId()) !== ACCESS_CHAIN_ID)
     fail("JUDGE_CHAIN_MISMATCH", "Use the approved Base Sepolia deployment.");
-  const code = await client.getBytecode({ address: contract });
+  if (
+    blockNumber !== undefined &&
+    (typeof blockNumber !== "bigint" || blockNumber < 0n)
+  )
+    fail(
+      "JUDGE_BLOCK_REQUIRED",
+      "Use a nonnegative integer block number for historical checks.",
+    );
+  const block = await client.getBlock(
+    blockNumber === undefined ? {} : { blockNumber },
+  );
+  if (
+    typeof block.number !== "bigint" ||
+    !/^0x[0-9a-fA-F]{64}$/.test(block.hash ?? "")
+  )
+    fail(
+      "JUDGE_BLOCK_UNAVAILABLE",
+      "The reader must return the original block number and hash.",
+    );
+  const pinnedBlock = { blockNumber: block.number };
+  const code = await client.getBytecode({ address: contract, ...pinnedBlock });
   if (
     !/^0x[0-9a-f]{64}$/.test(runtimeCodeHash ?? "") ||
     !code ||
@@ -166,16 +194,15 @@ export async function judgeReadOnly({
       abi: commissioningAbi,
       functionName,
       args,
+      ...pinnedBlock,
     });
-  const [signer, requestHash, maxAge, maxSourceAge, job, block] =
-    await Promise.all([
-      read("airnode"),
-      read("requestHash"),
-      read("maxAttestationAge"),
-      read("maxSourceAge"),
-      read("getJob", [jobId]),
-      client.getBlock(),
-    ]);
+  const [signer, requestHash, maxAge, maxSourceAge, job] = await Promise.all([
+    read("airnode"),
+    read("requestHash"),
+    read("maxAttestationAge"),
+    read("maxSourceAge"),
+    read("getJob", [jobId]),
+  ]);
   if (
     !sameAddress(signer, NVD_SIGNER) ||
     requestHash !== NVD_REQUEST_HASH ||
@@ -244,20 +271,26 @@ export async function judgeReadOnly({
       "Use fresh wrong-request and wrong-key responses to isolate signature rejection from expiry.",
     );
   const cases = [
-    ["valid", validResponse, true],
-    ["edited", { ...validResponse, data: validResponse.data + " " }, false],
-    ["stale", staleResponse, false],
-    ["other-request", wrongRequestResponse, false],
-    ["wrong-key", wrongKeyResponse, false],
+    ["valid", validResponse, null],
+    [
+      "edited",
+      { ...validResponse, data: validResponse.data + " " },
+      "NotSignedByAirnode",
+    ],
+    ["stale", staleResponse, "InvalidOracle"],
+    ["other-request", wrongRequestResponse, "NotSignedByAirnode"],
+    ["wrong-key", wrongKeyResponse, "NotSignedByAirnode"],
   ];
   const results = [];
-  for (const [name, response, success] of cases) {
+  for (const [name, response, expectedRevert] of cases) {
     let accepted = false;
+    let observedRevert = null;
     try {
       await client.simulateContract({
         address: contract,
         abi: commissioningAbi,
         functionName: "finalize",
+        ...pinnedBlock,
         args: [
           jobId,
           BigInt(response.timestamp),
@@ -267,13 +300,19 @@ export async function judgeReadOnly({
       });
       accepted = true;
     } catch (error) {
-      if (!revert(error)) throw error;
+      observedRevert = revertName(error);
+      if (!observedRevert) throw error;
     }
     results.push({
       case: name,
-      expected: success ? "SUCCEED" : "REVERT",
+      expected: expectedRevert === null ? "SUCCEED" : "REVERT",
+      expectedRevert,
       observed: accepted ? "SUCCEEDED" : "REVERTED",
-      passed: accepted === success,
+      observedRevert,
+      passed:
+        expectedRevert === null
+          ? accepted
+          : !accepted && observedRevert === expectedRevert,
     });
   }
   if (results.some((result) => !result.passed))
@@ -281,11 +320,11 @@ export async function judgeReadOnly({
       "JUDGE_CASE_FAILED",
       "At least one deployed-contract simulation differs from the mandatory outcome.",
     );
-  const after = await read("getJob", [jobId]);
-  if (Number(after.decision) !== 1)
+  const after = await client.getBlock(pinnedBlock);
+  if (after.hash !== block.hash)
     fail(
-      "JUDGE_JOB_CHANGED",
-      "The job changed during read-only checking. Inspect original chain state.",
+      "JUDGE_BLOCK_CHANGED",
+      "The pinned block changed during checking. Preserve the original result and inspect the chain.",
     );
   return {
     schema: "proof-of-ready/api3-judge-read/v1",
@@ -293,11 +332,20 @@ export async function judgeReadOnly({
     contract,
     jobId,
     checkedAt: now,
+    blockNumber: block.number.toString(),
+    blockHash: block.hash,
+    historical: blockNumber !== undefined,
     runtimeCodeHash,
     sourceResponseDigest: sourceResponseDigest(validResponse),
     mode: "ETH_CALL_ONLY",
     results,
     validSourcePolicy: valid.verdict,
+    commitments: {
+      workOrderDigest: job.workOrderDigest,
+      buildManifestDigest: job.buildManifestDigest,
+      inspectionDigest: job.inspectionDigest,
+      paymentEvidenceDigest: job.paymentEvidenceDigest,
+    },
     expectedTerminalDecision:
       !job.inspectionPassed || valid.verdict === "FAIL"
         ? "REJECTED"
@@ -311,5 +359,114 @@ export async function judgeReadOnly({
     ),
     limitation:
       "All five checks use eth_call against deployed code. No transaction or state change occurred. Actual valid finalization and its transaction hash remain required. Cardano seller receipt remains a separate independently verified operator assertion.",
+  };
+}
+
+// A successful eth_call is separate from an actual mined state transition.
+export async function verifyFinalization({ client, check, transactionHash }) {
+  if (
+    check?.schema !== "proof-of-ready/api3-judge-read/v1" ||
+    check.mode !== "ETH_CALL_ONLY" ||
+    check.results?.length !== 5 ||
+    check.results.some((result) => !result.passed) ||
+    !/^0x[0-9a-fA-F]{64}$/.test(transactionHash ?? "")
+  )
+    fail(
+      "JUDGE_PROOF_INPUT",
+      "Use the original five-case check and actual finalization transaction hash.",
+    );
+  if (
+    (await client.getChainId()) !== ACCESS_CHAIN_ID ||
+    check.chainId !== ACCESS_CHAIN_ID
+  )
+    fail("JUDGE_CHAIN_MISMATCH", "Use the approved Base Sepolia deployment.");
+  const [transaction, receipt] = await Promise.all([
+    client.getTransaction({ hash: transactionHash }),
+    client.getTransactionReceipt({ hash: transactionHash }),
+  ]);
+  if (
+    receipt.status !== "success" ||
+    receipt.transactionHash !== transactionHash ||
+    transaction.hash !== transactionHash ||
+    !sameAddress(transaction.to, check.contract) ||
+    transaction.input !== check.unsignedValidCall.data ||
+    transaction.value !== 0n ||
+    receipt.blockNumber <= BigInt(check.blockNumber) ||
+    transaction.blockHash !== receipt.blockHash
+  )
+    fail(
+      "JUDGE_FINALIZATION_MISMATCH",
+      "The mined transaction must contain the original valid finalization call and succeed after the judge check.",
+    );
+  const at = { blockNumber: receipt.blockNumber };
+  const [block, checkedBlock, code, job] = await Promise.all([
+    client.getBlock(at),
+    client.getBlock({ blockNumber: BigInt(check.blockNumber) }),
+    client.getBytecode({ address: check.contract, ...at }),
+    client.readContract({
+      address: check.contract,
+      abi: commissioningAbi,
+      functionName: "getJob",
+      args: [check.jobId],
+      ...at,
+    }),
+  ]);
+  if (
+    block.hash !== receipt.blockHash ||
+    checkedBlock.hash !== check.blockHash ||
+    !code ||
+    keccak256(code) !== check.runtimeCodeHash
+  )
+    fail(
+      "JUDGE_PROOF_CHAIN_CHANGED",
+      "The original check block, mined transaction block, and pinned contract code must match.",
+    );
+  if (
+    !check.commitments ||
+    Object.entries(check.commitments).length !== 4 ||
+    ![
+      "workOrderDigest",
+      "buildManifestDigest",
+      "inspectionDigest",
+      "paymentEvidenceDigest",
+    ].every(
+      (field) =>
+        /^0x[0-9a-f]{64}$/.test(check.commitments[field] ?? "") &&
+        job[field] === check.commitments[field],
+    ) ||
+    !job.inspectionRecorded ||
+    !job.sellerReceived ||
+    job.sourceResponseDigest !== check.sourceResponseDigest ||
+    DECISIONS[Number(job.decision)] !== check.expectedTerminalDecision ||
+    ![2, 3, 4].includes(Number(job.decision)) ||
+    job.acceptanceHash !==
+      acceptanceHash({
+        chainId: ACCESS_CHAIN_ID,
+        contract: check.contract,
+        jobId: check.jobId,
+        job,
+      })
+  )
+    fail(
+      "JUDGE_FINAL_STATE_MISMATCH",
+      "The mined terminal state must preserve the original job, inspection, seller receipt, and signed source commitments.",
+    );
+  return {
+    schema: "proof-of-ready/api3-finalization-proof/v1",
+    chainId: ACCESS_CHAIN_ID,
+    contract: check.contract,
+    jobId: check.jobId,
+    transactionHash,
+    blockNumber: receipt.blockNumber.toString(),
+    blockHash: receipt.blockHash,
+    judgeBlockNumber: check.blockNumber,
+    judgeBlockHash: check.blockHash,
+    decision: DECISIONS[Number(job.decision)],
+    sourceResponseDigest: job.sourceResponseDigest,
+    acceptanceHash: job.acceptanceHash,
+    gasUsed: receipt.gasUsed.toString(),
+    mode: "MINED_TRANSACTION_AND_PINNED_STATE",
+    limitation:
+      "Cardano payment remains an independently verified operator assertion. The contract does not verify Cardano consensus or physical truth.",
   };
 }

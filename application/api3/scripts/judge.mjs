@@ -6,15 +6,16 @@ import {
   prepareDeployment,
   estimateDeployment,
   judgeReadOnly,
+  verifyFinalization,
 } from "../src/judge.mjs";
 import { privatePath, AccessError, fail } from "../src/access.mjs";
 process.umask(0o077);
 try {
   const [action, configFile, outputFile] = process.argv.slice(2);
-  if (!["deploy-plan", "check"].includes(action))
+  if (!["deploy-plan", "check", "finalized"].includes(action))
     fail(
       "JUDGE_USAGE",
-      "Use deploy-plan PRIVATE_CONFIG PRIVATE_OUTPUT or check PRIVATE_CONFIG PRIVATE_OUTPUT.",
+      "Use deploy-plan, check, or finalized with PRIVATE_CONFIG PRIVATE_OUTPUT.",
     );
   const config = JSON.parse(readFileSync(privatePath(configFile), "utf8"));
   if (config.schema !== "proof-of-ready/api3-judge-config/v1")
@@ -53,16 +54,28 @@ try {
   } else {
     const response = (name) =>
       JSON.parse(readFileSync(privatePath(config[name]), "utf8"));
-    result = await judgeReadOnly({
+    const check = await judgeReadOnly({
       client,
       contract: config.contract,
       runtimeCodeHash: config.runtimeCodeHash,
       jobId: config.jobId,
+      blockNumber:
+        config.blockNumber === undefined
+          ? undefined
+          : BigInt(config.blockNumber),
       validResponse: response("validResponseFile"),
       staleResponse: response("staleResponseFile"),
       wrongRequestResponse: response("wrongRequestResponseFile"),
       wrongKeyResponse: response("wrongKeyResponseFile"),
     });
+    result =
+      action === "finalized"
+        ? await verifyFinalization({
+            client,
+            check,
+            transactionHash: config.finalizedTransactionHash,
+          })
+        : check;
   }
   const output = privatePath(outputFile);
   mkdirSync(dirname(output), { recursive: true, mode: 0o700 });

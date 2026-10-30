@@ -164,6 +164,22 @@ Extend private configuration with the deployed `contract`, independently pinned 
 npm run judge -- check /private/api3/judge-config.json /private/api3/judge-check.json
 ```
 
-The checker pins actual chain, runtime bytecode, source, freshness policy, and an open original job with recorded inspection and seller-receipt assertion. It authenticates the source inputs before testing. It checks valid success plus edited, stale, other-request, and wrong-key rejection through `eth_call`. Fresh negative cases isolate signature/request failures from expiry. RPC failures never count as successful rejection.
+The checker pins every read and simulation to one block. It records that block number and hash. It checks the runtime code, source, freshness policy, enrolled build, and open job prerequisites.
+
+The valid case must succeed. Edited, other-request, and wrong-key cases must return `NotSignedByAirnode`. The stale case must return `InvalidOracle`. Other errors fail the check. Fresh negative cases isolate signature rejection from expiry. A finalized job, expired job, or RPC failure cannot satisfy a rejection case.
 
 The output states `mode:ETH_CALL_ONLY`. It preserves the source commitment and returns the unsigned valid finalization call. These deployed-code simulations do not send transactions or change contract state. Submit the approved valid call separately, preserve its transaction hash, and read the actual terminal decision. No judge result exists until the command runs against the genuine prepared deployment. Local tests inject verifier/client fixtures and never establish sponsor qualification.
+
+## Replay judge checks and verify mined finalization
+
+After finalization, set `blockNumber` in private configuration to the original check's decimal block number. Preserve all four original response files. Run `check` again with a new output path. Historical replay uses the original open job and original source freshness window. It does not alter current chain state. The RPC must support historical reads at that block.
+
+Set `finalizedTransactionHash` to the actual finalization transaction hash. Keep `blockNumber` at the original check block. Run:
+
+```sh
+npm run judge -- finalized /private/api3/judge-config.json /private/api3/finalization-proof.json
+```
+
+This command repeats the five historical checks. It then checks the mined transaction and terminal state at the receipt block. The transaction must match the original unsigned call exactly. The proof checks the block hashes, runtime code, all job commitments, source digest, terminal decision, and acceptance hash.
+
+A successful proof states `mode:MINED_TRANSACTION_AND_PINNED_STATE`. An `ETH_CALL_ONLY` report alone does not establish a state change. The Cardano payment remains an independently verified operator assertion. The contract does not establish Cardano consensus or physical truth.

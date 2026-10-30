@@ -5,8 +5,9 @@ import {
   prepareDeployment,
   estimateDeployment,
   judgeReadOnly,
+  verifyFinalization,
 } from "../src/judge.mjs";
-import { commissioningAbi } from "../src/abi.mjs";
+import { commissioningAbi, acceptanceHash } from "../src/abi.mjs";
 import { NVD_SIGNER, NVD_REQUEST_HASH } from "../src/index.mjs";
 const account = "0x1111111111111111111111111111111111111111";
 const code = "0x1234";
@@ -26,7 +27,7 @@ test("deployment plan binds approved operator/source and includes separate Base 
     }),
     getTransactionCount: async () => 2,
     getBalance: async () => 10000n,
-    getBlock: async () => ({ timestamp: 1000n }),
+    getBlock: async () => ({ timestamp: 1000n, number: 100n, hash: digest }),
   };
   const estimated = await estimateDeployment({
     client,
@@ -58,7 +59,10 @@ function fixture() {
     sellerReceived: true,
     inspectionPassed: true,
     deadline: 2000n,
+    workOrderDigest: digest,
     buildManifestDigest: digest,
+    inspectionDigest: digest,
+    paymentEvidenceDigest: digest,
     maxCvssTenths: 70,
   };
   const signed = {
@@ -71,7 +75,7 @@ function fixture() {
   const client = {
     getChainId: async () => 84532,
     getBytecode: async () => code,
-    getBlock: async () => ({ timestamp: 1000n }),
+    getBlock: async () => ({ timestamp: 1000n, number: 100n, hash: digest }),
     readContract: async ({ functionName }) =>
       ({
         airnode: NVD_SIGNER,
@@ -81,7 +85,8 @@ function fixture() {
         getJob: job,
         builds: [true, 1009000],
       })[functionName],
-    simulateContract: async ({ args }) => {
+    simulateContract: async ({ args, blockNumber }) => {
+      assert.equal(blockNumber, 100n);
       if (
         args[1] !== 1000n ||
         args[2] !== "0x7b7d" ||
@@ -89,6 +94,9 @@ function fixture() {
       ) {
         const error = new Error("fixture revert");
         error.name = "ContractFunctionRevertedError";
+        error.data = {
+          errorName: args[1] !== 1000n ? "InvalidOracle" : "NotSignedByAirnode",
+        };
         throw error;
       }
     },
@@ -162,4 +170,138 @@ test("judge never counts RPC failure, missing prerequisites, wrong code or ineff
   await assert.rejects(judgeReadOnly(f), {
     code: "JUDGE_OTHER_REQUEST_REQUIRED",
   });
+});
+
+test("judge rejects wrong-cause reverts and pins all five checks to the same historical block", async () => {
+  let f = fixture();
+  const simulate = f.client.simulateContract;
+  f.client.simulateContract = async (args) => {
+    try {
+      return await simulate(args);
+    } catch (error) {
+      error.data.errorName = "InvalidState";
+      throw error;
+    }
+  };
+  await assert.rejects(judgeReadOnly(f), { code: "JUDGE_CASE_FAILED" });
+  f = fixture();
+  let reads = 0;
+  f.blockNumber = 100n;
+  f.client.getBlock = async ({ blockNumber }) => {
+    assert.equal(blockNumber, 100n);
+    reads++;
+    return { number: 100n, timestamp: 1000n, hash: digest };
+  };
+  const read = f.client.readContract;
+  f.client.readContract = async (args) => {
+    assert.equal(args.blockNumber, 100n);
+    return read(args);
+  };
+  const result = await judgeReadOnly(f);
+  assert.equal(reads, 2);
+  assert.equal(result.blockHash, digest);
+  assert.equal(result.blockNumber, "100");
+  assert.equal(result.historical, true);
+  assert.deepEqual(
+    result.results.map((x) => x.observedRevert),
+    [
+      null,
+      "NotSignedByAirnode",
+      "InvalidOracle",
+      "NotSignedByAirnode",
+      "NotSignedByAirnode",
+    ],
+  );
+});
+test("judge rejects reorganization and empty revert data", async () => {
+  let f = fixture();
+  let reads = 0;
+  f.client.getBlock = async () => ({
+    number: 100n,
+    timestamp: 1000n,
+    hash: reads++ ? `0x${"cd".repeat(32)}` : digest,
+  });
+  await assert.rejects(judgeReadOnly(f), { code: "JUDGE_BLOCK_CHANGED" });
+  f = fixture();
+  f.client.simulateContract = async () => {
+    const error = new Error("unknown revert");
+    error.name = "ExecutionRevertedError";
+    throw error;
+  };
+  await assert.rejects(judgeReadOnly(f), /unknown revert/);
+});
+
+test("mined proof binds original calldata, block, source, commitments and terminal decision", async () => {
+  const f = fixture();
+  const check = await judgeReadOnly(f);
+  const hash = `0x${"de".repeat(32)}`;
+  const blockHash = `0x${"ee".repeat(32)}`;
+  const job = {
+    ...f.job,
+    decision: 2,
+    sourceResponseDigest: check.sourceResponseDigest,
+  };
+  job.acceptanceHash = acceptanceHash({
+    chainId: 84532,
+    contract: account,
+    jobId: digest,
+    job,
+  });
+  const receipt = {
+    status: "success",
+    transactionHash: hash,
+    blockNumber: 101n,
+    blockHash,
+    gasUsed: 150000n,
+  };
+  const transaction = {
+    hash,
+    to: account,
+    input: check.unsignedValidCall.data,
+    value: 0n,
+    blockHash,
+  };
+  const client = {
+    ...f.client,
+    getTransaction: async () => transaction,
+    getTransactionReceipt: async () => receipt,
+    getBlock: async ({ blockNumber }) => ({
+      number: blockNumber,
+      hash: blockNumber === 100n ? digest : blockHash,
+    }),
+    readContract: async ({ blockNumber }) => {
+      assert.equal(blockNumber, 101n);
+      return job;
+    },
+  };
+  const result = await verifyFinalization({
+    client,
+    check,
+    transactionHash: hash,
+  });
+  assert.equal(result.mode, "MINED_TRANSACTION_AND_PINNED_STATE");
+  assert.equal(result.decision, "ACCEPTED");
+  assert.equal(result.acceptanceHash, job.acceptanceHash);
+  transaction.input += "00";
+  await assert.rejects(
+    verifyFinalization({ client, check, transactionHash: hash }),
+    { code: "JUDGE_FINALIZATION_MISMATCH" },
+  );
+  transaction.input = check.unsignedValidCall.data;
+  job.inspectionDigest = `0x${"cd".repeat(32)}`;
+  await assert.rejects(
+    verifyFinalization({ client, check, transactionHash: hash }),
+    { code: "JUDGE_FINAL_STATE_MISMATCH" },
+  );
+  job.inspectionDigest = digest;
+  job.sourceResponseDigest = digest;
+  await assert.rejects(
+    verifyFinalization({ client, check, transactionHash: hash }),
+    { code: "JUDGE_FINAL_STATE_MISMATCH" },
+  );
+  receipt.status = "reverted";
+  await assert.rejects(
+    verifyFinalization({ client, check, transactionHash: hash }),
+    { code: "JUDGE_FINALIZATION_MISMATCH" },
+  );
 });
