@@ -84,7 +84,7 @@ Packet verification checks internal consistency. An independently obtained work-
 
 ## Camera and optical interfaces
 
-Import `createVisionController` from `/vision/controller.js`. Supply `{video,canvas?,policy,onState,onMeasurement}`. The controller exposes `start()`, `stop()`, `capture({sessionId})`, and `getState()`. State uses `phase`, including `ACTIVE`, `STOPPED`, `STARTING`, and `ERROR`.
+Import `createVisionController` from `/vision/controller.js`. Supply `{video,canvas?,policy,opticalRoi?,onState,onMeasurement}`. The optional `opticalRoi` draws the same marker-relative region used by optical sampling. Missing/wrong markers, unusable geometry, or out-of-frame projection suppress the guide. This overlay does not establish a measured LED response. The controller exposes `start()`, `stop()`, `capture({sessionId})`, and `getState()`. State uses `phase`, including `ACTIVE`, `STOPPED`, `STARTING`, and `ERROR`.
 
 A capture includes explicit browser-camera source, SHA-256 of RGBA pixel bytes, bounded marker corners, capture time, resolution, camera/calibration identities, planar pose, quality, and predicates. Raw camera/device identifiers and frames remain in the browser. Changed camera, crop, resolution, or zoom invalidates the active calibration and releases the stream. The detector permits one outstanding frame and frees native matrices.
 
