@@ -6,6 +6,21 @@ The goal is agent-orchestrated commissioning with a useful paid inspector and an
 
 **Current demonstrations return REVIEW or REWORK.** READY requires complete physical evidence, a freshly checked seller receipt, an enrolled declared build, and a matching pinned contract decision. No complete physical installation or live paid acceptance exists through this port.
 
+## Submission checkpoint
+
+**The project is not submission-complete.** The local software baseline works. Genuine Cardano inspection and physical evidence remain missing.
+
+| Area       | Complete now                                                                                              | Still missing                                                                                                                      |
+| ---------- | --------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Cardano    | Deterministic inspector, recovery tests, local MPS build, Vendor/Coworker, OS-vault runtime key           | TUM admin grant, Task Seat eligibility, usable credits, buyer/seller funding, real paid inspection, transaction and seller receipt |
+| API3       | Genuine paid signed CVE response, independently reconciled payment, actual Base Sepolia policy deployment | Genuine inspection commitments, all five deployed judge cases, valid finalization transaction                                      |
+| Hardware   | ESP32-C6 builds, signed protocols, safe preparation and read-only firmware review                         | Exact carrier/parts, reviewed wiring, provisioning/flash, real button/LED test, available camera and actual capture                |
+| Submission | Setup README, original live API3 artifacts, evidence manifest, Devfolio draft, 150-second video procedure | Completed live evidence, video recording, approved public release, actual Devfolio submission                                      |
+
+Next: resolve the TUM admin permissions and Cardano funding, identify and test the physical fixture, then reuse the original paid report for API3 finalization. Keep the remaining 0.01 aUSD for fresh data near that final test. The deployed contract alone does not pass the five mandatory cases.
+
+The Seeker companion already builds. The owner plans to connect the Seeker overnight. Native installation, forwarding, camera/BLE tests, and Android instrumentation remain unexecuted. They do not replace the immediate button/LED/camera baseline.
+
 ## Documentation map
 
 Start here, then open the document for your task. Keep each fact in its canonical document.

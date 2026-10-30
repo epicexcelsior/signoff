@@ -31,6 +31,10 @@ The local overview embeds all nine current Markdown documents. HTML, combined Ma
 
 ## Continue work
 
+Main is the integration target. Keep the existing managed worktrees. All reviewed lane changes must be integrated before private main backup. Generated overviews, build artifacts, private wallets, env files, runtime ledgers, and local SDK/service state stay outside tracked source.
+
+The owner will supply board/component details and plans to connect the Seeker overnight. Phone arrival does not establish installation or native verification. The current account cannot approve its own pending TUM grant: it is a Workspace member and platform user. Follow engineering's exact administrator request.
+
 Follow README's four submission priorities. Defer Seeker expansion and autonomous orchestration. Routine funded testnet transactions are authorized with a 0.001 ETH reserve. Public release/submission and electrically unverified hardware actions remain separate. Follow README's execution index. Keep local software work independent from pending hardware and external grants. Separate the integrated fixture demonstration from genuine paid or physical acceptance.
 
 Reuse original resources and identifiers. Prepare the exact network, resource, recipient, amount, fee estimate, recovery path, and configuration before requesting a targeted grant. Keep keys and personal account data out of documentation and tool output.

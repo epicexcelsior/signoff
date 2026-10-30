@@ -225,6 +225,27 @@ This command returns personal account fields. Inspect them locally. Keep them ou
 
 The inspector needs no model key. Dedicated Vendor/Coworker resources, workspace access, vault setup, seller wallet, registration, and scoped MPS keys remain separate prerequisites. Follow [the official setup guide](https://www.masumi.network/tum-hackathon). Routine private account setup and funded testnet transactions now have owner authorization within the task and reserve. Public release remains separate.
 
+### Resolve TUM Workspace permissions
+
+The current account is a TUM Workspace `member` and platform `user`. It cannot approve organization Coworker grants or assign Task Seats. Using the same account key cannot bypass that boundary. A TUM Workspace owner/admin must resolve both permissions. The pinned CLI reports `taskSeatEligible:false`.
+
+Send this request to a TUM organizer or Workspace administrator:
+
+> Please approve Proof of Ready Inspector, Coworker `01a18ea5-25c9-7785-940c-20c977bfff2d`, in TUM-Hackathon. The access request is `01a18ea5-2622-774a-8e22-02c5a8801dd5`. Please enable Task Seat eligibility for my account and confirm usable credits.
+
+An administrator signs into [Sokosumi Preprod](https://preprod.sokosumi.com/) and selects the TUM-Hackathon Workspace. They approve the existing Coworker access request through their Workspace administration interface. Exact button labels remain unverified. The [official Masumi guide](https://www.masumi.network/tum-hackathon) requires both granted access and Task eligibility before organization execution.
+
+After approval, check the original resource rather than creating another:
+
+```sh
+cd application/integrations/masumi
+node --env-file="$HOME/.config/proof-ready/credentials.env" \
+  node_modules/@masumi_network/sokosumi/dist/bin/sokosumi.js \
+  --preprod workspaces check 01a17942-e6dd-724f-bae6-458b6a0f715a --json
+```
+
+Then reconnect the original Coworker with the saved Vendor and organization identifiers. Preserve its existing vault key. `PENDING` or `taskSeatEligible:false` blocks hosted execution. Neither status is a payment failure. No extra wallet key or repeated registration resolves it.
+
 ### Fund the API3 wallet
 
 Read the public address from private `api3/wallet.json`. The wallet received 0.0019 ETH. The approved mint supplied 0.02 aUSD, and the first 0.01 aUSD NVD request settled. Reserve the remaining 0.01 aUSD for fresh finalization evidence. The previous session supplied no separate API3 API key. Priced Airnode access uses x402 with aUSD on Base Sepolia.

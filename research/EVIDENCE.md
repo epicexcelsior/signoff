@@ -93,7 +93,7 @@ Owner-confirmed inventory, October 30, 2026. These are available resources, not 
 | Speakers             | Available. Driver, impedance and power requirements are unknown                                      | Optional later feedback. No current actuator or audio test                                                                   |
 | Raspberry Pi Zero W  | Available. Power, storage, OS and network readiness are unknown                                      | Candidate separate owner receiving monitor. No deployment or device operation is authorized or verified                      |
 | Laptop webcam        | Selected first camera. Latest OS inventory exposes no video device                                   | Marker guidance and optical sampling. Physical accuracy and throughput remain unverified                                     |
-| Solana Mobile Seeker | Confirmed Android phone                                                                              | Built native companion, photo witness and read-only BLE preflight. Install and real-device checks remain pending             |
+| Solana Mobile Seeker | Owner-confirmed phone. Owner plans to connect it overnight. Not connected or installed yet           | Built companion and setup guide are ready. Native instrumentation, camera, BLE, and lifecycle checks remain pending          |
 
 Use the button and LED for the first complete physical sequence. Preserve the rest of the inventory for explicit follow-up capabilities. Device ownership does not authorize flashing, GPIO changes, payments, public deployment, or new chain integration.
 
@@ -256,3 +256,7 @@ A private execution-only request is ready from an original sealed local rehearsa
 Latest OS enumeration found no `/sys/class/video4linux` devices and no `/dev/video*` nodes. USB lists the Espressif JTAG/serial unit. No camera capture, serial connection, reset, flash, or GPIO action ran during this enumeration. The owner must check camera availability and identify the carrier board and components.
 
 [The deployed policy helper check](../application/submission/evidence/deployed-policy-helper.json) used the actual deployment block and unchanged genuine paid NVD data. Native authentication passed. The deployed `evaluate` helper returned FAIL for declared 1.8.0 and PASS for 1.9.0. This was a historical `eth_call` with no state override. The helper itself does not authenticate signatures. It changes no state and completes none of the five mandatory deployed judge cases.
+
+Current role verification returned TUM Workspace role `member`, platform role `user`, and Task Seat `assigned:false`. These credentials cannot approve the pending organization access request. The owner needs a TUM Workspace administrator. No unauthorized approval request or role change ran.
+
+The owner plans to connect the Seeker overnight. This is a future availability statement. No phone connection, installation, forwarding, instrumentation, camera, or BLE operation follows from it. Keep existing worktrees for continuation.
