@@ -1,0 +1,22 @@
+{
+  "name": "proof-of-ready-api3",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "test:contract": "node --test test/contract.integration.mjs",
+    "check": "node --check src/index.mjs && node --check src/policy.mjs && node --check src/abi.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "viem": "2.57.3"
+  },
+  "devDependencies": {
+    "prettier": "3.5.2"
+  }
+}
