@@ -1,5 +1,6 @@
 import { createMarkerDetector, VisionError } from "./detector.js";
 import { evaluateGeometry, normalizePolicy } from "./geometry.js";
+import { createOpticalCapture } from "./optical-capture.js";
 
 const digest = async (bytes) =>
   `0x${Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", bytes)), (value) => value.toString(16).padStart(2, "0")).join("")}`;
@@ -100,6 +101,7 @@ export function createVisionController({
   let startPromise = null;
   let framePromise = null;
   let captureGeneration = null;
+  let opticalCapture = null;
   let timer = null;
   const getState = () => clone(state);
   const publish = () => onState(getState());
@@ -125,6 +127,8 @@ export function createVisionController({
   };
   const release = () => {
     clearTimer();
+    void opticalCapture?.cancel();
+    opticalCapture = null;
     detector?.close();
     detector = null;
     framePromise = null;
@@ -400,5 +404,41 @@ export function createVisionController({
       schedule(expectedGeneration);
     }
   };
-  return { start, stop, capture, getState };
+  const startOpticalCapture = async (options = {}) => {
+    const expectedGeneration = generation;
+    checkActive(expectedGeneration);
+    if (captureGeneration === expectedGeneration)
+      throw new VisionError(
+        "VISION_CAPTURE_BUSY",
+        "Wait for the current camera capture.",
+      );
+    captureGeneration = expectedGeneration;
+    clearTimer();
+    try {
+      if (framePromise) await framePromise;
+      checkActive(expectedGeneration);
+      const handle = createOpticalCapture({
+        ...options,
+        video,
+        detector,
+        policy,
+        assertActive: () => checkActive(expectedGeneration),
+        camera: state.camera,
+        calibrationId: state.calibrationId,
+        onFinish: () => {
+          if (opticalCapture === handle) opticalCapture = null;
+          if (captureGeneration === expectedGeneration)
+            captureGeneration = null;
+          schedule(expectedGeneration);
+        },
+      });
+      opticalCapture = handle;
+      return handle;
+    } catch (error) {
+      if (captureGeneration === expectedGeneration) captureGeneration = null;
+      schedule(expectedGeneration);
+      throw error;
+    }
+  };
+  return { start, stop, capture, startOpticalCapture, getState };
 }
