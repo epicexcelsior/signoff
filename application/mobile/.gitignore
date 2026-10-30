@@ -1,0 +1,7 @@
+# Keep compiled artifacts and local debug signing keys outside reviewed source.
+*.apk
+*.keystore
+*.jks
+*.class
+/build/
+/out/
