@@ -48,14 +48,15 @@ Keep external wiring disconnected until the carrier and button terminals receive
 
 ### Resolve the hardware inputs
 
-| Required evidence                                          | Review decision                                                                                      |
-| ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| Clear front/back carrier-board photos and silkscreen model | Obtain the manufacturer's exact schematic and header pinout                                          |
-| USB connector and board power documentation                | Identify the permitted supply and shared ground                                                      |
-| Button type and terminal layout                            | Identify the two contacts that close only during a press                                             |
-| LED type, polarity, forward voltage, and rated current     | Confirm a discrete low-current indicator compatible with the reviewed GPIO circuit                   |
-| Resistor markings or measured resistance                   | Calculate LED current and compare it with the LED and GPIO limits                                    |
-| Actual build profile                                       | Select separate input/output GPIOs without conflicts, strapping hazards, or board-attached functions |
+| Stage | Required evidence | Review decision |
+| --- | --- | --- |
+| Before onboard optical test | Clear front/back carrier photos, silkscreen, and onboard LED routing | Match the actual carrier and confirm the WS2812 GPIO8 route. |
+| Before flash | USB power documentation and actual image configuration | Preserve USB, storage, identity, and unused pins. Select WS2812 mode. |
+| Before external button test | Reviewed input header, ground, and button terminal layout | Identify the two contacts that close only during a press. |
+| Optional discrete-LED fallback only | LED type, polarity, forward voltage, and rated current | Review an external indicator circuit if the onboard LED proves unsuitable. |
+| Optional discrete-LED fallback only | Resistor markings or measured resistance | Calculate current and compare it with LED and GPIO limits. |
+
+External LED and resistor identification do not block the onboard WS2812 test. Keep the button disconnected until its later wiring review.
 
 [Espressif's GPIO reference](https://docs.espressif.com/projects/esp-idf/en/v6.1/esp32c6/api-reference/peripherals/gpio.html) identifies USB and flash restrictions. The [C6 datasheet](https://www.espressif.com/sites/default/files/documentation/esp32-c6_datasheet_en.pdf) identifies the strapping pins. The exact carrier can add restrictions.
 
@@ -81,38 +82,38 @@ Match the front/back silkscreen, header order, USB connector, LED package, and c
 
 Chip identity does not resolve these inputs. An ESP32-C6 chip label is not a carrier-board model. Never copy GPIO 2/3 from `test/compile-only.defaults` into a physical profile.
 
-The logical circuit has these nets. It is not a pin-to-pin wiring instruction:
+The onboard optical path uses the carrier's existing WS2812 data and power traces. Add no external LED or resistor. The later button path connects a reviewed input to ground through a normally-open switch.
+
+Only the optional discrete-LED fallback uses this logical circuit. It is not a pin-to-pin wiring instruction:
 
 ```text
-reviewed contact input ---- normally-open button ---- reviewed GND
-reviewed optical output -- current-limiting resistor -- LED -- reviewed GND
+reviewed optical output -- current-limiting resistor -- discrete LED -- reviewed GND
 ```
 
-This LED arrangement assumes an active-high output and correct LED polarity. A carrier-board LED can require different wiring or polarity. Review the actual circuit before setting `CONFIG_PROOFREADY_OPTICAL_ACTIVE_LOW`.
+That fallback assumes an active-high output and correct polarity. Review its actual circuit before setting `CONFIG_PROOFREADY_OPTICAL_ACTIVE_LOW`.
 
 After carrier/header confirmation, connect the normally-open button between the reviewed GPIO2 header and GND. Confirm the switch terminal pairs with a continuity meter first. Disconnect USB power before wiring. This is a candidate circuit, not authorization to wire it.
 
 The contact input enables its internal pull-up. A released button means OPEN. A pressed button connects the reviewed input to ground and means CLOSED. Never connect an external voltage to that input. For an external LED, calculate `I = (V_GPIO - V_LED) / R` using documented limits and the actual parts. Never connect an LED directly to a GPIO without its reviewed current-limiting circuit.
 
-After review, record the manufacturer references, physical header labels, GPIO numbers, resistor value, LED polarity, power source, and a wiring photo. Keep those details with the physical evidence. Disconnect power before changing wires.
+After review, record the carrier references, physical header labels, GPIO numbers, power source, and a wiring photo. Record resistor value and polarity only for a discrete-LED fallback. Keep those details with the physical evidence. Disconnect power before changing wires.
 
 ### Prepare provisioning and the private build
 
 Use one private authorization secret of 16–128 exact UTF-8 bytes. A 64-character hexadecimal secret provides a simple printable form. Keep its exact bytes without a trailing newline. Create it outside source with mode `0600`. Never print it or place it in a command argument.
 
-A reviewed private SDK defaults file supplies these values:
+For the first onboard optical test, a reviewed private SDK defaults file uses this shape:
 
 ```text
 CONFIG_PROOFREADY_PROVIDER="your-enrolled-provider"
 CONFIG_PROOFREADY_BOARD_REVIEWED=y
-CONFIG_PROOFREADY_CONTACT_ENABLED=y
-CONFIG_PROOFREADY_CONTACT_GPIO=REVIEWED_CONTACT_GPIO
+CONFIG_PROOFREADY_CONTACT_ENABLED=n
 CONFIG_PROOFREADY_OPTICAL_ENABLED=y
 CONFIG_PROOFREADY_OPTICAL_GPIO=REVIEWED_OPTICAL_GPIO
 # CONFIG_PROOFREADY_OPTICAL_ACTIVE_LOW is not set
 ```
 
-For a carrier-confirmed onboard WS2812, add `CONFIG_PROOFREADY_OPTICAL_WS2812=y` and `CONFIG_PROOFREADY_OPTICAL_BRIGHTNESS=32`. Select the confirmed GPIO8 route. Keep active-low disabled. The contact capability can remain disabled during the initial optical test.
+For a carrier-confirmed onboard WS2812, add `CONFIG_PROOFREADY_OPTICAL_WS2812=y` and `CONFIG_PROOFREADY_OPTICAL_BRIGHTNESS=32`. Select the confirmed GPIO8 route. Keep active-low disabled. Keep the contact capability disabled for the initial optical profile. After button review, add `CONFIG_PROOFREADY_CONTACT_ENABLED=y` and `CONFIG_PROOFREADY_CONTACT_GPIO=REVIEWED_CONTACT_GPIO`. Changing this profile requires a new image review and explicit flash approval. Reuse the original authorization secret, identity, partition layout, and current replay state. Do not repeat flashing to troubleshoot uncertainty.
 
 The WS2812 backend uses a 10 MHz RMT clock, one 24-bit equal-channel GRB pixel, and a 300 µs low latch. It sends dim white for ON and zero for OFF. ESP-IDF's [official RMT example](https://github.com/espressif/esp-idf/blob/fff9895c82d744c7237be8847347bdd1b07c6643/examples/peripherals/rmt/led_strip/main/led_strip_encoder.c) supplies the bit timing reference. The backend waits for each transfer. A missed symbol deadline invalidates emission. An uncertain RMT completion blocks later writes until reviewed recovery. Disconnect USB if an emitter remains lit after a failure.
 
