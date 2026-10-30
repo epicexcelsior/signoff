@@ -163,7 +163,7 @@ const html = `<!doctype html>
 <section><details><summary>Coordinator interface and recovery</summary>${markdown(section("docs/ENGINEERING.md", "Commissioning HTTP interface"))}</details></section>
 <section id="documents"><p class="eyebrow">Complete offline context</p><h2>Full Markdown documents</h2><p>All nine source documents are embedded below. Expand a document to read or download its original Markdown. External services, source code, and the running station remain separate.</p>${fullDocuments}</section>
 <section id="sources"><p class="eyebrow">Canonical source snapshot</p><h2>Generated from the current project documents.</h2><p>Run <code>npm run overview</code> after documentation changes. These source hashes identify this snapshot. They do not certify the claims.</p><ul class="sources">${sources}</ul></section>
-</main><footer>Private local development · No public submission or deployment · No fixture proves physical acceptance or live settlement.</footer></body></html>\n`;
+</main><footer>Private project documentation · Public release and submission require owner authorization · Fixture results remain labeled.</footer></body></html>\n`;
 const formatted = await format(html, { parser: "html" });
 // Export only the explicit document set and repository files linked by those documents.
 // Never traverse ignored originals, runtime directories, or credential configuration.

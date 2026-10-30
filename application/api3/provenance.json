@@ -67,9 +67,12 @@
     "solidity": "0.8.37",
     "foundry": "1.8.7",
     "fixtures": "All signed CVE examples use disposable local test keys. The genuine historical CPE response proves native signature compatibility only.",
-    "liveCveResponse": false,
-    "publicDeployment": false,
-    "liveCardanoReceipt": false
+    "liveCveResponse": true,
+    "publicDeployment": true,
+    "liveCardanoReceipt": false,
+    "deploymentScope": "Base Sepolia CommissioningPolicy contract only. Source release and submission remain private.",
+    "fiveDeployedJudgeCases": false,
+    "liveEvidence": "../submission/evidence-manifest.json"
   },
   "accessClient": {
     "reviewedStarterRevision": "52933ae1fb9371446a927338473466c3d320e19a",

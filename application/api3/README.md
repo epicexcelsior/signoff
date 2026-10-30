@@ -41,7 +41,7 @@ The EIP-712 domain is `AirnodeHub USD`, version `1`. The supported transfer meth
 4. Preserve the public wallet address and private credentials outside source.
 5. Review the exact recipient, token, request and total payment budget before authorizing payment.
 
-The facilitator pays the access-transfer gas. Application deployment/finalization and faucet minting have separate gas requirements. No faucet, mint, live signature, transfer, or external deployment ran during this implementation.
+The facilitator pays the access-transfer gas. Application deployment/finalization and faucet minting have separate gas requirements. The approved mint, first genuine paid NVD request, and CommissioningPolicy deployment now confirmed on Base Sepolia. [The evidence manifest](../submission/evidence-manifest.json) records their actual transactions. Five deployed judge cases remain pending genuine paid-inspection commitments.
 
 Cardano escrow can outlast the five-minute API3 source freshness window. Fetch fresh CVE data near contract finalization. An earlier response can test authenticity without satisfying later freshness. A 0.02 aUSD total budget covers two 0.01 aUSD requests. It does not include application gas.
 
@@ -88,7 +88,7 @@ For an external wallet, sign the original saved typed-data plan. Import only its
 npm run access -- import-signature ORIGINAL_ACCESS_ID /private/proof-ready/api3/original-signature
 ```
 
-These commands are instructions for a later authorized operation. This implementation did not run them against a live wallet.
+These commands are instructions for a later authorized operation. The first approved request used the existing live test wallet and settled. Preserve its original ledger. Remaining calls require the budget and reserve checks.
 
 The client commits SIGNING before invoking a signer. It commits SUBMITTING before sending the paid HTTP request. Another connection or restart cannot repeat either claim. A lost signing reply requires the original signature. A lost paid response remains UNRESOLVED. No automatic new quote, nonce, signature or HTTP retry exists.
 
