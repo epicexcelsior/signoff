@@ -3,153 +3,217 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#193ec8" />
-    <title>FieldProof — a fresh answer before dispatch</title>
-    <link rel="stylesheet" href="/style.css" />
-    <script type="module" src="/app.js"></script>
+    <meta name="theme-color" content="#2447cd" />
+    <title>Proof of Ready — commissioning station</title>
+    <link rel="stylesheet" href="/commissioning.css" />
+    <script type="module" src="/commissioning.js"></script>
   </head>
   <body>
     <header class="masthead">
-      <a class="brand" href="/" aria-label="FieldProof home"
-        ><span class="brand-mark" aria-hidden="true">F<span>↗</span></span
-        >FieldProof</a
+      <a class="brand" href="/" aria-label="Proof of Ready home"
+        ><span class="brand-mark" aria-hidden="true">↳</span> Proof of Ready</a
       >
-      <span class="mode" id="mode">Connecting</span>
+      <div class="header-meta">
+        <a href="/observation.html">Observation lab ↗</a
+        ><span id="mode">Connecting</span>
+      </div>
     </header>
     <main>
       <div class="intro">
-        <p class="eyebrow">Remote operations / gate contact</p>
-        <h1>A fresh answer.<br />Then a decision.</h1>
+        <div>
+          <p class="eyebrow">Agent-orchestrated commissioning</p>
+          <h1>Commission the work.<br /><span>Keep the proof.</span></h1>
+        </div>
         <p>
-          An agent buys one signed observation before it decides to dispatch.
-          Each answer belongs to one request.
+          Approve the test. Follow the physical sequence. Inspect what passed,
+          what failed, and what still needs evidence.
         </p>
       </div>
-      <div class="workspace">
-        <section class="instrument" aria-labelledby="decision-heading">
-          <div class="instrument-top">
-            <span class="eyebrow">Decision station</span
-            ><span id="freshness">No observation</span>
-          </div>
-          <div class="gate" id="gate" data-state="unknown" aria-hidden="true">
-            <div class="post left"></div>
-            <div class="post right"></div>
-            <div class="barrier"><i></i><i></i><i></i><i></i></div>
-            <div class="ground"></div>
-            <span class="sensor-dot"></span
-            ><span class="gate-label">Gate contact</span>
-          </div>
-          <div class="decision" id="decision-panel">
-            <p class="eyebrow" id="contact-state">Awaiting evidence</p>
-            <h2 id="decision-heading">WAIT</h2>
-            <p id="reason">Run a check to obtain a fresh, signed answer.</p>
-          </div>
-          <div class="instrument-footer">
-            <span>Observation age <strong id="age">—</strong></span
-            ><span>Sample agreement <strong id="samples">—</strong></span>
-          </div>
-        </section>
-        <section class="controls" aria-labelledby="check-heading">
-          <p class="eyebrow">One request / one observation</p>
-          <h2 id="check-heading">Check before you go.</h2>
-          <p id="mode-description">Loading the local configuration.</p>
-          <fieldset id="simulation-controls">
-            <legend>Simulated contact</legend>
-            <label
-              ><input type="radio" name="contact" value="open" checked />
-              Open</label
-            >
-            <label
-              ><input type="radio" name="contact" value="closed" />
-              Closed</label
-            >
-          </fieldset>
-          <button class="primary" id="run" disabled>
-            Run simulated check <span aria-hidden="true">↗</span>
-          </button>
-          <div class="feedback" id="feedback" role="status" aria-live="polite">
-            Connecting to the local service.
-          </div>
-          <div class="payment-box">
+      <ol class="flow" aria-label="Commissioning steps">
+        <li id="flow-order" aria-current="step">
+          <span>1</span> Approve work order
+        </li>
+        <li id="flow-capture"><span>2</span> Capture the test</li>
+        <li id="flow-report"><span>3</span> Inspect the result</li>
+      </ol>
+      <div class="station">
+        <section class="order-panel" aria-labelledby="order-heading">
+          <p class="eyebrow">Operator / work order</p>
+          <h2 id="order-heading">Define ready.</h2>
+          <label for="asset">Installation reference</label
+          ><input
+            id="asset"
+            maxlength="120"
+            value="Cabinet 07 · contact monitor"
+          />
+          <dl class="spec">
             <div>
-              <span class="eyebrow">Payment</span
-              ><strong id="payment-state">No payment</strong>
+              <dt>Placement</dt>
+              <dd>100 mm right of reference<br />±8 mm / ±8°</dd>
             </div>
-            <p id="payment-detail">
-              Each check costs 2 tADA in Preprod. Simulation moves no funds.
+            <div>
+              <dt>Function</dt>
+              <dd>Three fresh contact states</dd>
+            </div>
+            <div>
+              <dt>Delivery</dt>
+              <dd>Local owner monitor / 5 s</dd>
+            </div>
+            <div>
+              <dt>Acceptance</dt>
+              <dd>Physical evidence, paid inspection, software policy</dd>
+            </div>
+          </dl>
+          <button class="primary" id="approve" disabled>
+            Approve work order <span aria-hidden="true">→</span>
+          </button>
+          <p id="order-status" class="note">
+            The approved requirements stay fixed for every capture attempt.
+          </p>
+          <div class="divider"></div>
+          <label for="history">Saved attempts</label
+          ><select id="history">
+            <option value="">No attempts yet</option>
+          </select>
+          <button class="text-button" id="new-order" hidden>
+            Approve a different work order
+          </button>
+        </section>
+        <section class="capture-panel" aria-labelledby="capture-heading">
+          <div class="section-top">
+            <div>
+              <p class="eyebrow">Technician / evidence capture</p>
+              <h2 id="capture-heading">Show the installation.</h2>
+            </div>
+            <span id="capture-state" class="pill">No capture</span>
+          </div>
+          <div class="camera-stage" id="camera-stage">
+            <video id="camera" muted playsinline hidden></video
+            ><canvas id="overlay" hidden></canvas>
+            <div
+              class="placement-preview"
+              id="placement-preview"
+              aria-label="Reference marker and device marker target illustration"
+            >
+              <div class="reference-marker">
+                <span>0</span><small>REFERENCE</small>
+              </div>
+              <div class="dimension"><span>100 mm</span><i></i></div>
+              <div class="device-marker">
+                <span>10</span><small>DEVICE</small>
+              </div>
+              <p>Align the device marker with the approved target.</p>
+            </div>
+            <div class="stage-footer">
+              <span id="camera-status"
+                >Camera off · frames stay on this device</span
+              ><a href="/vision/target.svg" target="_blank" rel="noopener"
+                >Print markers ↗</a
+              >
+            </div>
+          </div>
+          <div class="camera-actions">
+            <button class="secondary" id="start-camera">
+              Start laptop camera</button
+            ><button class="secondary" id="begin-capture" disabled>
+              Start capture attempt</button
+            ><button class="secondary" id="capture-frame" disabled>
+              Save camera measurement</button
+            ><button class="text-button" id="stop-camera" disabled>
+              Stop camera
+            </button>
+          </div>
+          <div id="rehearsal-controls" class="rehearsal-controls">
+            <label for="scenario"
+              >Rehearsal condition<select id="scenario">
+                <option value="correct">Correct placement and function</option>
+                <option value="misplaced">Device outside the target</option>
+                <option value="stuck">Contact stuck in one state</option>
+                <option value="missing-delivery">
+                  Observation never reaches owner
+                </option>
+              </select></label
+            ><button class="primary" id="run-rehearsal" disabled>
+              Run rehearsal <span aria-hidden="true">↗</span>
+            </button>
+          </div>
+          <div id="physical-controls" class="physical-controls" hidden>
+            <p id="contact-instruction">
+              Start a fresh attempt before reading the contact.
             </p>
-            <code id="transaction"></code>
+            <button class="secondary" id="contact-step" disabled>
+              Read contact</button
+            ><button class="secondary" id="inspect" disabled>
+              Close capture and inspect
+            </button>
           </div>
-          <div class="recovery" id="recovery" hidden>
-            <button id="reconcile" class="secondary">Reconcile payment</button>
-            <button id="observe" class="secondary">Capture observation</button>
-          </div>
-          <p class="limit">
-            A signature proves the observation’s source. It does not prove
-            universal physical truth. A dispatch decision does not actuate
-            hardware.
+          <p id="feedback" class="feedback" role="status" aria-live="polite">
+            Connecting to the local coordinator.
           </p>
         </section>
       </div>
-      <section class="record" aria-labelledby="record-heading">
-        <div class="section-title">
+      <section class="report-panel" aria-labelledby="report-heading">
+        <div class="report-intro">
           <div>
-            <p class="eyebrow">Inspect the evidence</p>
-            <h2 id="record-heading">The check record.</h2>
-          </div>
-          <label class="history-label" for="history"
-            >Recent checks
-            <select id="history">
-              <option value="">No checks yet</option>
-            </select></label
-          >
-        </div>
-        <div class="record-grid">
-          <div>
-            <h3>What happened</h3>
-            <p class="record-id" id="record-id">
-              Your first check will appear here.
-            </p>
-            <ol id="events" class="events"></ol>
-          </div>
-          <div class="receipt-editor">
-            <div class="editor-heading">
-              <h3>Verify a receipt</h3>
-              <button class="text-button" id="original" disabled>
-                Use original
-              </button>
-            </div>
-            <label for="receipt"
-              >Edit the signed response and check it against the original
-              request.</label
-            >
-            <textarea
-              id="receipt"
-              spellcheck="false"
-              placeholder="A signed receipt appears after a completed observation."
-            ></textarea>
-            <div class="editor-actions">
-              <button class="secondary" id="verify" disabled>
-                Verify receipt</button
-              ><button class="text-button" id="change" disabled>
-                Change one value
-              </button>
-            </div>
-            <p
-              id="verification"
-              class="verification"
-              role="status"
-              aria-live="polite"
-            >
-              The stored evidence stays unchanged when you test a copy.
+            <p class="eyebrow">Inspector / acceptance decision</p>
+            <h2 id="report-heading">Evidence before acceptance.</h2>
+            <p id="report-description">
+              A useful inspection explains both a defect and the next required
+              check.
             </p>
           </div>
+          <div class="decision-block" id="decision-block">
+            <span class="eyebrow">Installation</span
+            ><strong id="acceptance-decision">REVIEW</strong
+            ><span id="inspection-outcome">No inspection yet</span>
+          </div>
         </div>
+        <div id="results" class="results">
+          <p class="empty-state">
+            Approve a work order and run the first capture. Its predicate
+            results appear here.
+          </p>
+        </div>
+        <div id="acceptance-gates" class="acceptance-gates" hidden></div>
+        <div class="record-footer">
+          <p id="record-reference">
+            Each attempt preserves its original challenges and signed
+            observations.
+          </p>
+          <div>
+            <a id="download" class="secondary" hidden
+              >Export evidence packet ↓</a
+            ><button id="verify" class="secondary" disabled>
+              Verify packet</button
+            ><button id="tamper" class="text-button" disabled>
+              Test an edited packet
+            </button>
+          </div>
+        </div>
+        <p id="packet-status" class="note" role="status" aria-live="polite"></p>
+        <details id="limitations">
+          <summary>Evidence and trust limits</summary>
+          <ul id="limitations-list">
+            <li>
+              Rehearsals use synthetic physical evidence and move no funds.
+            </li>
+            <li>
+              Camera guidance assumes a measured reference and a common marker
+              plane.
+            </li>
+            <li>
+              A device signature identifies its key. It does not prove mounting
+              or installed firmware.
+            </li>
+          </ul>
+        </details>
       </section>
     </main>
     <footer>
-      <span>FieldProof / Cardano</span
-      ><span>Local service · source-pinned observations</span>
+      <span>Proof of Ready / local commissioning station</span
+      ><span id="footer-mode"
+        >No hardware actuation · no public deployment</span
+      >
     </footer>
   </body>
 </html>

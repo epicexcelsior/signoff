@@ -72,6 +72,26 @@ test("the real server retains its identity, receipt, and ledger after process de
     });
     await post(`/jobs/${job.id}/payment`, { simulation: job.id });
     const complete = await post(`/jobs/${job.id}/observe`, {});
+    const order = await post("/commissioning/work-orders", {
+      idempotency_key: "restart-work-order",
+      asset: "Restart cabinet",
+    });
+    const capture = await post(
+      `/commissioning/work-orders/${order.id}/sessions`,
+      {
+        idempotency_key: "restart-capture",
+      },
+    );
+    await post(`/commissioning/sessions/${capture.id}/fixture-vision`, {});
+    for (let step = 0; step < 3; step++)
+      await post(`/commissioning/sessions/${capture.id}/contact`, { step });
+    const inspection = await post(
+      `/commissioning/sessions/${capture.id}/inspect`,
+      {},
+    );
+    const packet = await (
+      await fetch(`${origin}/api/commissioning/sessions/${capture.id}/packet`)
+    ).json();
     await kill();
     const restarted = await start();
     const saved = await (await fetch(`${restarted}/api/jobs/${job.id}`)).json();
@@ -80,6 +100,18 @@ test("the real server retains its identity, receipt, and ledger after process de
     assert.equal(saved.public_key, complete.public_key);
     assert.deepEqual(saved.payment, complete.payment);
     assert.deepEqual(saved.events, complete.events);
+    const savedCapture = await (
+      await fetch(`${restarted}/api/commissioning/sessions/${capture.id}`)
+    ).json();
+    assert.deepEqual(savedCapture, inspection);
+    assert.deepEqual(
+      await (
+        await fetch(
+          `${restarted}/api/commissioning/sessions/${capture.id}/packet`,
+        )
+      ).json(),
+      packet,
+    );
     const freshConfig = await (await fetch(`${restarted}/api/config`)).json();
     assert.notEqual(freshConfig.token, config.token);
     const repeat = await fetch(`${restarted}/api/jobs/${job.id}/observe`, {

@@ -26,7 +26,7 @@ test("desktop and phone: run open/closed checks, reject an edit, expire evidence
       const context = await browser.newContext({ viewport });
       const page = await context.newPage();
       page.on("pageerror", (error) => errors.push(error.message));
-      await page.goto(origin);
+      await page.goto(`${origin}/observation.html`);
       const run = page.getByRole("button", { name: "Run simulated check" });
       await run.waitFor();
       await page.waitForFunction(

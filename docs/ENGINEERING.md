@@ -1,124 +1,116 @@
-# FieldProof engineering
+# Proof of Ready engineering
 
-## System boundary
+## Runtime and state
 
-One Node.js process serves the local interface and observation service. SQLite stores immutable job inputs, payment bindings, challenges, receipts, decisions, and events. The buyer CLI holds its own signed-payment files. The optional Python reader accesses one configured Bluetooth contact. No broker, registry, third chain, or hardware actuator exists in this port.
+The existing Node.js/Express process serves the commissioning station at `/` and the retained observation lab at `/observation.html`. Native browser modules need no compilation. Node.js 24 supplies SQLite. The optional Python reader accesses one configured Bluetooth contact. No hardware actuator exists.
 
-Node.js 24 supplies SQLite. Express serves the API and static assets. Browser JavaScript needs no build. Dependencies are pinned in `application/package.json` and `package-lock.json`. The x402 packages use 2.29.0. Evolution uses 0.5.14. These versions supersede the earlier 2.26.0 research assumptions.
+`Service` owns the existing observation/payment workflow and `CommissioningService`. Both use the same SQLite connection. `commissioning_orders` stores immutable approved documents and unique intents. `commissioning_sessions` stores capture claims, signed observations, receiving records, sealed evidence, reports, and decisions. WAL, FULL synchronization, immediate transactions, and unique constraints serialize writers.
 
-## Sources of truth and concurrency
+The ledger pins the original provider, public key, mode, recipient, and payment requirements. A changed configuration requires a separate state directory. Runtime files default outside source. Credentials and private data must remain outside tracked files.
 
-The seller ledger is the source of truth for local job ownership. SQLite uses WAL, FULL synchronous writes, immediate transactions, and unique intent and transaction identifiers. Conditional state changes permit one payment-submission claim and one observation claim. In-process coalescing reduces duplicate concurrent work. Database constraints also apply across connections.
+An idempotency key binds one normalized input. Changed input under the same key rejects. Each collection has a 1,000-record limit. The list API returns the latest 30 records. Work orders expire after 24 hours. Capture attempts expire after two minutes. No reset endpoint deletes financial history.
 
-One idempotency key identifies one immutable observation input. Reusing it with changed input rejects. One transaction belongs to one job within this database. Direct address payments do not cryptographically bind the payment to a job across independent sellers.
+## Commissioning protocol
 
-Configuration is pinned to the ledger. A changed mode, provider, key, recipient, or requirement rejects startup. Use separate state directories for separate configurations. Runtime files and secrets stay outside tracked source. Browser responses omit signed transaction bytes and private credentials.
+`src/artifacts.js` defines canonical off-chain encoding: sorted object keys, preserved array order, finite JSON values, and UTF-8. SHA-256 digests use lowercase `0x` plus 64 hexadecimal characters. Undefined values, sparse arrays, nonplain objects, and nesting beyond 32 levels reject. This encoding differs from Masumi transport hashes and the contract's ABI/Keccak acceptance hash.
 
-| State | Meaning and permitted recovery |
+The work order binds the asset, enrolled contact/key, marker policy, transition count, receiving destination/deadline, required evidence classes, software-enrollment status, source mode, and approval/expiry times. The current template fixes marker IDs 0/10, reference size 60 mm, target `(100,0)` mm, position tolerance 8 mm, and angle tolerance 8 degrees. Software enrollment remains unresolved.
+
+The coordinator selects an alternating three-state sequence after capture starts. Each read receives an original nonce and a 30-second challenge. Its 16-character signed request identifier derives from the work-order digest, session identifier, and step. A receipt cannot move into another session while retaining valid device/session predicates.
+
+The coordinator saves the read claim before calling the observer. Concurrent calls in one process share the same operation. Another connection or process sees the durable pending claim and cannot repeat it. An interrupted read remains pending. An explicit new attempt creates a different challenge domain. Inspection cannot close a session while a read remains pending.
+
+The configured observer returns the unchanged FieldProof receipt. The coordinator verifies its pinned P-256 key, original challenge, supported fields, five stable samples, timestamps, and age at capture. The local owner monitor then records the matching receipt digest and state. This receiving application shares the coordinator trust boundary. It does not establish delivery to a remote owner system.
+
+Inspection seals the evidence. It reconstructs receipt validity at the saved verification time. Later inspection does not turn an old observation into a current reading. The original ten-second live-dispatch expiry belongs to the retained lab, not historical inspection validity.
+
+The deterministic inspector consumes normalized verified predicates through `integrations/masumi/src/inspector.js`. This entry point has no external package dependency. Missing evidence returns REVIEW. A demonstrated defect returns FAIL. The inspector trusts the coordinator's normalized checks and states that limit in its report.
+
+Acceptance is separate from inspection. FAIL produces REWORK. Other current reports produce REVIEW. The coordinator currently lacks paid-report and deployed-contract reconciliation. It cannot return READY through a client-supplied flag. Physical optical binding, verified seller receipt, installed-build enrollment, and a pinned contract decision remain integration gates.
+
+## Commissioning HTTP interface
+
+All routes bind to `127.0.0.1`. Every POST requires JSON and `X-FieldProof-Token` from `GET /api/config`. The high-entropy capability rotates on restart. Host/Origin checks, a 48 KB request limit, no-store responses, safe text rendering, and disabled proxy trust protect the local boundary.
+
+| Route | Contract |
 |---|---|
-| `AWAITING_PAYMENT` | No signed payment is bound |
-| `PAYMENT_VERIFYING` | Exact payload is saved. Verification does not submit. The same payload can resume verification |
-| `PAYMENT_REJECTED` | Verification rejected. No observation runs |
-| `PAYMENT_UNKNOWN` | Submission intent is durable. Submission or settlement can remain uncertain. Reconcile the original hash |
-| `PAID` | Simulation accepted, or independent Preprod chain checks passed |
-| `OBSERVING` | Challenge is durable. One observation can be running or interrupted. Do not repeat automatically |
-| `OBSERVATION_FAILED` | Payment remains recorded. Decision stays WAIT. No automatic repeat or refund exists |
-| `COMPLETE` | Original receipt and verification are durable. The decision still expires |
+| `GET /api/commissioning` | Latest work orders and attempts |
+| `POST /api/commissioning/work-orders` | `{idempotency_key,asset}` approves one immutable template |
+| `POST /api/commissioning/work-orders/:id/sessions` | `{idempotency_key,scenario?}` starts or retrieves one attempt |
+| `GET /api/commissioning/sessions/:id` | Read the durable capture/report state |
+| `POST /api/commissioning/sessions/:id/contact` | `{step:0..2}` claims one signed read |
+| `POST /api/commissioning/sessions/:id/vision` | Save `{frame,frameDigest,source,camera?}` once |
+| `POST /api/commissioning/sessions/:id/fixture-vision` | Generate marker corners in simulation only |
+| `POST /api/commissioning/sessions/:id/inspect` | Seal evidence and evaluate it once |
+| `GET /api/commissioning/sessions/:id/packet` | Download work order, evidence, report, decision, and digests |
+| `POST /api/commissioning/verify` | `{packet,expectedWorkOrderDigest?}` reconstructs the packet |
 
-Restart does not resubmit payments or repeat observations. An interrupted observation remains fenced. This trades automatic recovery for avoiding duplicate device calls. A new authorized check needs a new intent.
+Supported rehearsal scenarios are `correct`, `misplaced`, `stuck`, and `missing-delivery`. Physical mode rejects synthetic scenario selection and generated camera evidence. The camera upload accepts a bounded measurement, not raw frames. The server recomputes geometry from corners. It does not trust a browser PASS field.
 
-## Direct x402 payment
+Packet verification checks internal consistency. An independently obtained work-order digest additionally pins the operator policy and device key. The packet alone does not authenticate the operator or coordinator. The device receipt does not sign camera frames, firmware identity, or physical mounting.
 
-`POST /api/jobs/:id/payment` returns HTTP 402 with `PAYMENT-REQUIRED` when no signature is attached in Preprod mode. A paid retry supplies `PAYMENT-SIGNATURE`. The public SDK encodes and decodes the protocol headers. The service validates the exact accepted requirements and canonical transaction hash before binding the payment.
+## Camera and optical interfaces
 
-The seller persists the signed payload before verification. It persists submission intent before calling the facilitator. Only independently checked chain inclusion, one newer block, correct recipient, and sufficient lovelace permit observation. A facilitator response alone cannot permit observation. The chain provider and facilitator remain trusted external dependencies. Cardano confirmation is probabilistic and subject to rollback.
+Import `createVisionController` from `/vision/controller.js`. Supply `{video,canvas?,policy,onState,onMeasurement}`. The controller exposes `start()`, `stop()`, `capture({sessionId})`, and `getState()`. State uses `phase`, including `ACTIVE`, `STOPPED`, `STARTING`, and `ERROR`.
 
-The buyer's `prepare` command requires the configured seller, exact Preprod network, lovelace, 2 tADA amount, and direct transfer method. It uses the SDK's spend control. Network fees are additional. It saves an exclusive preparation marker and the signed transaction before `send`. A send marker prevents accidental resubmission after a lost response. The CLI has no automatic paid-fetch recovery wrapper.
+A capture includes explicit browser-camera source, SHA-256 of RGBA pixel bytes, bounded marker corners, capture time, resolution, camera/calibration identities, planar pose, quality, and predicates. Raw camera/device identifiers and frames remain in the browser. Changed camera, crop, resolution, or zoom invalidates the active calibration and releases the stream. The detector permits one outstanding frame and frees native matrices.
 
-The buyer writes files with restrictive permissions and synchronizes file contents. The ledger uses SQLite's durability guarantees. This implementation does not claim a transactional guarantee across buyer files, seller storage, HTTP, and Cardano.
+OpenCV.js 4.13.0 is pinned under `public/vendor/`. Preserve its exact bytes, license, and provenance. Exclude that folder from Prettier. The parent page keeps self-only scripts. Only `/vision/detector-worker.js` receives this policy:
 
-If `send` fails, inspect the stored job and reconcile its original hash. Do not remove markers to force another send. If the seller reached `PAYMENT_VERIFYING`, the same payload can resume through the authenticated payment API. If the seller never received the request, submission remains a manual recovery operation. The CLI deliberately supplies no marker-reset command.
+```text
+default-src 'none'; script-src 'self' 'unsafe-eval'; connect-src 'none'
+```
 
-## Observation protocol
+The upstream build embeds WASM and requires dynamic function creation. The Worker receives pixel buffers and detector commands. It receives no session capability, wallet keys, or network client.
 
-After payment confirmation, the service creates a fresh nonce, timestamp, and 30-second challenge deadline for the original job identifier. It saves the challenge before invoking the reader. The receipt must match that challenge and the configured provider, location, and sensor.
+`/vision/target.svg` contains reference marker 0 at 60 mm, device marker 10 at 30 mm, and a 100 mm target offset. Print at actual size and verify the ruler. Planar guidance assumes a measured reference, coplanar markers, and unmodeled lens distortion. Calibrated physical accuracy remains unverified.
 
-The verifier uses the existing FieldProof `fieldproof-observation-v1` wire message. It verifies SHA-256 with the pinned P-256 public key and a 64-byte P1363 signature encoded as `v3:` plus canonical Base64. HMAC authorization permits a board read. HMAC does not substitute for the receipt signature.
+`encodeOpticalChallenge({bits,halfSymbolMs})` and `evaluateOpticalChallenge({challenge,samples,startAtMs,captureStartedAtMs,captureEndedAtMs})` live in `public/vision/optical.js`. The evaluator checks ordered tracked brightness samples and complete unambiguous Manchester symbols. It does not authenticate the emitter, camera, or clocks. No board-specific emitter, signed optical record, or coordinator optical-evidence route exists yet. The commissioning optical predicate remains REVIEW.
 
-Acceptance requires five stable samples, supported fields and types, bounded timestamps, and capture age at most ten seconds. The verifier rejects edited data, stale data, another request, another key, future timestamps outside the two-second clock tolerance, changed nonces, and unstable sampling.
+## Masumi inspection adapter
 
-The Python reader requests only `state.observe`. It checks the configured provider manifest, subscribes to completion, sends one challenge, and reads the complete receipt. Missing notifications, connection errors, oversized receipts, or invalid data fail the check. No discovery fallback selects another board. The child receives the board secret and necessary environment values, not the buyer mnemonic or chain credentials.
+`application/integrations/masumi/` is an isolated package. Install it with `npm ci --ignore-scripts`. It pins Sokosumi CLI 1.0.4 and Zod 4.6.6. The pure inspector entry point remains usable from the base application without that installation.
 
-The service recomputes freshness when reading a stored result. The browser also expires cached decisions without waiting for HTTP. A network error blocks dispatch. An open signed contact permits the software decision DISPATCH. A closed contact produces a valid WAIT decision. Neither output is hardware actuation or an independent physical witness.
+`createInspectionService({ledger,runtime,evaluate,loadArtifact,registration,mps,readUtxos,paymentsAuthorized})` exposes create, advance, reconcile, get, recoverTerms, requestRefund, and authorizeRefund operations. Inspect its exported implementation for exact optional adapters. Creation binds inspection ID, work-order/evidence digests, exact input text, and idempotency key. The source loader returns the immutable artifact. The evaluator returns useful PASS, FAIL, or REVIEW predicates.
 
-## Local HTTP interface
+The SQLite adapter saves external-write claims before dispatch. Unknown Task creation, completion, payment terms, or result submission requires reconciliation against the original identifiers and exact bytes. It cannot silently create another Task or payment. Refund intent follows the same durable-claim rule.
 
-All routes bind to `127.0.0.1`. Host and Origin checks protect the local boundary. Every POST requires a high-entropy session capability and JSON content type. The capability rotates on restart. Request bodies are limited to 48 KB. CSP, no-store responses, same-origin resource policy, safe text rendering, and disabled proxy trust constrain browser access.
+Coworker hashes commit exact UTF-8 task/result text. Standard API hashes retain purchaser-nonce framing. These hashes are separate from canonical artifact digests. Wrong Workspace/Coworker, input/result bindings, seller, token, amount, source, and deadlines prevent advancement.
 
-| Route | Purpose |
-|---|---|
-| `GET /api/config` | Local session, mode, and public contact details |
-| `GET /api/jobs` | Latest 30 checks |
-| `POST /api/jobs` | Create or retrieve an immutable intent |
-| `GET /api/jobs/:id` | Read receipt, current decision, payment summary, and events |
-| `GET /api/jobs/:id/payment` | Read the Preprod payment quote |
-| `POST /api/jobs/:id/payment` | Quote or process one signed payment |
-| `POST /api/jobs/:id/reconcile` | Check the existing transaction without submitting |
-| `POST /api/jobs/:id/observe` | Claim and request one observation after payment |
-| `POST /api/jobs/:id/verify` | Verify a candidate receipt against the stored original challenge |
+Execution, lock confirmation, result delivery, Task completion, withdrawal, and positive seller receipt remain separate phases. A useful FAIL is delivered work. An absent report is a service failure. A fixture cannot establish seller payment. Receipt verification requires matching original withdrawal and a positive seller net amount in the exact token.
 
-Candidate verification does not overwrite stored evidence or authorize a new observation. Rejection returns HTTP 422 and WAIT. The ledger retains at most 1,000 jobs. No destructive reset endpoint exists.
+The configured local Masumi Payment Service is trusted for signed terms. This adapter does not independently verify their COSE signature. Dedicated MPS runtime, PostgreSQL, wallets, registration, vault credentials, and account/resource grants remain external setup. The current MPS source requires a newer Node 24 release than the base application's 24.10.0 host. Keep its runtime isolated.
 
-## Masumi extension
+From `application/integrations/masumi/`, run `npm run setup:plan` for an unexecuted setup plan and `npm run fixture` for a useful negative report. Neither command creates resources or moves funds. The worker requires separately configured authorization before external writes.
 
-Masumi adds a concrete escrow lifecycle to Cardano x402. The hosted Preprod facilitator advertises it. The SDK can issue seller-signed terms with an input commitment and an unregistered seller. Registration is optional for that quote path. This project implements only a read-only availability check through `npm run check:masumi`.
+## API3 consumer and commissioning contract
 
-The next implementation must bind the immutable observation task into the Masumi commitment. It must save and reuse the complete issued quote across retries and restart. It must distinguish escrow lock, result submission, collection, refund request, refund authorization, and dispute. A lock cannot be called a completed seller payment.
+`application/api3/` pins viem 2.57.3. Its native verifier preserves exact signed data bytes. The bounded evaluator supports CVE-2025-62235, complete approved NimBLE applicability structure, approved CVSS provenance, timestamp bounds, and explicit unsupported-shape REVIEW. Declared 1.8.0 and 1.9.0 are reference builds. They are not claims about the current board or general software security.
 
-The installed SDK enforces minimum deadline intervals of 5, 15, and 15 minutes. It also requires a 15-minute minimum lead for result submission. These are source constants, not measured completion times. A successful receipt hash does not prove that a physical statement is true. Reproduce successful work and failed-work recovery before enabling any escrow lock.
+`application/contracts/` contains `CommissioningPolicy` and `NvdPolicy`, with licensed pinned dependencies. The operator enrolls immutable build manifests, opens jobs, and records the inspection and Cardano payment assertion. Permissionless finalization checks the pinned Airnode signer/request, source freshness, job deadline, inspection prerequisite, policy, and terminal-state guard. Accepted, rejected, and REVIEW decisions are terminal. No contract holds or releases funds.
 
-Do not add an unverified escrow flag to the direct adapter. Do not claim automatic refunds from an x402 lock alone. See [evidence](../research/EVIDENCE.md) for the primary sources.
+The ABI adapters expose `prepareEnrollBuild`, `prepareOpenJob`, `prepareRecordInspection`, and `prepareFinalize`. They return unsigned calls only. Record inspection once the final seller receipt exists. A false seller-receipt assertion cannot later be overwritten.
 
-## Proposed Proof of Ready slice
+`readAcceptance({client,chainId,contract,jobId,expected,...})` checks actual chain, contract code, oracle configuration, terminal state, inspection prerequisites, five digest commitments, and the ABI acceptance hash. Missing RPC, wrong commitments, or failed reads return REVIEW. Supply expected work-order, build-manifest, inspection, payment-evidence, and source-response digests from trusted server state. Runtime-code hash, deadline, policy threshold, and acceptance hash can also be pinned.
 
-Status: feasibility recommendation. This section does not describe implemented product behavior. Keep the existing application and ledger. Do not replace them with the draft's multi-service layout before a complete acceptance path exists.
+The contract's Cardano payment evidence is an operator assertion. It does not verify Cardano consensus. Source signatures are portable across chains. The consumer supplies chain/job/contract binding. The coordinator's final live acceptance integration remains pending actual evidence and configuration.
 
-The proposed workflow checks a cabinet-door monitor from physical action through the owner's receiving application. The owner approves one immutable work order. The verifier evaluates recorded predicates. A separate owner-controlled witness supports claims about the actual asset and physical actions. The contractor cannot satisfy the witness requirement alone.
+## Retained direct-payment observation workflow
 
-Add one acceptance specification with the enrolled device key, asset reference, required state transitions, destination, response deadline, evidence classes, and witness policy. Freeze and hash that specification before capture. Preserve the existing device wire format where its semantics fit. A new report envelope must bind the policy hash, original challenges, raw receipt digests, monitoring acknowledgments, witness evidence, and verifier version.
+The original `jobs` ledger and `/api/jobs` routes remain available. They preserve unique intents, unique transactions, exact signed payloads, configuration pins, payment recovery, and one observation claim. States remain `AWAITING_PAYMENT`, `PAYMENT_VERIFYING`, `PAYMENT_REJECTED`, `PAYMENT_UNKNOWN`, `PAID`, `OBSERVING`, `OBSERVATION_FAILED`, and `COMPLETE`.
 
-The existing signature does not cover a firmware measurement, camera frame, mounting reference, or arbitrary work-order specification. A surrounding report cannot retroactively make those fields device-signed. Label each signer and trust assumption explicitly.
+Direct Preprod x402 costs 2 tADA plus fees. The buyer `prepare` command signs but does not submit. `send` submits the saved bytes once. `reconcile` checks the original transaction. `observe` requests a fresh reading after independent chain confirmation. Use the configured receipt-pin JSON, BLE address, board secret, Blockfrost Preprod project, and dedicated seller/buyer resources described in `.env.example`.
 
-Proposed outcomes:
+The server checks inclusion, confirmation depth, recipient, and amount before observation. Direct payment has no automatic refund. Unknown submission preserves the original transaction. Restart does not resubmit payments or repeat observations. Keep unresolved records. Simulation cannot establish a Cardano transaction.
 
-- PASS: every mandatory predicate and evidence class passed.
-- FAIL: evidence establishes a required predicate violation.
-- REVIEW: evidence is missing, unsupported, unavailable, or too weak for the requested claim.
+The observation verifier uses the original `fieldproof-observation-v1` wire string, SHA-256/P-256, canonical Base64, and P1363 signatures. HMAC authorizes the BLE read. It does not replace the receipt signature. Open circuit cannot distinguish an open contact from a broken wire. No read or software decision actuates hardware.
 
-Adapter claims remain distinct. Simulation supplies synthetic evidence. A computer key identifies a software signer. A phone records browser-supplied images. The current ESP32 identifies the provisioned signing key and a contact report under trusted-firmware assumptions. None establishes physical location or uncompromised firmware by itself. Required physical evidence cannot be replaced with a simulation merely to complete a job.
+## Verification commands
 
-The existing contact input reads CLOSED when grounded and OPEN for an open circuit. It cannot distinguish a broken wire. Five stable samples cover about 40 milliseconds. The proposed monitor must treat open circuit as an alert condition. Acceptance requires both expected states and end-to-end transitions. Supervised wiring requires different hardware and a changed measurement contract.
+From `application/`, run `npm run format:check`, `npm run check`, `npm test`, and `npm audit --omit=dev --audit-level=high`.
 
-Use an owner-observed sequence chosen after the session starts. Do not reveal expected future states to the device as evidence of what it measured. Each settled state needs a fresh challenge. A timeout or interrupted sequence prevents acceptance. This reduces accidental stale or stuck-state approval. It does not defeat collusion, relay, compromised firmware, or camera substitution.
+After isolated installs, run each integration's `format:check`, `check`, `test`, and production dependency audit. `npm run test:integrations` runs both Node integration suites. Masumi fixture/setup commands verify the prepared unexecuted path.
 
-Camera geometry is optional context until a real placement requirement exists. A fiducial establishes geometry relative to a reference under calibration assumptions. It does not authenticate the asset, marker placement, or camera. Avoid millimeter and proximity claims without the necessary measurement and trust model.
+Run Foundry `fmt --check` and `test` from `application/contracts/`. The local Anvil deployment/read integration runs with `FIELDPROOF_FOUNDRY_BIN=/path/to/foundry/bin npm run test:contract` from `application/`. The variable names a directory containing genuine `forge` and `anvil` binaries. Bare `forge` on this host is unrelated.
 
-Inspection payment and contractor acceptance remain separate state machines. A useful negative report completes paid inspection. It does not approve contractor work. An EVM approval does not atomically release Cardano funds. The coordinator remains trusted to enforce the selected acceptance policy.
-
-## Conditional API3 security gate
-
-The official Airnode source binds operation, parameters, response projection, signing time, and exact data bytes. It does not bind a job, chain, contract, or installed software build. A future policy contract must separately bind the work order, inspection digest, enrolled build, approved source request, and authorization domain. A terminal job guard prevents repeated acceptance. Shared current source facts can legitimately serve different jobs.
-
-The native verifier does not impose application freshness, future-time bounds, or job authorization. Add those controls in a product consumer. NVD's response-generation timestamp differs from a CVE's historical publication and modification timestamps. Old vulnerability metadata is not automatically stale lookup data.
-
-One concrete research candidate is Apache NimBLE CVE-2025-62235, with affected releases through 1.8.0 and a fix in 1.9.0. No evidence establishes that the available ESP32 runs an affected build or configuration. The current receipt contains no firmware measurement. A reported version string cannot fill that gap.
-
-The saved candidate projection is not an approved applicability evaluator. It selects one configuration node and one metric. A consumer must check the complete relevant Boolean applicability and metric provenance. It must return REVIEW for unsupported shapes or absent required fields. Missing KEV fields cannot be interpreted as signed false values.
-
-Enable this gate only after a real paid CVE response passes the native and product-contract verifier, build provenance supports the declared claim, and downstream acceptance actually obeys contract state. Required invalid cases remain edited data, genuinely stale data, another request, and a response genuinely signed by an unexpected key. Source signatures are portable across chains. Wrong-chain rejection comes from product authorization, not the Airnode signature itself.
-
-## Verification and remaining work
-
-The declared checks cover formatting, syntax, signed observations, HTTP boundaries, payment confirmation decisions, idempotency, concurrency, interrupted work, and real process restart. Browser tests use installed Chrome with desktop and 390-pixel viewports. They exercise keyboard activation, edited receipts, stalled requests, expiry, reload, and history. Screenshots remain outside source.
-
-Simulation and mocked chain responses establish local contracts. They do not establish live settlement, physical Bluetooth compatibility, escrow recovery, public availability, or sponsor qualification. Live Preprod payment and physical reader verification remain open. No public deployment, payment signature, hardware actuation, or submission preparation is authorized by this document.
+Browser tests use installed Chrome at desktop and phone widths. They test the commissioning journey, keyboard approval, changed evidence, history, camera-controller shape, actual generated marker detection, print-target detection, and stream cleanup. Subprocess tests cover persistent read claims and the original application's process death/restart. No fixture establishes physical accuracy, live settlement, deployed sponsor evidence, or safety certification.

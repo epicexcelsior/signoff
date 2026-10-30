@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { paymentRequired } from "./payment.js";
 import { EvidenceError } from "./evidence.js";
 import { AppError } from "./store.js";
+import { verifyPacket } from "./commissioning.js";
 import {
   decodePaymentSignatureHeader,
   encodePaymentRequiredHeader,
@@ -158,6 +159,76 @@ export function createApp(service) {
     "/api/jobs/:id/verify",
     route((req, res) => res.json(service.verify(req.params.id, req.body))),
   );
+  const commissioning = service.commissioning;
+  app.get("/api/commissioning", (_req, res) =>
+    res.json({
+      workOrders: commissioning.store.list("orders"),
+      sessions: commissioning.store.list("sessions"),
+    }),
+  );
+  app.post(
+    "/api/commissioning/work-orders",
+    route((req, res) =>
+      res.status(201).json(commissioning.createOrder(req.body)),
+    ),
+  );
+  app.post(
+    "/api/commissioning/work-orders/:id/sessions",
+    route((req, res) =>
+      res
+        .status(201)
+        .json(commissioning.createSession(req.params.id, req.body)),
+    ),
+  );
+  app.get(
+    "/api/commissioning/sessions/:id",
+    route((req, res) =>
+      res.json(commissioning.store.get("sessions", req.params.id)),
+    ),
+  );
+  app.post(
+    "/api/commissioning/sessions/:id/contact",
+    route(async (req, res) =>
+      res.json(await commissioning.captureStep(req.params.id, req.body)),
+    ),
+  );
+  app.post(
+    "/api/commissioning/sessions/:id/vision",
+    route((req, res) =>
+      res.json(commissioning.captureVision(req.params.id, req.body)),
+    ),
+  );
+  app.post(
+    "/api/commissioning/sessions/:id/fixture-vision",
+    route((req, res) => res.json(commissioning.fixtureVision(req.params.id))),
+  );
+  app.post(
+    "/api/commissioning/sessions/:id/inspect",
+    route((req, res) => res.json(commissioning.inspect(req.params.id))),
+  );
+  app.get(
+    "/api/commissioning/sessions/:id/packet",
+    route((req, res) => {
+      res.set(
+        "Content-Disposition",
+        `attachment; filename="proof-of-ready-${req.params.id.replace(/[^a-zA-Z0-9_-]/g, "")}.json"`,
+      );
+      res.json(commissioning.packet(req.params.id));
+    }),
+  );
+  app.post(
+    "/api/commissioning/verify",
+    route((req, res) =>
+      res.json(verifyPacket(req.body.packet, req.body.expectedWorkOrderDigest)),
+    ),
+  );
+  app.use("/vision/detector-worker.js", (_req, res, next) => {
+    res.set(
+      "Content-Security-Policy",
+      "default-src 'none'; script-src 'self' 'unsafe-eval'; connect-src 'none'",
+    );
+    next();
+  });
   app.use(
     express.static(fileURLToPath(new URL("../public", import.meta.url)), {
       etag: false,

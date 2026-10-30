@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#193ec8" />
+    <title>FieldProof — a fresh answer before dispatch</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <header class="masthead">
+      <a class="brand" href="/" aria-label="FieldProof home"
+        ><span class="brand-mark" aria-hidden="true">F<span>↗</span></span
+        >FieldProof</a
+      >
+      <span class="mode" id="mode">Connecting</span>
+    </header>
+    <main>
+      <div class="intro">
+        <p class="eyebrow">Remote operations / gate contact</p>
+        <h1>A fresh answer.<br />Then a decision.</h1>
+        <p>
+          An agent buys one signed observation before it decides to dispatch.
+          Each answer belongs to one request.
+        </p>
+      </div>
+      <div class="workspace">
+        <section class="instrument" aria-labelledby="decision-heading">
+          <div class="instrument-top">
+            <span class="eyebrow">Decision station</span
+            ><span id="freshness">No observation</span>
+          </div>
+          <div class="gate" id="gate" data-state="unknown" aria-hidden="true">
+            <div class="post left"></div>
+            <div class="post right"></div>
+            <div class="barrier"><i></i><i></i><i></i><i></i></div>
+            <div class="ground"></div>
+            <span class="sensor-dot"></span
+            ><span class="gate-label">Gate contact</span>
+          </div>
+          <div class="decision" id="decision-panel">
+            <p class="eyebrow" id="contact-state">Awaiting evidence</p>
+            <h2 id="decision-heading">WAIT</h2>
+            <p id="reason">Run a check to obtain a fresh, signed answer.</p>
+          </div>
+          <div class="instrument-footer">
+            <span>Observation age <strong id="age">—</strong></span
+            ><span>Sample agreement <strong id="samples">—</strong></span>
+          </div>
+        </section>
+        <section class="controls" aria-labelledby="check-heading">
+          <p class="eyebrow">One request / one observation</p>
+          <h2 id="check-heading">Check before you go.</h2>
+          <p id="mode-description">Loading the local configuration.</p>
+          <fieldset id="simulation-controls">
+            <legend>Simulated contact</legend>
+            <label
+              ><input type="radio" name="contact" value="open" checked />
+              Open</label
+            >
+            <label
+              ><input type="radio" name="contact" value="closed" />
+              Closed</label
+            >
+          </fieldset>
+          <button class="primary" id="run" disabled>
+            Run simulated check <span aria-hidden="true">↗</span>
+          </button>
+          <div class="feedback" id="feedback" role="status" aria-live="polite">
+            Connecting to the local service.
+          </div>
+          <div class="payment-box">
+            <div>
+              <span class="eyebrow">Payment</span
+              ><strong id="payment-state">No payment</strong>
+            </div>
+            <p id="payment-detail">
+              Each check costs 2 tADA in Preprod. Simulation moves no funds.
+            </p>
+            <code id="transaction"></code>
+          </div>
+          <div class="recovery" id="recovery" hidden>
+            <button id="reconcile" class="secondary">Reconcile payment</button>
+            <button id="observe" class="secondary">Capture observation</button>
+          </div>
+          <p class="limit">
+            A signature proves the observation’s source. It does not prove
+            universal physical truth. A dispatch decision does not actuate
+            hardware.
+          </p>
+        </section>
+      </div>
+      <section class="record" aria-labelledby="record-heading">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Inspect the evidence</p>
+            <h2 id="record-heading">The check record.</h2>
+          </div>
+          <label class="history-label" for="history"
+            >Recent checks
+            <select id="history">
+              <option value="">No checks yet</option>
+            </select></label
+          >
+        </div>
+        <div class="record-grid">
+          <div>
+            <h3>What happened</h3>
+            <p class="record-id" id="record-id">
+              Your first check will appear here.
+            </p>
+            <ol id="events" class="events"></ol>
+          </div>
+          <div class="receipt-editor">
+            <div class="editor-heading">
+              <h3>Verify a receipt</h3>
+              <button class="text-button" id="original" disabled>
+                Use original
+              </button>
+            </div>
+            <label for="receipt"
+              >Edit the signed response and check it against the original
+              request.</label
+            >
+            <textarea
+              id="receipt"
+              spellcheck="false"
+              placeholder="A signed receipt appears after a completed observation."
+            ></textarea>
+            <div class="editor-actions">
+              <button class="secondary" id="verify" disabled>
+                Verify receipt</button
+              ><button class="text-button" id="change" disabled>
+                Change one value
+              </button>
+            </div>
+            <p
+              id="verification"
+              class="verification"
+              role="status"
+              aria-live="polite"
+            >
+              The stored evidence stays unchanged when you test a copy.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <span>FieldProof / Cardano</span
+      ><span>Local service · source-pinned observations</span>
+    </footer>
+  </body>
+</html>

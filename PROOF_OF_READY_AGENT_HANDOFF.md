@@ -1,39 +1,64 @@
-# Copy/paste: autonomous engineering coordinator
+# Proof of Ready — active execution directive
 
-You are the technical lead, product engineer, integration owner, security reviewer and demo director for **PROOF OF READY**, my TUM Blockchain & AI Hackathon submission. Operate as a high-capability autonomous agent team. **Execute the project, do not merely plan it.** I'm a solo founder using coding agents against larger human teams. Work aggressively and in parallel; do not attach arbitrary timelines, agent limits, or artificial feature ceilings. Prioritize observable user value, working sponsor integrations, technical defensibility, a spectacular usable demo, and reliable delivery. The actual event deadline is Sat 31 Oct 2026, 15:00 CET.
+Build the ambitious Proof of Ready commissioning workflow while maintaining the documentation. Product heading and parallel software implementation are authorized. Customer interviews, pricing validation, and further idea teardown do not block engineering.
 
-**Read the complete attached `PROOF_OF_READY_IMPLEMENTATION_PLAN.md` first; it is the governing product specification, execution workflow, tests, docs plan, evidence standards, source references and sponsor checklist.** Inspect existing repo/files and conventions before modifying anything. The previous The Buyer files describe a rejected candidate, not the new product authority. Inspect https://github.com/epicexcelsior/fieldproof for genuine reusable hardware-signing code, test vectors and limitations without modifying it.
+Read README.md, PROOF_OF_READY_IMPLEMENTATION_PLAN.md, docs/ENGINEERING.md, research/EVIDENCE.md, and applicable AGENTS.md. This directive replaces the initial proposal. Earlier versions remain in Git history. The implementation plan defines the complete target and owner decision register.
 
-## Product thesis
+## Outcome
 
-Proof of Ready makes physical contractor work independently checkable: a high-value equipment operator issues a work order; a field technician installs a real connected device; camera/geometry plus device-bound live challenges and function tests produce evidence; a paid independent inspection agent delivers a useful result on **Cardano Preprod**; an **AirnodeHub/Airnode v2**-signed security fact is checked by a **deployed Solidity policy contract**, which then permits or denies commissioning under a narrowly defined operator policy. The product's claim is **enforceable commissioning acceptance**, not generalized hardware truth or regulatory safety certification.
+An operator approves a work order. An agent coordinates camera-guided placement, fresh device-signed physical tests, delivery to the receiving application, a useful Masumi-paid inspection, and API3-authenticated software policy. The coordinator returns an evidence-bound READY, REWORK, or REVIEW decision and an independently verifiable record.
 
-The opening customer is an industrial/connected-building equipment operator buying field installation/inspection services across organizations. Research that buyer and strongest competitors, and strengthen the product/business hypothesis alongside implementation. Consider substantially better implementation paths if supported by facts. Don't pivot to unrelated generic AI marketplaces or cosmetic oracles. Make the experience extremely easy and compelling for a nontechnical judge: wrong position/wrong device/stale proof fail; correct device and physical function pass; genuine Cardano paid inspection; valid Airnode signature changes contract authority; four mandatory API3 invalid responses fail.
+The first specimen is a networked monitoring station. The ESP32 is its first device adapter. A camera-observed optical challenge connects the live device session with the visual scene. Support additional evidence providers through explicit capabilities rather than making a specific board mandatory.
 
-## Run concurrently, integrate continuously
+The model proposes tests and explains defects. Deterministic checks own acceptance. A negative inspection remains a useful paid result. A policy contract must control downstream acceptance, not merely emit a decorative event.
 
-- Product/UX: customer journey, real operator/technician flow, compelling mobile camera-based positioning and live predicate overlays, high-quality interface, video/storyboard.
-- Hardware/physical evidence: inspect FieldProof, use available Pico W/phone or computer-based adapter immediately, integrate ESP32 later when available; nonce-bound signed evidence, physical function, fiducial geometry, clear truth boundaries.
-- Cardano paid service: official Masumi/Sokosumi quickstart and skills, genuine valuable inspection job, real Preprod transaction/verified receipt, crash/idempotency/payment recovery. Evaluate official Cardano x402 if superior for this job; never confuse it with Masumi escrow.
-- API3: official Airnode v2 starter, exact supported NVD request and signed projection, Solidity verifier, meaningful commissioning state, deployed contract, actual Airnode data, mandatory valid+four tamper cases and judge-runner. Challenge NVD/device match rather than fabricating one. Find another essential Airnode input only if evidence supports a more coherent product.
-- Integration/red-team: typed schemas, privacy, state machines, local evidence ledger, error handling, tests/build/lint/security, real browser inspection, source attribution, continuous small commits, deployment/runbook, replay, video and final submission materials.
+## Current assets
 
-Use as many parallel agent sessions/worktrees as actually improve throughput. One coordinator owns integration and truth. Make frequent **granular local Git commits**, with tests and descriptive messages; this authorizes local commits for the NEW repo, overriding old no-commit notes from the rejected Buyer checkout. Do not push publicly or execute funds/account changes/deployments without my explicit approval. Publication is required before submission, so prepare a reviewed release path and ask for approval when needed.
+The application now serves the commissioning station at `/` and preserves the original observation lab at `/observation.html`. Work orders, capture claims, session-bound P-256 receipts, local delivery checks, planar measurements, deterministic reports, and portable packet verification are implemented. The integrated application suite passes 39 tests.
 
-## Official technical instructions
+The camera lane, isolated Masumi adapter, and API3 consumer/contracts are integrated. Masumi passes 23 fixture/boundary tests. API3 passes ten Node tests, 29 Foundry tests, and one actual local Anvil deployment/read test. No live settlement, physical accuracy, signed optical execution, or deployed sponsor evidence follows from those tests.
 
-Read official organizer source https://github.com/TUM-Blockchain-Club/hackathon-website/ (`src/content/prizes.ts`, `src/content/faq.ts`, `src/content/agent-contexts.ts`). Cardano: https://www.masumi.network/tum-hackathon , https://www.masumi.network/tum-hackathon/skill/SKILL.md , https://github.com/masumi-network/tum-hackathon-quickstart , https://github.com/cardano-foundation/cardano-dev-skills , https://developers.cardano.org/x402/ . API3: https://github.com/api3dao/airnodehub-hackathon-starter , https://api3dao.github.io/airnodehub-hackathon/docs/integrations , https://airnodehub.api3.org/explore/nvd , MCP https://airnodehub.api3.org/mcp . Follow skills, AGENTS.md, exact request hashing, native attestation verification and pinned dependencies; do not invent SDK semantics.
+Coordinator acceptance currently returns REVIEW or REWORK. It does not yet reconcile live paid-inspection and deployed-contract outcomes. Continue with physical/optical evidence and external integration. Keep the existing fail-closed decision until those bindings exist.
 
-Do not treat official starter tests as proof our product works. Use real transaction hashes and source/contract evidence. Keep private images and site data off-chain. Do not claim NVD is a universal device-safety oracle or that Cardano and EVM transactions are atomic.
+A genuine public NVD CPE response and native rejection checks are saved under research/. A signed CVE response remains to be obtained after payment authorization. Pinned OpenCV.js 4.13.0 detects generated markers and the printable target in Chrome. Camera cleanup, calibration changes, planar defects, and generic optical evaluation have automated tests.
 
-## Communication and deliverables
+The owner has an ESP32 and a full starter kit. Exact board and component models remain unidentified. Laptop webcam is selected first. Android comes later. Equipment connection can wait while software advances.
 
-Initialize and continuously update `docs/PROGRESS.md`, `docs/DECISIONS.md`, `docs/SOURCES.md`, `docs/PRODUCT.md`, `docs/COMPETITION.md`, `docs/PRICING.md`, `docs/BLOCKERS.md`, `docs/SECURITY.md`, `docs/EVIDENCE.md`, `docs/HARDWARE.md`, `docs/DEMO.md`, `docs/SUBMISSION.md`. Include actual test commands/results, failed cases, commit IDs, contract address/network, Cardano paid transaction/result, signed response fixtures and business assumptions.
+## Work ownership
 
-**Immediately escalate** when a true blocker, new insight or owner action appears:
-`CAPTAIN DECISION REQUIRED — issue; recommendation; alternatives; exact required action; impact; work continuing; supporting evidence.`
-Never request keys in chat. Prepare secure configuration and give me instructions to enter secrets locally. For spending, deployments, account creation, public pushes or submissions, ask for explicit targeted approval. For everything reversible and local, proceed autonomously.
+- Root integrator: shared protocol/digests, SQLite, coordinator/API, existing browser page/CSS, configuration, integration, and canonical documentation.
+- Camera lane: application/public/vision/, pinned application/public/vendor/opencv-4.13.0/, and vision-specific tests/fixtures.
+- Masumi lane: application/integrations/masumi/ with its isolated runtime adapter, package, worker, recovery and seller-receipt tests.
+- API3 lane: application/contracts/ and application/api3/, including policy contracts, native verification/evaluation, ABI/read adapter, unsigned calls and tests.
 
-Regularly send me concise factual checkpoints: what's genuinely WORKING, what's FAILED or UNVERIFIED, what tests were run, next integration, and whether you need me. Do not wait for me to ask for status. Do not flood me with generic updates.
+Use the assigned managed worktree and branch. Do not edit another lane's files. Commit tested cohesive changes locally. Do not push lane branches. The root reviews, integrates, and pushes to the private repository. Reassign capacity as integration opens firmware and further UX work. One integrator owns shared protocol and database changes.
 
-**Start now**: inspect current repo, independently audit official requirements, select one real commissioning scenario and genuinely relevant CVE/source field, define shared schemas, launch implementation branches, build one complete acceptance path, test it, and continue until real sponsor evidence and a judge-ready product exist. If a fundamental product/technical premise fails, explain the evidence and propose the best justified repair or pivot; do not spin in brainstorming loops.
+## Implementation rules
+
+Preserve the current application architecture and sibling FieldProof source. Reuse the existing wire format where its semantics fit. Bind work orders, evidence bundles, captures, reports, paid tasks, and contract jobs through immutable digests and explicit versions.
+
+Claim external operations durably before dispatch. Preserve exact signed payment data and original terms before send. Reconcile ambiguity rather than automatically creating another payment, Task, or hardware call. Keep capture-time evidence validity distinct from report age and escrow collection time.
+
+Run OpenCV in a dedicated same-origin Worker. Preserve the parent's self-only script policy. Apply the narrowly required dynamic-evaluation policy to the Worker response only. Do not blindly await OpenCV's non-Promise thenable. Keep credentials and capabilities out of the Worker.
+
+Use the official TUM Coworker paid-task route. Keep direct x402 separate. First verify useful execution-only work, then the paid route through positive seller receipt. Preserve exact-text Coworker hashes and nonce-prefixed Standard API hashes as distinct commitments. Isolate MPS's newer Node runtime and PostgreSQL storage. Avoid vulnerable pinned dependencies when a compatible patched version exists.
+
+Use the native API3 verifier and unchanged signed bytes. The policy supports one complete bounded NimBLE CVE shape and explicitly enrolled build provenance. The current board is not automatically a vulnerable reference build. Check operator authority, exact source request, freshness/future bounds, paid-inspection commitment, job deadline and terminal state. The coordinator must honor the pinned contract's actual state.
+
+Keep ordinary evidence-source assumptions explicit in records. Do not repeatedly turn those limits into brainstorming or market-validation gates. Build the promised capabilities and test their observable boundaries.
+
+## Verification and integration
+
+Test success, rejection, changed input under reused IDs, concurrent requests, process restart, interrupted capture, unknown payment, malformed evidence, wrong keys, and stale data. Camera tests use generated real markers and installed Chrome. Never run Playwright browser installation that garbage-collects shared caches.
+
+Contract tests cover vulnerable/corrected declared builds, unsupported applicability, missing/failed inspection, unauthorized writes, altered commitments, duplicate finalization, expiry and all required oracle rejection cases. A fixture suite is separate from live sponsor evidence.
+
+Return each lane's commit, exact commands/results, integration example, and remaining dependency. Root integrates one complete working path before expanding interfaces. Keep the normal owner/technician flow clear and inspect visual work in the browser.
+
+## External actions
+
+Local implementation, dependencies, fixtures, test keys, local contract tests, private commits and private reviewed pushes are authorized. Do not create external accounts/resources, sign payments, spend, deploy publicly, submit, flash hardware, or actuate equipment without the applicable targeted authorization.
+
+Prepare each external action completely before asking. Show the actual network, resource, recipient, amount or estimate, configuration location, and recovery behavior. Never request secrets in chat. Owner decisions are listed once in the implementation plan. Continue independent work while they remain pending.
+
+Start and continue implementation now. Use the full product target. Make progress visible through functioning interfaces, verified integration, and concise factual updates.

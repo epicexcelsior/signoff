@@ -2,11 +2,18 @@ import { isDeepStrictEqual } from "node:util";
 import { EvidenceError, verifyEvidence, refreshDecision } from "./evidence.js";
 import { createChallenge } from "./observation.js";
 import { AppError } from "./store.js";
+import { CommissioningService } from "./commissioning.js";
 
 export class Service {
   constructor({ store, config, profile, payment, observe }) {
     Object.assign(this, { store, config, profile, payment, observe });
     this.inFlight = new Map();
+    this.commissioning = new CommissioningService({
+      store,
+      config,
+      profile,
+      observe,
+    });
   }
 
   create(body) {

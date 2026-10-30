@@ -9,12 +9,15 @@
   "scripts": {
     "start": "node --env-file-if-exists=.env src/main.js",
     "buyer": "node --env-file-if-exists=.env scripts/buyer.js",
-    "test": "node --test test/*.test.js",
+    "test": "node --test --test-concurrency=1 test/*.test.js",
     "check": "node scripts/check.js",
     "check:masumi": "node --env-file-if-exists=.env scripts/masumi-check.js",
     "format": "prettier --write src scripts public test package.json .env.example requirements-ble.txt --ignore-unknown",
     "format:check": "prettier --check src scripts public test package.json .env.example requirements-ble.txt --ignore-unknown",
-    "test:browser": "node --test test/browser.test.js"
+    "test:browser": "node --test test/browser.test.js",
+    "verify:packet": "node scripts/verify-packet.js",
+    "test:integrations": "npm --prefix integrations/masumi test && npm --prefix api3 test",
+    "test:contract": "npm --prefix api3 run test:contract"
   },
   "dependencies": {
     "@evolution-sdk/evolution": "0.5.14",
