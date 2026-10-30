@@ -35,7 +35,7 @@
     }
   },
   "verification": {
-    "host": "Four C groups under AddressSanitizer/UBSan and eight Python tests. Fake Bluetooth clients only.",
+    "host": "C groups under AddressSanitizer/UBSan and Python contact/optical/review tests. Fake Bluetooth clients and private synthetic build metadata only. Canonical counts live in research/EVIDENCE.md.",
     "builds": [
       "Default profile with both GPIO capabilities disabled.",
       "Compiler-only profile with synthetic contact and active-low optical pins. Never flashed."

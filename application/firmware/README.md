@@ -13,7 +13,7 @@ python3 application/firmware/test/run.py --sanitize
 python3 -m unittest discover -s application/device/test -v
 ```
 
-The C harness compiles the actual parser, replay storage, request transport, and optical encoder. AddressSanitizer and UndefinedBehaviorSanitizer check those host paths. Grouped checks cover malformed input, exact wire vectors, time boundaries, replay restoration, capacity, concurrent transport ownership, and emission cleanup. Python tests cover contact and optical drivers, receipt paging, binding rejection, authorization, and uncertain writes. [Evidence](../../research/EVIDENCE.md#current-local-implementation-evidence) records current check counts and results.
+The C harness compiles the actual parser, replay storage, request transport, and optical encoder. AddressSanitizer and UndefinedBehaviorSanitizer check those host paths. Grouped checks cover malformed input, exact wire vectors, time boundaries, replay restoration, capacity, concurrent transport ownership, and emission cleanup. Python tests cover the drivers, receipt paging, binding rejection, authorization, uncertain writes, and private flash-review records. [Evidence](../../research/EVIDENCE.md#current-local-implementation-evidence) owns current check counts and observed results.
 
 These checks use host functions and fake Bluetooth clients. They do not establish NVS durability on a physical board, actual GPIO timing, receipt signing on that board, or optical accuracy.
 
@@ -37,6 +37,140 @@ Expected result: `proof_of_ready_device.bin` exists in that external directory. 
 Keep binaries, build directories, SDK configuration, and provisioned secrets outside tracked source. A separately authorized build can use `-D PROOFREADY_AUTH_SECRET_FILE=/absolute/private/path`. That file contains 16–128 exact UTF-8 secret bytes without a trailing newline. CMake rejects files inside this repository. Firmware embeds those bytes, then provisions them into NVS only when no secret exists. An existing secret remains unchanged. Firmware binaries therefore require private storage.
 
 Flashing, GPIO enablement, and security-fuse changes require targeted authorization. No command here flashes or changes security fuses. No default GPIO is inferred.
+
+## Prepare the first physical test
+
+The first specimen uses one button, one discrete LED, one current-limiting resistor, and the printed camera target. Keep external wiring disconnected now. The owner must identify the carrier board and components before a pin assignment exists.
+
+### Resolve the hardware inputs
+
+| Required evidence                                          | Review decision                                                                                      |
+| ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| Clear front/back carrier-board photos and silkscreen model | Obtain the manufacturer's exact schematic and header pinout                                          |
+| USB connector and board power documentation                | Identify the permitted supply and shared ground                                                      |
+| Button type and terminal layout                            | Identify the two contacts that close only during a press                                             |
+| LED type, polarity, forward voltage, and rated current     | Confirm a discrete low-current indicator compatible with the reviewed GPIO circuit                   |
+| Resistor markings or measured resistance                   | Calculate LED current and compare it with the LED and GPIO limits                                    |
+| Actual build profile                                       | Select separate input/output GPIOs without conflicts, strapping hazards, or board-attached functions |
+
+[Espressif's GPIO reference](https://docs.espressif.com/projects/esp-idf/en/v6.1/esp32c6/api-reference/peripherals/gpio.html) identifies strapping, USB-JTAG, and flash restrictions. The exact carrier can add other restrictions.
+
+Chip identity does not resolve these inputs. An ESP32-C6 chip label is not a carrier-board model. Never copy GPIO 2/3 from `test/compile-only.defaults` into a physical profile.
+
+The logical circuit has these nets. It is not a pin-to-pin wiring instruction:
+
+```text
+reviewed contact input ---- normally-open button ---- reviewed GND
+reviewed optical output -- current-limiting resistor -- LED -- reviewed GND
+```
+
+This LED arrangement assumes an active-high output and correct LED polarity. A carrier-board LED can require different wiring or polarity. Review the actual circuit before setting `CONFIG_PROOFREADY_OPTICAL_ACTIVE_LOW`.
+
+The contact input enables its internal pull-up. A released button means OPEN. A pressed button connects the reviewed input to ground and means CLOSED. Never connect an external voltage to that input. For an external LED, calculate `I = (V_GPIO - V_LED) / R` using documented limits and the actual parts. Never connect an LED directly to a GPIO without its reviewed current-limiting circuit.
+
+After review, record the manufacturer references, physical header labels, GPIO numbers, resistor value, LED polarity, power source, and a wiring photo. Keep those details with the physical evidence. Disconnect power before changing wires.
+
+### Prepare provisioning and the private build
+
+Use one private authorization secret of 16–128 exact UTF-8 bytes. A 64-character hexadecimal secret provides a simple printable form. Keep its exact bytes without a trailing newline. Create it outside source with mode `0600`. Never print it or place it in a command argument.
+
+A reviewed private SDK defaults file supplies these values:
+
+```text
+CONFIG_PROOFREADY_PROVIDER="your-enrolled-provider"
+CONFIG_PROOFREADY_BOARD_REVIEWED=y
+CONFIG_PROOFREADY_CONTACT_ENABLED=y
+CONFIG_PROOFREADY_CONTACT_GPIO=REVIEWED_CONTACT_GPIO
+CONFIG_PROOFREADY_OPTICAL_ENABLED=y
+CONFIG_PROOFREADY_OPTICAL_GPIO=REVIEWED_OPTICAL_GPIO
+# CONFIG_PROOFREADY_OPTICAL_ACTIVE_LOW is not set
+```
+
+This shape is explanatory. The GPIO placeholders are not compilable values. Replace them only after board review. The active-high example does not establish the actual LED polarity.
+
+Build from the repository root after activating the matching SDK:
+
+```sh
+idf.py -C application/firmware -B "${PRIVATE_BUILD_DIR:?}" \
+  -D "SDKCONFIG=${PRIVATE_BUILD_DIR:?}/sdkconfig" \
+  -D IDF_TARGET=esp32c6 \
+  -D "SDKCONFIG_DEFAULTS=sdkconfig.defaults;${REVIEWED_DEFAULTS_FILE:?}" \
+  -D "PROOFREADY_AUTH_SECRET_FILE=${PRIVATE_SECRET_FILE:?}" build
+```
+
+All three variables name absolute private paths outside source. This command builds only. The firmware image contains the embedded provisioning secret. Protect binaries, generated headers, SDK configuration, and build logs accordingly.
+
+An existing NVS authorization secret remains unchanged after flashing. A new embedded secret does not rotate it. Preserve any existing receipt identity and replay claims. Do not erase NVS to make a mismatched configuration work.
+
+### Inspect the actual artifacts before requesting flash approval
+
+From the repository root, run:
+
+```sh
+python3 application/device/firmware_plan.py \
+  "${PRIVATE_BUILD_DIR:?}" "${PRIVATE_FLASH_REVIEW_FILE:?}"
+```
+
+The output file must be an unused absolute private path outside source. The command reads `project_description.json`, `sdkconfig`, `flasher_args.json`, and mapped binaries. It saves actual SHA-256 hashes, byte lengths, offsets, and profile settings. It rejects another target, missing/empty files, overlapping ranges, or files outside the build directory. It never reads the secret file or opens a serial/BLE connection.
+
+The record always returns `flashAuthorized:false`, `hardwareEvidence:false`, and `boardReviewVerified:false`. A Kconfig `BOARD_REVIEWED=y` value does not prove a hardware review. The compiler-coverage profile remains unsuitable for flashing even when this inspection succeeds.
+
+The current default and coverage builds use **DIO, 2 MB, 80 MHz** flash settings. The USB chip query found 4 MB flash. Review these configured settings and the partition table against the exact carrier before approving a physical image. Compilation does not establish electrical suitability.
+
+### Request the concrete hardware approvals
+
+| Action            | Exact information required before approval                                                                                |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Backup and reset  | One serial port, confirmed chip/flash size, private backup path, bootloader/reset behavior, and storage protection        |
+| Flash             | Reviewed carrier/wiring profile, provisioned image hashes, mapped offsets, flash settings, target port, and recovery path |
+| Wire and power    | Pin-to-pin diagram, supply/ground, resistor, polarity, and approved GPIO functions                                        |
+| Optical execution | Enrolled provider/key, session/challenge, one 18-second LED emission, and camera readiness                                |
+
+Do not combine approval for one action with permission for another. No action in this guide authorizes equipment actuation, security-fuse changes, or payments.
+
+The USB chip query established a 4 MB flash capacity. After separate backup/reset authorization, the matching esptool supports this full read:
+
+```sh
+umask 077
+python -m esptool --chip esp32c6 --port "${REVIEWED_SERIAL_PORT:?}" \
+  read-flash 0x0 0x400000 "${PRIVATE_BACKUP_FILE:?}"
+```
+
+This command is prepared but unexecuted. Select an unused backup filename. It enters the bootloader and can reset the device. [Espressif's esptool reference](https://docs.espressif.com/projects/esptool/en/latest/esp32c6/esptool/basic-commands.html) defines flash read/write semantics. The local esptool 5.6.0 help confirms the `read-flash ADDRESS SIZE OUTPUT` arguments. Preserve the backup hash and the existing firmware's provenance. The backup can contain credentials and device identity.
+
+After explicit flash authorization, use the command from the private review record with the actual reviewed port. Its generic form is:
+
+```sh
+idf.py -C application/firmware -B "${PRIVATE_BUILD_DIR:?}" \
+  -p "${REVIEWED_SERIAL_PORT:?}" flash
+```
+
+This command is prepared but unexecuted. Do not add `erase-flash`. Do not flash `test/compile-only.defaults`. A recovery write requires another review. Restoring an old image or NVS snapshot can destroy newer identity or replay evidence.
+
+After authorized flashing, inspect the USB startup log through the trusted port. Enroll its `P256_PUBLIC_KEY` value before approving a physical work order. No private signing key belongs in a receipt-pin file. Confirm the manifest's provider, enabled capabilities, current boot identifier, and remaining claims.
+
+### Capture one real attempt
+
+The coordinator issues a three-state contact sequence. Follow each requested state instead of assuming its initial state. A successful attempt uses three original contact requests and one original optical request.
+
+1. Start the station with the independently enrolled provider, public key, BLE address, and exact authorization secret.
+2. Check that the station shows **Physical adapter**.
+3. Approve the work order for the actual specimen.
+4. Start the laptop camera and align both measured markers.
+5. Start one capture attempt.
+6. Save the camera measurement.
+7. Follow each requested button state and select **Read contact**.
+8. Hold the state until that read returns.
+9. Select **Capture signed optical test** after camera readiness.
+10. Keep the LED and both markers visible for the complete emission.
+11. Close the capture and inspect every predicate.
+12. Export the original evidence packet and preserve its hashes.
+
+The capture window lasts two minutes. The optical waveform lasts 18 seconds. A contact sample uses five reads over approximately 40 ms. Camera throughput and physical timing remain unverified until this real attempt succeeds.
+
+The firmware has 64 persistent, non-evicting claims shared by contact and optical operations. One complete attempt consumes four claims. A fresh identity therefore permits at most 16 complete attempts. An admitted operation consumes its claim before measurement, including a later execution failure. Check `remaining_claims` before an attempt. Reserve at least four claims for the complete path. Do not erase claims to repeat a demonstration.
+
+A lost reply never authorizes another execution of that request. Preserve the original uncertain record. Start a new coordinator attempt only after inspecting the previous operation. An optical failure or camera tracking loss invalidates that attempt. No physical result exists until the actual receipts and tracked capture pass their original bindings.
 
 ## Interface and recovery
 
