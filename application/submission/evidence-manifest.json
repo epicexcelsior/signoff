@@ -97,7 +97,8 @@
       "sellerPaid": false,
       "qualificationScope": "Actual paid hosted inspection and confirmed escrow/result transactions. Original capture is synthetic and lacks optical evidence. Seller receipt remains pending. Report limitations describe the synthetic capture, not the separately paid purchase.",
       "independentChainProofPublicPath": "application/submission/evidence/cardano-paid-chain-proof.json",
-      "independentChainProofSha256": "c924d0a8c248979f01133d416e5f52e0e597d2779c915254e848223b0a4d22c8"
+      "independentChainProofSha256": "1f7c2fc54d0a94098e68bd589681c7061f2f89a74035abc471fef0c7d5b5614c",
+      "originalRequestPublicPath": "application/submission/evidence/cardano-paid-request-original.json"
     }
   ],
   "mandatoryEvidence": {

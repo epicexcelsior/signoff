@@ -43,6 +43,13 @@ const artifacts = new Map([
       import.meta.url,
     ),
   ],
+  [
+    "paid-inspection-request",
+    new URL(
+      "../submission/evidence/cardano-paid-request-original.json",
+      import.meta.url,
+    ),
+  ],
 ]);
 
 export function submissionArtifact(id) {

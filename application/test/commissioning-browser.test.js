@@ -5,6 +5,45 @@ import { mkdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fixture, server } from "./helpers.js";
 
+test("judge view rejects edited original report bytes and recovers after the original returns", async (t) => {
+  const { service } = fixture(t);
+  const origin = await server(t, service);
+  const browser = await chromium.launch(
+    process.env.FIELDPROOF_BROWSER_EXECUTABLE
+      ? {
+          executablePath: process.env.FIELDPROOF_BROWSER_EXECUTABLE,
+          headless: true,
+        }
+      : { channel: "chrome", headless: true },
+  );
+  try {
+    const page = await browser.newPage();
+    const path = "**/api/submission-evidence/artifacts/paid-inspection-report";
+    await page.route(path, (route) =>
+      route.fulfill({
+        contentType: "application/json",
+        body: '{"outcome":"PASS","predicates":[]}',
+      }),
+    );
+    await page.goto(origin);
+    await page.waitForFunction(() =>
+      document
+        .getElementById("judge-status")
+        .textContent.includes("differs from its saved manifest hash"),
+    );
+    assert.equal(await page.locator(".judge-report").count(), 0);
+    await page.unroute(path);
+    await page.getByRole("button", { name: "Refresh evidence" }).click();
+    await page
+      .getByText("Read the original inspection report · REVIEW", {
+        exact: true,
+      })
+      .waitFor();
+  } finally {
+    await browser.close();
+  }
+});
+
 test("commissioning desktop and phone: approve, inspect defects, verify packets, retain history", async (t) => {
   const { service } = fixture(t);
   const origin = await server(t, service);
@@ -142,6 +181,17 @@ test("commissioning desktop and phone: approve, inspect defects, verify packets,
         /Saved evidence/,
       );
       assert.equal(await page.locator("#judge-cases dt").count(), 5);
+      await page
+        .getByText("Read the original inspection report · REVIEW", {
+          exact: true,
+        })
+        .click();
+      await page
+        .getByText(
+          "Original capture: synthetic. Inspection purchase: real Cardano Preprod escrow. This report does not establish physical acceptance.",
+          { exact: true },
+        )
+        .waitFor();
       const countBeforeReset = await page
         .locator('#history option:not([value=""])')
         .count();

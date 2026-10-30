@@ -27,6 +27,55 @@ function element(tag, text, className) {
   return node;
 }
 
+async function inspectorReport(record) {
+  const details = element("details", undefined, "judge-report");
+  details.append(
+    element(
+      "summary",
+      `Read the original inspection report · ${record.outcome}`,
+    ),
+  );
+  const response = await fetch(
+    "/api/submission-evidence/artifacts/paid-inspection-report",
+  );
+  if (!response.ok)
+    throw new Error("The original inspection report is unavailable.");
+  const bytes = await response.arrayBuffer();
+  const digest = [
+    ...new Uint8Array(await crypto.subtle.digest("SHA-256", bytes)),
+  ]
+    .map((value) => value.toString(16).padStart(2, "0"))
+    .join("");
+  if (digest !== record.usefulReportSha256)
+    throw new Error(
+      "The inspection report differs from its saved manifest hash.",
+    );
+  const report = JSON.parse(new TextDecoder().decode(bytes));
+  details.append(
+    element(
+      "p",
+      "Original capture: synthetic. Inspection purchase: real Cardano Preprod escrow. This report does not establish physical acceptance.",
+    ),
+  );
+  for (const predicate of report.predicates) {
+    const row = element("div", undefined, "result");
+    row.append(
+      element("strong", predicate.id),
+      element("span", predicate.outcome, "outcome"),
+      element("span", predicate.reason),
+    );
+    details.append(row);
+  }
+  details.append(
+    element(
+      "p",
+      "The original file hash matches the saved manifest. Seller collection and physical acceptance remain separate checks.",
+      "note",
+    ),
+  );
+  return details;
+}
+
 export async function refreshJudgeEvidence() {
   const status = document.getElementById("judge-status");
   status.textContent = "Reading saved original evidence…";
@@ -83,6 +132,8 @@ export async function refreshJudgeEvidence() {
         row.append(link);
       }
       if (record.taskId) row.append(element("code", `Task ${record.taskId}`));
+      if (record.id === "cardano-paid-inspection-delivery")
+        row.append(await inspectorReport(record));
       records.append(row);
     }
     const cases = document.getElementById("judge-cases");
