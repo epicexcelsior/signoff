@@ -116,3 +116,54 @@ Export preserves the original HTTP response text. The signed inner `data` string
 [Airnode HTTP payments](https://airnodehub-docs.api3.org/airnode/http-interface) specify the payment headers and exact signed bytes. [The EVM exact scheme](https://github.com/x402-foundation/x402/blob/main/specs/schemes/exact/scheme_exact_evm.md) specifies EIP-3009 payloads. [ERC-3009](https://eips.ethereum.org/EIPS/eip-3009) specifies the authorization fields and nonce event. Sources and the live quote were checked on October 30, 2026.
 
 The payment authorization binds token, payer, payee, amount, validity and nonce. It does not bind the NVD request body. The Airnode signature separately binds that exact request and response. The server, token implementation and configured RPC remain trust dependencies. One newer block is a confirmation policy, not finality proof. Local fixtures establish code contracts only.
+
+## Prepare deployment without signing
+
+Compile the reviewed contract first. Use the genuine Foundry executable, not this host's unrelated bare `forge` command:
+
+```sh
+cd ../contracts
+/path/to/foundry/bin/forge build
+```
+
+Create private `judge-config.json` outside source with this shape:
+
+```json
+{
+  "schema": "proof-of-ready/api3-judge-config/v1",
+  "rpcUrl": "https://sepolia.base.org",
+  "operator": "0x plus the existing dedicated test wallet address",
+  "artifactFile": "/absolute/path/application/contracts/out/CommissioningPolicy.sol/CommissioningPolicy.json"
+}
+```
+
+From this package, run:
+
+```sh
+npm run judge -- deploy-plan /private/api3/judge-config.json /private/api3/deployment-plan.json
+```
+
+The command reads chain state and estimates fees. It never reads a private key, signs, or broadcasts. The plan pins Base Sepolia, the existing NVD signer/request, and 300-second attestation/source ages. Its bytecode hash identifies the compiler output. It records the pending nonce, predicted address, gas estimate, buffered execution limit, L1 data estimate, operator-fee estimate, and wallet balance.
+
+The L2 execution cap uses estimated EIP-1559 maximum fees and a 20 percent gas buffer. L1 data and operator fees remain estimates. They are not enforced transaction caps. Re-estimate before targeted owner approval. Preserve original approved bytes and the resulting transaction hash if deployment later runs.
+
+## Check all five judge cases against deployed code
+
+First obtain the original paid CVE response and actual inspection/seller receipt. Enroll the reviewed declared build, open the original job, and record the genuine inspection commitments through separately approved transactions. This tool cannot create those records or manufacture payment evidence.
+
+Prepare these original responses in private files:
+
+- A fresh authentic CVE response for the approved request.
+- An authentic earlier CVE response older than 300 seconds.
+- A fresh authentic response to another request. The free NVD `searchCpes` operation supplies this case without another data payment.
+- A fresh wrong-key negative case with the valid data/timestamp and a disposable test-key signature. Label that case as deliberate test input. Never use the real wallet key.
+
+Extend private configuration with the deployed `contract`, independently pinned `runtimeCodeHash`, original `jobId`, and absolute `validResponseFile`, `staleResponseFile`, `wrongRequestResponseFile`, and `wrongKeyResponseFile` paths. Keep the original signed inner `data` bytes unchanged.
+
+```sh
+npm run judge -- check /private/api3/judge-config.json /private/api3/judge-check.json
+```
+
+The checker pins actual chain, runtime bytecode, source, freshness policy, and an open original job with recorded inspection and seller-receipt assertion. It authenticates the source inputs before testing. It checks valid success plus edited, stale, other-request, and wrong-key rejection through `eth_call`. Fresh negative cases isolate signature/request failures from expiry. RPC failures never count as successful rejection.
+
+The output states `mode:ETH_CALL_ONLY`. It preserves the source commitment and returns the unsigned valid finalization call. These deployed-code simulations do not send transactions or change contract state. Submit the approved valid call separately, preserve its transaction hash, and read the actual terminal decision. No judge result exists until the command runs against the genuine prepared deployment. Local tests inject verifier/client fixtures and never establish sponsor qualification.
