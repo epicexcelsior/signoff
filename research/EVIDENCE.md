@@ -92,7 +92,7 @@ Owner-confirmed inventory, October 30, 2026. These are available resources, not 
 | Potentiometer        | Available. Resistance and pinout are unknown                                                         | Later measured analog-input adapter. No current acceptance claim                                                             |
 | Speakers             | Available. Driver, impedance and power requirements are unknown                                      | Optional later feedback. No current actuator or audio test                                                                   |
 | Raspberry Pi Zero W  | Available. Power, storage, OS and network readiness are unknown                                      | Candidate separate owner receiving monitor. No deployment or device operation is authorized or verified                      |
-| Laptop webcam        | Selected first camera                                                                                | Marker guidance and optical sampling. Physical accuracy and throughput remain unverified                                     |
+| Laptop webcam        | Selected first camera. Latest OS inventory exposes no video device                                   | Marker guidance and optical sampling. Physical accuracy and throughput remain unverified                                     |
 | Solana Mobile Seeker | Confirmed Android phone                                                                              | Built native companion, photo witness and read-only BLE preflight. Install and real-device checks remain pending             |
 
 Use the button and LED for the first complete physical sequence. Preserve the rest of the inventory for explicit follow-up capabilities. Device ownership does not authorize flashing, GPIO changes, payments, public deployment, or new chain integration.
@@ -244,3 +244,15 @@ Dedicated Cardano buyer/seller wallets exist privately. The last Blockfrost read
 Fresh ESP32-C6 disabled and compiler-coverage builds pass. Default app SHA-256: `6c8289f5afb53b101aa15eccbd43e5a54d4dc893bb183f15698ee19bea2b6f78`. Coverage app SHA-256: `a11ea4315dbe77ab1ffe96886fb60c98fe06d5a64f2739b19f2fa791a1ca0a3c`. Generated settings are DIO, 2 MB, 80 MHz. These are compiler settings, not a reviewed carrier recommendation. No flash, backup/read-flash, GPIO, serial/BLE connection, or physical test ran. A complete attempt consumes four of 64 persistent claims, at most 16 full attempts from empty storage.
 
 The owner now authorizes routine funded testnet actions while preserving at least 0.001 ETH. Public release/submission remain separately authorized. Carrier-board/component identification remains necessary before safe wiring or flashing.
+
+## Continued account and camera checks
+
+TUM organization membership now exists. The private Vendor and Inspector Coworker were created once through the supported CLI. Durable claims preceded each remote write. Coworker ID: `01a18ea5-25c9-7785-940c-20c977bfff2d`. Access request `01a18ea5-2622-774a-8e22-02c5a8801dd5` remains PENDING. The pinned CLI reports `taskSeatEligible:false`. A TUM Workspace admin must approve access and enable Task eligibility. Credits remain unverified.
+
+One Coworker-scoped runtime key entered the supported OS vault after a readiness probe. Read-back authentication returned the original Coworker ID. It expires November 2, 2026 at 00:00 UTC. No key appears in tracked source or output. Private resource-journal and worker configuration retain original IDs. No hosted Task or payment ran.
+
+A private execution-only request is ready from an original sealed local rehearsal. Its source remains explicitly `fixture`. The immutable bridge reconstructed the original input successfully. This preparation establishes no hosted execution, paid Cardano result, or physical test. Do not present it as those outcomes.
+
+Latest OS enumeration found no `/sys/class/video4linux` devices and no `/dev/video*` nodes. USB lists the Espressif JTAG/serial unit. No camera capture, serial connection, reset, flash, or GPIO action ran during this enumeration. The owner must check camera availability and identify the carrier board and components.
+
+[The deployed policy helper check](../application/submission/evidence/deployed-policy-helper.json) used the actual deployment block and unchanged genuine paid NVD data. Native authentication passed. The deployed `evaluate` helper returned FAIL for declared 1.8.0 and PASS for 1.9.0. This was a historical `eth_call` with no state override. The helper itself does not authenticate signatures. It changes no state and completes none of the five mandatory deployed judge cases.

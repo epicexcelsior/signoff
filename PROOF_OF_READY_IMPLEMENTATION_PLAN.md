@@ -72,19 +72,19 @@ Carrier-board identity and safe GPIO remain unknown. Chip identity does not esta
 
 ## Owner decisions and preparation
 
-| Input or grant     | Current state                                                                           | Required before                                                 |
-| ------------------ | --------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| Product and camera | Proof of Ready selected. Laptop webcam first. Seeker confirmed                          | Resolved choices                                                |
-| Physical specimen  | USB-only ESP32-C6FH4. Button and LED available. Carrier board and resistor unidentified | Wiring or GPIO selection                                        |
-| Printing           | Supplied target exists. Physical dimensions remain unmeasured                           | Metric placement claim                                          |
-| Firmware           | Both build profiles compiled                                                            | Reviewed provisioning, flash, recovery, and optical grant       |
-| Seeker             | APK compiled. Phone not installed or tested                                             | Explicit install, forwarding, and native checks                 |
-| Sokosumi           | Account key passes identity check. Personal Workspace endpoint returns 404              | Workspace execution, credits, resources, and worker vault setup |
-| Blockfrost         | Preprod key passes authenticated latest-block check                                     | Dedicated payment resource configuration                        |
-| Masumi payment     | Dedicated local wallets and MPS runtime prepared. Funding/registration pending          | Funded buyer/seller and actual registered source                |
-| API3 wallet        | Wallet funded. Mint, paid NVD call, and policy deployment confirmed                     | Reserve check and final fresh source near judging               |
-| API3 client        | Paid-access and judge tools integrated. Actual policy deployed                          | Genuine inspection prerequisites and five deployed judge cases  |
-| Publication        | Private development continues                                                           | Explicit public-release and submission approval                 |
+| Input or grant     | Current state                                                                                           | Required before                                                 |
+| ------------------ | ------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| Product and camera | Proof of Ready selected. Laptop webcam first. Seeker confirmed                                          | Resolved choices                                                |
+| Physical specimen  | USB-only ESP32-C6FH4. Button and LED available. Carrier board and resistor unidentified                 | Wiring or GPIO selection                                        |
+| Printing           | Supplied target exists. Physical dimensions remain unmeasured                                           | Metric placement claim                                          |
+| Firmware           | Both build profiles compiled                                                                            | Reviewed provisioning, flash, recovery, and optical grant       |
+| Seeker             | APK compiled. Phone not installed or tested                                                             | Explicit install, forwarding, and native checks                 |
+| Sokosumi           | TUM membership, Vendor/Coworker and runtime key exist. Coworker access PENDING and Task Seat ineligible | Workspace execution, credits, resources, and worker vault setup |
+| Blockfrost         | Preprod key passes authenticated latest-block check                                                     | Dedicated payment resource configuration                        |
+| Masumi payment     | Dedicated local wallets and MPS runtime prepared. Funding/registration pending                          | Funded buyer/seller and actual registered source                |
+| API3 wallet        | Wallet funded. Mint, paid NVD call, and policy deployment confirmed                                     | Reserve check and final fresh source near judging               |
+| API3 client        | Paid-access and judge tools integrated. Actual policy deployed                                          | Genuine inspection prerequisites and five deployed judge cases  |
+| Publication        | Private development continues                                                                           | Explicit public-release and submission approval                 |
 
 Use [README's owner actions](README.md#owner-actions-on-the-critical-path) and [private setup](docs/ENGINEERING.md#private-credentials-and-test-funding). Keep credentials, wallet addresses, and runtime records in private configuration. No model key is required for deterministic inspection.
 

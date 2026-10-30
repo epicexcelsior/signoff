@@ -19,9 +19,9 @@ The deterministic, operator-driven station uses fixed work orders. It integrates
 
 Agent-generated requirements and autonomous orchestration remain goals. The receiving monitor shares the coordinator's trust boundary. Fixture Tasks do not establish hosted execution or seller payment.
 
-ESP32-C6 firmware and a Seeker debug APK compiled. No firmware flash, GPIO command, phone install, or physical optical test ran. [Available hardware](research/EVIDENCE.md#available-hardware) owns the carrier-board, parts, and wiring state.
+ESP32-C6 firmware and a Seeker debug APK compiled. No firmware flash, GPIO command, phone install, or physical optical test ran. Latest OS inventory exposes no camera device. [Available hardware](research/EVIDENCE.md#available-hardware) owns the carrier-board, parts, and wiring state.
 
-Supplied Sokosumi and Blockfrost keys reside in private configuration outside source. Both passed live read-only checks. Personal Workspace access returned 404. The existing API3 wallet is funded. One mint, one paid NVD request, and the policy deployment confirmed. No separate API3 key was supplied. Account access does not establish worker-vault setup. See [private setup](docs/ENGINEERING.md#private-credentials-and-test-funding).
+Supplied Sokosumi and Blockfrost keys reside in private configuration outside source. Both passed live read-only checks. Personal Workspace access returned404. TUM membership now exists. The Vendor/Coworker and OS-vault runtime key are prepared. TUM access is PENDING and Task Seat eligibility is false. Reuse the original resources in the private journal. The existing API3 wallet is funded. One mint, one paid NVD request, and the policy deployment confirmed. No separate API3 key was supplied. Account access does not establish worker-vault setup. See [private setup](docs/ENGINEERING.md#private-credentials-and-test-funding).
 
 The API3 paid client and unsigned deployment/judge tooling are integrated. One genuine NVD getCve response settled, and the pinned CommissioningPolicy is deployed on Base Sepolia. Preserve the first response for stale rejection. All five deployed cases still require genuine Cardano inspection commitments. The evidence manifest owns transaction and artifact identifiers.
 

@@ -120,13 +120,16 @@ After isolated dependency installation, run `npm run test:integrations`. [Engine
 
 ## Owner actions on the critical path
 
-1. Join the TUM organization through [the Masumi setup guide](https://www.masumi.network/tum-hackathon).
-2. Confirm usable Personal Workspace access and test credits.
+1. Ask a TUM Workspace admin to approve the existing inspector Coworker access request.
+2. Ask the admin to enable Task Seat eligibility and confirm usable TUM credits.
 3. Fund the dedicated Cardano buyer with at least one test USDM plus test ADA.
 4. Fund the dedicated Cardano seller with test ADA.
 5. Supply clear carrier-board photos, button/LED details, and resistor markings before wiring.
+6. Enable the laptop webcam privacy switch or attach a camera. The OS currently exposes no video device.
 
-Use [the Masumi dispenser](https://dispenser.masumi.network/) with the registration-email code in your browser. Public funding addresses remain in private wallet metadata. No new account API key or model key is needed. Existing Sokosumi and Blockfrost keys work. The last account check found zero organization and Vendor memberships. The Personal Workspace access endpoint returned 404.
+Use [the Masumi dispenser](https://dispenser.masumi.network/) with the registration-email code in your browser. Public funding addresses remain in private wallet metadata. No new account API key or model key is needed. Existing Sokosumi and Blockfrost keys work. TUM membership is confirmed. The Vendor and private Inspector Coworker exist, and its scoped runtime key is in the OS vault. TUM access remains PENDING and Task Seat eligibility is false. Personal Workspace access still returns404, so setup uses the existing TUM organization context.
+
+Coworker: `01a18ea5-25c9-7785-940c-20c977bfff2d`. Access request: `01a18ea5-2622-774a-8e22-02c5a8801dd5`. Reuse these resources. Do not register another inspector.
 
 The EVM wallet is funded. An approved mint supplied 0.02 test aUSD. One 0.01 aUSD NVD request settled. [The deployed contract](https://sepolia.basescan.org/address/0x98023c425670a9690ab362c00fbea1bc11dce2cb) has the expected NVD signer, exact request, and 300-second limits. Deployment alone does not establish all five mandatory judge cases.
 
