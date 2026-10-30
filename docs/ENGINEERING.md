@@ -381,7 +381,7 @@ Preserve a recording of the actual physical attempt, original packet, paid repor
 
 ### Judge evidence and presentation reset
 
-`GET /api/submission-evidence` reads the canonical submission manifest and computes exact-byte SHA-256 hashes. Artifact downloads use an explicit server allowlist: `manifest`, `nvd-original`, and `policy-helper`. The route never exposes private configuration or runtime directories. These saved records do not authorize the current installation.
+`GET /api/submission-evidence` reads the canonical submission manifest and computes exact-byte SHA-256 hashes. Artifact downloads use an explicit server allowlist: `manifest`, `nvd-original`, `policy-helper`, `paid-inspection-report`, and `paid-inspection-bindings`. The route never exposes private configuration or runtime directories. These saved records do not authorize the current installation.
 
 Select **Judge evidence** to inspect historical transactions, missing requirements and the five deployed policy cases. Select **Refresh evidence** after the canonical manifest changes. The panel performs no chain write or payment. Packet verification and edited-packet rejection apply to the selected attempt above.
 

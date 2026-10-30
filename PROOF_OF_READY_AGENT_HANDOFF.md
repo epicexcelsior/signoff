@@ -15,7 +15,7 @@ Workspace files and observed behavior take precedence over historical sessions. 
 
 ## Current checkpoint
 
-The deterministic, operator-driven station uses fixed work orders. It integrates signed contact/optical/photo records, tracked camera samples, useful inspection, and evidence packets. Read-only bridges bind original Masumi reports and seller receipts to pinned contract commitments. Rehearsals return REVIEW or REWORK. No complete physical or live paid acceptance exists.
+The deterministic, operator-driven station uses fixed work orders. It integrates signed contact/optical/photo records, tracked camera samples, useful inspection, and evidence packets. Read-only bridges bind original Masumi reports and seller receipts to pinned contract commitments. Rehearsals return REVIEW or REWORK. No complete physical acceptance exists. A real paid REVIEW was delivered from synthetic input. Seller collection remains pending.
 
 Agent-generated requirements and autonomous orchestration remain goals. The receiving monitor shares the coordinator's trust boundary. Local fixture runtimes do not establish hosted execution or seller payment. Hosted synthetic-input execution proves transport only.
 
@@ -25,7 +25,7 @@ Supplied Sokosumi and Blockfrost keys reside in private configuration outside so
 
 The API3 paid client and unsigned deployment/judge tooling are integrated. One genuine NVD getCve response settled, and the pinned CommissioningPolicy is deployed on Base Sepolia. Preserve the first response for stale rejection. All five deployed cases still require genuine Cardano inspection commitments. The evidence manifest owns transaction and artifact identifiers.
 
-The isolated MPS runtime and dedicated PostgreSQL database build and migrate. Both remain stopped. Upstream MPS starts chain jobs independently of adapter grants. Do not start it with funded credentials until job/withdrawal settings and original registration are reviewed.
+The isolated MPS runtime and dedicated PostgreSQL database run with only the original Preprod wallets and one paid inspection. Upstream MPS starts chain jobs independently of adapter grants. Its reviewed collection configuration targets the sole original payment. Preserve its live lifecycle and original service configuration.
 
 The local overview embeds all nine current Markdown documents. HTML, combined Markdown, and ZIP exports are generated snapshots. Regenerate it after changes. [Evidence](research/EVIDENCE.md#current-local-implementation-evidence) owns check results. Do not duplicate test counts here.
 

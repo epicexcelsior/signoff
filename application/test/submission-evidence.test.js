@@ -30,6 +30,25 @@ test("judge evidence serves only reviewed originals and their exact hashes witho
     await (await fetch(`${origin}${artifact.href}`)).arrayBuffer(),
   );
   assert.deepEqual(served, original);
+  assert.equal(
+    artifact.sha256,
+    result.manifest.liveEvidence.find(
+      (entry) => entry.id === "api3-paid-nvd-first",
+    ).originalResponseSha256,
+  );
+  const reportArtifact = result.artifacts.find(
+    (entry) => entry.id === "paid-inspection-report",
+  );
+  const reportResponse = await fetch(`${origin}${reportArtifact.href}`);
+  const report = await reportResponse.json();
+  assert.equal(report.outcome, "REVIEW");
+  assert.match(report.limitations.join(" "), /synthetic physical evidence/);
+  assert.equal(
+    reportArtifact.sha256,
+    result.manifest.liveEvidence.find(
+      (entry) => entry.id === "cardano-paid-inspection-delivery",
+    ).usefulReportSha256,
+  );
   for (const id of [
     "credentials.env",
     "wallet",

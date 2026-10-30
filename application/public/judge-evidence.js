@@ -18,6 +18,7 @@ const recordLabels = {
   "deployed-policy-helper-historical": "Historical policy evaluation",
   "masumi-hosted-execution-only": "Hosted execution-only inspection",
   "cardano-seller-registration": "Cardano seller registration",
+  "cardano-paid-inspection-delivery": "Paid independent inspection",
 };
 function element(tag, text, className) {
   const node = document.createElement(tag);

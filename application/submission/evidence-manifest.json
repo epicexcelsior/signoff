@@ -1,6 +1,6 @@
 {
   "schema": "proof-of-ready/submission-evidence/v1",
-  "checkedAt": "2026-10-30T22:56:44.788829+00:00",
+  "checkedAt": "2026-10-30T23:02:47.560004+00:00",
   "readyForSubmission": false,
   "publicationAuthorized": false,
   "deadline": "2026-10-31T15:00:00+01:00",
@@ -77,6 +77,27 @@
       "blockNumber": 5354856,
       "feeLovelace": "276826",
       "qualificationScope": "Seller registration only. Not the paid inspection transaction or seller receipt."
+    },
+    {
+      "id": "cardano-paid-inspection-delivery",
+      "network": "Cardano Preprod",
+      "taskId": "01a18f06-3ca7-707b-b8d6-0db33451e754",
+      "status": "delivered-escrow-locked-seller-collection-pending",
+      "transactionHash": "f868a2406be729ffbbc57796f56f5ae61d82920bb3ac333aa5f67cef5fb6dfcd",
+      "blockNumber": 5354867,
+      "resultTransactionHash": "405a406634d221ea635aff5e85b58928cf44fd181fde3048829b8d42108f6465",
+      "resultBlockNumber": 5354869,
+      "usefulReportSha256": "25879a51e15c483be65468e50e3a68bb38ded3bda07007affcc1315868a83aea",
+      "originalReportPublicPath": "application/submission/evidence/cardano-paid-report-original.json",
+      "originalBindingsPublicPath": "application/submission/evidence/cardano-paid-hosted-bindings.json",
+      "outcome": "REVIEW",
+      "taskCredits": 100,
+      "fixtureInput": true,
+      "physicalEvidence": false,
+      "sellerPaid": false,
+      "qualificationScope": "Actual paid hosted inspection and confirmed escrow/result transactions. Original capture is synthetic and lacks optical evidence. Seller receipt remains pending. Report limitations describe the synthetic capture, not the separately paid purchase.",
+      "independentChainProofPublicPath": "application/submission/evidence/cardano-paid-chain-proof.json",
+      "independentChainProofSha256": "c924d0a8c248979f01133d416e5f52e0e597d2779c915254e848223b0a4d22c8"
     }
   ],
   "mandatoryEvidence": {
@@ -84,12 +105,10 @@
       "status": "in-progress",
       "network": "Cardano Preprod",
       "taskId": "01a18f06-3ca7-707b-b8d6-0db33451e754",
-      "transactionHash": null,
-      "usefulReportSha256": null,
+      "transactionHash": "f868a2406be729ffbbc57796f56f5ae61d82920bb3ac333aa5f67cef5fb6dfcd",
+      "usefulReportSha256": "25879a51e15c483be65468e50e3a68bb38ded3bda07007affcc1315868a83aea",
       "sellerReceiptSha256": null,
       "remaining": [
-        "Confirm original escrow transaction for paid hosted inspection",
-        "Deliver original useful REVIEW report with synthetic-input label",
         "Verify original seller withdrawal and positive net receipt"
       ]
     },

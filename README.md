@@ -8,14 +8,14 @@ The goal is agent-orchestrated commissioning with a useful paid inspector and an
 
 ## Submission checkpoint
 
-**The project is not submission-complete.** The local software baseline works. Genuine Cardano inspection and physical evidence remain missing.
+**The project is not submission-complete.** The local software baseline works. Seller collection, deployed judge evidence and physical evidence remain incomplete.
 
-| Area       | Complete now                                                                                                        | Still missing                                                                                                       |
-| ---------- | ------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| Cardano    | Deterministic inspector, recovery tests, local MPS build, Personal grant, runtime key, hosted execution-only REVIEW | Funded seller registration confirmed. Real paid inspection, escrow confirmation and seller receipt remain pending   |
-| API3       | Genuine paid signed CVE response, independently reconciled payment, actual Base Sepolia policy deployment           | Genuine inspection commitments, all five deployed judge cases, valid finalization transaction                       |
-| Hardware   | ESP32-C6 builds, signed protocols, safe preparation and read-only firmware review                                   | Exact carrier/parts, reviewed wiring, provisioning/flash, real button/LED test, available camera and actual capture |
-| Submission | Setup README, original live API3 artifacts, evidence manifest, Devfolio draft, 150-second video procedure           | Completed live evidence, video recording, approved public release, actual Devfolio submission                       |
+| Area       | Complete now                                                                                                        | Still missing                                                                                                                 |
+| ---------- | ------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Cardano    | Deterministic inspector, recovery tests, local MPS build, Personal grant, runtime key, hosted execution-only REVIEW | Funded seller registration confirmed. Paid REVIEW and escrow/result transactions confirmed. Seller collection remains pending |
+| API3       | Genuine paid signed CVE response, independently reconciled payment, actual Base Sepolia policy deployment           | Genuine inspection commitments, all five deployed judge cases, valid finalization transaction                                 |
+| Hardware   | ESP32-C6 builds, signed protocols, safe preparation and read-only firmware review                                   | Exact carrier/parts, reviewed wiring, provisioning/flash, real button/LED test, available camera and actual capture           |
+| Submission | Setup README, original live API3 artifacts, evidence manifest, Devfolio draft, 150-second video procedure           | Completed live evidence, video recording, approved public release, actual Devfolio submission                                 |
 
 Next: complete the original paid Personal Task and seller collection, identify and test the physical fixture, then reuse the original paid report for API3 finalization. Keep the remaining 0.01 aUSD for fresh data near that final test. The deployed contract alone does not pass the five mandatory cases.
 
@@ -55,7 +55,7 @@ Run `npm run overview:check` to verify every generated artifact against current 
 
 ## Run the commissioning station
 
-Use Node.js 24 and npm. Browser tests require installed Google Chrome, or `FIELDPROOF_BROWSER_EXECUTABLE`.
+Use a Git checkout, Node.js 24 and npm. Browser tests require installed Google Chrome, or `FIELDPROOF_BROWSER_EXECUTABLE`.
 
 ```sh
 cd application
@@ -143,7 +143,7 @@ After isolated dependency installation, run `npm run test:integrations`. [Engine
 
 The existing inspector has GRANTED access to the Personal Workspace, and its original runtime key remains valid. The installed CLI 1.0.4 used a removed endpoint. Published CLI 1.1.0 uses the current workspace endpoint and resolves the Personal setup. The application pins CLI 1.1.0 and preserves exact Task input through explicit context opt-outs. One hosted execution-only Task completed REVIEW. It consumed zero credits and used synthetic evidence. It proves hosted transport, not payment or physical acceptance.
 
-Normal paid Sokosumi Tasks debit the Task owner's Personal credits and use Core's managed buyer. Do not fund the separate local buyer wallet for this route. Both dedicated wallets received test funds. The seller registration confirmed. The original paid inspection is running. No further funding request is needed. An actual escrow transaction and positive seller receipt remain required.
+Normal paid Sokosumi Tasks debit the Task owner's Personal credits and use Core's managed buyer. Do not fund the separate local buyer wallet for this route. Both dedicated wallets received test funds. The seller registration confirmed. The original paid inspection delivered REVIEW and its escrow/result transactions confirmed. Seller collection remains pending. No further funding request is needed. An actual escrow transaction and positive seller receipt remain required.
 
 The shared TUM access request remains pending. It matters only when choosing organization Tasks. Reuse the existing Coworker and runtime key. Do not register another inspector.
 

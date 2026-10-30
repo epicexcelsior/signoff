@@ -256,6 +256,19 @@ test("camera UI saves the controller frame shape and backend recomputes placemen
       .getByRole("button", { name: "Stop camera", exact: true })
       .click();
     assert.equal(await page.locator("#camera").isVisible(), false);
+    const savedId = await page.locator("#history").inputValue();
+    assert.equal(
+      await page.locator('#history option:not([value=""])').count(),
+      1,
+    );
+    await page.getByRole("button", { name: "Reset presentation" }).click();
+    await page.waitForFunction(
+      () => !document.getElementById("approve").disabled,
+    );
+    assert.equal(await page.locator("#history").inputValue(), "");
+    await page.locator("#history").selectOption(savedId);
+    await page.getByText("Local inspection: REVIEW", { exact: true }).waitFor();
+    assert.equal(await page.locator("#history").inputValue(), savedId);
   } finally {
     await browser.close();
   }

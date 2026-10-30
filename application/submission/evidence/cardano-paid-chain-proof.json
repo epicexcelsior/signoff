@@ -1,0 +1,72 @@
+{
+  "schema": "proof-of-ready/cardano-original-chain-proof/v1",
+  "checkedAt": "2026-10-30T23:02:46.823286+00:00",
+  "taskId": "01a18f06-3ca7-707b-b8d6-0db33451e754",
+  "sourceRevision": "a846392ccfc8f5a85aee594ad9441dc90820dab0",
+  "records": {
+    "lock": {
+      "transaction": "f868a2406be729ffbbc57796f56f5ae61d82920bb3ac333aa5f67cef5fb6dfcd",
+      "block": "46c511e94f073652203ebe3a93d6030e88caa81454f999e07fa8a1b610d5e44c",
+      "blockHeight": 5354867,
+      "blockTime": 1793401039,
+      "feesLovelace": "205717",
+      "validContract": true,
+      "datum": {
+        "outputIndex": 0,
+        "identifierMatches": true,
+        "sellerMatches": true,
+        "inputMatches": true,
+        "resultMatches": true,
+        "state": 0,
+        "amount": [
+          {
+            "unit": "lovelace",
+            "quantity": "4469470"
+          },
+          {
+            "unit": "16a55b2a349361ff88c03788f93e1e966e5d689605d044fef722ddde0014df10745553444d",
+            "quantity": "1000000"
+          }
+        ],
+        "inputHash": "146f3d55a93e1fb90e57940b14b7f423b15c5a15c75dc81e15996a4b39d2c741",
+        "resultHash": null,
+        "payByTime": "1793401215953",
+        "submitResultTime": "1793402115953",
+        "unlockTime": "1793403075953",
+        "externalDisputeUnlockTime": "1793404035953"
+      }
+    },
+    "result": {
+      "transaction": "405a406634d221ea635aff5e85b58928cf44fd181fde3048829b8d42108f6465",
+      "block": "199c5b8df162c263affd2caf709bcf3270ff8fbcd168c4df3aa4b39379385ddc",
+      "blockHeight": 5354869,
+      "blockTime": 1793401184,
+      "feesLovelace": "709042",
+      "validContract": true,
+      "datum": {
+        "outputIndex": 0,
+        "identifierMatches": true,
+        "sellerMatches": true,
+        "inputMatches": true,
+        "resultMatches": true,
+        "state": 1,
+        "amount": [
+          {
+            "unit": "lovelace",
+            "quantity": "4503950"
+          },
+          {
+            "unit": "16a55b2a349361ff88c03788f93e1e966e5d689605d044fef722ddde0014df10745553444d",
+            "quantity": "1000000"
+          }
+        ],
+        "inputHash": "146f3d55a93e1fb90e57940b14b7f423b15c5a15c75dc81e15996a4b39d2c741",
+        "resultHash": "25879a51e15c483be65468e50e3a68bb38ded3bda07007affcc1315868a83aea",
+        "payByTime": "1793401215953",
+        "submitResultTime": "1793402115953",
+        "unlockTime": "1793403075953",
+        "externalDisputeUnlockTime": "1793404035953"
+      }
+    }
+  }
+}
