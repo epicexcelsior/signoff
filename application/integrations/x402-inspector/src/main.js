@@ -5,7 +5,11 @@ import { resolve, isAbsolute, join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { Store, AppError } from "../../../src/store.js";
 import { makePayment, NETWORK, AMOUNT } from "../../../src/payment.js";
-import { decodePaymentSignatureHeader } from "@x402/core/http";
+import {
+  decodePaymentSignatureHeader,
+  encodePaymentRequiredHeader,
+  encodePaymentResponseHeader,
+} from "@x402/core/http";
 import { PaidInspector } from "./service.js";
 import { privateStateDirectory } from "../../masumi/src/setup.js";
 
@@ -91,8 +95,8 @@ app.post(
   "/api/inspections/:id/payment",
   route(async (req, res) => {
     const job = store.get(req.params.id);
-    if (!req.headers["payment-signature"])
-      return res.status(402).json({
+    if (!req.headers["payment-signature"]) {
+      const required = {
         x402Version: 2,
         resource: {
           url: `${origin}/api/inspections/${job.id}/payment`,
@@ -101,7 +105,10 @@ app.post(
           mimeType: "application/json",
         },
         accepts: [job.requirements],
-      });
+      };
+      res.set("PAYMENT-REQUIRED", encodePaymentRequiredHeader(required));
+      return res.status(402).json(required);
+    }
     let payload;
     try {
       payload = decodePaymentSignatureHeader(req.headers["payment-signature"]);
@@ -112,7 +119,16 @@ app.post(
         400,
       );
     }
-    res.json(service.view(await service.pay(job.id, payload)));
+    let current = await service.pay(job.id, payload);
+    if (current.payment?.receipt)
+      res.set(
+        "PAYMENT-RESPONSE",
+        encodePaymentResponseHeader(current.payment.receipt),
+      );
+    if (current.state === "PAID") current = await service.inspect(job.id);
+    res
+      .status(current.state === "COMPLETE" ? 200 : 202)
+      .json(service.view(current));
   }),
 );
 app.post(
