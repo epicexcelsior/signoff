@@ -1,0 +1,2 @@
+# Match the retained observation reader. Host tests need only the standard library.
+bleak==3.0.2

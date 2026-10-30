@@ -1,0 +1,52 @@
+{
+  "schema": "proof-of-ready/firmware-provenance/v1",
+  "checkedAt": "2026-10-30",
+  "reference": {
+    "project": "capmesh",
+    "revision": "3094135718e7aa88fcc33c9df3c7cbd9b723c3e7",
+    "scope": "Local read-only observation protocol and software-backed P-256 receipt identity reference. No original project files changed."
+  },
+  "toolchain": {
+    "sdk": "ESP-IDF 6.1",
+    "revision": "fff9895c82d744c7237be8847347bdd1b07c6643",
+    "nimbleRevision": "139cada0ae932957fa06ba37d17e3c9c2c95c773",
+    "compiler": "riscv32-esp-elf GCC 15.2.0 esp-15.2.0_20251204",
+    "target": "esp32c6"
+  },
+  "cjson": {
+    "component": "espressif/cjson",
+    "version": "1.7.19~2",
+    "repository": "https://github.com/espressif/idf-extra-components",
+    "revision": "1387cec28a9b40654be7892114bd7d26fcd3869c",
+    "path": "cjson",
+    "registry": "https://components.espressif.com/components/espressif/cjson/versions/1.7.19~2",
+    "archiveSha256": "2e13f18fa612d85eeec4001dee87b246beac64cf019bc28d4c4e2e1910adc7f1",
+    "license": "MIT",
+    "scope": "Vendored from the locally cached official Espressif component archive. Espressif patches differ from upstream v1.7.19. Header/license trailing whitespace is normalized. Local build configuration limits nesting to 16.",
+    "sha256": {
+      "cJSON.c": "607e756460fa0de37d20a7a9181f2de29c97bfb7ce5a0e6c2f548243836cd852",
+      "cJSON.h": "d9c41617543b7ade8d5e7b8f66f82b00fa70e4063c396f2d628849efce3ef109",
+      "LICENSE": "163766832b15cc9c90d593216360c67af579b8b36932b297fca2aeb61544de2f"
+    },
+    "upstreamSha256": {
+      "cJSON.c": "607e756460fa0de37d20a7a9181f2de29c97bfb7ce5a0e6c2f548243836cd852",
+      "cJSON.h": "25b0145150d500498e4d209cec69c18c42cf818bffcc54690be3b895a2a16dee",
+      "LICENSE": "a36dda207c36db5818729c54e7ad4e8b0c6fba847491ba64f372c1a2037b6d5c"
+    }
+  },
+  "verification": {
+    "host": "Four C groups under AddressSanitizer/UBSan and eight Python tests. Fake Bluetooth clients only.",
+    "builds": [
+      "Default profile with both GPIO capabilities disabled.",
+      "Compiler-only profile with synthetic contact and active-low optical pins. Never flashed."
+    ],
+    "physical": "Read-only USB chip identity query confirmed ESP32-C6FH4 revision 0.2 and 4 MB flash. No GPIO execution, flash write, key enrollment or optical measurement."
+  },
+  "limits": [
+    "No installed-firmware provenance or remote attestation.",
+    "No secure element, secure boot or flash encryption established.",
+    "No physical NVS recovery or GPIO timing verification.",
+    "No carrier board or safe GPIO established.",
+    "No sponsor qualification or live settlement claim."
+  ]
+}
