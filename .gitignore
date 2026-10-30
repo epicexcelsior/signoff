@@ -1,0 +1,24 @@
+# Local credentials, tools, and runtime data
+/.agents/
+/.aws/
+/.codex/
+**/node_modules/
+**/.env
+**/.env.*
+!**/.env.example
+**/.local/
+**/.venv*/
+**/artifacts/
+**/test-results/
+**/playwright-report/
+**/__pycache__/
+*.pyc
+*.sqlite
+*.sqlite-*
+*.db
+*.db-*
+
+# Preserve original inputs and historical private notes locally
+/archive/
+/TUM_Hackathon_Autonomous_Agent_Master_Handoff.md
+/crypto-worlds-fair-hackathon-projects.xlsx

@@ -1,0 +1,29 @@
+{
+  "name": "fieldproof-cardano",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env src/main.js",
+    "buyer": "node --env-file-if-exists=.env scripts/buyer.js",
+    "test": "node --test test/*.test.js",
+    "check": "node scripts/check.js",
+    "check:masumi": "node --env-file-if-exists=.env scripts/masumi-check.js",
+    "format": "prettier --write src scripts public test package.json .env.example requirements-ble.txt --ignore-unknown",
+    "format:check": "prettier --check src scripts public test package.json .env.example requirements-ble.txt --ignore-unknown",
+    "test:browser": "node --test test/browser.test.js"
+  },
+  "dependencies": {
+    "@evolution-sdk/evolution": "0.5.14",
+    "@x402/cardano": "2.29.0",
+    "@x402/core": "2.29.0",
+    "express": "4.22.3"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1",
+    "prettier": "3.5.2"
+  }
+}

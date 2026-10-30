@@ -1,0 +1,196 @@
+import express from "express";
+import { randomBytes, timingSafeEqual } from "node:crypto";
+import { fileURLToPath } from "node:url";
+import { paymentRequired } from "./payment.js";
+import { EvidenceError } from "./evidence.js";
+import { AppError } from "./store.js";
+import {
+  decodePaymentSignatureHeader,
+  encodePaymentRequiredHeader,
+  encodePaymentResponseHeader,
+} from "@x402/core/http";
+
+export function createApp(service) {
+  const app = express();
+  const token = randomBytes(32).toString("hex");
+  app.disable("x-powered-by");
+  app.set("trust proxy", false);
+  app.use((req, res, next) => {
+    res.set({
+      "Cache-Control": "no-store",
+      "X-Content-Type-Options": "nosniff",
+      "Referrer-Policy": "no-referrer",
+      "Cross-Origin-Resource-Policy": "same-origin",
+      "Content-Security-Policy":
+        "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'",
+    });
+    if (!/^(localhost|127\.0\.0\.1)(:\d{1,5})?$/.test(req.headers.host ?? "")) {
+      return next(
+        new AppError("INVALID_HOST", "Use the local FieldProof address.", 403),
+      );
+    }
+    if (
+      req.headers.origin &&
+      req.headers.origin !== `http://${req.headers.host}`
+    ) {
+      return next(
+        new AppError(
+          "INVALID_ORIGIN",
+          "Open FieldProof directly to run a check.",
+          403,
+        ),
+      );
+    }
+    if (!["GET", "HEAD", "POST"].includes(req.method)) {
+      return next(
+        new AppError("INVALID_METHOD", "Use a supported request method.", 405),
+      );
+    }
+    if (req.method === "POST") {
+      const supplied = req.headers["x-fieldproof-token"];
+      if (
+        typeof supplied !== "string" ||
+        !/^[0-9a-f]{64}$/.test(supplied) ||
+        !timingSafeEqual(Buffer.from(supplied), Buffer.from(token))
+      ) {
+        return next(
+          new AppError(
+            "UNAUTHORIZED",
+            "Reload FieldProof to obtain a local session.",
+            403,
+          ),
+        );
+      }
+      if (!req.is("application/json"))
+        return next(
+          new AppError("INVALID_CONTENT_TYPE", "Send a JSON request.", 415),
+        );
+    }
+    next();
+  });
+  app.use(express.json({ limit: "48kb", strict: true }));
+  const route = (run) => (req, res, next) =>
+    Promise.resolve()
+      .then(() => run(req, res))
+      .catch(next);
+  const view = (job) => service.view(job);
+  app.get("/api/config", (_req, res) =>
+    res.json({
+      token,
+      mode: service.config.mode,
+      contact: service.profile.contact,
+      price: "2 tADA",
+      spend_authorized: service.config.spendAuthorized,
+    }),
+  );
+  app.get("/api/jobs", (_req, res) => res.json(service.store.list().map(view)));
+  app.post(
+    "/api/jobs",
+    route((req, res) => res.status(201).json(view(service.create(req.body)))),
+  );
+  app.get(
+    "/api/jobs/:id",
+    route((req, res) => res.json(view(service.store.get(req.params.id)))),
+  );
+  app.get(
+    "/api/jobs/:id/payment",
+    route((req, res) => {
+      const job = service.store.get(req.params.id);
+      if (job.mode === "simulation")
+        throw new AppError(
+          "SIMULATION_ONLY",
+          "This check uses simulated payment.",
+          400,
+        );
+      const required = paymentRequired(job, `http://${req.headers.host}`);
+      res.set("PAYMENT-REQUIRED", encodePaymentRequiredHeader(required));
+      res.status(402).json(required);
+    }),
+  );
+  app.post(
+    "/api/jobs/:id/payment",
+    route(async (req, res) => {
+      const original = service.store.get(req.params.id);
+      let payload = req.body;
+      if (original.mode !== "simulation") {
+        if (!req.headers["payment-signature"]) {
+          const required = paymentRequired(
+            original,
+            `http://${req.headers.host}`,
+          );
+          res.set("PAYMENT-REQUIRED", encodePaymentRequiredHeader(required));
+          return res.status(402).json(required);
+        }
+        try {
+          payload = decodePaymentSignatureHeader(
+            req.headers["payment-signature"],
+          );
+        } catch {
+          throw new AppError(
+            "INVALID_PAYMENT",
+            "Send a valid PAYMENT-SIGNATURE header.",
+            400,
+          );
+        }
+      }
+      const job = await service.pay(req.params.id, payload);
+      if (job.payment?.receipt)
+        res.set(
+          "PAYMENT-RESPONSE",
+          encodePaymentResponseHeader(job.payment.receipt),
+        );
+      res.status(job.state === "PAID" ? 200 : 202).json(view(job));
+    }),
+  );
+  app.post(
+    "/api/jobs/:id/reconcile",
+    route(async (req, res) =>
+      res.json(view(await service.reconcile(req.params.id))),
+    ),
+  );
+  app.post(
+    "/api/jobs/:id/observe",
+    route(async (req, res) =>
+      res.json(view(await service.capture(req.params.id))),
+    ),
+  );
+  app.post(
+    "/api/jobs/:id/verify",
+    route((req, res) => res.json(service.verify(req.params.id, req.body))),
+  );
+  app.use(
+    express.static(fileURLToPath(new URL("../public", import.meta.url)), {
+      etag: false,
+      maxAge: 0,
+    }),
+  );
+  app.use((_req, _res, next) =>
+    next(new AppError("NOT_FOUND", "This page does not exist.", 404)),
+  );
+  app.use((error, _req, res, _next) => {
+    if (error instanceof EvidenceError)
+      return res
+        .status(422)
+        .json({ code: error.code, error: error.message, decision: "WAIT" });
+    if (error instanceof AppError)
+      return res
+        .status(error.status)
+        .json({ code: error.code, error: error.message });
+    if (
+      error.type === "entity.parse.failed" ||
+      error.type === "entity.too.large"
+    ) {
+      return res.status(error.status).json({
+        code: "INVALID_BODY",
+        error: "Send valid JSON within the 48 KB limit.",
+      });
+    }
+    // Do not send upstream bodies, paths, authorization secrets, or stack traces to the browser.
+    console.error("FieldProof request failed:", error.code ?? error.name);
+    res.status(500).json({
+      code: "INTERNAL_ERROR",
+      error: "The local check failed. Read its stored state before retrying.",
+    });
+  });
+  return app;
+}
