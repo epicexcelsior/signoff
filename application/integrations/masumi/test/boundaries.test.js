@@ -74,6 +74,41 @@ test("runtime uses pinned local CLI arguments and strips unrelated credentials f
   ]);
 });
 
+test("runtime explicitly forwards only the configured account key and keeps write authorization separate", async () => {
+  let calls = 0;
+  const runtime = createSokosumiRuntime({
+    coworkerId: "chosen",
+    accountApiKey: "saved-owner-account-key",
+    runCommand: async (_binary, _command, options) => {
+      calls += 1;
+      assert.equal(options.env.SOKOSUMI_API_KEY, "saved-owner-account-key");
+      assert.equal(options.env.BLOCKFROST_API_KEY_PREPROD, undefined);
+      assert.equal(options.env.MPS_RUNTIME_TOKEN, undefined);
+      assert.equal(options.env.INSPECTOR_MODEL_API_KEY, undefined);
+      return { stdout: JSON.stringify({ tasks: [] }) };
+    },
+  });
+  assert.equal(
+    await runtime.findTask({ name: "one", description: "original" }),
+    null,
+  );
+  await assert.rejects(
+    runtime.createTask({ name: "one", description: "original" }),
+    {
+      code: "EXTERNAL_AUTHORIZATION_REQUIRED",
+    },
+  );
+  assert.equal(calls, 1);
+  assert.throws(
+    () =>
+      createSokosumiRuntime({
+        coworkerId: "chosen",
+        accountApiKey: "secret\ninvalid",
+      }),
+    { code: "INVALID_ACCOUNT_KEY" },
+  );
+});
+
 test("MPS restricts loopback and write authority while preserving original payment identifiers", async () => {
   assert.throws(
     () =>

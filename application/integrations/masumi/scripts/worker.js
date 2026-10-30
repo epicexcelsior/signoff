@@ -46,6 +46,7 @@ try {
     coworkerId: process.env.COWORKER_ID,
     organizationId: process.env.SOKOSUMI_ORGANIZATION_ID || null,
     organizationSlug: process.env.SOKOSUMI_ORGANIZATION_SLUG || null,
+    accountApiKey: process.env.SOKOSUMI_API_KEY || undefined,
     writesAuthorized,
   });
   const privateText = (file) => {

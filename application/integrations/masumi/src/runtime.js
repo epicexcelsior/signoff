@@ -50,11 +50,23 @@ export function createSokosumiRuntime({
   coworkerId,
   organizationId,
   organizationSlug,
+  accountApiKey,
   writesAuthorized = false,
   runCommand = execute,
   core: suppliedCore,
 }) {
   const target = taskTarget({ coworkerId, organizationId, organizationSlug });
+  if (
+    accountApiKey !== undefined &&
+    (typeof accountApiKey !== "string" ||
+      accountApiKey.length < 16 ||
+      accountApiKey.length > 4096 ||
+      /\s/u.test(accountApiKey))
+  )
+    throw new IntegrationError(
+      "INVALID_ACCOUNT_KEY",
+      "Use the saved Sokosumi account API key without whitespace.",
+    );
   const binary = fileURLToPath(
     new URL("../node_modules/.bin/sokosumi", import.meta.url),
   );
@@ -72,6 +84,9 @@ export function createSokosumiRuntime({
       .filter((key) => process.env[key] !== undefined)
       .map((key) => [key, process.env[key]]),
   );
+  // Account actions use the owner-supplied key. Task reads still use the
+  // independently scoped Coworker credential from the supported CLI vault.
+  if (accountApiKey !== undefined) commandEnv.SOKOSUMI_API_KEY = accountApiKey;
   async function cli(args, writes = false) {
     if (writes && !writesAuthorized)
       throw new IntegrationError(
