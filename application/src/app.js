@@ -7,6 +7,10 @@ import { EvidenceError } from "./evidence.js";
 import { AppError } from "./store.js";
 import { verifyPacket } from "./commissioning.js";
 import {
+  submissionEvidence,
+  submissionArtifact,
+} from "./submission-evidence.js";
+import {
   decodePaymentSignatureHeader,
   encodePaymentRequiredHeader,
   encodePaymentResponseHeader,
@@ -83,6 +87,23 @@ export function createApp(service) {
       .then(() => run(req, res))
       .catch(next);
   const view = (job) => service.view(job);
+  app.get(
+    "/api/submission-evidence",
+    route((_req, res) => res.json(submissionEvidence())),
+  );
+  app.get(
+    "/api/submission-evidence/artifacts/:id",
+    route((req, res) => {
+      const bytes = submissionArtifact(req.params.id);
+      if (!bytes)
+        throw new AppError(
+          "NOT_FOUND",
+          "This evidence artifact does not exist.",
+          404,
+        );
+      res.type("application/json").send(bytes);
+    }),
+  );
   app.get("/api/config", (_req, res) =>
     res.json({
       token,

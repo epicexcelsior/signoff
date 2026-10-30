@@ -1,4 +1,5 @@
 import { createVisionController } from "/vision/controller.js";
+import { refreshJudgeEvidence } from "/judge-evidence.js";
 
 const $ = (id) => document.getElementById(id);
 let config;
@@ -58,6 +59,7 @@ function renderControls() {
   $("scenario").disabled = busy;
   $("history").disabled = busy;
   $("new-order").hidden = !order;
+  $("reset-presentation").disabled = busy || !config;
   const active = current?.state === "CAPTURING";
   const expired = active && Date.now() > current.expiresAt;
   $("capture-deadline").textContent = !active
@@ -134,6 +136,10 @@ function showSession(session) {
   );
   $("record-reference").textContent =
     `Attempt ${session.id} · ${session.sourceMode === "fixture" ? "synthetic rehearsal" : "configured physical adapter"}`;
+  $("evidence-origin").textContent =
+    session.sourceMode === "fixture"
+      ? "Current attempt · synthetic rehearsal · no physical or payment claim"
+      : "Current attempt · physical adapter · inspect every acceptance requirement";
   $("optical-status").textContent =
     session.optical?.evaluation?.reason ??
     session.optical?.error?.message ??
@@ -329,6 +335,14 @@ $("new-order").addEventListener("click", () => {
   sessionStorage.setItem("proof-ready-new-order", "true");
   location.reload();
 });
+$("reset-presentation").addEventListener("click", () => {
+  stopCamera();
+  sessionStorage.setItem("proof-ready-new-order", "true");
+  sessionStorage.setItem("proof-ready-reset", "true");
+  location.reload();
+});
+$("refresh-evidence").addEventListener("click", () => refreshJudgeEvidence());
+void refreshJudgeEvidence();
 $("verify").addEventListener("click", () =>
   act(async () => {
     const packet = await api(
@@ -564,6 +578,12 @@ try {
       : "Physical reads use the configured device. Start a fresh capture for each attempt.",
   );
   renderControls();
+  if (sessionStorage.getItem("proof-ready-reset")) {
+    sessionStorage.removeItem("proof-ready-reset");
+    feedback(
+      "Presentation reset. All saved attempts, receipts, and device state remain intact. Approve a work order to begin.",
+    );
+  }
 } catch (error) {
   feedback(error.message, true);
 }

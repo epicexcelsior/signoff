@@ -21,7 +21,7 @@
     <main>
       <div class="intro">
         <div>
-          <p class="eyebrow">Agent-orchestrated commissioning</p>
+          <p class="eyebrow">Equipment acceptance / operator station</p>
           <h1>Commission the work.<br /><span>Keep the proof.</span></h1>
         </div>
         <p>
@@ -33,9 +33,21 @@
         <li id="flow-order" aria-current="step">
           <span>1</span> Approve work order
         </li>
-        <li id="flow-capture"><span>2</span> Capture the test</li>
-        <li id="flow-report"><span>3</span> Inspect the result</li>
+        <li id="flow-placement"><span>2</span> Check placement</li>
+        <li id="flow-capture"><span>3</span> Test the device</li>
+        <li id="flow-inspector"><span>4</span> Paid inspection</li>
+        <li id="flow-policy"><span>5</span> Security policy</li>
+        <li id="flow-report"><span>6</span> Accept or reject</li>
       </ol>
+      <div class="presentation-bar">
+        <p id="evidence-origin">Current attempt · waiting for a work order</p>
+        <div>
+          <a href="#judge-panel">Judge evidence ↓</a
+          ><button id="reset-presentation" class="text-button" disabled>
+            Reset presentation
+          </button>
+        </div>
+      </div>
       <div class="station">
         <section class="order-panel" aria-labelledby="order-heading">
           <p class="eyebrow">Operator / work order</p>
@@ -227,6 +239,43 @@
             </li>
           </ul>
         </details>
+      </section>
+      <section
+        id="judge-panel"
+        class="report-panel"
+        aria-labelledby="judge-heading"
+      >
+        <div class="section-top">
+          <div>
+            <p class="eyebrow">Judge testing / saved original evidence</p>
+            <h2 id="judge-heading">Trace the decision.</h2>
+          </div>
+          <button id="refresh-evidence" class="secondary">
+            Refresh evidence
+          </button>
+        </div>
+        <p class="judge-scope">
+          Saved chain events keep their original time and scope. They do not
+          authorize this installation or start a payment.
+        </p>
+        <p id="judge-status" class="note" role="status">
+          Loading the reviewed evidence manifest.
+        </p>
+        <div id="judge-requirements" class="judge-requirements"></div>
+        <div id="judge-records" class="judge-records"></div>
+        <details>
+          <summary>Five required deployed policy tests</summary>
+          <p class="note">
+            Each rejection must come from its intended invalid evidence. A
+            finalized job cannot stand in for an evidence rejection.
+          </p>
+          <dl id="judge-cases" class="judge-cases"></dl>
+        </details>
+        <div id="judge-artifacts" class="judge-artifacts"></div>
+        <p class="note">
+          Use Verify packet and Test an edited packet above for the selected
+          attempt. A reset preserves every original record.
+        </p>
       </section>
     </main>
     <footer>

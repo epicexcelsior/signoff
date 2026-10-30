@@ -129,6 +129,36 @@ test("commissioning desktop and phone: approve, inspect defects, verify packets,
         .getByText("Local inspection: REVIEW", { exact: true })
         .waitFor();
       assert((await page.locator("#history option").count()) >= 2);
+      await page
+        .locator("#judge-panel")
+        .getByText("Paid original NVD response", { exact: true })
+        .waitFor();
+      assert.match(
+        await page.locator("#judge-status").textContent(),
+        /Saved evidence/,
+      );
+      assert.equal(await page.locator("#judge-cases dt").count(), 5);
+      const countBeforeReset = await page.locator("#history option").count();
+      await page.getByRole("button", { name: "Reset presentation" }).click();
+      await page.waitForFunction(
+        () => !document.getElementById("approve").disabled,
+      );
+      assert.equal(
+        await page.locator("#history option").count(),
+        countBeforeReset,
+      );
+      assert.equal(
+        await page.locator("#acceptance-decision").textContent(),
+        "REVIEW",
+      );
+      assert.match(
+        await page.locator("#feedback").textContent(),
+        /All saved attempts/,
+      );
+      await page.reload();
+      await page
+        .getByText("Local inspection: REVIEW", { exact: true })
+        .waitFor();
       if (process.env.FIELDPROOF_SCREENSHOT_DIR) {
         mkdirSync(process.env.FIELDPROOF_SCREENSHOT_DIR, { recursive: true });
         await page.screenshot({
