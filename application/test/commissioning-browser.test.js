@@ -58,6 +58,10 @@ test("commissioning desktop and phone: approve, inspect defects, verify packets,
           "REWORK",
       );
       assert.match(await page.locator("#results").textContent(), /visionFAIL/);
+      assert.match(
+        await page.locator("#next-action").textContent(),
+        /Align both markers/,
+      );
       await page
         .getByRole("button", { name: "Verify packet", exact: true })
         .click();
@@ -138,13 +142,16 @@ test("commissioning desktop and phone: approve, inspect defects, verify packets,
         /Saved evidence/,
       );
       assert.equal(await page.locator("#judge-cases dt").count(), 5);
-      const countBeforeReset = await page.locator("#history option").count();
+      const countBeforeReset = await page
+        .locator('#history option:not([value=""])')
+        .count();
+      const savedAttempt = await page.locator("#history").inputValue();
       await page.getByRole("button", { name: "Reset presentation" }).click();
       await page.waitForFunction(
         () => !document.getElementById("approve").disabled,
       );
       assert.equal(
-        await page.locator("#history option").count(),
+        await page.locator('#history option:not([value=""])').count(),
         countBeforeReset,
       );
       assert.equal(
@@ -155,6 +162,11 @@ test("commissioning desktop and phone: approve, inspect defects, verify packets,
         await page.locator("#feedback").textContent(),
         /All saved attempts/,
       );
+      assert.equal(await page.locator("#history").inputValue(), "");
+      await page.locator("#history").selectOption(savedAttempt);
+      await page
+        .getByText("Local inspection: REVIEW", { exact: true })
+        .waitFor();
       await page.reload();
       await page
         .getByText("Local inspection: REVIEW", { exact: true })

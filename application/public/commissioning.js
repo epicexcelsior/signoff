@@ -122,6 +122,7 @@ function showOrder() {
 }
 function showSession(session) {
   current = session;
+  $("history").value = session.id;
   order = orders.find((item) => item.id === session.workOrderId) ?? order;
   showOrder();
   $("capture-state").textContent =
@@ -158,6 +159,31 @@ function showSession(session) {
   $("inspection-outcome").textContent = session.report
     ? `Local inspection: ${session.report.outcome}`
     : "Capture in progress";
+  const incomplete = session.report
+    ? [...session.report.predicates, ...session.acceptance.predicates]
+    : [];
+  const next =
+    incomplete.find((p) => p.outcome === "FAIL") ??
+    incomplete.find((p) => p.outcome === "REVIEW");
+  const actions = {
+    session: "Start a fresh attempt within the capture window.",
+    device:
+      "Check the device connection and enrolled identity before another attempt.",
+    function:
+      "Check the button, then follow the requested states in a new attempt.",
+    delivery: "Check the receiving monitor before another attempt.",
+    vision:
+      "Align both markers with the approved target, then save a new camera measurement.",
+    optical: "Capture the complete signed LED test with both markers visible.",
+    "physical-origin":
+      "Capture the actual installation with the physical adapter.",
+    "paid-inspection":
+      "Complete the independent paid inspection and verify its seller receipt.",
+    "software-policy":
+      "Check the authenticated security policy for the declared build.",
+  };
+  $("next-action").textContent =
+    `Next action: ${session.report ? (actions[next?.id] ?? next?.reason ?? "Check external acceptance again before handover.") : "Follow the contact sequence and save a camera measurement."}`;
   $("report-description").textContent =
     session.acceptance?.decision === "READY"
       ? "The configured readers verified every acceptance requirement. Check external evidence again before using an expired decision."
@@ -214,8 +240,11 @@ async function refreshHistory() {
   orders = result.workOrders;
   sessions = result.sessions;
   $("history").replaceChildren();
-  if (!sessions.length) {
-    const option = new Option("No attempts yet", "");
+  if (!sessions.length || !current) {
+    const option = new Option(
+      sessions.length ? "Select a saved attempt" : "No attempts yet",
+      "",
+    );
     $("history").append(option);
   }
   for (const session of sessions) {

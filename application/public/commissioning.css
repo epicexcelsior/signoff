@@ -588,6 +588,14 @@ video {
 .results {
   border-top: 1px solid var(--line);
 }
+.next-action {
+  border-left: 3px solid var(--blue);
+  background: var(--pale);
+  padding: 15px 18px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  line-height: 1.7;
+}
 .empty-state {
   font-size: 13px;
   color: var(--muted);
