@@ -1,0 +1,71 @@
+{
+  "schema": "proof-of-ready/optical-protocol/v1",
+  "executionProtocol": "proof-of-ready/optical-execution/v1",
+  "signatureAlgorithm": "P-256/SHA-256/P1363",
+  "signatureEncoding": "v3: followed by canonical Base64 of 64 signature bytes",
+  "messageEncoding": "UTF-8 fields joined by |, no trailing separator",
+  "messageFields": [
+    "literal:proof-of-ready-optical-v1",
+    "provider",
+    "sensor",
+    "work_order_digest",
+    "session_id",
+    "request_id",
+    "nonce",
+    "bits",
+    "half_symbol_ms",
+    "started_at",
+    "completed_at",
+    "symbol_count"
+  ],
+  "constraints": {
+    "provider": "1..31 ASCII letters, digits, underscore or hyphen",
+    "sensor": "optical-led",
+    "work_order_digest": "0x plus 64 lowercase hex digits",
+    "session_id": "16 lowercase hex digits",
+    "request_id": "16 lowercase hex digits derived by the coordinator",
+    "nonce": "integer 1..2147483647",
+    "bits": "8 lowercase hex digits, most-significant bit first",
+    "half_symbol_ms": 250,
+    "symbol_count": 72,
+    "timestamps": "positive Unix seconds bounded by the original 45-second request",
+    "symbolDurationMs": 18000
+  },
+  "symbols": {
+    "preamble": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      0,
+      1
+    ],
+    "zero": [
+      0,
+      1
+    ],
+    "one": [
+      1,
+      0
+    ]
+  },
+  "trust": "A signature binds execution claims to the enrolled key. Camera observations and installed-firmware provenance remain separate checks.",
+  "safety": "Physical emission requires an explicitly selected board driver and separate actuation authorization. No default GPIO is safe to infer.",
+  "receiptFields": [
+    "protocol",
+    "provider",
+    "sensor",
+    "work_order_digest",
+    "session_id",
+    "request_id",
+    "nonce",
+    "bits",
+    "half_symbol_ms",
+    "started_at",
+    "completed_at",
+    "symbol_count",
+    "receipt_signature"
+  ]
+}

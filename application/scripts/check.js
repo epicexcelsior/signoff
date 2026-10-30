@@ -21,6 +21,7 @@ execFileSync("python3", [
 ]);
 for (const file of ["package.json", "package-lock.json"])
   JSON.parse(readFileSync(file, "utf8"));
+JSON.parse(readFileSync("protocol/optical-v1.json", "utf8"));
 console.log(
   "JavaScript syntax, Python syntax, and package JSON checks passed.",
 );
