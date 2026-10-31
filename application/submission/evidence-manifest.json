@@ -1,6 +1,6 @@
 {
   "schema": "proof-of-ready/submission-evidence/v1",
-  "checkedAt": "2026-10-31T07:35:52.093511+00:00",
+  "checkedAt": "2026-10-31T08:58:21.177896+00:00",
   "readyForSubmission": false,
   "publicationAuthorized": false,
   "deadline": "2026-10-31T15:00:00+01:00",
@@ -189,7 +189,6 @@
       "escrowConfirmed": true,
       "resultConfirmed": true,
       "sellerPaid": true,
-      "chargedPersonalCredits": 100,
       "amountTestUsdm": 1,
       "sellerUnlockAt": "2026-10-31T03:43:45.140Z",
       "physicalCameraEvidence": true,
@@ -213,7 +212,7 @@
       "sellerReceiptTransactionHash": "344fd5f6fd40f469ff72e0feac7b58ae9f9a100f472a29429e1082ae42aaa202"
     },
     "api3": {
-      "status": "verified-historical-paid-review",
+      "status": "not-qualified-source-dependent-decision-missing",
       "contract": "0x98023c425670a9690ab362c00fbea1bc11dce2cb",
       "judgeCases": {
         "valid-causes-state-change": "passed-mined-open-to-rejected",
@@ -240,7 +239,14 @@
         "Complete continuous optical capture bound to the approved work order; preserve at least four claims",
         "Identify button terminals, review GPIO2-to-GND wiring, and run signed contact transitions"
       ],
-      "physicalEvidencePacketScope": "Partial negative packet: actual camera only. No signed device sequence, optical capture, or acceptance."
+      "physicalEvidencePacketScope": "Partial negative packet: actual camera only. No signed device sequence, optical capture, or acceptance.",
+      "finalAttempt": {
+        "checkedAt": "2026-10-31T08:58:21.177896+00:00",
+        "phoneConnected": false,
+        "usbSerialEndpointPresent": false,
+        "newOpticalRequest": false,
+        "result": "Stopped before emission. Existing equipment is disconnected. No wiring or firmware changed."
+      }
     },
     "submission": {
       "status": "draft",
@@ -262,5 +268,26 @@
     "The five source cases and mined rejection use a genuine paid REVIEW on synthetic input. No complete physical installation or installed-build provenance exists.",
     "The 0.02 aUSD paid-access budget is consumed. Preserve both original settled requests. Another paid request needs a separately authorized budget.",
     "The saved false inspection predicate forces REJECTED regardless of the CVE verdict. Complete API3 qualification remains unconfirmed until source-dependent decision evidence is adequate."
-  ]
+  ],
+  "primaryRealDemo": "cardano-physical-camera-inspection",
+  "api3Qualification": {
+    "qualified": false,
+    "sourceDependentTerminalDecision": false,
+    "fourTamperRejectionsVerified": true,
+    "auditArtifact": "application/submission/evidence/api3-qualification-audit.json",
+    "auditSha256": "bd4010389685b69176456c203ca04f85891b94b3344ff0541801767a079d1913",
+    "gap": "The false inspection prerequisite forces REJECTED regardless of the authenticated CVE verdict."
+  },
+  "releaseCandidate": {
+    "published": false,
+    "testedCleanCheckout": true,
+    "internalDocumentsIncluded": false,
+    "privateHistoryIncluded": false,
+    "status": "tested-public-source-candidate-not-published",
+    "fileCount": 258,
+    "markdownDocumentCount": 3,
+    "candidateCommit": "56e1d3bb94a14c6721bf588a0aa16022e6195d4c",
+    "archiveSha256": "69a06d5822edb32ca5c4629c1125e7e8a6599940f215c544be27f2a5ecfee182",
+    "verifiedAt": "2026-10-31T09:25:48.047807+00:00"
+  }
 }

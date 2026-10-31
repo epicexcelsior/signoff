@@ -7,6 +7,13 @@ const manifestUrl = new URL(
 );
 // Only reviewed public artifacts are exposed. Private runtime stores are never served.
 const artifacts = new Map([
+  [
+    "api3-qualification-audit",
+    new URL(
+      "../submission/evidence/api3-qualification-audit.json",
+      import.meta.url,
+    ),
+  ],
   ["manifest", manifestUrl],
   [
     "physical-paid-inspection-report",

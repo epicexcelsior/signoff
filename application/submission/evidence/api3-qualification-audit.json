@@ -1,0 +1,94 @@
+{
+  "schema": "proof-of-ready/api3-final-qualification-review/v1",
+  "checkedAt": "2026-10-31T08:52:20.327904+00:00",
+  "qualificationEstablished": false,
+  "officialCriteriaUrl": "https://api3dao.github.io/airnodehub-hackathon/#submit",
+  "officialGuideSha256": "8e92a8a458b7479b07b87acfdb46cc582dfcd442d7f10660bc062579601d141f",
+  "deployedReplay": "PASS_EXACT_ORIGINAL_PROOF",
+  "contract": "0x98023c425670A9690AB362c00fBea1Bc11dCE2Cb",
+  "chainId": 84532,
+  "validFinalization": {
+    "schema": "proof-of-ready/api3-finalization-proof/v1",
+    "chainId": 84532,
+    "contract": "0x98023c425670A9690AB362c00fBea1Bc11dCE2Cb",
+    "jobId": "0x283a22d5708fb1dd4b9b723c2094732c1e30d2aea46f0d1baf7edecceed944bc",
+    "transactionHash": "0xa94e48a5d72065ad46c4c558d26a7c3f618aa491fe46e6d012fd7aa7b1356eab",
+    "blockNumber": "52413614",
+    "blockHash": "0x5ade5c2750f588e1e66fc2cc1308b6d13ce0a5177ed368b359f79d3e3d1d3735",
+    "judgeBlockNumber": "52413566",
+    "judgeBlockHash": "0xa127f28b4460389c27e687142ee1b1eabb7be30c0ea77b5f5b7098b2b3e4acda",
+    "decision": "REJECTED",
+    "sourceResponseDigest": "0xb2d9196409667ff1fda3829c6dfae655f26aec2d6572ddaa7d68b195eb1655f7",
+    "acceptanceHash": "0x50025b20479023a6d1a64b26f6105c9438e03af45edee8f1c3a1b6d1ac7c3153",
+    "gasUsed": "906065",
+    "mode": "MINED_TRANSACTION_AND_PINNED_STATE",
+    "limitation": "Cardano payment remains an independently verified operator assertion. The contract does not verify Cardano consensus or physical truth."
+  },
+  "candidateResults": [
+    {
+      "case": "valid",
+      "observed": "SUCCEEDED",
+      "observedRevert": null,
+      "blockNumber": "52413566",
+      "blockHash": "0xa127f28b4460389c27e687142ee1b1eabb7be30c0ea77b5f5b7098b2b3e4acda",
+      "networkWrites": false,
+      "dataSha256": "a34a52fe1dea86987bb348f1253dfa83e91c5942cfe2a8f5df09cdf12e1c3932",
+      "calldataSha256": "8ef216836d3e0a833d877d9008ad5852570d81491617f4ba6a6c169e90c03492"
+    },
+    {
+      "case": "edited",
+      "observed": "REVERTED",
+      "observedRevert": "NotSignedByAirnode",
+      "blockNumber": "52413566",
+      "blockHash": "0xa127f28b4460389c27e687142ee1b1eabb7be30c0ea77b5f5b7098b2b3e4acda",
+      "networkWrites": false,
+      "dataSha256": "9463ea696e05fd17cd02eef916f5214a9f1c0e14d49676ad1637b75db28ef4e1",
+      "calldataSha256": "0c431225f7248c015c22aaf822f7108e4a71553f5a148d3aa06da405aad4697f"
+    },
+    {
+      "case": "stale",
+      "observed": "REVERTED",
+      "observedRevert": "InvalidOracle",
+      "blockNumber": "52413566",
+      "blockHash": "0xa127f28b4460389c27e687142ee1b1eabb7be30c0ea77b5f5b7098b2b3e4acda",
+      "networkWrites": false,
+      "dataSha256": "896f0687aaf0ff39044645f2d7ba48fe75a81411837a7e0d7f0fe0e1d93fc423",
+      "calldataSha256": "274e8bb0a3e8540fa1837d9dd41d9c8c217f7723ab1982152ba57a8d5a9e79ad"
+    },
+    {
+      "case": "other-request",
+      "observed": "REVERTED",
+      "observedRevert": "NotSignedByAirnode",
+      "blockNumber": "52413566",
+      "blockHash": "0xa127f28b4460389c27e687142ee1b1eabb7be30c0ea77b5f5b7098b2b3e4acda",
+      "networkWrites": false,
+      "dataSha256": "bab7525910a1ae5b6fe9bbb9aa79535c8a6a82c4ec5397e6226d9473d924605e",
+      "calldataSha256": "c557766f53cba125ff764f6f65f7b9289acf613ec984d118c1734c82169ffb2d"
+    },
+    {
+      "case": "wrong-key",
+      "observed": "REVERTED",
+      "observedRevert": "NotSignedByAirnode",
+      "blockNumber": "52413566",
+      "blockHash": "0xa127f28b4460389c27e687142ee1b1eabb7be30c0ea77b5f5b7098b2b3e4acda",
+      "networkWrites": false,
+      "dataSha256": "a34a52fe1dea86987bb348f1253dfa83e91c5942cfe2a8f5df09cdf12e1c3932",
+      "calldataSha256": "b277ffdee493a5a2c0138951f500144c93f9f42409974e45c657cc61a728d848"
+    }
+  ],
+  "sourceDependence": {
+    "inspectionPassed": false,
+    "validAuthenticatedNvdVerdict": "PASS",
+    "terminalDecision": "REJECTED",
+    "sourceDependentTerminalDecision": false,
+    "reason": "The deployed finalize function rejects whenever inspectionPassed is false, regardless of NVD result. The original paid inspector returned REVIEW on synthetic input. No authentic paid PASS inspection prerequisite exists for this job.",
+    "codeReference": "application/contracts/src/CommissioningPolicy.sol:156"
+  },
+  "remaining": "Demonstrate genuine source-dependent on-chain decision using valid inspection prerequisites. Do not change inspectionPassed to true for an actual REVIEW/FAIL report.",
+  "limits": [
+    "Candidate rejections are historical eth_call at original OPEN block 52413566, not new current state changes.",
+    "Original paid responses are expired now. Fresh-source qualification is not established.",
+    "Deployed helper PASS/FAIL calls do not authenticate their input and changed no state.",
+    "No signing, payment, deployment, transaction, or original artifact change ran in this review."
+  ]
+}
