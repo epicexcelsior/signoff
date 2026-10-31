@@ -1,0 +1,98 @@
+{
+  "schema": "proof-of-ready/api3-admission-qualification/v1",
+  "checkedAt": "2026-10-31T10:51:03.821964+00:00",
+  "qualificationEstablished": true,
+  "officialCriteriaUrl": "https://api3dao.github.io/airnodehub-hackathon/#submit",
+  "sourceDependence": {
+    "sourceDependentOnChainAction": true,
+    "action": "SOFTWARE_ADMITTED_AND_WORK_ORDER_OPENED",
+    "inspectionRecordedAtAction": false,
+    "unsignedOpeningDisabled": true,
+    "vulnerableDeclaredBuildBlocked": true,
+    "reason": "Authenticated fresh NVD data controls whether a declared software build can open a commissioning work order. No inspection predicate exists at admission."
+  },
+  "deployment": {
+    "schema": "proof-of-ready/api3-admission-deployment/v1",
+    "checkedAt": "2026-10-31T10:38:22.757Z",
+    "chainId": 84532,
+    "contract": "0x1ed0ebc0c5104702e688eccc567d84b66107e60b",
+    "transactionHash": "0xe72492181583aae380fc0cf4424aa92aef166478f330f7f94e09575d8affaa63",
+    "blockNumber": "52606168",
+    "blockHash": "0x97c753ed2dfb11cd9b797eb8608ef4a42db870a05846abae3173499fc407504c",
+    "runtimeCodeHash": "0x211a0eddd90b8daaa65a67c86d3e28840b33323226bcf84f7821d3b95db20232",
+    "bytecodeHash": "0x8d0fe7059562848f524186071e36462fe459d3af5a666c1a5b1aa910d8149192",
+    "initCodeHash": "0x71e58b35f5d770e5ffa69e1f0980423538cc7eed0b68e53550d4ac794d2b52a6",
+    "operator": "0x5AB1B25d13bd13Ebd3c9480F438CF0530F37e831",
+    "airnode": "0x41dd84D5B6503D9aA3c374a49F546e335423a1b8",
+    "requestHash": "0x3f0881fb062ac6b989c133e0b5651d19947e38aebe4d94750627fa612f447d15",
+    "maxAttestationAge": 300,
+    "maxSourceAge": 300,
+    "gasUsed": "3703958",
+    "constructorVerified": true,
+    "sourceAdmissionExecuted": false
+  },
+  "admission": {
+    "schema": "proof-of-ready/api3-source-dependent-admission/v1",
+    "chainId": 84532,
+    "contract": "0x1Ed0EBc0c5104702E688eCCC567D84b66107e60b",
+    "jobId": "0xd9986df0464d0f2f19b1aa54fd1eb16919831d756f54d9a21a3ffba63cb18420",
+    "transactionHash": "0xbcba0ba8a582c06cc72351290de98a2bcabc03b6fe2916f6dbac6e237ef92798",
+    "blockNumber": "52609392",
+    "blockHash": "0x390650f28537b618e1bdacbc581a16dcbc599a7f90b8ceecba9c265bfd7bcda4",
+    "decision": "SOFTWARE_ADMITTED",
+    "jobDecision": "OPEN",
+    "inspectionRecorded": false,
+    "sourceDependentAction": true,
+    "sourceResponseDigest": "0x013362eb6f6b4e975da7ab2b369dd86ac976c6423972182de0c6e2ca0fd93efe",
+    "signedAt": "1793443653",
+    "gasUsed": "964639",
+    "networkWrites": false,
+    "scope": "Authenticated NVD data authorized opening a work order before inspection. The build is declared, not measured on the ESP32. This is not physical installation acceptance."
+  },
+  "judgeBlockNumber": "52608967",
+  "judgeBlockHash": "0xea77cea0d5c9445b5cba548267c90b33afbe61675b00563b7833eba999e772e6",
+  "caseResults": [
+    {
+      "case": "valid",
+      "observed": "SUCCEEDED",
+      "observedRevert": null
+    },
+    {
+      "case": "edited",
+      "observed": "REVERTED",
+      "observedRevert": "NotSignedByAirnode"
+    },
+    {
+      "case": "stale",
+      "observed": "REVERTED",
+      "observedRevert": "InvalidOracle"
+    },
+    {
+      "case": "other-request",
+      "observed": "REVERTED",
+      "observedRevert": "NotSignedByAirnode"
+    },
+    {
+      "case": "wrong-key",
+      "observed": "REVERTED",
+      "observedRevert": "NotSignedByAirnode"
+    }
+  ],
+  "artifactHashes": {
+    "api3-admission-deployment.json": "c9d6ed774390d7f66923a8f4e945edf41b56faa90794e729f78197ab334445c7",
+    "api3-admission-context.json": "1908d47074ed0ffb7591bc0e2378080c3a01500c65da8cee63cb95d50b866afa",
+    "api3-admission-five-cases.json": "c65280434c6ab1429a40d3cea34b021d3bfe676c4234c977fcae607f50826958",
+    "api3-admission-proof.json": "68de7c0b893f7f37cc5461b421d88a2be8d6fda91937878e2ee47caec41b3a77",
+    "nvd-admission-original.json": "fbf045d95c373a47e46dc63c9f60c3d9d7293d828a43c7502d7322fb9847306d",
+    "api3-admission-edited-deliberate-test.json": "dbfb5ba8e69757c552baac58d7ea577e6cb82c2a69b99daaae3351bbd2cf68b5",
+    "api3-admission-access-settlement.json": "e6b863af24aad70120747f3cd2de32ff4b7fc4affadf6051f02270b5ee3be1de"
+  },
+  "originalLegacyAuditUnchanged": "api3-qualification-audit.json",
+  "limits": [
+    "Software admission covers an operator-declared reference build, not installed ESP32 firmware.",
+    "The original actual-camera installation remains REWORK and the paid report remains FAIL.",
+    "The original paid REVIEW finalization and five cases remain separate, unchanged historical evidence.",
+    "The response was fresh at the mined action. Historical replay does not establish current freshness.",
+    "Final sponsor judging remains with the organizer."
+  ]
+}

@@ -25,8 +25,8 @@ The customer hypothesis is an operator accepting subcontracted monitoring instal
 | Physical function     | Signed contact protocol and durable claims exist                                                 | Reviewed wiring, enrolled board, fresh OPEN/CLOSED sequence, and defect rejection                            |
 | Optical binding       | Signed execution and tracked optical evaluation are integrated and fixture-tested                | Camera observes the complete challenge from the enrolled device assembly                                     |
 | Receiving application | Local monitor records matching receipts and states                                               | Separate delivery evidence when an independent or remote receiver is required                                |
-| Inspection            | Useful paid REVIEW, exact bindings, confirmed withdrawal and positive seller receipt             | Paid inspection of an actual physical installation, plus recovery evidence                                   |
-| Software policy       | Genuine NVD, five deployed source checks and mined REJECTED decision bind the paid REVIEW        | Installed-build provenance and physical acceptance. Historical policy evaluation does not renew a work order |
+| Inspection            | Actual-camera paid FAIL, exact bindings, confirmed withdrawal and positive seller receipt             | Complete accepted installation and live refund recovery remain product goals                                   |
+| Software policy       | Genuine NVD controls software admission before inspection. Original deployed rejection and both five-case sets remain preserved        | Installed-build provenance and physical acceptance. Historical policy evaluation does not renew a work order |
 | Phone witness         | Seeker APK builds. Photo verifier and read-only BLE preflight exist                              | Authorized install, Android SQLite instrumentation, lifecycle, camera, and BLE checks                        |
 | Acceptance            | Packets reconstruct evidence. Fresh reader commitments control acceptance in tests               | Complete physical and paid installation reaches a contract-bound decision                                    |
 | Agent orchestration   | Station is deterministic and operator-driven. Optional model helper is not wired into the worker | Agent coordinates approved steps and explanations without repeating consequential actions                    |
@@ -86,13 +86,13 @@ Photos match a documented SuperMini layout, with onboard WS2812 GPIO8 and GPIO2 
 | Sokosumi           | Personal grant, useful paid REVIEW and positive seller receipt verified                    | Actual physical inspection input                                                      |
 | Blockfrost         | Preprod key passes authenticated latest-block check                                        | Dedicated payment resource configuration                                              |
 | Masumi payment     | Original paid Task completed and seller collection confirmed                               | Preserve original Task, transactions and receipt. No new purchase is needed           |
-| API3 wallet        | Two NVD calls settled. Historical valid finalization mined REJECTED                        | Preserve 0.001 ETH. The 0.02 aUSD ceiling is consumed                                 |
+| API3 wallet        | Three NVD calls settled. Source-gated software admission mined before inspection                        | Preserve 0.001 ETH. The 0.03 aUSD ceiling is consumed                                 |
 | API3 client        | Five source checks passed against deployed code. Mined rejection verified                  | Source-dependent terminal decision, physical evidence, and installed-build provenance |
 | Publication        | Private development continues                                                              | Explicit public-release and submission approval                                       |
 
 Use [README's owner actions](README.md#owner-actions-on-the-critical-path) and [private setup](docs/ENGINEERING.md#private-credentials-and-test-funding). Keep credentials, wallet addresses, and runtime records in private configuration. No model key is required for deterministic inspection.
 
-The approved budget prices two CVE requests at 0.02 test aUSD. Both requests settled. The five deployed source checks and mined rejection used the second response inside its freshness window. Preserve the original block for replay. No paid-access budget remains.
+The owner approved a total 0.03 test aUSD for three CVE requests. All three settled. The third response admitted a declared reference build before inspection. Both five-case sets and the original rejection remain preserved. No paid-access budget remains.
 
 Local implementation and private reviewed commits are authorized. Routine funded testnet transactions are authorized with a 0.001 ETH reserve. Public release/submission remain separate. Resolve electrical details before hardware actions.
 
@@ -116,6 +116,6 @@ Keep current claims bounded to deterministic operator-driven commissioning, one 
 
 ## Final submission boundary
 
-The saved real-evidence demo is available on port 4022. This does not satisfy full physical acceptance. The final hardware attempt found no connected phone or board and stopped before emission. A source-dependent on-chain terminal decision remains missing, so API3 qualification is not established. Passing tamper rejections cannot substitute for that decision.
+The saved real-evidence demo is available on port 4022. This does not satisfy full physical acceptance. The latest physical retry passed orientation and failed placement. No optical request ran. A fresh authenticated NVD response opened a software-gated work order before inspection on Base Sepolia. The four tamper cases, vulnerable-build refusal, and unsigned-bypass refusal passed. Physical acceptance remains incomplete.
 
-Release engineering now prepares a separate sanitized source candidate and rehearses it without private configuration. The owner owns pitch, filming, editing, publication approval, and Devfolio. Do not expand architecture, add services, or claim autonomous LLM reasoning, complete physical acceptance, adoption, or measured savings.
+Release engineering now prepares a separate sanitized source candidate and rehearses it without private configuration. The owner records the on-camera pitch and explanation, reviews the final edit, and authorizes publication and Devfolio submission. The technical clips are prepared locally. Final editing remains a separate stage. A genuine paid FAIL is the submission demonstration. Do not wait for READY or repeat hardware tests just for footage. Do not expand architecture, add services, or claim autonomous LLM reasoning, complete physical acceptance, adoption, or measured savings.

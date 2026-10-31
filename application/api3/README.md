@@ -88,7 +88,7 @@ For an external wallet, sign the original saved typed-data plan. Import only its
 npm run access -- import-signature ORIGINAL_ACCESS_ID /private/proof-ready/api3/original-signature
 ```
 
-These commands are instructions for a later authorized operation. Both approved requests used the existing wallet and settled. Preserve the original ledger. The 20,000-atomic-unit ceiling is consumed. Another paid request requires a separately authorized budget. Keep at least 0.001 ETH in reserve.
+These commands are instructions for a later authorized operation. All three approved requests used the existing wallet and settled. Preserve the original ledger. The owner-approved 30,000-atomic-unit ceiling is consumed. Another paid request requires a separately authorized budget. Keep at least 0.001 ETH in reserve.
 
 The client commits SIGNING before invoking a signer. It commits SUBMITTING before sending the paid HTTP request. Another connection or restart cannot repeat either claim. A lost signing reply requires the original signature. A lost paid response remains UNRESOLVED. No automatic new quote, nonce, signature or HTTP retry exists.
 
@@ -196,7 +196,7 @@ The command reads the reviewed public originals under `application/submission/ev
 
 The native source-policy verdict is PASS for declared Apache NimBLE 1.9.0. The actual terminal decision is REJECTED because the useful paid report returns REVIEW. The original inspection input is synthetic. The declared reference version has no installed-build provenance. A separate evaluation deadline does not renew the original work order.
 
-Both paid source requests settled within the 0.02 aUSD ceiling. No paid-access budget remains. Preserve the original ledger and both responses. Replaying their historical block needs no fresh paid request.
+The two original source requests settled within the original 0.02 aUSD ceiling. A separately approved third call settled within the expanded 0.03 aUSD ceiling. No paid-access budget remains. Preserve the original ledger and all three responses. Replaying their historical block needs no fresh paid request.
 
 ## Test a response you supply
 
@@ -233,7 +233,7 @@ The original deployment and five historical cases remain unchanged. Its failed i
 
 `SourceGatedCommissioningPolicy` adds a mandatory authenticated NVD check before opening a work order. The inherited unsigned opening route rejects. A vulnerable or unsupported declared build cannot open a job. An eligible declared build opens a job before any physical inspection exists. Later failed inspection still rejects installation acceptance.
 
-This gate checks a declared reference build. It does not identify firmware installed on the ESP32. The correction passes local contract and Anvil checks. Base Sepolia deployment and fresh-response execution remain pending. The existing 0.02 aUSD access ceiling is consumed.
+This gate checks a declared reference build. It does not identify firmware installed on the ESP32. The correction passed local contract and Anvil checks. It deployed on Base Sepolia, and a fresh paid NVD response opened a work order before inspection. All four deployed tamper cases reject. The owner-approved 0.03 aUSD access ceiling is consumed.
 
 The read-only judge command accepts a reviewed admission context and a copied response:
 
@@ -242,3 +242,5 @@ npm run judge:admission -- CONTEXT_FILE RESPONSE_FILE
 ```
 
 It verifies the original chain, runtime, operator, source, build, unopened job, and block before testing the candidate. RPC failures remain inconclusive. It signs no transaction and spends no funds. Only a mined admission with original source evidence can close the live qualification gap.
+
+Run `npm run judge:admission:submission` to replay the complete actual source-gated proof. [The public judge guide](../submission/release/JUDGE.md) lists the valid response and all four negative inputs. The original `judge:submission` replay remains unchanged.

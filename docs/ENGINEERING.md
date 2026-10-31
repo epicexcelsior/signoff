@@ -88,6 +88,8 @@ Import `createVisionController` from `/vision/controller.js`. Supply `{video,can
 
 A capture includes explicit browser-camera source, SHA-256 of RGBA pixel bytes, bounded marker corners, capture time, resolution, camera/calibration identities, planar pose, quality, and predicates. Raw camera/device identifiers and frames remain in the browser. Changed camera, crop, resolution, or zoom invalidates the active calibration and releases the stream. The detector permits one outstanding frame and frees native matrices.
 
+The dashboard fits the complete camera frame within 65 percent of the small viewport height. The detection overlay shares the image bounds. Camera status text appears below the image, including wrapped errors. The display preserves the stream geometry and does not crop evidence. A lens with a narrow field of view still requires another camera selection.
+
 OpenCV.js 4.13.0 is pinned under `public/vendor/`. Preserve its exact bytes, license, and provenance. Exclude that folder from Prettier. The parent page keeps self-only scripts. Only `/vision/detector-worker.js` receives this policy:
 
 ```text
@@ -124,9 +126,13 @@ From `application/integrations/masumi/`, run `npm run setup:plan` for an unexecu
 
 ## API3 consumer and commissioning contract
 
+`SourceGatedCommissioningPolicy` inherits the original policy and disables unsigned `openJob`. `openJobWithSource(jobId, spec, timestamp, data, signature)` checks the pinned NVD signer/request and both 300-second age limits. Only PASS opens the work order and records its source digest in `admissions(jobId)`. No inspection exists at this stage. Unsupported or vulnerable declared builds reject. Later physical inspection and final acceptance retain their original gates.
+
+The actual Base Sepolia admission contract is `0x1Ed0EBc0c5104702E688eCCC567D84b66107e60b`. Transaction `0xbcba0ba8a582c06cc72351290de98a2bcabc03b6fe2916f6dbac6e237ef92798` admitted software and opened a job before inspection. The fresh paid response, original block, four tamper rejections, vulnerable-build refusal, and mined proof are under `application/submission/evidence/api3-admission-*` and `nvd-admission-original.json`. `npm --prefix application/api3 run judge:admission:submission` replays that proof without credentials. `judge:admission -- CONTEXT_FILE RESPONSE_FILE` accepts judge-supplied bytes. The original deployed five cases and rejection remain separate and unchanged. This gate checks a declared reference build, not installed ESP32 firmware.
+
 `application/api3/` pins viem 2.57.3. Its native verifier preserves exact signed data bytes. The bounded evaluator supports CVE-2025-62235, complete approved NimBLE applicability structure, approved CVSS provenance, timestamp bounds, and explicit unsupported-shape REVIEW. Declared 1.8.0 and 1.9.0 are reference builds. They are not claims about the current board or general software security.
 
-The bounded paid-fetch client is integrated. `application/api3/README.md` defines `npm run access` and `npm run judge`. It preserves original signing/submission claims, source bytes, and transfer/nonce reconciliation. Both real paid NVD requests settled. All five source cases passed against the deployed policy at one pinned block. The valid finalization mined REJECTED using the genuine paid REVIEW and confirmed seller receipt. Unsigned judge preparation never substitutes fixture inspection records.
+The bounded paid-fetch client is integrated. `application/api3/README.md` defines `npm run access` and `npm run judge`. It preserves original signing/submission claims, source bytes, and transfer/nonce reconciliation. All three real paid NVD requests settled. All five source cases passed against the deployed policy at one pinned block. The valid finalization mined REJECTED using the genuine paid REVIEW and confirmed seller receipt. Unsigned judge preparation never substitutes fixture inspection records.
 
 `application/contracts/` contains `CommissioningPolicy` and `NvdPolicy`, with licensed pinned dependencies. The operator enrolls immutable build manifests, opens jobs, and records the inspection and Cardano payment assertion. Permissionless finalization checks the pinned Airnode signer/request, source freshness, job deadline, inspection prerequisite, policy, and terminal-state guard. Accepted, rejected, and REVIEW decisions are terminal. No contract holds or releases funds.
 
@@ -207,10 +213,10 @@ Private setup uses `$HOME/.config/proof-ready/`. The directory mode is `0700`. C
 | `api3/test-wallet-key`    | Dedicated local EVM test private key. Never print it                                                                    |
 | `api3/wallet.json`        | Public address, Base Sepolia chain ID 84532, purpose, and private-key file reference                                    |
 | `api3/api3.env`           | Private isolated-client paths with `PROOFREADY_API3_PAYMENTS_AUTHORIZED=false`                                          |
-| `api3/access-config.json` | Dedicated payer, private ledger path, public RPC, and proposed 20,000-atomic-unit aUSD ceiling                          |
+| `api3/access-config.json` | Dedicated payer, private ledger path, public RPC, and owner-approved 30,000-atomic-unit aUSD ceiling                          |
 | `api3/balance-check.json` | Timestamped read-only ETH and aUSD balances                                                                             |
 
-The existing access ledger pins a 20,000-atomic-unit total ceiling. Both 10,000-unit calls settled. No budget remains. Preserve both originals and stop paid access until a separate budget receives authorization. The owner authorizes routine funded testnet transactions while preserving a 0.001 ETH reserve. Isolated API3 CLI commands consume their own env variables. The station does not sign these payments. Preserve the original access ledger and its settled first request. Do not replace a key or unresolved ledger to repeat an operation.
+The owner raised the existing access ledger ceiling from 20,000 to 30,000 atomic units on October 31. All three 10,000-unit calls settled. The amendment preserved both original operation rows and nonces. No access budget remains. The owner authorizes routine funded testnet transactions while preserving a 0.001 ETH reserve. Isolated API3 CLI commands consume their own env variables. The station does not sign these payments. Preserve the original access ledger and its settled first request. Do not replace a key or unresolved ledger to repeat an operation.
 
 The supplied Sokosumi account key passed `GET https://api.preprod.sokosumi.com/v1/users/me`. The Blockfrost key passed the authenticated Preprod `/api/v0/blocks/latest` read. The existing Personal Workspace and usable credits are verified. CLI 1.0.4 used the removed `/v1/users/me/workspace-access` route. The application now pins published CLI 1.1.0, which uses `/v1/users/me/workspaces`.
 
@@ -241,7 +247,7 @@ The original shared TUM access request remains PENDING. The current account is a
 
 ### Fund the API3 wallet
 
-Read the public address from private `api3/wallet.json`. The wallet received 0.0019 ETH. The approved mint supplied 0.02 aUSD, and both 0.01 aUSD NVD requests settled. The second response supported the five deployed cases and mined rejection. The 0.02 aUSD ceiling is consumed. The previous session supplied no separate API3 API key. Priced Airnode access uses x402 with aUSD on Base Sepolia.
+Read the public address from private `api3/wallet.json`. The wallet received 0.0019 ETH. The approved mint supplied 0.02 aUSD, and both 0.01 aUSD NVD requests settled. The second response supported the five deployed cases and mined rejection. The owner approved one extra 0.01 aUSD mint and request for source-gated admission. That third request settled, and the 0.03 aUSD ceiling is consumed. The previous session supplied no separate API3 API key. Priced Airnode access uses x402 with aUSD on Base Sepolia.
 
 1. Open [a Base-listed testnet faucet](https://docs.base.org/get-started/get-funds#testnet-base-sepolia).
 2. Select **Base Sepolia**.
@@ -254,7 +260,7 @@ Read the public address from private `api3/wallet.json`. The wallet received 0.0
 
 The approved first mint confirmed. The dedicated wallet is a local key file, not an installed browser wallet. Browser minting requires the owner to import that test key locally. The faucet also documents `mintFromFaucet(uint256)` for a separately reviewed CLI transaction. Do not print or upload the key to obtain a mint.
 
-The official faucet's token is `0xbeA34973e5f67F18F656A2C6070C64326C791808`. aUSD uses six decimals. The observed CVE quote requests 10,000 atomic units, or 0.01 aUSD. Two calls total 0.02 aUSD. Minting and contract transactions require ETH. Access-transfer gas is paid by the x402 facilitator. These amounts do not estimate deployment gas.
+The official faucet's token is `0xbeA34973e5f67F18F656A2C6070C64326C791808`. aUSD uses six decimals. The observed CVE quote requests 10,000 atomic units, or 0.01 aUSD. Three approved calls total 0.03 aUSD. Minting and contract transactions require ETH. Access-transfer gas is paid by the x402 facilitator. These amounts do not estimate deployment gas.
 
 Cardano escrow collection can outlast API3's five-minute source freshness window. Obtain the final CVE response near policy finalization. An earlier authentic response cannot satisfy a later freshness check.
 
@@ -276,6 +282,8 @@ Print [the target](../application/public/vision/target.svg) at actual size. Meas
 2. Select **Start camera**.
 
 After camera permission, the Camera selector lists available lenses. If the automatic view crops the target, select another rear camera and start again. Changing the camera stops its stream. Save a new measurement after each change. On the connected Seeker, camera 2 showed both markers. Camera 6 cropped the target.
+
+Chrome can restore an offline saved dashboard with visible buttons and no application scripts. This copy cannot start the camera. Open a new live URL, such as `http://127.0.0.1:4022/?live-camera=1#camera-stage`, through the existing USB forwarding. Verify that the station responds before using the controls. An Android “No internet connection” banner alone does not prevent local USB access.
 
 3. Select **Start capture attempt**.
 4. Align the markers with the guidance.
@@ -366,19 +374,20 @@ Use `application/submission/devfolio-draft.json` as draft content. Map it to the
 
 ### Record a video no longer than 150 seconds
 
-Before recording, complete the real paid and physical runs. Keep their original identifiers visible. Record the application window and cropped public CLI results. Hide credentials, account menus, private directories, and unrelated desktop content. Test microphone levels and readable text first.
+The current recording stage produces separate technical proof clips, not the owner’s final edit. Open `.local/tech-demo/index.html` for six plain-language primary clips and detailed B-roll. The local `polished/manifest.json` records source scopes, voiceover cues, clip hashes, and decoding checks. The full clip archive includes original evidence and verification links. Regenerate the ignored clip assets with `.local/tech-demo/polish.mjs` and `.local/tech-demo/finish-pack.py`. Preserve the original recordings and their provenance. These assets stay outside Git.
 
-| Time     | Capture and narration                                                                                         |
-| -------- | ------------------------------------------------------------------------------------------------------------- |
-| 0–15s    | State the operator's commissioning problem and the useful inspection being purchased                          |
-| 15–35s   | Show the approved work order, placement policy, actual markers, and camera guidance                           |
-| 35–65s   | Show the real button sequence and complete 18-second LED challenge. Keep each required step visible           |
-| 65–95s   | Show the original useful paid Cardano report, Task/request ID, transaction explorer, and seller receipt       |
-| 95–130s  | Show the deployed API3 policy, valid state change, and edited/stale/other-request/wrong-key rejection results |
-| 130–145s | Export and verify the physical packet. State the remaining evidence limits                                    |
-| 145–150s | Close with the operator outcome and repository/demo references                                                |
+Use the saved actual-camera failure and completed paid inspection. Keep the saved-evidence label visible. The full signed physical sequence remains incomplete. Hide account menus, credentials, and unrelated desktop content. Explorer links need internet. The saved phone report works offline after one load.
 
-Escrow collection can take longer than the video. Use the original completed paid record and a clear time caption. Do not imply that a previous transaction settled during a newly recorded request. Use cuts to shorten waiting, never to conceal required failures or substitute a fixture. If a live requirement remains incomplete, name it and leave its manifest gate incomplete.
+| Time | Screen and action | Spoken copy |
+| --- | --- | --- |
+| 0–15s | Show the monitoring equipment and saved report. | “A contractor says the monitoring equipment is installed. The operator needs evidence before accepting the handover. Proof of Ready provides remote acceptance tests.” |
+| 15–40s | Select Camera found a defect. Show REWORK, 37.7 mm offset, and 179° rotation. | “This recorded camera check found incorrect placement. The contractor must move and rotate the device marker, then complete the missing device tests.” |
+| 40–75s | Select Inspector received payment. Open the original FAIL report and seller receipt. | “An independent inspector reviewed this exact evidence and returned FAIL. Its completed Cardano Preprod payment delivered one test USDM to the inspector.” |
+| 75–110s | Open live Judge evidence. Show the new source-gate cases and admission transaction. | “Fresh signed NVD data controls whether a declared software build can open a work order. This transaction passed before inspection. Four tamper cases reject.” |
+| 110–135s | Verify saved evidence. Show six matching files and the original physical packet. | “The original files remain inspectable. Their hashes match. Software admission does not prove installed firmware. Missing physical tests keep installation acceptance blocked.” |
+| 135–150s | State the customer and limits. Show only approved repository and video references. | “The proposed model is a paid inspection per contractor handover. Demand and savings remain unvalidated. Autonomous orchestration remains future work. Know before you approve.” |
+
+These are completed historical transactions. Do not imply settlement occurred during this recording. The source was fresh at the mined admission. Historical replay does not renew freshness. The paid report remains FAIL. No successful full physical installation is claimed.
 
 ### Recover presentation failures
 
@@ -386,27 +395,11 @@ Preserve a recording of the actual physical attempt, original packet, paid repor
 
 ### Judge evidence and presentation reset
 
-`GET /api/submission-evidence` reads the canonical submission manifest and computes exact-byte SHA-256 hashes. Artifact downloads use an explicit server allowlist: `manifest`, `nvd-original`, `policy-helper`, `paid-inspection-report`, `paid-inspection-bindings`, `paid-inspection-chain-proof`, `paid-inspection-request`, and `paid-inspection-seller-receipt`. API3 artifacts add `nvd-final-original`, `nvd-final-settlement`, `policy-five-cases`, `policy-finalization`, `policy-evaluation-context`, `policy-other-request-original`, and `policy-wrong-key-test`. The route also exposes `device-flash-proof`, which contains sanitized image/startup metadata only. It never exposes private configuration, provisioning files or runtime directories. These saved records do not authorize the current installation.
+`GET /api/submission-evidence` reads the canonical submission manifest and computes exact-byte SHA-256 hashes. Artifact downloads use an explicit server allowlist: `manifest`, `nvd-original`, `policy-helper`, `paid-inspection-report`, `paid-inspection-bindings`, `paid-inspection-chain-proof`, `paid-inspection-request`, and `paid-inspection-seller-receipt`. API3 artifacts add `nvd-final-original`, `nvd-final-settlement`, `policy-five-cases`, `policy-finalization`, `policy-evaluation-context`, `policy-other-request-original`, and `policy-wrong-key-test`. The route also exposes `source-gate-deployment`, `source-gate-context`, `source-gate-five-cases`, `source-gate-admission`, `source-gate-nvd-original`, `source-gate-settlement`, `source-gate-edited-test`, and `source-gate-qualification-audit`. The route also exposes `device-flash-proof`, which contains sanitized image/startup metadata only. It never exposes private configuration, provisioning files or runtime directories. These saved records do not authorize the current installation.
 
 Select **Judge evidence** to inspect historical transactions, missing requirements and the five deployed policy cases. Its first panel follows original synthetic input, useful REVIEW, confirmed result transaction and positive seller receipt. The full hash-checked report remains directly available. Select **Refresh evidence** after the canonical manifest changes. The panel performs no chain write or payment. Packet verification and edited-packet rejection apply to the selected attempt above.
 
 Select **Reset presentation** to stop the camera and reload an empty work-order screen. The reset changes browser session state only. Saved attempts, NVS identity, replay claims, receipt pins and financial ledgers remain intact. The history selector can reopen any saved attempt.
-
-### Capture plan with exact spoken copy
-
-Use one work order for a complete installation journey. The current paid report covers a synthetic capture. It cannot authorize a later physical capture. Keep that distinction visible when recording the historical receipt. The optical-only image and startup are verified. The physical segment still needs continuous station camera capture, approved work-order binding, and reviewed button wiring/testing.
-
-| Time     | Screen and action                                                                                          | Spoken copy                                                                                                                                                                                                         |
-| -------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 0–15s    | Show the station and physical specimen. Keep the source label visible.                                     | “An equipment operator needs more than an installer's promise. Proof of Ready checks placement, fresh device response and the evidence behind acceptance.”                                                          |
-| 15–35s   | Approve the actual work order. Show incorrect placement and its diagnostic.                                | “The operator fixes the requirements first. This marker is outside the target. The station rejects it and states the next action.”                                                                                  |
-| 35–65s   | Show the actual requested button states and complete 18-second optical capture. Keep both markers visible. | “Each physical test receives a fresh challenge. The device signs its response. The camera must observe the complete light sequence from this installation.”                                                         |
-| 65–95s   | Open Judge evidence and the original paid REVIEW report. Show its escrow, result and seller receipt.       | “This completed Cardano purchase paid an independent deterministic inspector. Its original capture was synthetic, so the useful report requests missing optical evidence. These saved transactions are historical.” |
-| 95–130s  | Show the deployed policy and original five-case results with their block number and transaction.           | “The contract authenticates the NVD response. Edited, stale, other-request and wrong-key evidence must fail for their intended reason. The valid response finalizes the evidence-bound policy decision.”            |
-| 130–145s | Export the original physical packet and verify it against the approved digest.                             | “The packet preserves the original work order and evidence. Missing physical evidence keeps acceptance blocked. A software declaration does not prove installed firmware.”                                          |
-| 145–150s | Show the approved repository and video references.                                                         | “Proof of Ready. A clear decision, with proof you can inspect.”                                                                                                                                                     |
-
-Do not record an unfinished row as successful. The current contract demonstration uses a paid REVIEW and must end REJECTED. Its failed inspection predicate determines that rejection regardless of the CVE result. The source signature and source commitments still gate finalization. Show the separate bounded policy helper to explain affected versus corrected reference versions.
 
 For recovery, preserve the original recording and an adjacent scope file with its capture time, Task ID and evidence limits. The paid-delivery backup is a historical interface recording. It does not replace missing physical video. The later deployed checks and mined rejection have separate original artifacts. Keep all recordings local until public-release approval.
 

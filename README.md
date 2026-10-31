@@ -1,6 +1,8 @@
 # Proof of Ready
 
-**Know before you approve.** Check the actual device before accepting the installation. The recorded camera check found incorrect placement. The paid inspector returned FAIL. Acceptance stays blocked.
+**Know before you approve.** Remote acceptance testing for monitoring equipment installed by independent contractors.
+
+A facility operator needs evidence before accepting the handover. The recorded camera check found incorrect placement. An independent inspector received payment for a useful FAIL report. The next action is to correct placement and complete the missing device tests. Acceptance stays blocked.
 
 [Try the saved demo](http://127.0.0.1:4022/demo/) · [Design authority](docs/DESIGN.md)
 
@@ -9,6 +11,8 @@
 3. Verify the saved evidence files. This does not run a new device or blockchain check.
 
 **Operator instructions:** open the local [DEMO_NOW.md](DEMO_NOW.md). Run `python3 application/scripts/demo-now.py` from this directory. It reuses port 4022 and starts no hardware or payment.
+
+**Recording stage:** the local [technical clip library](.local/tech-demo/index.html) presents separate proof clips and transaction explorer B-roll in viewing order. The owner records the on-camera pitch and explanation. Final editing remains a separate step. The earlier assembled cut remains preserved. No additional hardware test is required for this recording stage.
 
 **Open the phone demo: <http://127.0.0.1:4022/demo/>.** Load it once through USB and wait for **Saved in this browser**. Its original real evidence then works without the laptop. Fresh tests use the [live station](http://127.0.0.1:4022). Port 4021 is the separate labeled rehearsal.
 
@@ -24,22 +28,22 @@ The goal is agent-orchestrated commissioning with a useful paid inspector and an
 
 The owner handles pitch, filming, editing, and Devfolio. [DEMO_NOW.md](DEMO_NOW.md) owns the local click sequence and recovery steps. [The private handoff](MORNING_HANDOFF.md) routes technical continuation.
 
-**API3 NOT QUALIFIED:** the deployed four tamper rejections replay successfully. The valid original transaction rejected because its inspection prerequisite was false. The CVE verdict does not materially determine that terminal decision. [The qualification audit](application/submission/evidence/api3-qualification-audit.json) records this gap.
+**API3 source-dependent action verified.** A fresh authenticated NVD response admitted a declared reference build and opened a work order before inspection on Base Sepolia. All four deployed tamper cases reject. The vulnerable reference build and unsigned opening route also reject. Physical acceptance remains blocked. [Current audit](application/submission/evidence/api3-admission-qualification-audit.json).
 
 Use **View the recorded inspection** to restore the exact reviewed attempt. Use **Recheck saved record** to verify its packet and recheck the original payment. Neither action starts a capture or purchase. **Focus view** hides setup for recording. The proof-trail cards open the corresponding evidence.
 
-**The project is not submission-complete.** The local software baseline works. The original paid inspection and deployed source checks are verified. Physical evidence and the complete video remain incomplete.
+**The project is not submission-complete.** The local software baseline works. The original paid inspection and deployed source checks are verified. Full physical acceptance remains incomplete. The remaining submission work is the owner’s on-camera footage, final edit, reviewed public links, and submission. A truthful failed installation is the selected demonstration.
 
 | Area       | Complete now                                                                                              | Still missing                                                                                   |
 | ---------- | --------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
 | Cardano    | Paid FAIL on actual camera evidence, confirmed escrow/result, withdrawal and positive seller receipt. Earlier paid synthetic REVIEW remains separate | Complete physical evidence and installation acceptance |
-| API3       | Two settled NVD responses, five deployed source checks and mined REJECTED decision                        | Installed-build provenance and physical acceptance                                              |
+| API3       | Three settled NVD responses, source-gated work-order admission and two preserved five-case sets                        | Installed-build provenance and physical acceptance                                              |
 | Hardware   | GPIO8 image and startup verified. Signed diagnostic and 72/72 recorded symbols verified. Real physical camera capture returned REWORK                            | Correct marker/LED placement, complete signed optical capture, and reviewed button wiring/test |
-| Submission | Setup README, original live API3 artifacts, evidence manifest, Devfolio draft, 150-second video procedure | Physical evidence, complete video, approved public release, actual Devfolio submission          |
+| Submission | Setup README, original live API3 artifacts, evidence manifest, Devfolio draft, 150-second video procedure | Owner footage, final edit, approved public release, actual Devfolio submission          |
 
-Next: correct marker and LED placement, complete signed optical capture through the configured physical station, then review the button circuit and record the complete video. The original paid REVIEW now binds all five deployed source checks and a mined REJECTED decision. Its synthetic input cannot authorize a physical installation. Both approved NVD calls settled. The 0.02 aUSD ceiling is consumed.
+Next: record the owner’s pitch and explanation, then edit the separate technical proof clips into the submission video. Defer further hardware work. A READY result does not block this truthful submission. The original paid REVIEW now binds all five deployed source checks and a mined REJECTED decision. Its synthetic input cannot authorize a physical installation. All three approved NVD calls settled. The owner-approved 0.03 aUSD ceiling is consumed.
 
-The Seeker companion already builds. Seeker Chrome supplied the actual camera measurement and optical diagnostic recording through USB forwarding. The phone and ESP32 reconnected. Both markers are readable. The latest live retry passed orientation and failed placement. The camera is stopped, and the saved viewer is open for filming. Native companion installation, native camera/BLE tests, and Android instrumentation remain unverified. They do not replace the immediate button/LED/camera baseline.
+The Seeker companion already builds. Seeker Chrome supplied the actual camera measurement and optical diagnostic recording through USB forwarding. The phone and ESP32 reconnected. Both markers are readable. The latest live retry passed orientation and failed placement. The latest recorded live preview uses rear camera 2. The saved viewer remains available for filming. Native companion installation, native camera/BLE tests, and Android instrumentation remain unverified. They do not replace the immediate button/LED/camera baseline.
 
 ## Documentation map
 
@@ -106,7 +110,7 @@ The fixed policy uses markers 0 and 10, a 60 mm reference, and a target 100 mm t
 | Priority   | Current evidence                                                                             | Next required result                                                                                          |
 | ---------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
 | Cardano    | Original paid REVIEW and positive seller net receipt verified                                | Preserve the original paid REVIEW and verified seller receipt. No replacement purchase is needed              |
-| API3       | Two genuine paid NVD responses settled. Five deployed cases and mined rejection verified     | Preserve the original five-case block and mined rejection. Do not spend beyond the consumed 0.02 aUSD ceiling |
+| API3       | Two genuine paid NVD responses settled. Five deployed cases and mined rejection verified     | Preserve both five-case sets and the mined software admission. The 0.03 aUSD ceiling is consumed |
 | Hardware   | GPIO8 image and startup verified. Signed diagnostic and 72/72 recorded symbols verified. Real physical camera capture returned REWORK               | Enroll the runtime, approve one camera-observed optical challenge, then review and test the button circuit    |
 | Submission | Public-safe setup instructions, evidence manifest, Devfolio draft, and video procedure exist | Fill missing real evidence, record video, then obtain public-release/submission authorization                 |
 
@@ -160,9 +164,11 @@ After isolated dependency installation, run `npm run test:integrations`. [Engine
 
 ## Owner actions on the critical path
 
-1. Keep the Seeker and ESP32 connected by data USB. Aim the rear camera at the lit marker sheet.
-2. Align both markers and the onboard LED. Complete one 18-second optical challenge after placement passes.
-3. Supply a button-terminal photo or continuity result before the later GPIO2-to-GND wiring review.
+1. Record the on-camera pitch and explanation. The technical proof clips and genuine LED footage already exist.
+2. Review the final edit and its original evidence links. Keep the complete video within 150 seconds.
+3. Authorize the reviewed public release and Devfolio submission when the concrete final package is ready.
+
+No additional hardware challenge, external wiring, or physical setup clip is required for the recording stage. The owner confirms that no external wires connect to the board. USB remains connected. Full optical commissioning, a button test, and installed-build provenance remain future product work.
 
 The supplied front/back photos match the documented SuperMini layout. GPIO8 drives its onboard RGB LED. This path needs no external LED or resistor. Keep the battery pads and external wires disconnected. The board has no visible maker or revision marking. Pin labels take precedence over counting header positions.
 
@@ -174,11 +180,11 @@ Normal paid Sokosumi Tasks debit the Task owner's Personal credits and use Core'
 
 The shared TUM access request remains pending. It matters only when choosing organization Tasks. Reuse the existing Coworker and runtime key. Do not register another inspector.
 
-The EVM wallet is funded. An approved mint supplied 0.02 test aUSD. Two 0.01 aUSD NVD requests settled. The 0.02 aUSD ceiling is consumed. [The deployed contract](https://sepolia.basescan.org/address/0x98023c425670a9690ab362c00fbea1bc11dce2cb) has the expected NVD signer, exact request, and 300-second limits. All five deployed source checks passed at one pinned block. The valid finalization mined REJECTED for the original paid REVIEW.
+The EVM wallet is funded. Two approved mints supplied 0.03 test aUSD. All three 0.01 aUSD NVD requests settled. The owner-approved 0.03 aUSD ceiling is consumed. [The deployed contract](https://sepolia.basescan.org/address/0x98023c425670a9690ab362c00fbea1bc11dce2cb) has the expected NVD signer, exact request, and 300-second limits. All five deployed source checks passed at one pinned block. The valid finalization mined REJECTED for the original paid REVIEW.
 
 Routine funded testnet transactions are authorized. Keep at least 0.001 ETH in reserve. Stop before a new action threatens that reserve. Public release, Devfolio submission, and electrically unverified hardware actions remain separate.
 
-[Private setup](docs/ENGINEERING.md#private-credentials-and-test-funding) defines credentials, scoped worker resources, and recovery. [Evidence](research/EVIDENCE.md#live-access-and-private-setup) records actual transactions and remaining gaps. The original useful paid Preprod inspection, positive seller receipt, five deployed source checks, and mined rejection are preserved. `npm --prefix application/api3 run judge:candidate -- RESPONSE_FILE` lets judges test their own copied response without credentials. Physical acceptance remains missing. The existing rejection does not demonstrate the CVE value changing the terminal decision, so complete API3 qualification remains unconfirmed.
+[Private setup](docs/ENGINEERING.md#private-credentials-and-test-funding) defines credentials, scoped worker resources, and recovery. [Evidence](research/EVIDENCE.md#live-access-and-private-setup) records actual transactions and remaining gaps. The original useful paid Preprod inspection, positive seller receipt, five deployed source checks, and mined rejection are preserved. `npm --prefix application/api3 run judge:candidate -- RESPONSE_FILE` lets judges test their own copied response without credentials. Physical acceptance remains missing. The original rejection remains historical. The new source gate demonstrates NVD-dependent work-order opening before inspection.
 
 ## Prepare submission
 
@@ -223,4 +229,4 @@ Keep the current private Git history private. Internal plans, account notes, har
 
 The public-facing document templates are [setup](application/submission/release/README.md) and [judge instructions](application/submission/release/JUDGE.md). The evidence index is generated from the reviewed manifest. These documents serve public release. They do not replace private operating instructions.
 
-Public publication still requires owner authorization. API3 qualification and physical acceptance remain incomplete even when the source candidate passes its clean-checkout rehearsal.
+Public publication still requires owner authorization. Source-gated API3 action is verified. Physical acceptance remains incomplete even when the source candidate passes its clean-checkout rehearsal.

@@ -50,7 +50,7 @@ try {
   const packet = file("physical-camera-rework-packet");
   $("saved-heading").textContent = "Installation requires rework.";
   $("saved-reason").textContent =
-    "Placement did not match the approved position.";
+    "Monitoring device placement failed. Move and rotate the device marker, then repeat the missing device tests.";
   const quality = packet.evidence.vision.measurement.quality;
   renderMeasurement(
     $("saved-measurement"),

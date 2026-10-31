@@ -39,6 +39,6 @@
 
 - Focus exclusively on one real paid Cardano Preprod inspection, genuine paid NVD/deployed-policy judge evidence, actual ESP32 button/LED/camera verification, and submission materials. Defer Seeker expansion and autonomous-agent features.
 - Reuse saved credentials and wallets. The owner authorizes routine funded testnet payments and contract transactions without repeated approval. Preserve at least 0.001 ETH in the EVM wallet. Stop before an action threatens the reserve or exhausts a token budget.
-- The existing API3 access ledger retains its 0.02 aUSD total ceiling. Preserve original uncertain operations. Never replace a nonce or resend uncertain work automatically.
+- The existing API3 access ledger has an owner-approved 0.03 aUSD total ceiling. The original 0.02 aUSD was consumed, and one additional 0.01 aUSD request was approved on October 31. Preserve original uncertain operations. Never replace a nonce or resend uncertain work automatically.
 - Prepare required private account resources within task scope. Public publication and Devfolio submission still require separate authorization. Electrical review remains mandatory before wiring, flashing or GPIO operation.
 - Keep the evidence manifest and Devfolio draft in application/submission/. Record actual artifacts and missing requirements. Never replace missing real evidence with fixtures or simulated inspection prerequisites.

@@ -1,0 +1,20 @@
+{
+  "schema": "proof-of-ready/api3-admission-deployment/v1",
+  "checkedAt": "2026-10-31T10:38:22.757Z",
+  "chainId": 84532,
+  "contract": "0x1ed0ebc0c5104702e688eccc567d84b66107e60b",
+  "transactionHash": "0xe72492181583aae380fc0cf4424aa92aef166478f330f7f94e09575d8affaa63",
+  "blockNumber": "52606168",
+  "blockHash": "0x97c753ed2dfb11cd9b797eb8608ef4a42db870a05846abae3173499fc407504c",
+  "runtimeCodeHash": "0x211a0eddd90b8daaa65a67c86d3e28840b33323226bcf84f7821d3b95db20232",
+  "bytecodeHash": "0x8d0fe7059562848f524186071e36462fe459d3af5a666c1a5b1aa910d8149192",
+  "initCodeHash": "0x71e58b35f5d770e5ffa69e1f0980423538cc7eed0b68e53550d4ac794d2b52a6",
+  "operator": "0x5AB1B25d13bd13Ebd3c9480F438CF0530F37e831",
+  "airnode": "0x41dd84D5B6503D9aA3c374a49F546e335423a1b8",
+  "requestHash": "0x3f0881fb062ac6b989c133e0b5651d19947e38aebe4d94750627fa612f447d15",
+  "maxAttestationAge": 300,
+  "maxSourceAge": 300,
+  "gasUsed": "3703958",
+  "constructorVerified": true,
+  "sourceAdmissionExecuted": false
+}

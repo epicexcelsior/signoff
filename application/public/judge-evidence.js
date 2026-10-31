@@ -29,6 +29,9 @@ const recordLabels = {
   "api3-paid-nvd-final": "Final paid NVD response",
   "api3-deployed-five-cases": "Five deployed source checks",
   "api3-paid-review-finalization": "Mined policy rejection",
+  "api3-source-gate-deployment": "Deployed software-admission gate",
+  "api3-paid-nvd-admission": "Fresh paid NVD response for software admission",
+  "api3-source-dependent-admission": "NVD-authorized work-order opening",
 };
 function element(tag, text, className) {
   const node = document.createElement(tag);
@@ -250,9 +253,9 @@ async function readJudgeEvidence() {
     }
     const sourceTests = document.getElementById("judge-source-tests");
     sourceTests.replaceChildren();
-    const sourceArtifact = artifacts.find(
-      (item) => item.id === "policy-five-cases",
-    );
+    const sourceArtifact =
+      artifacts.find((item) => item.id === "source-gate-five-cases") ??
+      artifacts.find((item) => item.id === "policy-five-cases");
     if (sourceArtifact) {
       const sourceResponse = await fetch(sourceArtifact.href);
       if (!sourceResponse.ok)
@@ -268,6 +271,13 @@ async function readJudgeEvidence() {
           "Saved source tests differ from the reviewed file hash.",
         );
       const saved = JSON.parse(new TextDecoder().decode(bytes));
+      if (sourceArtifact.id === "source-gate-five-cases")
+        sourceTests.append(
+          element(
+            "p",
+            "Authenticated NVD data opened a software-gated work order before inspection. Physical acceptance remains blocked.",
+          ),
+        );
       sourceTests.append(
         element(
           "p",
@@ -309,7 +319,12 @@ async function readJudgeEvidence() {
         title.scope = "row";
         row.append(
           title,
-          element("td", test.expectedRevert ?? test.expected),
+          element(
+            "td",
+            test.expectedRevert ??
+              test.expected ??
+              (test.case === "valid" ? "SUCCEEDED" : "REVERTED"),
+          ),
           element("td", test.observedRevert ?? test.observed),
         );
         body.append(row);

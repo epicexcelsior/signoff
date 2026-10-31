@@ -1,8 +1,9 @@
 import { openSync, closeSync, fstatSync, readSync, constants } from "node:fs";
-import { createPublicClient, http } from "viem";
-import { baseSepolia } from "viem/chains";
 import { parseCandidate, MAX_CANDIDATE_FILE_BYTES } from "../src/candidate.mjs";
-import { judgeAdmissionCandidate } from "../src/admission.mjs";
+import {
+  judgeAdmissionCandidate,
+  createAdmissionReader,
+} from "../src/admission.mjs";
 
 function boundedFile(path, limit) {
   const fd = openSync(path, constants.O_RDONLY | constants.O_NONBLOCK);
@@ -35,13 +36,7 @@ try {
   const candidate = parseCandidate(
     boundedFile(responseFile, MAX_CANDIDATE_FILE_BYTES),
   );
-  const client = createPublicClient({
-    chain: baseSepolia,
-    transport: http("https://sepolia.base.org", {
-      retryCount: 0,
-      timeout: 20000,
-    }),
-  });
+  const client = createAdmissionReader();
   console.log(
     JSON.stringify(
       await judgeAdmissionCandidate({ client, snapshot, candidate }),

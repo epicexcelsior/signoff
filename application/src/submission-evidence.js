@@ -16,6 +16,62 @@ const artifacts = new Map([
   ],
   ["manifest", manifestUrl],
   [
+    "source-gate-deployment",
+    new URL(
+      "../submission/evidence/api3-admission-deployment.json",
+      import.meta.url,
+    ),
+  ],
+  [
+    "source-gate-context",
+    new URL(
+      "../submission/evidence/api3-admission-context.json",
+      import.meta.url,
+    ),
+  ],
+  [
+    "source-gate-five-cases",
+    new URL(
+      "../submission/evidence/api3-admission-five-cases.json",
+      import.meta.url,
+    ),
+  ],
+  [
+    "source-gate-admission",
+    new URL(
+      "../submission/evidence/api3-admission-proof.json",
+      import.meta.url,
+    ),
+  ],
+  [
+    "source-gate-nvd-original",
+    new URL(
+      "../submission/evidence/nvd-admission-original.json",
+      import.meta.url,
+    ),
+  ],
+  [
+    "source-gate-settlement",
+    new URL(
+      "../submission/evidence/api3-admission-access-settlement.json",
+      import.meta.url,
+    ),
+  ],
+  [
+    "source-gate-edited-test",
+    new URL(
+      "../submission/evidence/api3-admission-edited-deliberate-test.json",
+      import.meta.url,
+    ),
+  ],
+  [
+    "source-gate-qualification-audit",
+    new URL(
+      "../submission/evidence/api3-admission-qualification-audit.json",
+      import.meta.url,
+    ),
+  ],
+  [
     "physical-paid-inspection-report",
     new URL(
       "../submission/evidence/physical-paid-inspection-report.json",

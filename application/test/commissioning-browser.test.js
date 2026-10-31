@@ -5,6 +5,90 @@ import { mkdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fixture, server } from "./helpers.js";
 
+test("camera preview keeps the full frame and overlay above wrapped status text", async (t) => {
+  const { service } = fixture(t);
+  const origin = await server(t, service);
+  const browser = await chromium.launch({ channel: "chrome", headless: true });
+  try {
+    for (const width of [400, 1440]) {
+      const page = await browser.newPage({ viewport: { width, height: 752 } });
+      await page.goto(origin);
+      for (const [frameWidth, frameHeight] of [
+        [640, 360],
+        [360, 640],
+      ]) {
+        await page.evaluate(
+          async ({ frameWidth, frameHeight }) => {
+            const source = document.createElement("canvas");
+            source.width = frameWidth;
+            source.height = frameHeight;
+            const context = source.getContext("2d");
+            context.fillStyle = "#eee";
+            context.fillRect(0, 0, frameWidth, frameHeight);
+            for (const [x, y, color] of [
+              [0, 0, "red"],
+              [frameWidth - 60, 0, "green"],
+              [0, frameHeight - 60, "blue"],
+              [frameWidth - 60, frameHeight - 60, "orange"],
+            ]) {
+              context.fillStyle = color;
+              context.fillRect(x, y, 60, 60);
+            }
+            const video = document.getElementById("camera");
+            video.srcObject?.getTracks().forEach((track) => track.stop());
+            video.srcObject = source.captureStream(1);
+            video.hidden = false;
+            document.getElementById("placement-preview").hidden = true;
+            const overlay = document.getElementById("overlay");
+            overlay.width = frameWidth;
+            overlay.height = frameHeight;
+            overlay.hidden = false;
+            document.getElementById("camera-status").textContent =
+              "The required marker is not visible. The required marker is not visible.";
+            await video.play();
+          },
+          { frameWidth, frameHeight },
+        );
+        const layout = await page.evaluate(() => {
+          const video = document.getElementById("camera");
+          const rect = (element) => {
+            const { x, y, width, height, bottom } =
+              element.getBoundingClientRect();
+            return { x, y, width, height, bottom };
+          };
+          return {
+            video: rect(video),
+            overlay: rect(document.getElementById("overlay")),
+            footer: rect(document.querySelector(".stage-footer")),
+            fit: getComputedStyle(video).objectFit,
+            overflow: document.documentElement.scrollWidth > innerWidth,
+          };
+        });
+        assert(
+          layout.footer.y >= layout.video.bottom - 1,
+          "Camera status must not cover any part of the image",
+        );
+        assert.deepEqual(layout.overlay, layout.video);
+        assert.equal(layout.fit, "contain");
+        assert.equal(layout.overflow, false);
+        assert(layout.video.height <= 752 * 0.65 + 1);
+        if (process.env.FIELDPROOF_SCREENSHOT_DIR) {
+          mkdirSync(process.env.FIELDPROOF_SCREENSHOT_DIR, { recursive: true });
+          await page.locator("#camera-stage").screenshot({
+            path: join(
+              process.env.FIELDPROOF_SCREENSHOT_DIR,
+              `camera-preview-${width}-${frameWidth}x${frameHeight}.png`,
+            ),
+          });
+        }
+      }
+      await page.close();
+    }
+  } finally {
+    await browser.close();
+  }
+});
+
 test("judge view rejects edited original report bytes and recovers after the original returns", async (t) => {
   const { service } = fixture(t);
   const origin = await server(t, service);
@@ -231,7 +315,7 @@ test("commissioning desktop and phone: approve, inspect defects, verify packets,
         .waitFor();
       assert.match(
         await page.locator("#judge-cases").textContent(),
-        /passed mined open to rejected/,
+        /passed mined software admission and work order opened/,
       );
       await page
         .getByText("Read the original inspection report · REVIEW", {

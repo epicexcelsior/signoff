@@ -77,20 +77,75 @@ if (forbidden.length) {
   if (
     reviewed.qualificationEstablished !== audit.qualified ||
     (audit.qualified &&
-      reviewed.sourceDependence.sourceDependentTerminalDecision !== true)
+      reviewed.sourceDependence.sourceDependentOnChainAction !== true)
   )
     throw new Error(
-      "The qualification claim lacks a verified source-dependent terminal decision.",
+      "The qualification claim lacks a verified source-dependent on-chain action.",
     );
+  if (audit.qualified) {
+    for (const [name, expected] of Object.entries(reviewed.artifactHashes)) {
+      if (!/^(?:api3-|nvd-)[a-z0-9-]+\.json$/.test(name))
+        throw new Error(
+          "The qualification audit contains an invalid artifact path.",
+        );
+      const bytes = readFileSync(
+        new URL(`../submission/evidence/${name}`, import.meta.url),
+      );
+      if (createHash("sha256").update(bytes).digest("hex") !== expected)
+        throw new Error(`Qualification artifact changed: ${name}.`);
+    }
+    const original = (name) =>
+      JSON.parse(
+        readFileSync(
+          new URL(`../submission/evidence/${name}`, import.meta.url),
+        ),
+      );
+    const proof = original("api3-admission-proof.json");
+    const cases = original("api3-admission-five-cases.json");
+    const context = original("api3-admission-context.json");
+    const expectedErrors = {
+      valid: null,
+      edited: "NotSignedByAirnode",
+      stale: "InvalidOracle",
+      "other-request": "NotSignedByAirnode",
+      "wrong-key": "NotSignedByAirnode",
+    };
+    if (
+      proof.sourceDependentAction !== true ||
+      proof.inspectionRecorded !== false ||
+      proof.decision !== "SOFTWARE_ADMITTED" ||
+      proof.jobDecision !== "OPEN" ||
+      proof.contract.toLowerCase() !== context.contract.toLowerCase() ||
+      proof.jobId !== context.jobId ||
+      BigInt(proof.blockNumber) <= BigInt(context.blockNumber) ||
+      cases.contract.toLowerCase() !== context.contract.toLowerCase() ||
+      cases.blockHash !== context.blockHash ||
+      cases.results.length !== 5 ||
+      !Object.entries(expectedErrors).every(([name, error]) =>
+        cases.results.some(
+          (result) =>
+            result.case === name &&
+            result.observedRevert === error &&
+            result.observed === (error ? "REVERTED" : "SUCCEEDED") &&
+            result.blockHash === context.blockHash,
+        ),
+      ) ||
+      cases.vulnerableResult.observedRevert !== "SoftwareNotEligible" ||
+      cases.unsignedEntryPoint !== "SignedSoftwareRequired"
+    )
+      throw new Error(
+        "Source-gated admission proof and deployed rejection cases do not match.",
+      );
+  }
   console.log(
     audit.qualified
-      ? "API3 qualification evidence is recorded."
+      ? "API3 source-dependent software admission and all four tamper rejections are recorded."
       : "API3 NOT QUALIFIED: deployed tamper checks pass, but a source-dependent terminal decision is missing.",
   );
   console.log(
     manifest.readyForSubmission
       ? "Submission evidence is marked complete. Owner publication remains separate."
-      : "SUBMISSION NOT COMPLETE: physical acceptance and owner publication/video links remain separate requirements.",
+      : "SUBMISSION NOT COMPLETE: final video, reviewed public links, and owner submission remain pending. Physical acceptance remains unestablished.",
   );
   if (process.argv.includes("--require-ready") && !manifest.readyForSubmission)
     process.exitCode = 1;

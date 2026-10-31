@@ -28,7 +28,10 @@
           <p class="eyebrow" id="inspection-job">Remote equipment inspection</p>
           <h1>Know before you approve.</h1>
         </div>
-        <p>Check the actual device before accepting the installation.</p>
+        <p>
+          Check contractor-installed monitoring equipment before accepting the
+          handover.
+        </p>
       </div>
       <div class="presentation-bar">
         <p id="evidence-origin">Current attempt · waiting for a work order</p>
@@ -50,21 +53,23 @@
             </p>
             <div id="saved-measurement" class="saved-measurement" hidden></div>
             <div class="camera-stage" id="camera-stage">
-              <video id="camera" muted playsinline hidden></video
-              ><canvas id="overlay" hidden></canvas>
-              <div
-                class="placement-preview"
-                id="placement-preview"
-                aria-label="Reference marker and device marker target illustration"
-              >
-                <div class="reference-marker">
-                  <span>0</span><small>REFERENCE</small>
+              <div class="camera-feed">
+                <video id="camera" muted playsinline hidden></video
+                ><canvas id="overlay" hidden></canvas>
+                <div
+                  class="placement-preview"
+                  id="placement-preview"
+                  aria-label="Reference marker and device marker target illustration"
+                >
+                  <div class="reference-marker">
+                    <span>0</span><small>REFERENCE</small>
+                  </div>
+                  <div class="dimension"><span>100 mm</span><i></i></div>
+                  <div class="device-marker">
+                    <span>10</span><small>DEVICE</small>
+                  </div>
+                  <p>Align the device marker with the approved target.</p>
                 </div>
-                <div class="dimension"><span>100 mm</span><i></i></div>
-                <div class="device-marker">
-                  <span>10</span><small>DEVICE</small>
-                </div>
-                <p>Align the device marker with the approved target.</p>
               </div>
               <div class="stage-footer">
                 <span id="camera-status"

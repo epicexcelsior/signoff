@@ -5,7 +5,10 @@ import {
   getAddress,
   keccak256,
   stringToHex,
+  createPublicClient,
+  http,
 } from "viem";
+import { baseSepolia } from "viem/chains";
 import abi from "./admission-abi.json" with { type: "json" };
 import { NVD_SIGNER, NVD_REQUEST_HASH } from "./index.mjs";
 import { sourceResponseDigest } from "./abi.mjs";
@@ -13,6 +16,30 @@ import { validateCandidate } from "./candidate.mjs";
 import { contractRevertName } from "./judge.mjs";
 
 export const admissionAbi = abi;
+// The public Base RPC rate-limited the original submission. Pace reads without
+// retrying failed requests or counting unavailable RPC responses as rejections.
+export function createAdmissionReader() {
+  const transport = http("https://sepolia.base.org", {
+    retryCount: 0,
+    timeout: 20000,
+  });
+  const paced = (config) => {
+    const base = transport(config);
+    let queue = Promise.resolve();
+    return {
+      ...base,
+      request: (request, options) => {
+        const task = queue.then(async () => {
+          await new Promise((resolve) => setTimeout(resolve, 350));
+          return base.request(request, options);
+        });
+        queue = task.catch(() => {});
+        return task;
+      },
+    };
+  };
+  return createPublicClient({ chain: baseSepolia, transport: paced });
+}
 const digest = (v) => /^0x[0-9a-f]{64}$/i.test(v ?? "");
 const hash = (v) => createHash("sha256").update(v).digest("hex");
 

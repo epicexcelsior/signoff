@@ -1,0 +1,23 @@
+{
+  "schema": "proof-of-ready/api3-admission-access-settlement/v1",
+  "stage": "SETTLED",
+  "amountAtomicUnits": "10000",
+  "sourceAuthenticated": true,
+  "paymentCurrentlyVerified": true,
+  "confirmation": {
+    "verified": true,
+    "checkedAt": 1793443673062,
+    "chainId": 84532,
+    "transaction": "0xc4a903a84cc6d50dcf2cab5e877b01a2042648afff778ca37838c1a9d43896a5",
+    "asset": "0xbeA34973e5f67F18F656A2C6070C64326C791808",
+    "payer": "0x5AB1B25d13bd13Ebd3c9480F438CF0530F37e831",
+    "payTo": "0x1505FD562AC2Fb4307B85BC6c672FfeafB4d57A7",
+    "amountAtomicUnits": "10000",
+    "nonce": "0x4a94d08183ae02eae1ea58ddb7c8569f93e8fb6f1a2d98b68867088c7ab9cdd4",
+    "blockHash": "0xf78365ed8f3bb60679b81204b75f8454fa7321f5c0ba7b30f84c090ec90cfa97",
+    "blockNumber": "52608924",
+    "confirmations": 97,
+    "trust": "Pinned aUSD contract semantics and the configured RPC's canonical transaction receipt and block count."
+  },
+  "scope": "Original third paid NVD access. Settlement is independent of software admission and physical acceptance."
+}

@@ -12,6 +12,11 @@ test("judge evidence serves only reviewed originals and their exact hashes witho
   assert.equal(response.status, 200);
   assert.equal(response.headers.get("cache-control"), "no-store");
   const result = await response.json();
+  assert(
+    result.manifest.liveEvidence.every(
+      (record) => typeof record.status === "string" && record.status.length > 0,
+    ),
+  );
   assert.match(result.scope, /do not authorize/);
   const original = readFileSync(
     new URL(
@@ -98,6 +103,16 @@ test("judge evidence serves only reviewed originals and their exact hashes witho
   assert.equal(proof.sourceResponseDigest, check.sourceResponseDigest);
   assert.equal(proof.decision, "REJECTED");
   assert.equal(proof.mode, "MINED_TRANSACTION_AND_PINNED_STATE");
+  const admissionArtifact = result.artifacts.find(
+    (entry) => entry.id === "source-gate-admission",
+  );
+  const admission = await (
+    await fetch(`${origin}${admissionArtifact.href}`)
+  ).json();
+  assert.equal(admission.sourceDependentAction, true);
+  assert.equal(admission.inspectionRecorded, false);
+  assert.equal(admission.decision, "SOFTWARE_ADMITTED");
+  assert.equal(result.manifest.api3Qualification.qualified, true);
   assert.equal(result.manifest.readyForSubmission, false);
   for (const id of [
     "credentials.env",

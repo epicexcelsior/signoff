@@ -1,6 +1,6 @@
 {
   "schema": "proof-of-ready/submission-evidence/v1",
-  "checkedAt": "2026-10-31T08:58:21.177896+00:00",
+  "checkedAt": "2026-10-31T10:52:57.090437+00:00",
   "readyForSubmission": false,
   "publicationAuthorized": false,
   "deadline": "2026-10-31T15:00:00+01:00",
@@ -198,6 +198,62 @@
       "usefulReportSha256": "566bac5476676deeca25d97d8105b58f74203cabc56c8d35fa4c3ef10fdeb2a7",
       "reportArtifactId": "physical-paid-inspection-report",
       "sellerReceiptSha256": "5da95a049fa0cb13446ac5ab652c762f5e8f1779bdc843df00a7d22a753a60f7"
+    },
+    {
+      "id": "api3-source-gate-deployment",
+      "schema": "proof-of-ready/api3-admission-deployment/v1",
+      "checkedAt": "2026-10-31T10:38:22.757Z",
+      "chainId": 84532,
+      "contract": "0x1ed0ebc0c5104702e688eccc567d84b66107e60b",
+      "transactionHash": "0xe72492181583aae380fc0cf4424aa92aef166478f330f7f94e09575d8affaa63",
+      "blockNumber": "52606168",
+      "blockHash": "0x97c753ed2dfb11cd9b797eb8608ef4a42db870a05846abae3173499fc407504c",
+      "runtimeCodeHash": "0x211a0eddd90b8daaa65a67c86d3e28840b33323226bcf84f7821d3b95db20232",
+      "bytecodeHash": "0x8d0fe7059562848f524186071e36462fe459d3af5a666c1a5b1aa910d8149192",
+      "initCodeHash": "0x71e58b35f5d770e5ffa69e1f0980423538cc7eed0b68e53550d4ac794d2b52a6",
+      "operator": "0x5AB1B25d13bd13Ebd3c9480F438CF0530F37e831",
+      "airnode": "0x41dd84D5B6503D9aA3c374a49F546e335423a1b8",
+      "requestHash": "0x3f0881fb062ac6b989c133e0b5651d19947e38aebe4d94750627fa612f447d15",
+      "maxAttestationAge": 300,
+      "maxSourceAge": 300,
+      "gasUsed": "3703958",
+      "constructorVerified": true,
+      "sourceAdmissionExecuted": false,
+      "artifact": "application/submission/evidence/api3-admission-deployment.json",
+      "qualificationScope": "Deployed source gate. An unsigned job-opening call always rejects.",
+      "status": "confirmed-constructor-verified"
+    },
+    {
+      "id": "api3-paid-nvd-admission",
+      "chainId": 84532,
+      "status": "settled-and-delivered",
+      "amountAUsd": "0.01",
+      "transactionHash": "0xc4a903a84cc6d50dcf2cab5e877b01a2042648afff778ca37838c1a9d43896a5",
+      "originalResponsePublicPath": "application/submission/evidence/nvd-admission-original.json",
+      "originalResponseSha256": "fbf045d95c373a47e46dc63c9f60c3d9d7293d828a43c7502d7322fb9847306d",
+      "qualificationScope": "Third genuine paid NVD response. Fresh at the software-admission transaction. No current freshness claim."
+    },
+    {
+      "id": "api3-source-dependent-admission",
+      "schema": "proof-of-ready/api3-source-dependent-admission/v1",
+      "chainId": 84532,
+      "contract": "0x1Ed0EBc0c5104702E688eCCC567D84b66107e60b",
+      "jobId": "0xd9986df0464d0f2f19b1aa54fd1eb16919831d756f54d9a21a3ffba63cb18420",
+      "transactionHash": "0xbcba0ba8a582c06cc72351290de98a2bcabc03b6fe2916f6dbac6e237ef92798",
+      "blockNumber": "52609392",
+      "blockHash": "0x390650f28537b618e1bdacbc581a16dcbc599a7f90b8ceecba9c265bfd7bcda4",
+      "decision": "SOFTWARE_ADMITTED",
+      "jobDecision": "OPEN",
+      "inspectionRecorded": false,
+      "sourceDependentAction": true,
+      "sourceResponseDigest": "0x013362eb6f6b4e975da7ab2b369dd86ac976c6423972182de0c6e2ca0fd93efe",
+      "signedAt": "1793443653",
+      "gasUsed": "964639",
+      "networkWrites": false,
+      "scope": "Authenticated NVD data authorized opening a work order before inspection. The build is declared, not measured on the ESP32. This is not physical installation acceptance.",
+      "artifact": "application/submission/evidence/api3-admission-proof.json",
+      "qualificationScope": "Authenticated NVD data authorized opening a work order before inspection. The build is declared, not measured on the ESP32. This is not physical installation acceptance.",
+      "status": "mined-source-dependent-software-admission"
     }
   ],
   "mandatoryEvidence": {
@@ -212,24 +268,44 @@
       "sellerReceiptTransactionHash": "344fd5f6fd40f469ff72e0feac7b58ae9f9a100f472a29429e1082ae42aaa202"
     },
     "api3": {
-      "status": "not-qualified-source-dependent-decision-missing",
-      "contract": "0x98023c425670a9690ab362c00fbea1bc11dce2cb",
+      "status": "verified-source-dependent-software-admission",
+      "contract": "0x1ed0ebc0c5104702e688eccc567d84b66107e60b",
+      "jobId": "0xd9986df0464d0f2f19b1aa54fd1eb16919831d756f54d9a21a3ffba63cb18420",
+      "admissionTransactionHash": "0xbcba0ba8a582c06cc72351290de98a2bcabc03b6fe2916f6dbac6e237ef92798",
+      "softwareDecision": "SOFTWARE_ADMITTED",
+      "physicalJobDecision": "OPEN",
+      "inspectionRecordedAtAdmission": false,
+      "judgeBlockNumber": "52608967",
       "judgeCases": {
-        "valid-causes-state-change": "passed-mined-open-to-rejected",
+        "valid-causes-state-change": "passed-mined-software-admission-and-work-order-opened",
         "edited-rejects": "passed-NotSignedByAirnode",
         "stale-rejects": "passed-InvalidOracle",
         "other-request-rejects": "passed-NotSignedByAirnode",
         "wrong-key-rejects": "passed-NotSignedByAirnode"
       },
-      "remaining": [
-        "Demonstrate a source-dependent terminal decision with genuine inspection prerequisites"
-      ],
-      "jobId": "0x283a22d5708fb1dd4b9b723c2094732c1e30d2aea46f0d1baf7edecceed944bc",
-      "finalizationTransactionHash": "0xa94e48a5d72065ad46c4c558d26a7c3f618aa491fe46e6d012fd7aa7b1356eab",
-      "terminalDecision": "REJECTED",
-      "judgeBlockNumber": "52413566",
-      "qualificationConfirmed": false,
-      "judgeSuppliedResponseCommand": "npm --prefix application/api3 run judge:candidate -- RESPONSE_FILE"
+      "qualificationConfirmed": true,
+      "remaining": [],
+      "judgeSuppliedResponseCommand": "npm --prefix application/api3 run judge:admission -- ../submission/evidence/api3-admission-context.json RESPONSE_FILE",
+      "originalHistoricalFinalization": {
+        "status": "not-qualified-source-dependent-decision-missing",
+        "contract": "0x98023c425670a9690ab362c00fbea1bc11dce2cb",
+        "judgeCases": {
+          "valid-causes-state-change": "passed-mined-open-to-rejected",
+          "edited-rejects": "passed-NotSignedByAirnode",
+          "stale-rejects": "passed-InvalidOracle",
+          "other-request-rejects": "passed-NotSignedByAirnode",
+          "wrong-key-rejects": "passed-NotSignedByAirnode"
+        },
+        "remaining": [
+          "Demonstrate a source-dependent terminal decision with genuine inspection prerequisites"
+        ],
+        "jobId": "0x283a22d5708fb1dd4b9b723c2094732c1e30d2aea46f0d1baf7edecceed944bc",
+        "finalizationTransactionHash": "0xa94e48a5d72065ad46c4c558d26a7c3f618aa491fe46e6d012fd7aa7b1356eab",
+        "terminalDecision": "REJECTED",
+        "judgeBlockNumber": "52413566",
+        "qualificationConfirmed": false,
+        "judgeSuppliedResponseCommand": "npm --prefix application/api3 run judge:candidate -- RESPONSE_FILE"
+      }
     },
     "hardware": {
       "status": "real-camera-rework-optical-commissioning-incomplete",
@@ -241,11 +317,11 @@
       ],
       "physicalEvidencePacketScope": "Partial negative packet: actual camera only. No signed device sequence, optical capture, or acceptance.",
       "finalAttempt": {
-        "checkedAt": "2026-10-31T08:58:21.177896+00:00",
-        "phoneConnected": false,
-        "usbSerialEndpointPresent": false,
+        "checkedAt": "2026-10-31T10:21:28.858Z",
+        "phoneConnected": true,
+        "usbSerialEndpointPresent": true,
         "newOpticalRequest": false,
-        "result": "Stopped before emission. Existing equipment is disconnected. No wiring or firmware changed."
+        "result": "Both markers detected. Orientation passed at 0.78 degrees. Placement failed at 141.71 mm offset. Camera stopped afterward. No ESP32 request or wiring change."
       }
     },
     "submission": {
@@ -254,10 +330,10 @@
       "demoVideoUrl": null,
       "devfolioProjectUrl": null,
       "remaining": [
-        "Complete missing genuine evidence",
+        "Record owner pitch and explanation; edit the preserved genuine proof clips",
         "Review public release candidate",
         "Owner authorizes publication and Devfolio submission",
-        "Record video no longer than 150 seconds"
+        "Review the final video no longer than 150 seconds; preserve separate-run labels"
       ]
     }
   },
@@ -266,28 +342,24 @@
     "First paid CVE response is preserved for authenticity and stale rejection, not indefinitely current policy.",
     "Contract payment evidence is an operator assertion, not Cardano consensus verification.",
     "The five source cases and mined rejection use a genuine paid REVIEW on synthetic input. No complete physical installation or installed-build provenance exists.",
-    "The 0.02 aUSD paid-access budget is consumed. Preserve both original settled requests. Another paid request needs a separately authorized budget.",
-    "The saved false inspection predicate forces REJECTED regardless of the CVE verdict. Complete API3 qualification remains unconfirmed until source-dependent decision evidence is adequate."
+    "The owner-approved 0.03 aUSD access ceiling is consumed by three settled requests. Preserve every original operation and nonce.",
+    "Source-gated software admission verifies an operator-declared reference build, not firmware measured on the ESP32. Physical installation acceptance remains blocked."
   ],
   "primaryRealDemo": "cardano-physical-camera-inspection",
   "api3Qualification": {
-    "qualified": false,
-    "sourceDependentTerminalDecision": false,
+    "qualified": true,
+    "sourceDependentOnChainAction": true,
     "fourTamperRejectionsVerified": true,
-    "auditArtifact": "application/submission/evidence/api3-qualification-audit.json",
-    "auditSha256": "bd4010389685b69176456c203ca04f85891b94b3344ff0541801767a079d1913",
-    "gap": "The false inspection prerequisite forces REJECTED regardless of the authenticated CVE verdict."
+    "auditArtifact": "application/submission/evidence/api3-admission-qualification-audit.json",
+    "auditSha256": "6a7c3e061623f48f5a7398e8b4164a07fb373710a283d5afd96c2c587fab4590",
+    "scope": "Authenticated NVD data controls software admission before inspection. Physical acceptance and installed firmware remain unverified."
   },
   "releaseCandidate": {
     "published": false,
-    "testedCleanCheckout": true,
+    "testedCleanCheckout": false,
     "internalDocumentsIncluded": false,
     "privateHistoryIncluded": false,
-    "status": "tested-public-source-candidate-not-published",
-    "fileCount": 258,
-    "markdownDocumentCount": 3,
-    "candidateCommit": "56e1d3bb94a14c6721bf588a0aa16022e6195d4c",
-    "archiveSha256": "69a06d5822edb32ca5c4629c1125e7e8a6599940f215c544be27f2a5ecfee182",
-    "verifiedAt": "2026-10-31T09:25:48.047807+00:00"
+    "status": "REBUILD_PENDING_AFTER_SOURCE_GATE_CORRECTION",
+    "previousReviewedCandidateCommit": "56e1d3bb94a14c6721bf588a0aa16022e6195d4c"
   }
 }

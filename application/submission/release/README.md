@@ -2,7 +2,7 @@
 
 **Know before you approve.** Check the actual device before accepting the installation.
 
-Proof of Ready binds an approved work order, camera measurements, signed device-test protocols, and a paid inspector report. Missing or failed evidence blocks acceptance.
+Proof of Ready provides remote acceptance tests for monitoring equipment installed by independent contractors. A facility operator reviews defect evidence and a paid inspector report before accepting the handover. Missing or failed checks block acceptance.
 
 ## What the demonstration proves
 
@@ -12,7 +12,7 @@ Proof of Ready binds an approved work order, camera measurements, signed device-
 - A separate ESP32 diagnostic returned a verified signature. A phone recording matched 72 of 72 optical symbols.
 - Genuine paid NVD responses and deployed Base Sepolia signature checks exist. Four tamper cases replay successfully.
 
-**API3 qualification is not established.** The original failed-inspection prerequisite forces REJECTED regardless of the authenticated CVE verdict. [Judge commands and the precise gap](docs/JUDGE.md) are provided.
+**Software admission verified on Base Sepolia.** Fresh authenticated NVD data opened a software-gated work order before inspection. The four tamper cases reject. This admission covers a declared reference build and does not approve physical installation. [Judge commands and original artifacts](docs/JUDGE.md) preserve both the new admission and the earlier rejection.
 
 **The physical installation is not accepted.** Correct placement, a complete fresh work-order-bound optical capture, button tests, and installed-build provenance remain incomplete.
 
@@ -30,7 +30,7 @@ npm --prefix integrations/masumi ci
 npm start
 ```
 
-Open **http://127.0.0.1:4021/demo/** for saved real evidence. Wait for **Saved in this browser**. Select **Verify saved evidence**. After one load, this viewer can reopen without the coordinator. A Seeker Chrome saved load and offline hash check passed. Final portrait QA on the device remains unverified.
+Open **http://127.0.0.1:4021/demo/** for saved real evidence. Wait for **Saved in this browser**. Select **Verify saved evidence**. After one load, this viewer can reopen without the coordinator. The physical Seeker passed portrait rendering, offline reload, and all six file hashes with browser networking disabled.
 
 Open **http://127.0.0.1:4021/** for a labeled synthetic rehearsal. Confirm inspection requirements, choose a rehearsal condition, and select **Run rehearsal**. Rehearsal moves no funds and does not establish physical acceptance.
 

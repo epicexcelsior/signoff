@@ -6,14 +6,14 @@
   "tagline": "Know before you approve.",
   "selectedPartnerTracks": ["Cardano", "API3"],
   "automaticTrack": "TUM Blockchain Track",
-  "problem": "Operators accepting subcontracted monitoring installations need evidence that equipment is placed correctly, responds to physical tests, and meets the declared software policy.",
-  "solution": "A deterministic local station binds an approved work order, camera measurements, signed device-test protocols, a useful paid inspector report, and a software-policy gate. The current demonstration preserves a real camera rejection and actual inspector payment. It does not establish complete physical acceptance.",
-  "currentImplementation": "Actual Seeker camera evidence returned REWORK for incorrect placement. An independent inspector reviewed that exact camera evidence, returned a useful FAIL report, and received 1 test USDM on Cardano Preprod. Escrow, result, withdrawal, and positive seller collection verified. A separate earlier paid REVIEW used synthetic input and remains labeled. An ESP32 signed 18-second diagnostic and 72 recorded optical symbols verified separately. No complete fresh work-order-bound optical commissioning capture or button test exists. Two genuine paid NVD requests settled. The original deployed Base Sepolia replay and four tamper rejections pass. API3 is NOT QUALIFIED under the source-dependence requirement because a failed inspection prerequisite forces REJECTED regardless of the authenticated CVE verdict. The application is deterministic and operator-driven. It does not run autonomous LLM reasoning. A read-only phone viewer presents saved real evidence offline after one load. A connected Seeker Chrome saved load and offline hash check passed. Final portrait QA on the device remains unverified.",
+  "problem": "Facility operators accept monitoring equipment installed by independent contractors. Failed installations create disputed handovers, manual checks, and potential repeat visits. An installation photo does not establish that equipment meets the agreed checks.",
+  "solution": "Remote acceptance testing for contractor-installed monitoring equipment. The operator defines the checks, reviews camera and device evidence, and receives an independent paid report before accepting the handover. The demonstrated installation fails placement, and its paid report explains the defect.",
+  "currentImplementation": "Actual Seeker camera evidence returned REWORK for incorrect placement. An independent inspector reviewed that exact camera evidence, returned a useful FAIL report, and received 1 test USDM on Cardano Preprod. Escrow, result, withdrawal, and positive seller collection verified. A separate earlier paid REVIEW used synthetic input and remains labeled. An ESP32 signed 18-second diagnostic and 72 recorded optical symbols verified separately. No complete fresh work-order-bound optical commissioning capture or button test exists. Three genuine paid NVD requests settled. A mandatory source-gated Base Sepolia policy admitted a declared reference build and opened a work order before inspection. The four deployed tamper cases reject. A vulnerable reference build and the unsigned entry point also reject. The earlier five cases and mined rejection remain unchanged. Installed ESP32 firmware remains unproven. The application is deterministic and operator-driven. It does not run autonomous LLM reasoning. A read-only phone viewer presents saved real evidence offline after one load. The physical Seeker passed portrait rendering, offline reload, and all six saved-file hashes with browser networking disabled.",
   "howItWorks": [
     "Confirm the fixed inspection requirements and start a fresh capture attempt.",
     "Measure marker placement. Signed contact and optical test protocols exist, but the physical commissioning sequence remains incomplete.",
     "Inspect the exact evidence through the paid service. The actual camera attempt received a paid FAIL report.",
-    "Replay authenticated NVD checks against the deployed policy. Four deliberate tamper cases reject.",
+    "Authenticate fresh NVD data on-chain before opening a software-gated work order. Reject edited, stale, different-request, and wrong-key responses.",
     "Keep acceptance blocked when a physical check fails or required evidence is missing."
   ],
   "whySignedDataMatters": "A forged or substituted vulnerability response can misstate software acceptance. The contract checks the configured Airnode, exact CVE request and source age. NVD signatures do not identify firmware installed on a physical device.",
@@ -26,7 +26,7 @@
     "Solidity/Foundry/viem/Base Sepolia",
     "ESP-IDF6.1"
   ],
-  "businessCase": "Hypothesis: an integrator accepting remote monitoring installations pays for a reproducible specialist report and fewer ambiguous handovers. Customer demand, pricing and reduced revisits remain unvalidated.",
+  "businessCase": "Proposed customer: facility operators and installation integrators that accept contractor-installed monitoring equipment. Proposed model: a paid inspection per handover. Clear defect evidence supports correction before acceptance. Customer demand, pricing, fewer repeat visits, and cost savings remain unvalidated.",
   "challenges": [
     "BLE fragmentation and original receipt binding",
     "Fresh capture versus later report/escrow validity",
@@ -39,20 +39,21 @@
     "video": null,
     "devfolioProject": null,
     "evidenceManifest": "application/submission/evidence-manifest.json",
-    "deployedContract": "https://sepolia.basescan.org/address/0x98023c425670a9690ab362c00fbea1bc11dce2cb",
+    "deployedContract": "https://sepolia.basescan.org/address/0x1ed0ebc0c5104702e688eccc567d84b66107e60b",
     "cardanoEscrow": "https://preprod.cardanoscan.io/transaction/cd48db80ffb0494b8a092af67f8ec9e33dbdb3c1f8bce8ced1eaf1d5864782ca",
     "cardanoResult": "https://preprod.cardanoscan.io/transaction/d0c178019710413818159fcc3098ae1c733dbc8a070954b3c80b2a6b77f90280",
     "cardanoSellerReceipt": "https://preprod.cardanoscan.io/transaction/f6493d441afbffcbe7a4f9ae8626318a9551bfbe7a8095a076eece5c01ff0029",
-    "policyFinalization": "https://sepolia.basescan.org/tx/0xa94e48a5d72065ad46c4c558d26a7c3f618aa491fe46e6d012fd7aa7b1356eab"
+    "policyFinalization": "https://sepolia.basescan.org/tx/0xa94e48a5d72065ad46c4c558d26a7c3f618aa491fe46e6d012fd7aa7b1356eab",
+    "softwareAdmission": "https://sepolia.basescan.org/tx/0xbcba0ba8a582c06cc72351290de98a2bcabc03b6fe2916f6dbac6e237ef92798"
   },
   "nextAfterBaseline": [
     "Complete a work-order-bound optical capture after correct placement.",
     "Review button wiring and complete contact transitions.",
-    "Establish a genuine source-dependent on-chain decision before claiming API3 qualification."
+    "Preserve the source-dependent admission proof and both five-case sets. Establish installed-build provenance before physical acceptance."
   ],
   "qualification": {
     "cardano": "Actual paid useful FAIL on camera evidence with verified positive seller receipt.",
-    "api3": "NOT QUALIFIED: deployed signature checks and tamper rejections pass, but source-dependent terminal decision remains missing.",
+    "api3": "Source-dependent software admission verified on Base Sepolia with a fresh paid NVD response, four deployed tamper rejections, vulnerable-build rejection, and unsigned-bypass rejection. Final judging remains with the organizer.",
     "physicalInstallation": "NOT ACCEPTED: placement fails and complete signed contact/optical commissioning evidence is missing."
   }
 }
