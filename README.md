@@ -39,7 +39,7 @@ Use **View the recorded inspection** to restore the exact reviewed attempt. Use 
 
 Next: correct marker and LED placement, complete signed optical capture through the configured physical station, then review the button circuit and record the complete video. The original paid REVIEW now binds all five deployed source checks and a mined REJECTED decision. Its synthetic input cannot authorize a physical installation. Both approved NVD calls settled. The 0.02 aUSD ceiling is consumed.
 
-The Seeker companion already builds. Seeker Chrome supplied the actual camera measurement and optical diagnostic recording through USB forwarding. The phone and ESP32 reconnected. Both markers are now readable with phone fill light. Position and orientation still fail the approved target. Native companion installation, native camera/BLE tests, and Android instrumentation remain unverified. They do not replace the immediate button/LED/camera baseline.
+The Seeker companion already builds. Seeker Chrome supplied the actual camera measurement and optical diagnostic recording through USB forwarding. The phone and ESP32 reconnected. Both markers are readable. The latest live retry passed orientation and failed placement. The camera is stopped, and the saved viewer is open for filming. Native companion installation, native camera/BLE tests, and Android instrumentation remain unverified. They do not replace the immediate button/LED/camera baseline.
 
 ## Documentation map
 
