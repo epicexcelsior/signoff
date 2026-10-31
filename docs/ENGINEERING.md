@@ -425,3 +425,9 @@ Camera guidance now states the estimated offset, angle difference, and approved 
 Station requests stop waiting after 65 seconds. A lost write response shows `OUTCOME_UNKNOWN` and blocks further station actions. Refresh the page to inspect the original saved attempt before another operation. This timeout does not cancel or repeat the server operation. Lost reads show `CONNECTION_FAILED`. The history response includes the approved work order for every returned attempt, including orders older than the recent-order limit.
 
 Camera-choice enumeration runs independently after camera startup. The result applies only to the same active controller. Enumeration failure leaves the active camera available and displays an error. During an uncertain write, camera messages cannot overwrite the recovery instruction, and work-order changes remain disabled.
+
+### Check the morning demonstration
+
+With the local station running, run `npm run demo:preflight` from `application/`. Use `FIELDPROOF_PORT` if the station uses another local port. The command reads only loopback HTTP endpoints and reviewed local artifacts. It checks history-to-work-order bindings, every served artifact hash, the saved seller receipt and report binding, all five saved source-case names, historical contract commitments, and the original optical receipt signature. It makes no POST request, chain request, camera capture, BLE operation, or payment.
+
+`REHEARSAL_AVAILABLE` means these checks passed against a simulation station. `STATION_AVAILABLE` means these checks passed against another supported station mode. Neither result proves physical acceptance or current sponsor qualification. The output lists remaining evidence and publication requirements. `PREFLIGHT_FAILED` returns exit code 1 and an actionable error. The command attempts no repair or automatic retry.

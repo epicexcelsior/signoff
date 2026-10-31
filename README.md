@@ -66,6 +66,8 @@ npm run overview
 npm start
 ```
 
+In a second terminal, run `npm run demo:preflight` from `application/`. The read-only command checks the running station, saved artifact hashes, original optical signature, and work-order history. `REHEARSAL_AVAILABLE` does not establish physical acceptance or sponsor qualification.
+
 Open <http://127.0.0.1:4021>. The private overview is at <http://127.0.0.1:4021/overview.html>.
 
 1. Enter the installation reference.

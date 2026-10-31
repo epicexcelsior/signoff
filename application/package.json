@@ -23,7 +23,8 @@
     "submission:check": "node scripts/submission-check.js",
     "test:integrations": "npm --prefix integrations/masumi test && npm --prefix api3 test && npm --prefix integrations/x402-inspector test",
     "test:contract": "npm --prefix api3 run test:contract",
-    "demo:record": "node scripts/record-demo.js"
+    "demo:record": "node scripts/record-demo.js",
+    "demo:preflight": "node scripts/demo-preflight.js"
   },
   "dependencies": {
     "@evolution-sdk/evolution": "0.5.14",

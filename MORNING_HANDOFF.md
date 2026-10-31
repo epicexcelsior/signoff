@@ -5,13 +5,15 @@ The real optical diagnostic works. Full physical commissioning remains incomplet
 ## Launch and demonstrate
 
 1. If the local station is stopped, run `npm start` from `application/`.
-2. Open `http://127.0.0.1:4021`.
-3. Keep the **LOCAL REHEARSAL** label visible.
-4. Approve a work order and start a capture attempt.
-5. Run the correct rehearsal to obtain REVIEW.
-6. Start another attempt with a placement or contact defect to obtain REWORK.
-7. Open **Judge evidence** to inspect the original paid report and transactions.
-8. Find **Real device response · 72 of 72 optical symbols** and download its original diagnostic.
+2. Run `npm run demo:preflight` from `application/` in a second terminal.
+3. Open `http://127.0.0.1:4021`.
+4. Keep the **LOCAL REHEARSAL** label visible.
+5. Select **Reset presentation** for a fresh screen. Saved attempts remain intact.
+6. Approve a work order and start a capture attempt.
+7. Run the correct rehearsal to obtain REVIEW.
+8. Start another attempt with a placement or contact defect to obtain REWORK.
+9. Open **Judge evidence** to inspect the original paid report and transactions.
+10. Find **Real device response · 72 of 72 optical symbols** and download its original diagnostic.
 
 The default station does not actuate hardware or make payments. Rehearsal evidence cannot authorize installation.
 
@@ -64,6 +66,8 @@ Offline production OpenCV replay detected both markers in all 90 sampled frames 
 - Camera guidance now shows the estimated offset and angle difference with their approved limits.
 - Saved attempts retain their approved work orders after newer empty orders fill the recent-order list.
 
-The local rehearsal station restarted with the recovery fixes. An actual rehearsal returned REVIEW, and browser refresh restored the same attempt. The full application suite passed 68 tests. The station remains a rehearsal and historical-evidence demonstration until the physical setup corrections and runtime enrollment are complete.
+The local rehearsal station restarted with the recovery fixes. An actual rehearsal returned REVIEW, and browser refresh restored the same attempt. The station remains a rehearsal and historical-evidence demonstration until the physical setup corrections and runtime enrollment are complete.
 
 Camera-choice enumeration does not block station controls. A late result cannot revive a stopped camera. Uncertain-operation recovery instructions remain visible until refresh, including after camera errors or Stop camera. Work-order changes stay blocked during that uncertainty.
+
+The read-only preflight reports station availability, saved-evidence integrity, and remaining requirements. A successful rehearsal preflight is not physical acceptance. If it fails, follow its error before recording. The latest phone battery check reported 9 percent, USB charging, and no active camera session.
