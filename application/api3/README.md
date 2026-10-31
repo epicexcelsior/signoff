@@ -197,3 +197,32 @@ The command reads the reviewed public originals under `application/submission/ev
 The native source-policy verdict is PASS for declared Apache NimBLE 1.9.0. The actual terminal decision is REJECTED because the useful paid report returns REVIEW. The original inspection input is synthetic. The declared reference version has no installed-build provenance. A separate evaluation deadline does not renew the original work order.
 
 Both paid source requests settled within the 0.02 aUSD ceiling. No paid-access budget remains. Preserve the original ledger and both responses. Replaying their historical block needs no fresh paid request.
+
+## Test a response you supply
+
+From this package, run:
+
+```sh
+npm run judge:candidate -- RESPONSE_FILE
+```
+
+The command reads one signed-response JSON file with string `airnode`, `requestHash`, `timestamp`, `data`, and `signature` fields. It preserves the exact decoded `data` string. It never parses and rewrites the signed inner JSON. Input is limited to 128 KiB. Duplicate fields, invalid UTF-8, invalid field types, and malformed ABI values reject before any RPC call.
+
+The command pins the original deployed runtime, block hash, open job, paid-inspection commitments, deadline, severity policy, and declared reference version. It then sends your timestamp, exact UTF-8 data bytes, and signature through one `eth_call` to `finalize`. It does not authenticate your candidate before that call. An edited response, another request, or another signing key reaches the deployed verifier.
+
+Try the saved valid, stale, other-request, and deliberate wrong-key inputs:
+
+```sh
+npm run judge:candidate -- ../submission/evidence/nvd-paid-final-original.json
+npm run judge:candidate -- ../submission/evidence/nvd-paid-first-original.json
+npm run judge:candidate -- ../submission/evidence/api3-other-request-original.json
+npm run judge:candidate -- ../submission/evidence/api3-wrong-key-deliberate-test.json
+```
+
+For the edited case, copy the valid original into an unused file outside the checkout. Change a value or append a space inside its `data` string. Preserve `timestamp` and `signature`. Submit that copy with `judge:candidate`. The original files must stay unchanged.
+
+The result reports `SUCCEEDED` or the actual `NotSignedByAirnode` or `InvalidOracle` error. A response rejection is an observed result, so that result exits successfully. Malformed input, RPC failure, a different block, a terminal job, or another contract error returns `INCONCLUSIVE` and a nonzero exit code. Those failures never count as evidence rejection.
+
+The outer `airnode` and `requestHash` fields are transport metadata. The contract uses its own pinned signer and request. Changing only those labels leaves the actual contract arguments unchanged. The output states that distinction and hashes the exact data bytes and calldata.
+
+Freshness uses the original block timestamp, October 30, 2026 at 23:56:22 UTC. A newly fetched response can be in the future at that block and return `InvalidOracle`. Use historical response copies to isolate signature tampering. This command needs historical Base Sepolia RPC access. It reads no key, buys no data, and changes no current state. A successful historical call does not establish physical acceptance.

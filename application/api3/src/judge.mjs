@@ -131,7 +131,7 @@ const finalization = (config, jobId, response) =>
     response.signature,
   ]);
 // Only the intended custom error counts as rejection evidence.
-const revertName = (error) => {
+export const contractRevertName = (error) => {
   for (let e = error; e; e = e.cause)
     if (
       ["ContractFunctionRevertedError", "ExecutionRevertedError"].includes(
@@ -142,18 +142,12 @@ const revertName = (error) => {
   return null;
 };
 
-export async function judgeReadOnly({
+export async function readJudgeContext({
   client,
   contract,
   runtimeCodeHash,
   jobId,
-  validResponse,
-  staleResponse,
-  wrongRequestResponse,
-  wrongKeyResponse,
   blockNumber,
-  verifyResponse = verifyNvdResponse,
-  verifySignature = verifySignedResponse,
 }) {
   contract = address(contract);
   if ((await client.getChainId()) !== ACCESS_CHAIN_ID)
@@ -227,6 +221,40 @@ export async function judgeReadOnly({
   const build = await read("builds", [job.buildManifestDigest]);
   if (!build[0])
     fail("JUDGE_BUILD_NOT_ENROLLED", "The job build manifest is not enrolled.");
+  return {
+    contract,
+    block,
+    pinnedBlock,
+    now,
+    job,
+    build,
+    maxAge,
+    maxSourceAge,
+  };
+}
+
+export async function judgeReadOnly({
+  client,
+  contract,
+  runtimeCodeHash,
+  jobId,
+  validResponse,
+  staleResponse,
+  wrongRequestResponse,
+  wrongKeyResponse,
+  blockNumber,
+  verifyResponse = verifyNvdResponse,
+  verifySignature = verifySignedResponse,
+}) {
+  const context = await readJudgeContext({
+    client,
+    contract,
+    runtimeCodeHash,
+    jobId,
+    blockNumber,
+  });
+  ({ contract } = context);
+  const { block, pinnedBlock, now, job, build, maxAge, maxSourceAge } = context;
   const version = Number(build[1]);
   const buildVersion = [
     Math.floor(version / 1_000_000),
@@ -306,7 +334,7 @@ export async function judgeReadOnly({
       });
       accepted = true;
     } catch (error) {
-      observedRevert = revertName(error);
+      observedRevert = contractRevertName(error);
       if (!observedRevert) throw error;
     }
     results.push({
