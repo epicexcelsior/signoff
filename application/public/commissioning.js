@@ -62,14 +62,18 @@ function renderControls() {
   $("new-order").hidden = !order;
   $("reset-presentation").disabled = busy || !config;
   const active = current?.state === "CAPTURING";
+  const beforeCaptureWindow = active && Date.now() < current.startedAt;
   const expired = active && Date.now() > current.expiresAt;
   $("capture-deadline").textContent = !active
     ? ""
-    : expired
-      ? "Capture window expired. Start a new attempt, or close this attempt to preserve its result."
-      : `Capture window: ${Math.max(0, Math.ceil((current.expiresAt - Date.now()) / 1000))} seconds remain.`;
+    : beforeCaptureWindow
+      ? "Waiting for the camera clock to enter the capture window. If this persists, synchronize the phone and station clocks."
+      : expired
+        ? "Capture window expired. Start a new attempt, or close this attempt to preserve its result."
+        : `Capture window: ${Math.max(0, Math.ceil((current.expiresAt - Date.now()) / 1000))} seconds remain.`;
   $("capture-frame").disabled =
     busy ||
+    beforeCaptureWindow ||
     expired ||
     !active ||
     Boolean(current?.vision) ||

@@ -311,6 +311,26 @@ test("camera UI saves the controller frame shape and backend recomputes placemen
     await page.getByRole("button", { name: "Approve work order" }).click();
     await page.getByRole("button", { name: "Start capture attempt" }).click();
     await page.getByRole("button", { name: "Start camera" }).click();
+    const captureStart =
+      service.commissioning.store.list("sessions")[0].startedAt;
+    await page.evaluate((value) => {
+      window.actualDateNow = Date.now;
+      Date.now = () => value;
+    }, captureStart - 1000);
+    await page.waitForTimeout(600);
+    assert.equal(
+      await page
+        .getByRole("button", { name: "Save camera measurement" })
+        .isDisabled(),
+      true,
+    );
+    assert.match(
+      await page.locator("#capture-deadline").innerText(),
+      /camera clock/,
+    );
+    await page.evaluate(() => {
+      Date.now = window.actualDateNow;
+    });
     await page.getByRole("button", { name: "Save camera measurement" }).click();
     await page
       .getByText(

@@ -29,7 +29,7 @@ The evidence manifest in `application/submission/` owns exact identifiers. Judge
 
 - Phone Chrome now saves a real station camera measurement through USB localhost forwarding. Select rear camera 2 after camera permission.
 - Fix specimen placement and the LED sampling region before any new optical challenge. The observed guide region missed the board LED.
-- Immediate capture can reject when the phone clock precedes the station clock. Waiting after starting an attempt permitted capture.
+- Save camera measurement waits when the phone clock precedes the session start. Synchronize clocks if the wait persists.
 - Enroll the physical runtime. Preserve the installed image, identity, and claim journal.
 - Review button terminals and wiring before any contact test. Manual transitions require the owner.
 - Preserve at least four claims. Stop hardware operations on failure. Never reset NVS or resend uncertain operations.
