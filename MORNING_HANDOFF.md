@@ -50,3 +50,5 @@ No new API3 paid calls fit the consumed 0.02 aUSD ceiling. Preserve at least 0.0
 ## Recording backup
 
 The private clip `.local/runtime/sessions/demonstrations/optical-diagnostic-backup/recorded-diagnostic.mp4` preserves 22 seconds of the real diagnostic recording. Its caption states that this is recorded diagnostic evidence, not installation acceptance. The adjacent `scope.json` records original and derived hashes. The clip contains no audio. It supplements the complete original video and does not replace the final product demonstration.
+
+A 96.7-second private presentation backup now exists at `.local/runtime/sessions/demonstrations/recording-kEmQxS/presentation-backup-upright.mp4`. It combines an actual interface recording with the recorded real optical diagnostic. Captions distinguish local rehearsal, historical sponsor evidence, and diagnostic hardware evidence. It contains no audio and does not establish complete commissioning. The adjacent `scope.json` records the hashes and transforms. Run `npm run demo:record` from `application/` to recreate the interface segment with an isolated station.

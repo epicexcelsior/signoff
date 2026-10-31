@@ -8,6 +8,8 @@ The goal is agent-orchestrated commissioning with a useful paid inspector and an
 
 ## Submission checkpoint
 
+Open [the morning demo handoff](MORNING_HANDOFF.md) for launch steps, recording backups, and remaining physical requirements.
+
 **The project is not submission-complete.** The local software baseline works. The original paid inspection and deployed source checks are verified. Physical evidence and the complete video remain incomplete.
 
 | Area       | Complete now                                                                                              | Still missing                                                                                   |
