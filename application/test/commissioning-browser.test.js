@@ -182,6 +182,16 @@ test("commissioning desktop and phone: approve, inspect defects, verify packets,
       );
       assert.equal(await page.locator("#judge-cases dt").count(), 5);
       await page
+        .getByRole("heading", { name: "Confirmed inspector payment" })
+        .waitFor();
+      await page
+        .getByRole("heading", { name: "Mined policy rejection" })
+        .waitFor();
+      assert.match(
+        await page.locator("#judge-cases").textContent(),
+        /passed mined open to rejected/,
+      );
+      await page
         .getByText("Read the original inspection report · REVIEW", {
           exact: true,
         })

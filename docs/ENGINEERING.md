@@ -126,7 +126,7 @@ From `application/integrations/masumi/`, run `npm run setup:plan` for an unexecu
 
 `application/api3/` pins viem 2.57.3. Its native verifier preserves exact signed data bytes. The bounded evaluator supports CVE-2025-62235, complete approved NimBLE applicability structure, approved CVSS provenance, timestamp bounds, and explicit unsupported-shape REVIEW. Declared 1.8.0 and 1.9.0 are reference builds. They are not claims about the current board or general software security.
 
-The bounded paid-fetch client is integrated. `application/api3/README.md` defines `npm run access` and `npm run judge`. It preserves original signing/submission claims, source bytes, and transfer/nonce reconciliation. One real paid NVD request settled. The deployed policy matches its signer/request/freshness pins. Five deployed judge cases remain pending genuine paid-inspection commitments. Unsigned judge preparation never substitutes fixture inspection records.
+The bounded paid-fetch client is integrated. `application/api3/README.md` defines `npm run access` and `npm run judge`. It preserves original signing/submission claims, source bytes, and transfer/nonce reconciliation. Both real paid NVD requests settled. All five source cases passed against the deployed policy at one pinned block. The valid finalization mined REJECTED using the genuine paid REVIEW and confirmed seller receipt. Unsigned judge preparation never substitutes fixture inspection records.
 
 `application/contracts/` contains `CommissioningPolicy` and `NvdPolicy`, with licensed pinned dependencies. The operator enrolls immutable build manifests, opens jobs, and records the inspection and Cardano payment assertion. Permissionless finalization checks the pinned Airnode signer/request, source freshness, job deadline, inspection prerequisite, policy, and terminal-state guard. Accepted, rejected, and REVIEW decisions are terminal. No contract holds or releases funds.
 
@@ -134,7 +134,9 @@ The ABI adapters expose `prepareEnrollBuild`, `prepareOpenJob`, `prepareRecordIn
 
 `readAcceptance({client,chainId,contract,jobId,expected,...})` checks actual chain, contract code, oracle configuration, terminal state, inspection prerequisites, five digest commitments, and the ABI acceptance hash. Missing RPC, wrong commitments, or failed reads return REVIEW. Supply expected work-order, build-manifest, inspection, payment-evidence, and source-response digests from trusted server state. Runtime-code hash, deadline, policy threshold, and acceptance hash can also be pinned.
 
-The contract's Cardano payment evidence is an operator assertion. It does not verify Cardano consensus. Source signatures are portable across chains. The consumer supplies chain/job/contract binding. The coordinator reader checks these commitments against original server state. Actual paid evidence and pinned live configuration remain pending.
+The contract's Cardano payment evidence is an operator assertion. It does not verify Cardano consensus. Source signatures are portable across chains. The consumer supplies chain/job/contract binding. The coordinator reader checks these commitments against original server state. Historical paid evidence and a pinned mined rejection now exist. The synthetic capture and declared reference version do not authorize a physical installation.
+
+The saved historical policy evaluation uses the original useful paid REVIEW and a verified positive seller receipt. Its declared Apache NimBLE 1.9.0 reference is not an installed-build assertion. Its separate evaluation deadline does not renew the installation work order. All five source checks passed at one pinned block. The valid transaction changed OPEN to REJECTED because `inspectionPassed` is false. From `application/api3/`, run `npm run judge:submission` to replay the public originals and verify the mined proof. The command reads no wallet or credential and sends no transaction. The native judge converts the contract-encoded version into the three-part string required by the evaluator.
 
 ## Physical mode and Seeker
 
@@ -208,7 +210,7 @@ Private setup uses `$HOME/.config/proof-ready/`. The directory mode is `0700`. C
 | `api3/access-config.json` | Dedicated payer, private ledger path, public RPC, and proposed 20,000-atomic-unit aUSD ceiling                          |
 | `api3/balance-check.json` | Timestamped read-only ETH and aUSD balances                                                                             |
 
-The existing access ledger pins a 20,000-atomic-unit total ceiling. One 10,000-unit call settled. The owner authorizes routine funded testnet transactions while preserving a 0.001 ETH reserve. Isolated API3 CLI commands consume their own env variables. The station does not sign these payments. Preserve the original access ledger and its settled first request. Do not replace a key or unresolved ledger to repeat an operation.
+The existing access ledger pins a 20,000-atomic-unit total ceiling. Both 10,000-unit calls settled. No budget remains. Preserve both originals and stop paid access until a separate budget receives authorization. The owner authorizes routine funded testnet transactions while preserving a 0.001 ETH reserve. Isolated API3 CLI commands consume their own env variables. The station does not sign these payments. Preserve the original access ledger and its settled first request. Do not replace a key or unresolved ledger to repeat an operation.
 
 The supplied Sokosumi account key passed `GET https://api.preprod.sokosumi.com/v1/users/me`. The Blockfrost key passed the authenticated Preprod `/api/v0/blocks/latest` read. The existing Personal Workspace and usable credits are verified. CLI 1.0.4 used the removed `/v1/users/me/workspace-access` route. The application now pins published CLI 1.1.0, which uses `/v1/users/me/workspaces`.
 
@@ -239,7 +241,7 @@ The original shared TUM access request remains PENDING. The current account is a
 
 ### Fund the API3 wallet
 
-Read the public address from private `api3/wallet.json`. The wallet received 0.0019 ETH. The approved mint supplied 0.02 aUSD, and the first 0.01 aUSD NVD request settled. Reserve the remaining 0.01 aUSD for fresh finalization evidence. The previous session supplied no separate API3 API key. Priced Airnode access uses x402 with aUSD on Base Sepolia.
+Read the public address from private `api3/wallet.json`. The wallet received 0.0019 ETH. The approved mint supplied 0.02 aUSD, and both 0.01 aUSD NVD requests settled. The second response supported the five deployed cases and mined rejection. The 0.02 aUSD ceiling is consumed. The previous session supplied no separate API3 API key. Priced Airnode access uses x402 with aUSD on Base Sepolia.
 
 1. Open [a Base-listed testnet faucet](https://docs.base.org/get-started/get-funds#testnet-base-sepolia).
 2. Select **Base Sepolia**.
@@ -258,7 +260,7 @@ Cardano escrow collection can outlast API3's five-minute source freshness window
 
 ### Fund Cardano separately
 
-Normal paid Sokosumi Tasks debit Personal credits. Core uses its managed buyer for the escrow purchase. Do not fund our separate local buyer wallet for this route. Both dedicated wallets are funded. Seller registration confirmed. The original paid Task and seller collection remain in progress. A Blockfrost key reads the chain. It does not create or fund a wallet.
+Normal paid Sokosumi Tasks debit Personal credits. Core uses its managed buyer for the escrow purchase. Do not fund our separate local buyer wallet for this route. Both dedicated wallets are funded. Seller registration confirmed. The original paid Task completed and seller collection confirmed. No replacement purchase is needed. A Blockfrost key reads the chain. It does not create or fund a wallet.
 
 The dedicated seller wallet already exists. Use its saved Cardano Preprod address from the private wallet record. Review registration and collateral requirements before requesting seller funds. Preserve the original wallet and registration identifiers.
 
@@ -381,7 +383,7 @@ Preserve a recording of the actual physical attempt, original packet, paid repor
 
 ### Judge evidence and presentation reset
 
-`GET /api/submission-evidence` reads the canonical submission manifest and computes exact-byte SHA-256 hashes. Artifact downloads use an explicit server allowlist: `manifest`, `nvd-original`, `policy-helper`, `paid-inspection-report`, `paid-inspection-bindings`, `paid-inspection-chain-proof`, and `paid-inspection-request`. The route never exposes private configuration or runtime directories. These saved records do not authorize the current installation.
+`GET /api/submission-evidence` reads the canonical submission manifest and computes exact-byte SHA-256 hashes. Artifact downloads use an explicit server allowlist: `manifest`, `nvd-original`, `policy-helper`, `paid-inspection-report`, `paid-inspection-bindings`, `paid-inspection-chain-proof`, `paid-inspection-request`, and `paid-inspection-seller-receipt`. API3 artifacts add `nvd-final-original`, `nvd-final-settlement`, `policy-five-cases`, `policy-finalization`, `policy-evaluation-context`, `policy-other-request-original`, and `policy-wrong-key-test`. The route never exposes private configuration or runtime directories. These saved records do not authorize the current installation.
 
 Select **Judge evidence** to inspect historical transactions, missing requirements and the five deployed policy cases. Select **Refresh evidence** after the canonical manifest changes. The panel performs no chain write or payment. Packet verification and edited-packet rejection apply to the selected attempt above.
 
@@ -403,4 +405,4 @@ Use one work order for a complete installation journey. The current paid report 
 
 Do not record an unfinished row as successful. The current contract demonstration uses a paid REVIEW and must end REJECTED. Its failed inspection predicate determines that rejection regardless of the CVE result. The source signature and source commitments still gate finalization. Show the separate bounded policy helper to explain affected versus corrected reference versions.
 
-For recovery, preserve the original recording and an adjacent scope file with its capture time, Task ID and evidence limits. The paid-delivery backup is a historical interface recording. It does not replace missing physical video or five deployed cases. Keep all recordings local until public-release approval.
+For recovery, preserve the original recording and an adjacent scope file with its capture time, Task ID and evidence limits. The paid-delivery backup is a historical interface recording. It does not replace missing physical video. The later deployed checks and mined rejection have separate original artifacts. Keep all recordings local until public-release approval.

@@ -19,6 +19,10 @@ const recordLabels = {
   "masumi-hosted-execution-only": "Hosted execution-only inspection",
   "cardano-seller-registration": "Cardano seller registration",
   "cardano-paid-inspection-delivery": "Paid independent inspection",
+  "cardano-seller-collection": "Confirmed inspector payment",
+  "api3-paid-nvd-final": "Final paid NVD response",
+  "api3-deployed-five-cases": "Five deployed source checks",
+  "api3-paid-review-finalization": "Mined policy rejection",
 };
 function element(tag, text, className) {
   const node = document.createElement(tag);

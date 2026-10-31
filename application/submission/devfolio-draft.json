@@ -8,7 +8,7 @@
   "automaticTrack": "TUM Blockchain Track",
   "problem": "Operators accepting subcontracted monitoring installations need evidence that equipment is placed correctly, responds to physical tests, and meets the declared software policy.",
   "solution": "An operator approves an immutable work order. A technician captures marker-guided placement and signed button/LED tests. A deterministic inspector explains defects. A policy contract verifies signed NVD data before an evidence-bound acceptance decision.",
-  "currentImplementation": "The station and signed protocols run locally. A real paid Sokosumi inspection delivered a useful REVIEW on Cardano Preprod. Its original input was synthetic and lacked optical evidence. Escrow and result transactions confirmed. Seller collection remains pending. One genuine paid NVD request settled and CommissioningPolicy is deployed on Base Sepolia. Physical commissioning and five deployed judge cases remain incomplete.",
+  "currentImplementation": "The station and signed protocols run locally. A useful paid Sokosumi REVIEW on Cardano Preprod reached confirmed withdrawal and positive seller collection. Its original input was synthetic and lacked optical evidence. Two genuine paid NVD requests settled. Five source checks passed against the deployed Base Sepolia policy. The valid transaction changed OPEN to REJECTED because the paid REVIEW did not pass inspection. Physical commissioning and the complete demo video remain incomplete.",
   "howItWorks": [
     "Approve a fixed work-order template and start a fresh attempt.",
     "Capture signed contact transitions and camera-observed optical evidence.",
@@ -41,7 +41,9 @@
     "evidenceManifest": "application/submission/evidence-manifest.json",
     "deployedContract": "https://sepolia.basescan.org/address/0x98023c425670a9690ab362c00fbea1bc11dce2cb",
     "cardanoEscrow": "https://preprod.cardanoscan.io/transaction/f868a2406be729ffbbc57796f56f5ae61d82920bb3ac333aa5f67cef5fb6dfcd",
-    "cardanoResult": "https://preprod.cardanoscan.io/transaction/405a406634d221ea635aff5e85b58928cf44fd181fde3048829b8d42108f6465"
+    "cardanoResult": "https://preprod.cardanoscan.io/transaction/405a406634d221ea635aff5e85b58928cf44fd181fde3048829b8d42108f6465",
+    "cardanoSellerReceipt": "https://preprod.cardanoscan.io/transaction/344fd5f6fd40f469ff72e0feac7b58ae9f9a100f472a29429e1082ae42aaa202",
+    "policyFinalization": "https://sepolia.basescan.org/tx/0xa94e48a5d72065ad46c4c558d26a7c3f618aa491fe46e6d012fd7aa7b1356eab"
   },
   "nextAfterBaseline": [
     "Agent-proposed work orders",

@@ -8,16 +8,16 @@ The goal is agent-orchestrated commissioning with a useful paid inspector and an
 
 ## Submission checkpoint
 
-**The project is not submission-complete.** The local software baseline works. Seller collection, deployed judge evidence and physical evidence remain incomplete.
+**The project is not submission-complete.** The local software baseline works. The original paid inspection and deployed source checks are verified. Physical evidence and the complete video remain incomplete.
 
 | Area       | Complete now                                                                                                        | Still missing                                                                                                                 |
 | ---------- | ------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| Cardano    | Deterministic inspector, recovery tests, local MPS build, Personal grant, runtime key, hosted execution-only REVIEW | Funded seller registration confirmed. Paid REVIEW and escrow/result transactions confirmed. Seller collection remains pending |
-| API3       | Genuine paid signed CVE response, independently reconciled payment, actual Base Sepolia policy deployment           | Genuine inspection commitments, all five deployed judge cases, valid finalization transaction                                 |
+| Cardano    | Useful paid REVIEW, confirmed escrow/result, withdrawal and positive seller net receipt | Physical inspection input and installation acceptance |
+| API3       | Two settled NVD responses, five deployed source checks and mined REJECTED decision | Installed-build provenance and physical acceptance                                 |
 | Hardware   | ESP32-C6 builds, signed protocols, safe preparation and read-only firmware review                                   | Exact carrier/parts, reviewed wiring, provisioning/flash, real button/LED test, available camera and actual capture           |
-| Submission | Setup README, original live API3 artifacts, evidence manifest, Devfolio draft, 150-second video procedure           | Completed live evidence, video recording, approved public release, actual Devfolio submission                                 |
+| Submission | Setup README, original live API3 artifacts, evidence manifest, Devfolio draft, 150-second video procedure           | Physical evidence, complete video, approved public release, actual Devfolio submission                                 |
 
-Next: complete the original paid Personal Task and seller collection, identify and test the physical fixture, then reuse the original paid report for API3 finalization. Keep the remaining 0.01 aUSD for fresh data near that final test. The deployed contract alone does not pass the five mandatory cases.
+Next: identify and test the physical fixture, then record the complete video. The original paid REVIEW now binds all five deployed source checks and a mined REJECTED decision. Its synthetic input cannot authorize a physical installation. Both approved NVD calls settled. The 0.02 aUSD ceiling is consumed.
 
 The Seeker companion already builds. The owner plans to connect the Seeker overnight. Native installation, forwarding, camera/BLE tests, and Android instrumentation remain unexecuted. They do not replace the immediate button/LED/camera baseline.
 
@@ -82,23 +82,23 @@ The fixed policy uses markers 0 and 10, a 60 mm reference, and a target 100 mm t
 
 | Priority   | Current evidence                                                                                      | Next required result                                                                                          |
 | ---------- | ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| Cardano    | Useful inspector and payment recovery pass local checks. Isolated MPS builds. Dedicated wallets exist | Complete the original paid Personal Task, verify its escrow transaction and positive seller receipt           |
-| API3       | One genuine paid signed NVD response settled. CommissioningPolicy deployed on Base Sepolia            | Bind genuine paid-inspection commitments, run all five deployed judge cases, broadcast the valid finalization |
+| Cardano    | Original paid REVIEW and positive seller net receipt verified | Preserve the original paid REVIEW and verified seller receipt. No replacement purchase is needed           |
+| API3       | Two genuine paid NVD responses settled. Five deployed cases and mined rejection verified            | Preserve the original five-case block and mined rejection. Do not spend beyond the consumed 0.02 aUSD ceiling |
 | Hardware   | Both ESP32-C6 build profiles pass. Safe preparation and read-only flash review exist                  | Identify carrier/parts, review pins, provision and run actual button/LED/camera verification                  |
 | Submission | Public-safe setup instructions, evidence manifest, Devfolio draft, and video procedure exist          | Fill missing real evidence, record video, then obtain public-release/submission authorization                 |
 
-The API3 paid-access client and deployed judge tooling are integrated. Save the first paid response for the stale case. Preserve the remaining 0.01 aUSD for a fresh response near finalization. [The evidence manifest](application/submission/evidence-manifest.json) distinguishes confirmed live artifacts from missing requirements.
+The API3 paid-access client and deployed judge tooling are integrated. The first paid response supplied the stale case. The second paid response supplied the valid finalization. Historical replay preserves their original freshness window. [The evidence manifest](application/submission/evidence-manifest.json) distinguishes confirmed live artifacts from missing requirements.
 
 Owner-confirmed hardware and wiring state live in [Available hardware](research/EVIDENCE.md#available-hardware). Local engineering continues while external actions remain pending.
 
 ## Integration status
 
-| Component               | Verified local behavior                                                                                                                             | Remaining evidence                                                                           |
+| Component               | Verified behavior                                                                                                                             | Remaining evidence                                                                           |
 | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| Coordinator             | Immutable approval, signed contact/optical/photo records, durable claims, original inspector bindings, pinned contract reads, packet reconstruction | Complete physical installation and genuine external evidence                                 |
+| Coordinator             | Immutable approval, signed contact/optical/photo records, durable claims, original inspector bindings, pinned contract reads, packet reconstruction | Complete physical installation with its own original external evidence                                 |
 | Camera                  | OpenCV marker detection, planar guidance, tracked optical sampling, phase reconstruction, cleanup, printable target                                 | Physical accuracy, real-time throughput, and camera/emitter matching                         |
-| Masumi                  | Useful deterministic inspector, exact transport hashes, hosted execution-only REVIEW, durable Task/payment recovery                                 | Paid settlement, seller receipt, and live refund collection                                  |
-| API3                    | Native verifier, bounded CVE evaluator, durable paid-fetch client, genuine paid CVE response, deployed policy, pinned reader                        | Five deployed judge cases and valid finalization tied to genuine paid inspection             |
+| Masumi                  | Useful paid REVIEW, exact transport hashes, hosted execution, confirmed withdrawal and positive seller receipt                                 | Actual physical inspection input and live refund recovery                                  |
+| API3                    | Native verifier, bounded CVE evaluator, durable paid-fetch client, genuine paid CVE response, deployed policy, pinned reader                        | Installed-build provenance and physical installation acceptance. Historical paid REVIEW finalized REJECTED             |
 | ESP32                   | Default-disabled and compiler-coverage ESP32-C6 builds, signed protocol, persistent replay claims, bounded BLE transport                            | Carrier board, safe wiring, authorized flash, installed-build enrollment, and physical tests |
 | Seeker                  | API 36 debug APK, signed photo claims, request reservation, restricted WebView, read-only BLE preflight                                             | Authorized install, Android SQLite instrumentation, lifecycle, camera, and BLE checks        |
 | Direct Cardano baseline | Retained x402 adapter, payment ledger, and restart checks                                                                                           | Live Preprod settlement and physical-board compatibility                                     |
@@ -131,7 +131,7 @@ npm audit --omit=dev --audit-level=high
 
 Tests run serially to isolate browser lifecycle checks. Browser modules require no compilation. No base-application type-check command exists.
 
-Use **Judge evidence** to inspect saved original chain records and download their exact-byte hashes. **Reset presentation** clears the screen and stops the camera. It preserves saved attempts, device state and financial records. The five deployed policy cases remain incomplete until actual results enter the manifest.
+Use **Judge evidence** to inspect saved original chain records and download their exact-byte hashes. **Reset presentation** clears the screen and stops the camera. It preserves saved attempts, device state and financial records. The manifest records all five deployed source checks and the mined rejection. They describe the historical paid REVIEW, not the selected attempt. After API3 dependency installation, run `npm --prefix api3 run judge:submission` for credential-free historical chain replay.
 
 After isolated dependency installation, run `npm run test:integrations`. [Engineering](docs/ENGINEERING.md#verification-commands) lists package, Foundry, firmware, Python, and Android commands. [Evidence](research/EVIDENCE.md#current-local-implementation-evidence) records observed results and their limits. `submission:check` checks tracked artifact boundaries. It does not publish or establish submission readiness.
 
@@ -143,15 +143,15 @@ After isolated dependency installation, run `npm run test:integrations`. [Engine
 
 The existing inspector has GRANTED access to the Personal Workspace, and its original runtime key remains valid. The installed CLI 1.0.4 used a removed endpoint. Published CLI 1.1.0 uses the current workspace endpoint and resolves the Personal setup. The application pins CLI 1.1.0 and preserves exact Task input through explicit context opt-outs. One hosted execution-only Task completed REVIEW. It consumed zero credits and used synthetic evidence. It proves hosted transport, not payment or physical acceptance.
 
-Normal paid Sokosumi Tasks debit the Task owner's Personal credits and use Core's managed buyer. Do not fund the separate local buyer wallet for this route. Both dedicated wallets received test funds. The seller registration confirmed. The original paid inspection delivered REVIEW and its escrow/result transactions confirmed. Seller collection remains pending. No further funding request is needed. An actual escrow transaction and positive seller receipt remain required.
+Normal paid Sokosumi Tasks debit the Task owner's Personal credits and use Core's managed buyer. Do not fund the separate local buyer wallet for this route. Both dedicated wallets received test funds. The seller registration confirmed. The original paid inspection delivered REVIEW and its escrow/result transactions confirmed. Seller collection confirmed with a positive 1,000,000-atomic-unit test USDM net receipt. No further funding or purchase is needed.
 
 The shared TUM access request remains pending. It matters only when choosing organization Tasks. Reuse the existing Coworker and runtime key. Do not register another inspector.
 
-The EVM wallet is funded. An approved mint supplied 0.02 test aUSD. One 0.01 aUSD NVD request settled. [The deployed contract](https://sepolia.basescan.org/address/0x98023c425670a9690ab362c00fbea1bc11dce2cb) has the expected NVD signer, exact request, and 300-second limits. Deployment alone does not establish all five mandatory judge cases.
+The EVM wallet is funded. An approved mint supplied 0.02 test aUSD. Two 0.01 aUSD NVD requests settled. The 0.02 aUSD ceiling is consumed. [The deployed contract](https://sepolia.basescan.org/address/0x98023c425670a9690ab362c00fbea1bc11dce2cb) has the expected NVD signer, exact request, and 300-second limits. All five deployed source checks passed at one pinned block. The valid finalization mined REJECTED for the original paid REVIEW.
 
 Routine funded testnet transactions are authorized. Keep at least 0.001 ETH in reserve. Stop before a new action threatens that reserve. Public release, Devfolio submission, and electrically unverified hardware actions remain separate.
 
-[Private setup](docs/ENGINEERING.md#private-credentials-and-test-funding) defines credentials, scoped worker resources, and recovery. [Evidence](research/EVIDENCE.md#live-access-and-private-setup) records actual transactions and remaining gaps. The Cardano track still requires a real paid Preprod inspection. Five deployed API3 cases remain pending genuine paid-inspection commitments.
+[Private setup](docs/ENGINEERING.md#private-credentials-and-test-funding) defines credentials, scoped worker resources, and recovery. [Evidence](research/EVIDENCE.md#live-access-and-private-setup) records actual transactions and remaining gaps. The original useful paid Preprod inspection, positive seller receipt, five deployed source checks, and mined rejection are preserved. Physical acceptance remains missing.
 
 ## Prepare submission
 

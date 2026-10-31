@@ -1,6 +1,6 @@
 {
   "schema": "proof-of-ready/submission-evidence/v1",
-  "checkedAt": "2026-10-30T23:02:47.560004+00:00",
+  "checkedAt": "2026-10-31T00:06:00.568Z",
   "readyForSubmission": false,
   "publicationAuthorized": false,
   "deadline": "2026-10-31T15:00:00+01:00",
@@ -82,7 +82,7 @@
       "id": "cardano-paid-inspection-delivery",
       "network": "Cardano Preprod",
       "taskId": "01a18f06-3ca7-707b-b8d6-0db33451e754",
-      "status": "delivered-escrow-locked-seller-collection-pending",
+      "status": "delivered-and-seller-collection-confirmed",
       "transactionHash": "f868a2406be729ffbbc57796f56f5ae61d82920bb3ac333aa5f67cef5fb6dfcd",
       "blockNumber": 5354867,
       "resultTransactionHash": "405a406634d221ea635aff5e85b58928cf44fd181fde3048829b8d42108f6465",
@@ -94,40 +94,91 @@
       "taskCredits": 100,
       "fixtureInput": true,
       "physicalEvidence": false,
-      "sellerPaid": false,
-      "qualificationScope": "Actual paid hosted inspection and confirmed escrow/result transactions. Original capture is synthetic and lacks optical evidence. Seller receipt remains pending. Report limitations describe the synthetic capture, not the separately paid purchase.",
+      "sellerPaid": true,
+      "qualificationScope": "Actual paid hosted REVIEW, confirmed escrow/result, and positive seller collection. Original capture is synthetic and lacks optical evidence. No physical acceptance follows.",
       "independentChainProofPublicPath": "application/submission/evidence/cardano-paid-chain-proof.json",
       "independentChainProofSha256": "1f7c2fc54d0a94098e68bd589681c7061f2f89a74035abc471fef0c7d5b5614c",
-      "originalRequestPublicPath": "application/submission/evidence/cardano-paid-request-original.json"
+      "originalRequestPublicPath": "application/submission/evidence/cardano-paid-request-original.json",
+      "sellerReceiptPublicPath": "application/submission/evidence/cardano-seller-receipt.json",
+      "sellerReceiptSha256": "8acd2e92f84a8bb2721f4732b9d5526265c30e29caaeaed6081dae31556e4185"
+    },
+    {
+      "id": "cardano-seller-collection",
+      "network": "Cardano Preprod",
+      "taskId": "01a18f06-3ca7-707b-b8d6-0db33451e754",
+      "transactionHash": "344fd5f6fd40f469ff72e0feac7b58ae9f9a100f472a29429e1082ae42aaa202",
+      "blockNumber": 5354974,
+      "status": "confirmed-positive-net-receipt",
+      "netAtomicUnits": "1000000",
+      "unit": "16a55b2a349361ff88c03788f93e1e966e5d689605d044fef722ddde0014df10745553444d",
+      "artifact": "application/submission/evidence/cardano-seller-receipt.json",
+      "qualificationScope": "Confirmed seller collection for the original useful paid REVIEW. Original inspection input is synthetic. No physical acceptance follows."
+    },
+    {
+      "id": "api3-paid-nvd-final",
+      "chainId": 84532,
+      "transactionHash": "0x1774cd765ea09588d9731c02034f104c59f664949f59c17dc9444e2a47018396",
+      "status": "settled-and-delivered",
+      "amountAUsd": "0.01",
+      "requestHash": "0x3f0881fb062ac6b989c133e0b5651d19947e38aebe4d94750627fa612f447d15",
+      "expectedAirnode": "0x41dd84D5B6503D9aA3c374a49F546e335423a1b8",
+      "signedAt": "1793404581",
+      "originalResponseSha256": "281d0e74cbd3243f87070056274fd5701d0c4107a00798d8f5dbf70bd2df31f0",
+      "originalResponsePublicPath": "application/submission/evidence/nvd-paid-final-original.json",
+      "settlementPublicPath": "application/submission/evidence/api3-final-access-settlement.json",
+      "currentFreshnessClaim": false,
+      "qualificationScope": "Genuine second paid NVD response. Authenticated at ingestion and used in the pinned deployed check and mined finalization. The full 0.02 aUSD budget is consumed."
+    },
+    {
+      "id": "api3-deployed-five-cases",
+      "chainId": 84532,
+      "status": "five-cases-passed-at-pinned-block",
+      "blockNumber": "52413566",
+      "blockHash": "0xa127f28b4460389c27e687142ee1b1eabb7be30c0ea77b5f5b7098b2b3e4acda",
+      "artifact": "application/submission/evidence/api3-five-deployed-cases.json",
+      "qualificationScope": "One valid eth_call succeeded. Edited, other-request and wrong-key returned NotSignedByAirnode. Stale returned InvalidOracle. All cases used genuine paid-inspection commitments at one deployed block. Wrong-key data is deliberate negative-test input.",
+      "nativeSourcePolicy": "PASS"
+    },
+    {
+      "id": "api3-paid-review-finalization",
+      "chainId": 84532,
+      "contract": "0x98023c425670A9690AB362c00fBea1Bc11dCE2Cb",
+      "jobId": "0x283a22d5708fb1dd4b9b723c2094732c1e30d2aea46f0d1baf7edecceed944bc",
+      "transactionHash": "0xa94e48a5d72065ad46c4c558d26a7c3f618aa491fe46e6d012fd7aa7b1356eab",
+      "blockNumber": "52413614",
+      "status": "confirmed-rejected",
+      "decision": "REJECTED",
+      "artifact": "application/submission/evidence/api3-finalization-proof.json",
+      "contextPublicPath": "application/submission/evidence/api3-policy-evaluation.json",
+      "qualificationScope": "Mined valid response changed OPEN to REJECTED. The genuine paid REVIEW has a false inspection predicate. Original capture is synthetic and the declared reference version does not identify installed firmware. This historical evaluation does not renew the original work order."
     }
   ],
   "mandatoryEvidence": {
     "cardano": {
-      "status": "in-progress",
+      "status": "verified-paid-review",
       "network": "Cardano Preprod",
       "taskId": "01a18f06-3ca7-707b-b8d6-0db33451e754",
       "transactionHash": "f868a2406be729ffbbc57796f56f5ae61d82920bb3ac333aa5f67cef5fb6dfcd",
       "usefulReportSha256": "25879a51e15c483be65468e50e3a68bb38ded3bda07007affcc1315868a83aea",
-      "sellerReceiptSha256": null,
-      "remaining": [
-        "Verify original seller withdrawal and positive net receipt"
-      ]
+      "sellerReceiptSha256": "8acd2e92f84a8bb2721f4732b9d5526265c30e29caaeaed6081dae31556e4185",
+      "remaining": [],
+      "sellerReceiptTransactionHash": "344fd5f6fd40f469ff72e0feac7b58ae9f9a100f472a29429e1082ae42aaa202"
     },
     "api3": {
-      "status": "partial",
+      "status": "verified-historical-paid-review",
       "contract": "0x98023c425670a9690ab362c00fbea1bc11dce2cb",
       "judgeCases": {
-        "valid-causes-state-change": "not-run-on-deployed-paid-inspection-job",
-        "edited-rejects": "not-run-on-deployed-paid-inspection-job",
-        "stale-rejects": "not-run-on-deployed-paid-inspection-job",
-        "other-request-rejects": "not-run-on-deployed-paid-inspection-job",
-        "wrong-key-rejects": "not-run-on-deployed-paid-inspection-job"
+        "valid-causes-state-change": "passed-mined-open-to-rejected",
+        "edited-rejects": "passed-NotSignedByAirnode",
+        "stale-rejects": "passed-InvalidOracle",
+        "other-request-rejects": "passed-NotSignedByAirnode",
+        "wrong-key-rejects": "passed-NotSignedByAirnode"
       },
-      "remaining": [
-        "Genuine paid-inspection commitments",
-        "Fresh final CVE and wrong-request response near judging",
-        "Run five deployed cases and broadcast valid finalization"
-      ]
+      "remaining": [],
+      "jobId": "0x283a22d5708fb1dd4b9b723c2094732c1e30d2aea46f0d1baf7edecceed944bc",
+      "finalizationTransactionHash": "0xa94e48a5d72065ad46c4c558d26a7c3f618aa491fe46e6d012fd7aa7b1356eab",
+      "terminalDecision": "REJECTED",
+      "judgeBlockNumber": "52413566"
     },
     "hardware": {
       "status": "blocked",
@@ -156,6 +207,7 @@
     "Local fixtures and Anvil results do not establish live settlement or physical truth.",
     "First paid CVE response is preserved for authenticity and stale rejection, not indefinitely current policy.",
     "Contract payment evidence is an operator assertion, not Cardano consensus verification.",
-    "No five-case success claim exists until genuine inspection prerequisites and actual test results are recorded."
+    "The five source cases and mined rejection use a genuine paid REVIEW on synthetic input. No complete physical installation or installed-build provenance exists.",
+    "The 0.02 aUSD paid-access budget is consumed. Preserve both original settled requests. Another paid request needs a separately authorized budget."
   ]
 }

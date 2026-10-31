@@ -49,6 +49,39 @@ test("judge evidence serves only reviewed originals and their exact hashes witho
       (entry) => entry.id === "cardano-paid-inspection-delivery",
     ).usefulReportSha256,
   );
+  const receiptArtifact = result.artifacts.find(
+    (entry) => entry.id === "paid-inspection-seller-receipt",
+  );
+  const receipt = await (
+    await fetch(`${origin}${receiptArtifact.href}`)
+  ).json();
+  assert.equal(
+    receiptArtifact.sha256,
+    result.manifest.mandatoryEvidence.cardano.sellerReceiptSha256,
+  );
+  assert.equal(receipt.verified, true);
+  assert.equal(receipt.originalResultConsumed, true);
+  assert.equal(receipt.exactReportSha256, reportArtifact.sha256);
+  assert(BigInt(receipt.netAtomicUnits) > 0n);
+  assert.equal(receipt.physicalEvidence, false);
+  const check = await (
+    await fetch(
+      `${origin}${result.artifacts.find((entry) => entry.id === "policy-five-cases").href}`,
+    )
+  ).json();
+  const proof = await (
+    await fetch(
+      `${origin}${result.artifacts.find((entry) => entry.id === "policy-finalization").href}`,
+    )
+  ).json();
+  assert.equal(check.results.length, 5);
+  assert(check.results.every((entry) => entry.passed));
+  assert.equal(check.validSourcePolicy, "PASS");
+  assert.equal(proof.judgeBlockHash, check.blockHash);
+  assert.equal(proof.sourceResponseDigest, check.sourceResponseDigest);
+  assert.equal(proof.decision, "REJECTED");
+  assert.equal(proof.mode, "MINED_TRANSACTION_AND_PINNED_STATE");
+  assert.equal(result.manifest.readyForSubmission, false);
   for (const id of [
     "credentials.env",
     "wallet",

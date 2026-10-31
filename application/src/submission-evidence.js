@@ -50,6 +50,62 @@ const artifacts = new Map([
       import.meta.url,
     ),
   ],
+  [
+    "paid-inspection-seller-receipt",
+    new URL(
+      "../submission/evidence/cardano-seller-receipt.json",
+      import.meta.url,
+    ),
+  ],
+  [
+    "nvd-final-original",
+    new URL(
+      "../submission/evidence/nvd-paid-final-original.json",
+      import.meta.url,
+    ),
+  ],
+  [
+    "nvd-final-settlement",
+    new URL(
+      "../submission/evidence/api3-final-access-settlement.json",
+      import.meta.url,
+    ),
+  ],
+  [
+    "policy-five-cases",
+    new URL(
+      "../submission/evidence/api3-five-deployed-cases.json",
+      import.meta.url,
+    ),
+  ],
+  [
+    "policy-finalization",
+    new URL(
+      "../submission/evidence/api3-finalization-proof.json",
+      import.meta.url,
+    ),
+  ],
+  [
+    "policy-evaluation-context",
+    new URL(
+      "../submission/evidence/api3-policy-evaluation.json",
+      import.meta.url,
+    ),
+  ],
+  [
+    "policy-other-request-original",
+    new URL(
+      "../submission/evidence/api3-other-request-original.json",
+      import.meta.url,
+    ),
+  ],
+  [
+    "policy-wrong-key-test",
+    new URL(
+      "../submission/evidence/api3-wrong-key-deliberate-test.json",
+      import.meta.url,
+    ),
+  ],
 ]);
 
 export function submissionArtifact(id) {

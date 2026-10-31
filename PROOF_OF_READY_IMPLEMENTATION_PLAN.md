@@ -21,8 +21,8 @@ The customer hypothesis is an operator accepting subcontracted monitoring instal
 | Physical function     | Signed contact protocol and durable claims exist                                                    | Reviewed wiring, enrolled board, fresh OPEN/CLOSED sequence, and defect rejection                  |
 | Optical binding       | Signed execution and tracked optical evaluation are integrated and fixture-tested                   | Camera observes the complete challenge from the enrolled device assembly                           |
 | Receiving application | Local monitor records matching receipts and states                                                  | Separate delivery evidence when an independent or remote receiver is required                      |
-| Inspection            | Useful deterministic reports, exact bindings, and a zero-credit hosted REVIEW work                  | Real paid Task, positive seller receipt, and recovery evidence                                     |
-| Software policy       | API3 verifier, bounded CVE evaluator, contracts, unsigned calls, and pinned reads pass local checks | Build provenance, genuine inspection commitments, fresh final CVE, and deployed rejection evidence |
+| Inspection            | Useful paid REVIEW, exact bindings, confirmed withdrawal and positive seller receipt                  | Paid inspection of an actual physical installation, plus recovery evidence                                     |
+| Software policy       | Genuine NVD, five deployed source checks and mined REJECTED decision bind the paid REVIEW | Installed-build provenance and physical acceptance. Historical policy evaluation does not renew a work order |
 | Phone witness         | Seeker APK builds. Photo verifier and read-only BLE preflight exist                                 | Authorized install, Android SQLite instrumentation, lifecycle, camera, and BLE checks              |
 | Acceptance            | Packets reconstruct evidence. Fresh reader commitments control acceptance in tests                  | Complete physical and paid installation reaches a contract-bound decision                          |
 | Agent orchestration   | Station is deterministic and operator-driven. Optional model helper is not wired into the worker    | Agent coordinates approved steps and explanations without repeating consequential actions          |
@@ -79,16 +79,16 @@ Carrier-board identity and safe GPIO remain unknown. Chip identity does not esta
 | Printing           | Supplied target exists. Physical dimensions remain unmeasured                                 | Metric placement claim                                                     |
 | Firmware           | Both build profiles compiled                                                                  | Reviewed provisioning, flash, recovery, and optical grant                  |
 | Seeker             | APK compiled. Phone not installed or tested                                                   | Explicit install, forwarding, and native checks                            |
-| Sokosumi           | Personal grant and credits verified. Original Coworker/key work. Hosted execution-only REVIEW | Real paid inspection and seller receipt                                    |
+| Sokosumi           | Personal grant, useful paid REVIEW and positive seller receipt verified | Actual physical inspection input                                          |
 | Blockfrost         | Preprod key passes authenticated latest-block check                                           | Dedicated payment resource configuration                                   |
-| Masumi payment     | Dedicated wallets funded. Seller registration confirmed. Original paid Task running           | Actual escrow transaction and positive seller receipt. Core supplies buyer |
-| API3 wallet        | Wallet funded. Mint, paid NVD call, and policy deployment confirmed                           | Reserve check and final fresh source near judging                          |
-| API3 client        | Paid-access and judge tools integrated. Actual policy deployed                                | Genuine inspection prerequisites and five deployed judge cases             |
+| Masumi payment     | Original paid Task completed and seller collection confirmed           | Preserve original Task, transactions and receipt. No new purchase is needed |
+| API3 wallet        | Two NVD calls settled. Historical valid finalization mined REJECTED                           | Preserve 0.001 ETH. The 0.02 aUSD ceiling is consumed                          |
+| API3 client        | Five source checks passed against deployed code. Mined proof verified                                | Physical evidence and installed-build provenance             |
 | Publication        | Private development continues                                                                 | Explicit public-release and submission approval                            |
 
 Use [README's owner actions](README.md#owner-actions-on-the-critical-path) and [private setup](docs/ENGINEERING.md#private-credentials-and-test-funding). Keep credentials, wallet addresses, and runtime records in private configuration. No model key is required for deterministic inspection.
 
-The approved budget prices two CVE requests at 0.02 test aUSD. One request already settled. The CommissioningPolicy deployment confirmed. Minting and contract transactions need separately estimated gas. Cardano escrow can outlast API3 freshness. Obtain fresh CVE evidence near finalization.
+The approved budget prices two CVE requests at 0.02 test aUSD. Both requests settled. The five deployed source checks and mined rejection used the second response inside its freshness window. Preserve the original block for replay. No paid-access budget remains.
 
 Local implementation and private reviewed commits are authorized. Routine funded testnet transactions are authorized with a 0.001 ETH reserve. Public release/submission remain separate. Resolve electrical details before hardware actions.
 
