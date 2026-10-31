@@ -186,6 +186,7 @@ export function createVisionController({
   let track = null;
   let geometryKey = null;
   let startPromise = null;
+  let cancelStart = null;
   let framePromise = null;
   let captureGeneration = null;
   let opticalCapture = null;
@@ -324,6 +325,8 @@ export function createVisionController({
   };
   const stop = () => {
     generation++;
+    cancelStart?.(stoppedError());
+    cancelStart = null;
     release();
     state = {
       phase: "STOPPED",
@@ -346,7 +349,12 @@ export function createVisionController({
       lastMeasurement: null,
     };
     publish();
-    startPromise = (async () => {
+    let rejectCancellation;
+    const cancellation = new Promise((_resolve, reject) => {
+      rejectCancellation = reject;
+    });
+    cancelStart = rejectCancellation;
+    const startup = (async () => {
       try {
         if (!navigator.mediaDevices?.getUserMedia)
           throw new VisionError(
@@ -461,6 +469,9 @@ export function createVisionController({
             );
       }
     })();
+    startPromise = Promise.race([startup, cancellation]).finally(() => {
+      if (cancelStart === rejectCancellation) cancelStart = null;
+    });
     return startPromise;
   };
   const capture = async ({ sessionId } = {}) => {

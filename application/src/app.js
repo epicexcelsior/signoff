@@ -191,14 +191,23 @@ export function createApp(service) {
     route((req, res) => res.json(service.verify(req.params.id, req.body))),
   );
   const commissioning = service.commissioning;
-  app.get("/api/commissioning", (_req, res) =>
+  app.get("/api/commissioning", (_req, res) => {
+    const sessions = commissioning.store.list("sessions");
+    const orders = new Map(
+      commissioning.store.list("orders").map((order) => [order.id, order]),
+    );
+    // A session retains its approved order even after newer empty orders fill the list.
+    for (const session of sessions)
+      if (!orders.has(session.workOrderId))
+        orders.set(
+          session.workOrderId,
+          commissioning.store.get("orders", session.workOrderId),
+        );
     res.json({
-      workOrders: commissioning.store.list("orders"),
-      sessions: commissioning.store
-        .list("sessions")
-        .map((session) => commissioning.view(session)),
-    }),
-  );
+      workOrders: [...orders.values()],
+      sessions: sessions.map((session) => commissioning.view(session)),
+    });
+  });
   app.post(
     "/api/commissioning/work-orders",
     route((req, res) =>

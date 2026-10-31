@@ -417,3 +417,11 @@ For a USB-connected Android browser, run `adb reverse tcp:4021 tcp:4021`, then o
 ### Record a private presentation backup
 
 From `application/`, run `npm run demo:record`. The command starts an isolated simulation station, records the actual Chrome interface, then stops the temporary station. It uses a fresh private ledger and never loads `.env`. The recording shows REVIEW, packet verification, an edited-packet rejection, REWORK, refresh recovery, and the saved original sponsor evidence. It requests no hardware operation or payment. The output directory contains a WebM recording and `scope.json`. The recording contains no audio and cannot establish complete physical commissioning. Keep it private.
+
+### Recover station interaction
+
+Camera guidance now states the estimated offset, angle difference, and approved limits. The saved geometry and packet encoding remain unchanged. During camera permission, select **Stop camera** to cancel startup. The station releases its controls immediately. It closes a camera stream that arrives after cancellation.
+
+Station requests stop waiting after 65 seconds. A lost write response shows `OUTCOME_UNKNOWN` and blocks further station actions. Refresh the page to inspect the original saved attempt before another operation. This timeout does not cancel or repeat the server operation. Lost reads show `CONNECTION_FAILED`. The history response includes the approved work order for every returned attempt, including orders older than the recent-order limit.
+
+Camera-choice enumeration runs independently after camera startup. The result applies only to the same active controller. Enumeration failure leaves the active camera available and displays an error. During an uncertain write, camera messages cannot overwrite the recovery instruction, and work-order changes remain disabled.

@@ -9,24 +9,41 @@ let orders = [];
 let sessions = [];
 let camera = null;
 let busy = false;
+let outcomeUnknown = false;
+const uncertainMessage =
+  "OUTCOME_UNKNOWN: The station response was lost. Refresh to inspect the saved attempt before starting another operation.";
 let orderIntent = null;
 let attemptIntent = null;
 
 async function api(path, body) {
-  const response = await fetch(
-    path,
-    body === undefined
-      ? {}
-      : {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-FieldProof-Token": config.token,
-          },
-          body: JSON.stringify(body),
-        },
-  );
-  const result = await response.json();
+  let response;
+  let result;
+  try {
+    response = await fetch(path, {
+      // Exceeds the bounded BLE adapter timeout. Aborting observation never retries a write.
+      signal: AbortSignal.timeout(65000),
+      ...(body === undefined
+        ? {}
+        : {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-FieldProof-Token": config.token,
+            },
+            body: JSON.stringify(body),
+          }),
+    });
+    result = await response.json();
+  } catch {
+    if (body !== undefined) outcomeUnknown = true;
+    const error = new Error(
+      body === undefined
+        ? "CONNECTION_FAILED: Cannot read the station. Check the local connection, then refresh."
+        : uncertainMessage,
+    );
+    error.code = body === undefined ? "CONNECTION_FAILED" : "OUTCOME_UNKNOWN";
+    throw error;
+  }
   if (!response.ok) {
     const error = new Error(`${result.code}: ${result.error}`);
     error.code = result.code;
@@ -35,11 +52,15 @@ async function api(path, body) {
   return result;
 }
 function feedback(text, error = false) {
+  if (outcomeUnknown) {
+    text = uncertainMessage;
+    error = true;
+  }
   $("feedback").textContent = text;
   $("feedback").dataset.error = String(error);
 }
 async function act(run) {
-  if (busy) return;
+  if (busy || outcomeUnknown) return;
   busy = true;
   renderControls();
   try {
@@ -52,15 +73,19 @@ async function act(run) {
   }
 }
 function renderControls() {
-  $("approve").disabled = busy || !config || Boolean(order);
-  $("asset").disabled = busy || Boolean(order);
-  $("run-rehearsal").disabled = busy || !order;
-  $("begin-capture").disabled = busy || !order;
-  $("scenario").disabled = busy;
-  $("camera-device").disabled = busy || current?.optical?.stage === "EXECUTING";
-  $("history").disabled = busy;
+  const blocked = busy || outcomeUnknown;
+  $("start-camera").disabled = blocked || !order;
+  $("approve").disabled = blocked || !config || Boolean(order);
+  $("asset").disabled = blocked || Boolean(order);
+  $("run-rehearsal").disabled = blocked || !order;
+  $("begin-capture").disabled = blocked || !order;
+  $("scenario").disabled = blocked;
+  $("camera-device").disabled =
+    blocked || current?.optical?.stage === "EXECUTING";
+  $("history").disabled = blocked;
   $("new-order").hidden = !order;
-  $("reset-presentation").disabled = busy || !config;
+  $("new-order").disabled = blocked;
+  $("reset-presentation").disabled = blocked || !config;
   const active = current?.state === "CAPTURING";
   const beforeCaptureWindow = active && Date.now() < current.startedAt;
   const expired = active && Date.now() > current.expiresAt;
@@ -72,25 +97,25 @@ function renderControls() {
         ? "Capture window expired. Start a new attempt, or close this attempt to preserve its result."
         : `Capture window: ${Math.max(0, Math.ceil((current.expiresAt - Date.now()) / 1000))} seconds remain.`;
   $("capture-frame").disabled =
-    busy ||
+    blocked ||
     beforeCaptureWindow ||
     expired ||
     !active ||
     Boolean(current?.vision) ||
     camera?.getState().phase !== "ACTIVE";
   $("contact-step").disabled =
-    busy ||
+    blocked ||
     expired ||
     !active ||
     Boolean(current?.pending) ||
     current?.device.length >= 3;
   $("inspect").disabled =
-    busy ||
+    blocked ||
     !active ||
     Boolean(current?.pending) ||
     current?.optical?.stage === "EXECUTING";
   $("capture-optical").disabled =
-    busy ||
+    blocked ||
     expired ||
     !active ||
     !order?.optical ||
@@ -104,9 +129,9 @@ function renderControls() {
     "reconcile-acceptance",
     "contract-plan",
   ])
-    $(id).disabled = busy || !current?.report;
-  $("verify").disabled = busy || !current?.report;
-  $("tamper").disabled = busy || !current?.report;
+    $(id).disabled = blocked || !current?.report;
+  $("verify").disabled = blocked || !current?.report;
+  $("tamper").disabled = blocked || !current?.report;
   const instruction = expired
     ? "The capture window expired. Start a new attempt for another physical read."
     : current?.pending
@@ -128,7 +153,7 @@ function showOrder() {
 function showSession(session) {
   current = session;
   $("history").value = session.id;
-  order = orders.find((item) => item.id === session.workOrderId) ?? order;
+  order = orders.find((item) => item.id === session.workOrderId) ?? null;
   showOrder();
   $("capture-state").textContent =
     session.state === "INSPECTED"
@@ -366,6 +391,7 @@ $("history").addEventListener("change", () =>
   }),
 );
 $("new-order").addEventListener("click", () => {
+  if (busy || outcomeUnknown) return;
   sessionStorage.setItem("proof-ready-new-order", "true");
   location.reload();
 });
@@ -413,6 +439,27 @@ $("tamper").addEventListener("click", () =>
     }
   }),
 );
+async function populateCameraDevices(activeCamera) {
+  try {
+    const selectedDevice = $("camera-device").value;
+    const devices = await navigator.mediaDevices.enumerateDevices();
+    if (camera !== activeCamera || activeCamera.getState().phase !== "ACTIVE")
+      return;
+    $("camera-device").replaceChildren(new Option("Automatic rear camera", ""));
+    for (const device of devices.filter((item) => item.kind === "videoinput")) {
+      $("camera-device").add(
+        new Option(device.label || "Camera", device.deviceId),
+      );
+    }
+    $("camera-device").value = selectedDevice;
+  } catch {
+    if (camera === activeCamera && activeCamera.getState().phase === "ACTIVE")
+      feedback(
+        "Camera active. Cannot list camera choices. Stop the camera and start again to retry.",
+        true,
+      );
+  }
+}
 $("start-camera").addEventListener("click", () =>
   act(async () => {
     if (!order)
@@ -430,6 +477,9 @@ $("start-camera").addEventListener("click", () =>
       opticalRoi: order.optical?.roi,
       deviceId: $("camera-device").value || null,
       onState: (state) => {
+        $("stop-camera").disabled = !["STARTING", "ACTIVE"].includes(
+          state.phase,
+        );
         $("camera-status").textContent =
           state.error?.message ?? `Camera ${state.phase.toLowerCase()}`;
         renderControls();
@@ -440,25 +490,30 @@ $("start-camera").addEventListener("click", () =>
             ? "Target aligned · save a measurement during capture"
             : measurement.predicates
                 .filter((p) => p.state !== "PASS")
-                .map((p) => p.reason)
+                .map((p) => {
+                  if (
+                    Number.isFinite(p.actual) &&
+                    Number.isFinite(p.expected)
+                  ) {
+                    if (p.id === "position")
+                      return `Move the device marker toward the target. Estimated offset: ${p.actual.toFixed(1)} mm. Limit: ${p.expected.toFixed(1)} mm.`;
+                    if (p.id === "orientation")
+                      return `Rotate the device marker toward the target arrow. Estimated angle difference: ${p.actual.toFixed(1)}°. Limit: ${p.expected.toFixed(1)}°.`;
+                  }
+                  return p.reason;
+                })
                 .join(" ");
       },
     });
+    const startingCamera = camera;
     try {
-      await camera.start();
-      const selectedDevice = $("camera-device").value;
-      const devices = await navigator.mediaDevices.enumerateDevices();
-      $("camera-device").replaceChildren(
-        new Option("Automatic rear camera", ""),
-      );
-      for (const device of devices.filter(
-        (item) => item.kind === "videoinput",
-      )) {
-        $("camera-device").add(
-          new Option(device.label || "Camera", device.deviceId),
-        );
-      }
-      $("camera-device").value = selectedDevice;
+      await startingCamera.start();
+      if (
+        camera !== startingCamera ||
+        startingCamera.getState().phase !== "ACTIVE"
+      )
+        return;
+      void populateCameraDevices(startingCamera);
       $("stop-camera").disabled = false;
       feedback("Camera guidance started. Frames stay on this device.");
     } catch (error) {
@@ -475,6 +530,7 @@ function stopCamera() {
   $("placement-preview").hidden = false;
   $("camera-status").textContent = "Camera off · frames stay on this device";
   $("stop-camera").disabled = true;
+  feedback("Camera stopped. Saved evidence remains unchanged.");
   renderControls();
 }
 $("stop-camera").addEventListener("click", stopCamera);

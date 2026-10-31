@@ -301,7 +301,7 @@ test("camera UI saves the controller frame shape and backend recomputes placemen
     await page.route("**/vision/controller.js", (route) =>
       route.fulfill({
         contentType: "text/javascript",
-        body: `export function createVisionController({onState}) { let phase='STOPPED'; return {getState:()=>({phase}),start:async()=>{phase='ACTIVE';onState({phase})},stop:()=>{phase='STOPPED';onState({phase})},capture:async()=>{const square=x=>[{x,y:150},{x:x+100,y:150},{x:x+100,y:250},{x,y:250}];return {markers:[{id:0,corners:square(100)},{id:10,corners:square(100+100*100/60)}],resolution:{width:640,height:480},capturedAt:Date.now(),calibrationId:'browser-test',frameDigest:'0x'+'a'.repeat(64),camera:{id:'browser-test'},state:'FAIL'}}};}`,
+        body: `export function createVisionController({onState,onMeasurement}) { let phase='STOPPED'; return {getState:()=>({phase}),start:async()=>{phase='ACTIVE';onState({phase});onMeasurement({state:'FAIL',predicates:[{id:'position',state:'FAIL',reason:'Planar offset uses the declared reference size.',actual:38,expected:8},{id:'orientation',state:'FAIL',reason:'Planar angle is clockwise from the reference marker axis.',actual:180,expected:8}]})},stop:()=>{phase='STOPPED';onState({phase})},capture:async()=>{const square=x=>[{x,y:150},{x:x+100,y:150},{x:x+100,y:250},{x,y:250}];return {markers:[{id:0,corners:square(100)},{id:10,corners:square(100+100*100/60)}],resolution:{width:640,height:480},capturedAt:Date.now(),calibrationId:'browser-test',frameDigest:'0x'+'a'.repeat(64),camera:{id:'browser-test'},state:'FAIL'}}};}`,
       }),
     );
     await page.goto(origin);
@@ -311,13 +311,19 @@ test("camera UI saves the controller frame shape and backend recomputes placemen
     await page.getByRole("button", { name: "Approve work order" }).click();
     await page.getByRole("button", { name: "Start capture attempt" }).click();
     await page.getByRole("button", { name: "Start camera" }).click();
+    assert.match(await page.locator("#camera-status").innerText(), /38.0 mm/);
+    assert.match(await page.locator("#camera-status").innerText(), /180.0°/);
     const captureStart =
       service.commissioning.store.list("sessions")[0].startedAt;
     await page.evaluate((value) => {
       window.actualDateNow = Date.now;
       Date.now = () => value;
     }, captureStart - 1000);
-    await page.waitForTimeout(600);
+    await page.waitForFunction(() =>
+      document
+        .getElementById("capture-deadline")
+        .textContent.includes("camera clock"),
+    );
     assert.equal(
       await page
         .getByRole("button", { name: "Save camera measurement" })
@@ -383,6 +389,258 @@ test("camera UI saves the controller frame shape and backend recomputes placemen
     await page.locator("#history").selectOption(savedId);
     await page.getByText("Local inspection: REVIEW", { exact: true }).waitFor();
     assert.equal(await page.locator("#history").inputValue(), savedId);
+  } finally {
+    await browser.close();
+  }
+});
+
+test("lost rehearsal response recovers the saved attempt after refresh without another execution", async (t) => {
+  const { service } = fixture(t);
+  const origin = await server(t, service);
+  const browser = await chromium.launch({ channel: "chrome", headless: true });
+  try {
+    const page = await browser.newPage();
+    await page.goto(origin);
+    await page
+      .getByRole("button", { name: "Approve work order", exact: true })
+      .click();
+    await page.evaluate(() => {
+      Object.defineProperty(navigator.mediaDevices, "getUserMedia", {
+        configurable: true,
+        value: async () => {
+          const canvas = document.createElement("canvas");
+          canvas.width = canvas.height = 64;
+          const context = canvas.getContext("2d");
+          const stream = canvas.captureStream(10);
+          setInterval(() => context.fillRect(0, 0, 64, 64), 50);
+          return stream;
+        },
+      });
+      Object.defineProperty(navigator.mediaDevices, "enumerateDevices", {
+        configurable: true,
+        value: () =>
+          new Promise((_resolve, reject) => {
+            window.rejectEnumeration = reject;
+          }),
+      });
+    });
+    await page
+      .getByRole("button", { name: "Start camera", exact: true })
+      .click();
+    await page.waitForFunction(
+      () => typeof window.rejectEnumeration === "function",
+    );
+    const pattern = "**/api/commissioning/sessions/*/inspect";
+    let intercepted = 0;
+    await page.route(pattern, async (route) => {
+      intercepted++;
+      const original = await route.fetch();
+      assert.equal(original.status(), 200);
+      await route.abort("connectionfailed");
+    });
+    await page
+      .getByRole("button", { name: "Run rehearsal", exact: true })
+      .click();
+    await page.waitForFunction(() =>
+      document
+        .getElementById("feedback")
+        .textContent.includes("OUTCOME_UNKNOWN"),
+    );
+    await page.evaluate(() =>
+      rejectEnumeration(new Error("Camera enumeration failed")),
+    );
+    await page.waitForTimeout(100);
+    assert.match(
+      await page.locator("#feedback").innerText(),
+      /OUTCOME_UNKNOWN/,
+    );
+    await page
+      .getByRole("button", { name: "Stop camera", exact: true })
+      .click();
+    assert.match(
+      await page.locator("#feedback").innerText(),
+      /OUTCOME_UNKNOWN/,
+    );
+    assert.equal(intercepted, 1);
+    assert.equal(
+      await page
+        .getByRole("button", { name: "Run rehearsal", exact: true })
+        .isDisabled(),
+      true,
+    );
+    assert.equal(
+      await page
+        .getByRole("button", { name: "Approve a different work order" })
+        .isDisabled(),
+      true,
+    );
+    const sessions = service.commissioning.store.list("sessions");
+    assert.equal(sessions.length, 1);
+    assert.equal(sessions[0].acceptance.decision, "REVIEW");
+    await page.unroute(pattern);
+    await page.reload();
+    await page.getByText("Local inspection: REVIEW", { exact: true }).waitFor();
+    assert.equal(service.commissioning.store.list("sessions").length, 1);
+    assert.equal(await page.locator("#history").inputValue(), sessions[0].id);
+  } finally {
+    await browser.close();
+  }
+});
+
+test("history retains the approved order after more than thirty newer empty orders", async (t) => {
+  const { service } = fixture(t);
+  const commissioning = service.commissioning;
+  const original = commissioning.createOrder({
+    idempotency_key: "original-history-order",
+    asset: "Original cabinet",
+  });
+  commissioning.createSession(original.id, {
+    idempotency_key: "original-history-session",
+    scenario: "correct",
+  });
+  for (let i = 0; i < 31; i++)
+    commissioning.createOrder({
+      idempotency_key: `newer-empty-order-${i}`,
+      asset: `New empty ${i}`,
+    });
+  const origin = await server(t, service);
+  const history = await (await fetch(`${origin}/api/commissioning`)).json();
+  assert.equal(history.sessions.length, 1);
+  assert(history.workOrders.some((order) => order.id === original.id));
+  const browser = await chromium.launch({ channel: "chrome", headless: true });
+  try {
+    const page = await browser.newPage();
+    await page.goto(origin);
+    await page.waitForFunction(
+      (id) => document.getElementById("order-status").textContent.includes(id),
+      original.id,
+    );
+    assert.equal(
+      await page.getByLabel("Installation reference").inputValue(),
+      "Original cabinet",
+    );
+    await page
+      .getByRole("button", { name: "Start capture attempt", exact: true })
+      .click();
+    await page.waitForFunction(
+      () => document.querySelectorAll("#history option").length === 2,
+    );
+    assert.equal(
+      commissioning.store.list("sessions")[0].workOrderId,
+      original.id,
+    );
+  } finally {
+    await browser.close();
+  }
+});
+
+test("operator can cancel unanswered camera permission and recover controls before a late grant", async (t) => {
+  const { service } = fixture(t);
+  const origin = await server(t, service);
+  const browser = await chromium.launch({ channel: "chrome", headless: true });
+  try {
+    const page = await browser.newPage();
+    await page.goto(origin);
+    await page
+      .getByRole("button", { name: "Approve work order", exact: true })
+      .click();
+    await page.evaluate(() =>
+      Object.defineProperty(navigator.mediaDevices, "getUserMedia", {
+        configurable: true,
+        value: () =>
+          new Promise((resolve) => {
+            window.grantPendingCamera = resolve;
+          }),
+      }),
+    );
+    await page
+      .getByRole("button", { name: "Start camera", exact: true })
+      .click();
+    await page.waitForFunction(
+      () => typeof window.grantPendingCamera === "function",
+    );
+    await page
+      .getByRole("button", { name: "Stop camera", exact: true })
+      .click();
+    await page.waitForFunction(
+      () => !document.getElementById("reset-presentation").disabled,
+    );
+    assert.equal(
+      await page
+        .getByRole("button", { name: "Start capture attempt", exact: true })
+        .isEnabled(),
+      true,
+    );
+    await page.evaluate(() => {
+      const canvas = document.createElement("canvas");
+      canvas.width = canvas.height = 64;
+      window.lateCameraStream = canvas.captureStream(1);
+      grantPendingCamera(lateCameraStream);
+    });
+    await page.waitForFunction(
+      () => lateCameraStream.getVideoTracks()[0].readyState === "ended",
+    );
+    assert.equal(await page.locator("#camera").isVisible(), false);
+  } finally {
+    await browser.close();
+  }
+});
+
+test("late camera enumeration cannot revive stopped camera controls", async (t) => {
+  const { service } = fixture(t);
+  const origin = await server(t, service);
+  const browser = await chromium.launch({ channel: "chrome", headless: true });
+  try {
+    const page = await browser.newPage();
+    await page.goto(origin);
+    await page
+      .getByRole("button", { name: "Approve work order", exact: true })
+      .click();
+    await page.evaluate(() => {
+      Object.defineProperty(navigator.mediaDevices, "getUserMedia", {
+        configurable: true,
+        value: async () => {
+          const canvas = document.createElement("canvas");
+          canvas.width = canvas.height = 64;
+          const context = canvas.getContext("2d");
+          const stream = canvas.captureStream(10);
+          setInterval(() => context.fillRect(0, 0, 64, 64), 50);
+          return stream;
+        },
+      });
+      Object.defineProperty(navigator.mediaDevices, "enumerateDevices", {
+        configurable: true,
+        value: () =>
+          new Promise((resolve) => {
+            window.finishEnumeration = resolve;
+          }),
+      });
+    });
+    await page
+      .getByRole("button", { name: "Start camera", exact: true })
+      .click();
+    await page.waitForFunction(
+      () => typeof window.finishEnumeration === "function",
+    );
+    assert.equal(
+      await page
+        .getByRole("button", { name: "Start capture attempt", exact: true })
+        .isEnabled(),
+      true,
+    );
+    await page
+      .getByRole("button", { name: "Stop camera", exact: true })
+      .click();
+    await page.evaluate(() => finishEnumeration([]));
+    await page.waitForTimeout(100);
+    assert.equal(
+      await page
+        .getByRole("button", { name: "Stop camera", exact: true })
+        .isDisabled(),
+      true,
+    );
+    assert.equal(await page.locator("#camera").isVisible(), false);
+    assert.match(await page.locator("#feedback").innerText(), /Camera stopped/);
   } finally {
     await browser.close();
   }

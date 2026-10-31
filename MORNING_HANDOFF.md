@@ -4,7 +4,7 @@ The real optical diagnostic works. Full physical commissioning remains incomplet
 
 ## Launch and demonstrate
 
-1. From `application/`, run `npm start`.
+1. If the local station is stopped, run `npm start` from `application/`.
 2. Open `http://127.0.0.1:4021`.
 3. Keep the **LOCAL REHEARSAL** label visible.
 4. Approve a work order and start a capture attempt.
@@ -56,3 +56,14 @@ A 96.7-second private presentation backup now exists at `.local/runtime/sessions
 ## Physical setup correction
 
 Offline production OpenCV replay detected both markers in all 90 sampled frames across the original 18-second challenge. All frames failed the current placement policy. The first frame estimated a 62 mm offset and nearly 180-degree device-marker rotation, assuming the declared 60 mm reference. The approved template requires 100 mm and zero degrees. Measure the printed reference before using metric guidance. Reposition the device marker to the approved target and place the board LED inside the highlighted sampling region. Do not change the approved template merely to make this setup pass. No new LED operation is needed to check marker guidance. Button wiring still requires electrical review and manual transitions.
+
+## Recovery controls
+
+- If camera permission does not resolve, select **Stop camera**. The other controls recover immediately.
+- If `OUTCOME_UNKNOWN` appears, refresh to recover the saved attempt. The station blocks repeat actions until refresh.
+- Camera guidance now shows the estimated offset and angle difference with their approved limits.
+- Saved attempts retain their approved work orders after newer empty orders fill the recent-order list.
+
+The local rehearsal station restarted with the recovery fixes. An actual rehearsal returned REVIEW, and browser refresh restored the same attempt. The full application suite passed 68 tests. The station remains a rehearsal and historical-evidence demonstration until the physical setup corrections and runtime enrollment are complete.
+
+Camera-choice enumeration does not block station controls. A late result cannot revive a stopped camera. Uncertain-operation recovery instructions remain visible until refresh, including after camera errors or Stop camera. Work-order changes stay blocked during that uncertainty.
