@@ -9,7 +9,7 @@
     "build": "bash build-offline.sh",
     "usb:plan": "node scripts/usb.mjs plan",
     "usb:connect": "node scripts/usb.mjs connect",
-    "format": "node ../node_modules/prettier/bin/prettier.cjs --write src/phone-evidence.mjs scripts test package.json README.md ../public/mobile/index.html",
-    "format:check": "node ../node_modules/prettier/bin/prettier.cjs --check src/phone-evidence.mjs scripts test package.json README.md ../public/mobile/index.html"
+    "format": "node ../node_modules/prettier/bin/prettier.cjs --write src/phone-evidence.mjs scripts test package.json ../public/mobile/index.html",
+    "format:check": "node ../node_modules/prettier/bin/prettier.cjs --check src/phone-evidence.mjs scripts test package.json ../public/mobile/index.html"
   }
 }

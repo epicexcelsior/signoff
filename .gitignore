@@ -31,4 +31,8 @@
 /application/public/demo/evidence.json
 /application/public/demo/sw.js
 /DEMO_NOW.md
-/application/public-release.json
+
+# Public builds and local-only release material
+.local/
+**/out/
+**/cache/

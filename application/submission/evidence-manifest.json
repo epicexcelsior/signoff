@@ -341,7 +341,6 @@
     "First paid CVE response is preserved for authenticity and stale rejection, not indefinitely current policy.",
     "Contract payment evidence is an operator assertion, not Cardano consensus verification.",
     "The five source cases and mined rejection use a genuine paid REVIEW on synthetic input. No complete physical installation or installed-build provenance exists.",
-    "The owner-approved 0.03 aUSD access ceiling is consumed by three settled requests. Preserve every original operation and nonce.",
     "Source-gated software admission verifies an operator-declared reference build, not firmware measured on the ESP32. Physical installation acceptance remains blocked."
   ],
   "primaryRealDemo": "cardano-physical-camera-inspection",
@@ -355,13 +354,8 @@
   },
   "releaseCandidate": {
     "published": true,
-    "testedCleanCheckout": true,
-    "internalDocumentsIncluded": false,
-    "privateHistoryIncluded": false,
-    "status": "PUBLIC_SOURCE_VIDEO_AND_SUBMISSION_PENDING",
-    "testedCandidateCommit": "018fa75",
-    "sourceArchiveSha256": "fc8ee8d845c232abded4c6386f5094d882d70660ffec09afdecfc8ff6d800519",
-    "verificationScope": "280-file sanitized snapshot. Base 80, Masumi 32, API3 37, x402 5 tests. Exact custom-response command verified for all five inputs. Aggregate replay remains subject to HTTP failure."
+    "sourceSanitized": true,
+    "privateHistoryIncluded": false
   },
   "videoProduction": {
     "status": "FIRST_CUT_OWNER_RECORDINGS_PENDING",
