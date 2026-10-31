@@ -16,6 +16,11 @@ The application suite passed 81 tests. Masumi passed 32, API3 Node passed 35, x4
 
 Private before/after screenshots, QA results, four video cards, and the original-source/database backups are under `.local/design-pass/`. The latest actual UI recordings retain their private scope files. `node scripts/design-qa.js` from `application/` repeats the read-only visual checks against port 4022. Original submission evidence hashes match the pre-design snapshot. Generated assets remain outside Git.
 
+The final design source snapshot at `.local/design-pass/source-candidate/` contains 265 allowlisted files. Its clean installation passed 79 applicable application tests, syntax, formatting, and public-boundary checks. The two private overview tests remain excluded by the public profile. Its sealed archive is `.local/design-pass/after/source-candidate.tar.gz`. The earlier `.local/release-ready/` archive remains a recovery snapshot. Neither source snapshot is published.
+
+The private `.local/design-pass/after/submission-assets.zip` contains before/after screenshots, five submission screenshots, four 1080p video cards, standalone card HTML, font licenses, the saved walkthrough with its scope file, and QA results. A decoded walkthrough frame showed the persistent saved-copy label, REWORK, both measured errors, paid FAIL report, and corrective action together. The phone Verify saved evidence button uses a three-pixel ink focus ring on paper. Its computed color is `rgb(23, 36, 36)` with 14.18:1 contrast against the canvas. The focused phone browser checks passed after this final paint change.
+
+
 The local commissioning path now connects work orders, signed contact/optical/photo records, tracked camera samples, useful inspector input/result binding, pinned contract reads, and portable evidence packets. Actual physical acceptance remains incomplete. Genuine paid inspection and historical deployed-policy evidence are recorded separately below. Current demonstrations return REVIEW or REWORK.
 
 The current station is deterministic and operator-driven. Its work-order route instantiates a fixed template from an asset name. Agent-generated requirements and autonomous orchestration remain goals. The optional model helper is not called by the current worker. The local receiving monitor shares coordinator trust.
