@@ -78,6 +78,22 @@
               Illustration only. Confirm the requirements, then start the
               camera.
             </p>
+            <div class="camera-actions">
+              <label for="camera-device"
+                >Camera
+                <select id="camera-device">
+                  <option value="">Automatic rear camera</option>
+                </select>
+              </label>
+              <button class="secondary" id="start-camera">Start camera</button
+              ><button class="secondary" id="begin-capture" disabled>
+                Start capture attempt</button
+              ><button class="secondary" id="capture-frame" disabled>
+                Save camera measurement</button
+              ><button class="text-button" id="stop-camera" disabled>
+                Stop camera
+              </button>
+            </div>
           </div>
           <div class="verdict-panel">
             <div class="report-intro">
@@ -101,6 +117,7 @@
               Next action: confirm the inspection requirements.
             </p>
             <p id="placement-summary" class="placement-summary" hidden></p>
+            <p id="paid-session-status" class="note"></p>
           </div>
         </div>
         <div
@@ -283,22 +300,6 @@
                 <h2 id="capture-heading">Check the actual device.</h2>
               </div>
               <span id="capture-state" class="pill">No capture</span>
-            </div>
-            <div class="camera-actions">
-              <label for="camera-device"
-                >Camera
-                <select id="camera-device">
-                  <option value="">Automatic rear camera</option>
-                </select>
-              </label>
-              <button class="secondary" id="start-camera">Start camera</button
-              ><button class="secondary" id="begin-capture" disabled>
-                Start capture attempt</button
-              ><button class="secondary" id="capture-frame" disabled>
-                Save camera measurement</button
-              ><button class="text-button" id="stop-camera" disabled>
-                Stop camera
-              </button>
             </div>
             <div id="rehearsal-controls" class="rehearsal-controls">
               <label for="scenario"

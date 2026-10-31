@@ -321,6 +321,15 @@ test("camera UI saves the controller frame shape and backend recomputes placemen
       .click();
     await page.getByRole("button", { name: "Start capture attempt" }).click();
     await page.getByRole("button", { name: "Start camera" }).click();
+    assert.equal(
+      await page.locator(".measurement-panel #start-camera").count(),
+      1,
+    );
+    assert.equal(
+      await page.locator(".measurement-panel #capture-frame").count(),
+      1,
+    );
+    assert.equal(await page.locator(".measurement-panel #camera").count(), 1);
     assert.match(await page.locator("#camera-status").innerText(), /38.0 mm/);
     assert.match(await page.locator("#camera-status").innerText(), /180.0°/);
     const captureStart =

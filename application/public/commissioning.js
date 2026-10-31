@@ -184,6 +184,10 @@ function showSession(session) {
     session.acceptance?.predicates.find(
       (entry) => entry.id === "paid-inspection",
     )?.outcome ?? "REVIEW";
+  $("paid-session-status").textContent =
+    paidOutcome === "PASS"
+      ? "Recorded inspector payment: PASS. Open the proof trail for the report and receipt."
+      : "Inspector payment needs a check. See the proof trail.";
   for (const [id, outcome, description] of [
     [
       "camera",
