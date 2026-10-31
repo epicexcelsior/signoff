@@ -39,8 +39,8 @@ export function fixture(t, overrides = {}) {
   return { service, identity, dir, db, profile, config };
 }
 
-export async function server(t, service) {
-  const http = createApp(service).listen(0, "127.0.0.1");
+export async function server(t, service, options) {
+  const http = createApp(service, options).listen(0, "127.0.0.1");
   await new Promise((resolve) => http.once("listening", resolve));
   t.after(
     () =>

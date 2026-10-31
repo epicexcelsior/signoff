@@ -225,7 +225,9 @@ function showSession(session) {
   $("evidence-origin").textContent =
     session.sourceMode === "fixture"
       ? "Current attempt · synthetic rehearsal · no physical or payment claim"
-      : "Current attempt · physical adapter · inspect every acceptance requirement";
+      : session.report
+        ? "Recorded physical attempt · original evidence, not a live retest"
+        : "Live physical capture · inspect every acceptance requirement";
   $("optical-status").textContent =
     session.optical?.evaluation?.reason ??
     session.optical?.error?.message ??
@@ -884,6 +886,10 @@ setInterval(() => {
 
 try {
   config = await api("/api/config");
+  if (config.public_release) {
+    $("project-overview-link").href = "/demo/";
+    $("project-overview-link").textContent = "Saved real evidence";
+  }
   $("mode").textContent =
     config.mode === "simulation" ? "Local rehearsal" : "Physical adapter";
   $("rehearsal-controls").hidden = config.mode !== "simulation";

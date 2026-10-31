@@ -1,5 +1,5 @@
 import express from "express";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import { paymentRequired } from "./payment.js";
@@ -16,7 +16,14 @@ import {
   encodePaymentResponseHeader,
 } from "@x402/core/http";
 
-export function createApp(service) {
+export function createApp(
+  service,
+  {
+    publicRelease = existsSync(
+      new URL("../public-release.json", import.meta.url),
+    ),
+  } = {},
+) {
   const app = express();
   const token = randomBytes(32).toString("hex");
   app.disable("x-powered-by");
@@ -87,6 +94,21 @@ export function createApp(service) {
       .then(() => run(req, res))
       .catch(next);
   const view = (job) => service.view(job);
+  if (publicRelease)
+    app.use(
+      [
+        "/project-docs",
+        "/overview.html",
+        "/overview.md",
+        "/overview-export.zip",
+      ],
+      (_req, res) => {
+        res.status(404).json({
+          code: "NOT_FOUND",
+          error: "Private project documents are not included in this release.",
+        });
+      },
+    );
   app.get(
     "/api/submission-evidence",
     route((_req, res) => res.json(submissionEvidence())),
@@ -108,6 +130,7 @@ export function createApp(service) {
     res.json({
       token,
       mode: service.config.mode,
+      public_release: publicRelease,
       contact: service.profile.contact,
       contact_enabled: service.profile.contact.sensor !== "disabled-contact",
       price: "2 tADA",
