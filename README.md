@@ -1,5 +1,7 @@
 # Proof of Ready
 
+**Immediate real-evidence demo: <http://127.0.0.1:4022>.** It shows the real camera rejection and verified inspector payment. Port 4021 is the separate labeled rehearsal.
+
 Proof of Ready coordinates equipment commissioning. An operator approves a work order. A technician supplies camera measurements and signed contact tests. An inspector explains defects and missing evidence.
 
 The goal is agent-orchestrated commissioning with a useful paid inspector and an evidence-bound acceptance decision. **The current station is deterministic and operator-driven.** It uses a fixed work-order template. Agent-generated requirements and autonomous orchestration remain planned.
@@ -190,3 +192,7 @@ The original paid-observation lab remains at <http://127.0.0.1:4021/observation.
 Keep runtime state, keys, wallets, camera images, and receipt pins outside tracked source. The station defaults to laptop loopback. Local implementation and private reviewed backup are authorized. Routine funded testnet transactions follow the approved reserve. Physical wiring/flash operations require resolved electrical review. Public release and submission require separate authorization.
 
 A separate optical-only physical station is configured on loopback port 4022. Its first actual Seeker camera inspection returned REWORK and produced a verified negative packet. Contact input and optical emission remain disabled. The original packet is available in Judge evidence. See the morning handoff for launch and scope.
+
+The real-camera negative inspection now has a completed paid Task with confirmed escrow and result transactions. Seller collection is verified, with a positive net of 1 test USDM. The original paid REVIEW and its positive seller receipt remain preserved separately. Read the morning handoff before resuming this operation.
+
+The real-evidence demo is at <http://127.0.0.1:4022>. Its paid-inspection gate passes through fresh seller-receipt verification. Its actual placement defect still returns REWORK. Port 4021 remains an explicitly labeled rehearsal.

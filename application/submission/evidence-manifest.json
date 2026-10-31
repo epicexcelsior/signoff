@@ -1,6 +1,6 @@
 {
   "schema": "proof-of-ready/submission-evidence/v1",
-  "checkedAt": "2026-10-31T02:51:26.010815+00:00",
+  "checkedAt": "2026-10-31T07:35:52.093511+00:00",
   "readyForSubmission": false,
   "publicationAuthorized": false,
   "deadline": "2026-10-31T15:00:00+01:00",
@@ -173,6 +173,32 @@
       "workOrderDigest": "0xcb85f28d835c04fd5413b0f52bf9eac9b751958ae61b002a62648e19e2e55e5e",
       "capturedAt": 1793414979755,
       "qualificationScope": "Real Seeker camera measurement through the physical station. Default placement failed and the original packet verified as REWORK. Camera origin remains unattested. Contact input and optical emission were disabled. No fresh device receipt, paid physical inspection, or commissioning acceptance."
+    },
+    {
+      "id": "cardano-physical-camera-inspection",
+      "network": "Cardano Preprod",
+      "taskId": "01a18fed-4517-7319-a5be-cecbf6f4f4f7",
+      "status": "completed-seller-collection-verified",
+      "outcome": "FAIL",
+      "transactionHash": "cd48db80ffb0494b8a092af67f8ec9e33dbdb3c1f8bce8ced1eaf1d5864782ca",
+      "resultTransactionHash": "d0c178019710413818159fcc3098ae1c733dbc8a070954b3c80b2a6b77f90280",
+      "inputHash": "f8089c16284627d791ef7dfb01c22035e6ce8ea9c69549bef5de3f3988a7e297",
+      "resultHash": "566bac5476676deeca25d97d8105b58f74203cabc56c8d35fa4c3ef10fdeb2a7",
+      "workOrderDigest": "0xcb85f28d835c04fd5413b0f52bf9eac9b751958ae61b002a62648e19e2e55e5e",
+      "evidenceBundleDigest": "0x2b52726ddd4d5a1f74f32636de59d3321057bf6167be949ec9054232f607da12",
+      "escrowConfirmed": true,
+      "resultConfirmed": true,
+      "sellerPaid": true,
+      "chargedPersonalCredits": 100,
+      "amountTestUsdm": 1,
+      "sellerUnlockAt": "2026-10-31T03:43:45.140Z",
+      "physicalCameraEvidence": true,
+      "signedPhysicalSequence": false,
+      "qualificationScope": "Useful FAIL report on actual Seeker camera evidence. Exact hosted input/result, confirmed escrow/result, withdrawal, and positive seller net of 1 test USDM verified. Missing signed contact and optical evidence prevents installation acceptance.",
+      "sellerReceiptTransactionHash": "f6493d441afbffcbe7a4f9ae8626318a9551bfbe7a8095a076eece5c01ff0029",
+      "usefulReportSha256": "566bac5476676deeca25d97d8105b58f74203cabc56c8d35fa4c3ef10fdeb2a7",
+      "reportArtifactId": "physical-paid-inspection-report",
+      "sellerReceiptSha256": "5da95a049fa0cb13446ac5ab652c762f5e8f1779bdc843df00a7d22a753a60f7"
     }
   ],
   "mandatoryEvidence": {

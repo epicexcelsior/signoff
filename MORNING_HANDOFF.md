@@ -4,20 +4,17 @@ The real optical diagnostic works. Full physical commissioning remains incomplet
 
 ## Launch and demonstrate
 
-1. If the local station is stopped, run `npm start` from `application/`.
-2. Run `npm run demo:preflight` from `application/` in a second terminal.
-3. Open `http://127.0.0.1:4021`.
-4. Keep the **LOCAL REHEARSAL** label visible.
-5. Select **Reset presentation** for a fresh screen. Saved attempts remain intact.
-6. Approve a work order and start a capture attempt.
-7. Run the correct rehearsal to obtain REVIEW.
-8. Start another attempt with a placement or contact defect to obtain REWORK.
-9. Open **Judge evidence** to inspect the original paid report and transactions.
-10. Find **Real device response · 72 of 72 optical symbols** and download its original diagnostic.
+1. Open `http://127.0.0.1:4022` for the real-evidence demo.
+2. Inspect the actual camera REWORK report and paid-inspection PASS gate.
+3. Select **Check external acceptance** to repeat the real read-only payment verification.
+4. Open **Judge evidence** and expand the real-camera FAIL inspection report.
+5. Open its escrow, result, and inspector-payment transaction links.
+6. Show the original signed LED diagnostic as recorded hardware evidence. It is not a live commissioning capture.
+7. Show the genuine historical API3 deployed checks with their stated acceptance limits.
 
-The default station does not actuate hardware or make payments. Rehearsal evidence cannot authorize installation.
+If the physical station stops, run `python3 .local/private-config/hardware/optical-only-station-launch.py` from the repository root. Check it with `FIELDPROOF_PORT=4022 npm --prefix application run demo:preflight`.
 
-From `application/`, run `npm run demo:integration` for the four reproducible fixture paths. Run `node --test test/hardware-diagnostic.test.js` to verify the actual device receipt offline. Run `npm test` for browser, negative-case, concurrency, and restart checks.
+Port 4021 is a separate, explicitly labeled rehearsal. Its simulated readings and payments are not judge evidence. Real hardware commissioning still needs corrected marker/LED placement and a complete fresh signed optical capture.
 
 ## Genuine evidence
 
@@ -83,3 +80,11 @@ The optical-only physical station runs at `http://127.0.0.1:4022`. If it stops, 
 The real Seeker camera inspection returned REWORK. Open its saved attempt or download **physical camera rework packet** from Judge evidence. The original work-order digest was saved before capture, and packet verification passed. Contact and optical controls stayed blocked. The camera stopped afterward. This packet contains actual camera evidence, failed placement, and no device receipts. It is not a paid physical inspection or full commissioning result.
 
 The sealed physical report now shows the saved offset and rotation with their approved limits. Its first correction is marker alignment before downstream monitor checks. The original negative packet and decision remain unchanged.
+
+## Settled paid real-camera inspection
+
+Task `01a18fed-4517-7319-a5be-cecbf6f4f4f7` delivered its real-camera FAIL report and reached SELLER_PAID. The bounded monitor finished successfully. Seller withdrawal `f6493d441afbffcbe7a4f9ae8626318a9551bfbe7a8095a076eece5c01ff0029` consumed the original result output and delivered a positive net of 1 test USDM. The purchase used exactly 100 Personal credits.
+
+Use `http://127.0.0.1:4022` for the real-evidence demonstration. Its current report shows paid inspection PASS through fresh read-only verification. Placement remains REWORK. Judge evidence shows the exact real-camera inspection report and escrow/result/payment links. Contact and signed optical commissioning remain incomplete. Use port 4021 only as the explicitly labeled rehearsal.
+
+Do not create another Task or payment. The original records remain under `.local/private-config/masumi/physical-camera-paid-20261031/`.

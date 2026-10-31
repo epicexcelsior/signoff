@@ -12,6 +12,8 @@ const caseLabels = {
   "wrong-key-rejects": "Another signing key rejects",
 };
 const recordLabels = {
+  "cardano-physical-camera-inspection":
+    "Real camera inspection · seller payment verified",
   "physical-camera-placement-rework":
     "Real camera inspection · incorrect placement rejected",
   "esp32-optical-diagnostic": "Real device response · 72 of 72 optical symbols",
@@ -87,18 +89,47 @@ async function paidInspectionSummary(records) {
     steps.append(item);
   }
   section.append(steps, report);
+  const physical = records.find(
+    (record) =>
+      record.id === "cardano-physical-camera-inspection" && record.sellerPaid,
+  );
+  if (physical) {
+    const current = element("article", undefined, "judge-physical-inspection");
+    current.append(
+      element("h3", "Real camera inspection. Real inspector payment."),
+      element(
+        "p",
+        "The Seeker supplied the camera measurement. The inspector returned FAIL for incorrect placement and missing device tests. Seller collection of 1 test USDM is verified. This result does not approve the installation.",
+      ),
+    );
+    for (const [hash, label] of [
+      [physical.transactionHash, "Escrow transaction ↗"],
+      [physical.resultTransactionHash, "Result transaction ↗"],
+      [physical.sellerReceiptTransactionHash, "Inspector payment ↗"],
+    ]) {
+      const link = cardanoLink(hash, label);
+      if (link) current.append(link, document.createTextNode(" · "));
+    }
+    current.append(await inspectorReport(physical));
+    section.prepend(current);
+  }
 }
 
 async function inspectorReport(record) {
-  const details = element("details", undefined, "judge-report");
+  const physical = record.physicalCameraEvidence === true;
+  const details = element(
+    "details",
+    undefined,
+    physical ? "judge-physical-report" : "judge-report",
+  );
   details.append(
     element(
       "summary",
-      `Read the original inspection report · ${record.outcome}`,
+      `${physical ? "Read the real-camera inspection report" : "Read the original inspection report"} · ${record.outcome}`,
     ),
   );
   const response = await fetch(
-    "/api/submission-evidence/artifacts/paid-inspection-report",
+    `/api/submission-evidence/artifacts/${record.reportArtifactId ?? "paid-inspection-report"}`,
   );
   if (!response.ok)
     throw new Error("The original inspection report is unavailable.");
@@ -116,7 +147,9 @@ async function inspectorReport(record) {
   details.append(
     element(
       "p",
-      "Original capture: synthetic. Inspection purchase: real Cardano Preprod escrow. This report does not establish physical acceptance.",
+      physical
+        ? "Actual camera capture. Real paid inspection. Contact and optical tests remain incomplete."
+        : "Original capture: synthetic. Inspection purchase: real Cardano Preprod escrow. This report does not establish physical acceptance.",
     ),
   );
   for (const predicate of report.predicates) {

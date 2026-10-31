@@ -9,6 +9,20 @@ const manifestUrl = new URL(
 const artifacts = new Map([
   ["manifest", manifestUrl],
   [
+    "physical-paid-inspection-report",
+    new URL(
+      "../submission/evidence/physical-paid-inspection-report.json",
+      import.meta.url,
+    ),
+  ],
+  [
+    "physical-paid-seller-receipt",
+    new URL(
+      "../submission/evidence/physical-paid-seller-receipt.json",
+      import.meta.url,
+    ),
+  ],
+  [
     "physical-camera-rework-packet",
     new URL(
       "../submission/evidence/physical-camera-rework-packet.json",

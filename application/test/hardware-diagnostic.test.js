@@ -78,3 +78,37 @@ test("original real-camera negative packet preserves disabled contact and reject
   packet.evidence.vision.frame.markers[0].corners[0].x++;
   assert.throws(() => verifyPacket(packet, record.workOrderDigest));
 });
+
+test("settled real-camera inspector evidence binds the actual packet and positive seller receipt", async () => {
+  const { createHash } = await import("node:crypto");
+  const load = (name) =>
+    readFileSync(new URL(`../submission/evidence/${name}`, import.meta.url));
+  const manifest = JSON.parse(
+    readFileSync(
+      new URL("../submission/evidence-manifest.json", import.meta.url),
+    ),
+  );
+  const record = manifest.liveEvidence.find(
+    (x) => x.id === "cardano-physical-camera-inspection",
+  );
+  const reportBytes = load("physical-paid-inspection-report.json");
+  const report = JSON.parse(reportBytes);
+  const receiptBytes = load("physical-paid-seller-receipt.json");
+  const receipt = JSON.parse(receiptBytes);
+  const packet = JSON.parse(load("physical-camera-rework-packet.json"));
+  const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
+  assert.equal(hash(reportBytes), record.usefulReportSha256);
+  assert.equal(hash(receiptBytes), record.sellerReceiptSha256);
+  assert.equal(receipt.exactReportSha256, hash(reportBytes));
+  assert.equal(receipt.workOrderHash, packet.digests.workOrder);
+  assert.equal(receipt.evidenceBundleHash, packet.digests.evidence);
+  assert.equal(receipt.verified, true);
+  assert.equal(receipt.originalResultConsumed, true);
+  assert.equal(receipt.netAtomicUnits, "1000000");
+  assert.equal(record.sellerPaid, true);
+  assert.equal(report.outcome, "FAIL");
+  assert.equal(
+    report.predicates.find((p) => p.id === "vision").outcome,
+    "FAIL",
+  );
+});
