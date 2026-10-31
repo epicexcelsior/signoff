@@ -38,7 +38,7 @@
   ],
   "dataWantedButUnavailable": "An authenticated manufacturer build/provenance record tied to this physical board. The current enrolled build remains an operator declaration.",
   "links": {
-    "repository": null,
+    "repository": "https://github.com/epicexcelsior/signoff",
     "video": null,
     "devfolioProject": null,
     "evidenceManifest": "application/submission/evidence-manifest.json",
@@ -61,7 +61,7 @@
   },
   "remoteDraft": {
     "editUrl": "https://devfolio.co/projects/proof-of-ready-e852/update",
-    "verifiedAt": "2026-10-31T13:15:54.904533+00:00",
+    "verifiedAt": "2026-10-31T13:29:15.747998+00:00",
     "published": false,
     "savedFields": [
       "projectName",
@@ -81,9 +81,8 @@
     "challengesCharacterCount": 882,
     "screenshotsUploaded": 3,
     "remaining": [
-      "Approve sanitized source publication and add the public repository URL.",
-      "Add approved final video URL and verify signed-out playback.",
-      "Approve final publication and submit before the deadline."
+      "Add the final public video URL and verify playback.",
+      "Approve final Devfolio publication and submit before the deadline."
     ],
     "claimLimits": [
       "Physical installation stays REWORK.",
