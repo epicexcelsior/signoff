@@ -645,3 +645,101 @@ test("late camera enumeration cannot revive stopped camera controls", async (t) 
     await browser.close();
   }
 });
+
+test("camera restart blocks optical dispatch until a new passing measurement binds that camera", async (t) => {
+  const { service } = fixture(t);
+  service.config.opticalAuthorized = true;
+  const origin = await server(t, service);
+  const browser = await chromium.launch({ channel: "chrome", headless: true });
+  try {
+    const page = await browser.newPage();
+    await page.route("**/api/config", async (route) => {
+      const response = await route.fetch();
+      const config = await response.json();
+      await route.fulfill({ json: { ...config, mode: "physical" } });
+    });
+    await page.route("**/vision/controller.js", (route) =>
+      route.fulfill({
+        contentType: "text/javascript",
+        body: `let generation=0;
+      export function createVisionController({onState}) { const id='camera-'+(++generation); let phase='STOPPED'; return {
+      getState:()=>({phase,camera:{id},calibrationId:id}),start:async()=>{phase='ACTIVE';onState({phase})},stop:()=>{phase='STOPPED';onState({phase})},
+      capture:async()=>{const square=x=>[{x,y:150},{x:x+100,y:150},{x:x+100,y:250},{x,y:250}];return {markers:[{id:0,corners:square(100)},{id:10,corners:square(100+(globalThis.badPlacement?200:100)*100/60)}],resolution:{width:640,height:480},capturedAt:Date.now(),calibrationId:id,frameDigest:'0x'+'a'.repeat(64),camera:{id}}}}}`,
+      }),
+    );
+    let dispatches = 0;
+    await page.route("**/optical-challenge", (route) => {
+      dispatches++;
+      return route.abort();
+    });
+    await page.goto(origin);
+    await page
+      .getByRole("button", { name: "Approve work order", exact: true })
+      .click();
+    await page
+      .getByRole("button", { name: "Start capture attempt", exact: true })
+      .click();
+    await page
+      .getByRole("button", { name: "Start camera", exact: true })
+      .click();
+    await page
+      .getByRole("button", { name: "Save camera measurement", exact: true })
+      .click();
+    await page.waitForFunction(
+      () => !document.getElementById("capture-optical").disabled,
+    );
+    await page
+      .getByRole("button", { name: "Stop camera", exact: true })
+      .click();
+    await page
+      .getByRole("button", { name: "Start camera", exact: true })
+      .click();
+    assert.equal(
+      await page
+        .getByRole("button", { name: "Capture signed optical test" })
+        .isDisabled(),
+      true,
+    );
+    // A stale queued click must also fail before preparing any device request.
+    await page.locator("#capture-optical").dispatchEvent("click");
+    await page.waitForFunction(() =>
+      document
+        .getElementById("feedback")
+        .textContent.includes("passing measurement"),
+    );
+    assert.equal(dispatches, 0);
+    await page
+      .getByRole("button", { name: "Start capture attempt", exact: true })
+      .click();
+    await page
+      .getByRole("button", { name: "Save camera measurement", exact: true })
+      .click();
+    await page.waitForFunction(
+      () => !document.getElementById("capture-optical").disabled,
+    );
+    assert.equal(dispatches, 0);
+    await page.evaluate(() => {
+      globalThis.badPlacement = true;
+    });
+    await page
+      .getByRole("button", { name: "Start capture attempt", exact: true })
+      .click();
+    await page
+      .getByRole("button", { name: "Save camera measurement", exact: true })
+      .click();
+    await page.waitForFunction(() =>
+      document
+        .getElementById("feedback")
+        .textContent.includes("measurement saved"),
+    );
+    assert.equal(
+      await page
+        .getByRole("button", { name: "Capture signed optical test" })
+        .isDisabled(),
+      true,
+    );
+    assert.equal(dispatches, 0);
+  } finally {
+    await browser.close();
+  }
+});

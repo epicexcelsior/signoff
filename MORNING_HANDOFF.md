@@ -71,3 +71,5 @@ The local rehearsal station restarted with the recovery fixes. An actual rehears
 Camera-choice enumeration does not block station controls. A late result cannot revive a stopped camera. Uncertain-operation recovery instructions remain visible until refresh, including after camera errors or Stop camera. Work-order changes stay blocked during that uncertainty.
 
 The read-only preflight reports station availability, saved-evidence integrity, and remaining requirements. A successful rehearsal preflight is not physical acceptance. If it fails, follow its error before recording. The latest phone battery check reported 9 percent, USB charging, and no active camera session.
+
+If you change or restart the camera, start a new capture attempt and save a passing placement measurement before the LED test. The browser blocks emission from an old camera measurement or a failed placement measurement.

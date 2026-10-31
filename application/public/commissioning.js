@@ -72,6 +72,17 @@ async function act(run) {
     renderControls();
   }
 }
+function opticalCameraReady() {
+  const state = camera?.getState();
+  return (
+    state?.phase === "ACTIVE" &&
+    current?.vision?.source === "browser-camera" &&
+    current.vision.measurement?.state === "PASS" &&
+    Boolean(state.camera?.id) &&
+    state.camera.id === current.vision.camera?.id &&
+    state.calibrationId === current.vision.frame.calibrationId
+  );
+}
 function renderControls() {
   const blocked = busy || outcomeUnknown;
   $("start-camera").disabled = blocked || !order;
@@ -122,8 +133,16 @@ function renderControls() {
     !current?.vision ||
     current?.vision.source !== "browser-camera" ||
     Boolean(current?.optical && current.optical.stage !== "PREPARED") ||
-    camera?.getState().phase !== "ACTIVE" ||
+    !opticalCameraReady() ||
     !config?.optical_authorized;
+  if (
+    active &&
+    !current.optical?.capture &&
+    current?.vision?.source === "browser-camera" &&
+    !opticalCameraReady()
+  )
+    $("optical-status").textContent =
+      "Start a new attempt and save a passing measurement from the active camera before the LED test.";
   for (const id of [
     "prepare-inspection",
     "reconcile-acceptance",
@@ -614,6 +633,10 @@ $("contract-plan").addEventListener("click", () =>
 );
 $("capture-optical").addEventListener("click", () =>
   act(async () => {
+    if (!opticalCameraReady())
+      throw new Error(
+        "Start a new attempt and save a passing measurement from the active camera before the LED test.",
+      );
     const challenge = await api(
       `/api/commissioning/sessions/${current.id}/optical-challenge`,
       {},
@@ -633,6 +656,10 @@ $("capture-optical").addEventListener("click", () =>
     });
     try {
       await capture.ready;
+      if (!opticalCameraReady())
+        throw new Error(
+          "The camera changed. Start a new attempt before another LED test.",
+        );
       feedback(
         "Optical capture is ready. Keep the camera steady throughout the signed test.",
       );
