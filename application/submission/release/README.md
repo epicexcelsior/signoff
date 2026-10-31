@@ -18,6 +18,10 @@ signoff provides remote acceptance tests for monitoring equipment installed by i
 
 The station is deterministic and operator-driven. It does not run autonomous LLM reasoning. Customer adoption, pricing, cost savings, and reduced revisits are unvalidated.
 
+## API3 tamper test
+
+Run `npm --prefix application/api3 run judge:admission:submission` from the repository root. [Judge commands and five response files](docs/JUDGE.md) cover valid admission and edited, stale, different-request, and wrong-key rejection. The commands read deployed Base Sepolia code and send no transaction. RPC failures are inconclusive.
+
 ## Run locally
 
 Use Node.js 24, Python 3, and a current desktop Chrome installation. The app binds to localhost. No wallet or service credentials are needed for the saved evidence and rehearsal.

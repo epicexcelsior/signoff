@@ -28,6 +28,10 @@ The goal is agent-orchestrated commissioning with a useful paid inspector and an
 
 **Current demonstrations return REVIEW or REWORK.** READY requires complete physical evidence, a freshly checked seller receipt, an enrolled declared build, and a matching pinned contract decision. No complete physical installation or live paid acceptance exists through this port.
 
+## API3 tamper test
+
+Run `npm --prefix application/api3 run judge:admission:submission` to replay the deployed software-admission proof. [Judge commands and five response files](application/submission/release/JUDGE.md) cover the valid response and all four tamper cases. The commands read deployed Base Sepolia code and send no transaction. RPC failures are inconclusive.
+
 ## Submission checkpoint
 
 The owner handles pitch, filming, editing, and Devfolio. [DEMO_NOW.md](DEMO_NOW.md) owns the local click sequence and recovery steps. [The private handoff](MORNING_HANDOFF.md) routes technical continuation.
