@@ -323,7 +323,7 @@ footer {
     outline: 4px solid var(--paper);
   }
   #verify-files:focus-visible {
-    outline: 3px solid var(--signal);
+    outline: 3px solid var(--ink);
     outline-offset: 4px;
   }
 }
