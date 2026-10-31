@@ -1,5 +1,7 @@
 # Proof of Ready — product and implementation plan
 
+[Design authority](docs/DESIGN.md) defines visual, interaction, language, and presentation rules. Use clear, common words. Preserve the exact evidence flow and result states.
+
 Build agent-orchestrated commissioning for a networked monitoring installation. Bind an approved work order, fresh physical evidence, useful paid inspection, and authenticated software policy.
 
 This document defines goals and completion criteria. [README](README.md#current-execution-index) owns next actions. [Engineering](docs/ENGINEERING.md) owns implemented interfaces. [Evidence](research/EVIDENCE.md) owns verified results and gaps.
@@ -110,3 +112,10 @@ Defer these goals until the four submission priorities have genuine evidence:
 - Broader work orders, device providers and vulnerability policies.
 
 Keep current claims bounded to deterministic operator-driven commissioning, one supported CVE policy, and actual observed evidence. Do not trade required paid/physical proof for more features.
+
+
+## Final submission boundary
+
+The saved real-evidence demo is available on port 4022. This does not satisfy full physical acceptance. The final hardware attempt found no connected phone or board and stopped before emission. A source-dependent on-chain terminal decision remains missing, so API3 qualification is not established. Passing tamper rejections cannot substitute for that decision.
+
+Release engineering now prepares a separate sanitized source candidate and rehearses it without private configuration. The owner owns pitch, filming, editing, publication approval, and Devfolio. Do not expand architecture, add services, or claim autonomous LLM reasoning, complete physical acceptance, adoption, or measured savings.

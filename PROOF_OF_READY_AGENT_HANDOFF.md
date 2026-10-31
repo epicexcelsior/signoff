@@ -27,11 +27,11 @@ The API3 paid client and unsigned deployment/judge tooling are integrated. Both 
 
 The isolated MPS runtime and dedicated PostgreSQL database retain the original Preprod wallets and two settled inspections. Both payments are Withdrawn. A recurring upstream cancellation error can stop MPS. Fresh verification then returns REVIEW. Do not restart or resend uncertain work blindly. Upstream MPS starts chain jobs independently of adapter grants. Its reviewed collection configuration retains the original wallets and settled-payment records. Preserve its live lifecycle and original service configuration.
 
-The local overview embeds all nine current Markdown documents. HTML, combined Markdown, and ZIP exports are generated snapshots. Regenerate it after changes. [Evidence](research/EVIDENCE.md#current-local-implementation-evidence) owns check results. Do not duplicate test counts here.
+The local overview embeds all ten current Markdown documents. HTML, combined Markdown, and ZIP exports are generated snapshots. Regenerate it after changes. [Evidence](research/EVIDENCE.md#current-local-implementation-evidence) owns check results. Do not duplicate test counts here.
 
 ## Continue work
 
-Use [the current demo walkthrough](MORNING_HANDOFF.md). The saved phone viewer supports offline evidence presentation after one USB load. Fresh commissioning still requires the coordinator. The owner disconnected devices while traveling. On-device cache installation and corrected marker placement remain unverified. Preserve the current real camera FAIL and paid seller receipt. The shared interface uses petrol, cyan, and amber with a clickable proof trail and Focus view.
+Use [the current demo walkthrough](MORNING_HANDOFF.md). The saved phone viewer supports offline evidence presentation after one USB load. Fresh commissioning still requires the coordinator. The owner disconnected devices while traveling. A connected Seeker Chrome saved load and offline hash check passed. Final portrait QA and corrected marker placement remain unverified. Preserve the current real camera FAIL and paid seller receipt. [Design authority](docs/DESIGN.md) defines the interface and presentation. The camera measurement, exact result, and next action lead. Saved and rehearsal modes stay explicit. Focus view and proof links remain available.
 
 Main is the integration target. Keep the existing managed worktrees. All reviewed lane changes must be integrated before private main backup. Generated overviews, build artifacts, private wallets, env files, runtime ledgers, and local SDK/service state stay outside tracked source. Read ignored `.local/README.md` for downloaded official references and local-only material. The owner requested no cache commit or push.
 
@@ -69,3 +69,10 @@ Local implementation and private reviewed commits/backups are authorized. Routin
 ## Overnight continuation checkpoint
 
 The original Seeker camera diagnostic now appears in Judge evidence with its signed receipt, public key, and private-video hash. Replay verifies the actual receipt without BLE operations. It remains a diagnostic binding, not installation acceptance. The station can run locally in simulation mode. Continue continuous phone camera capture and physical runtime enrollment. Preserve at least four hardware claims and stop hardware operations on failure. Read `MORNING_HANDOFF.md` for launch and recording limits.
+
+
+## Final submission routing
+
+The owner handles pitch, filming, editing, and Devfolio. Read local DEMO_NOW.md for operation. Hardware experimentation stopped at an unavailable-device check. No fresh optical commissioning completed. API3 remains NOT QUALIFIED despite passing deployed tamper rejections because the existing failed-inspection prerequisite fixes the terminal rejection.
+
+The tested sanitized source candidate is available through ignored `.local/release-candidate`. It has a fresh Git root and no remote. The sealed source archive is under `.local/release-ready/`. Public checks exclude internal Markdown and block private-document HTTP routes. Do not publish this private repository's history. Original payment and oracle files remain unchanged. All source publication and submission still require owner authorization.

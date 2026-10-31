@@ -1,5 +1,15 @@
 # Proof of Ready
 
+**Know before you approve.** Check the actual device before accepting the installation. The recorded camera check found incorrect placement. The paid inspector returned FAIL. Acceptance stays blocked.
+
+[Try the saved demo](http://127.0.0.1:4022/demo/) · [Design authority](docs/DESIGN.md)
+
+1. View the recorded camera measurement and the exact failure.
+2. Read the independent inspection and original payment receipt.
+3. Verify the saved evidence files. This does not run a new device or blockchain check.
+
+**Operator instructions:** open the local [DEMO_NOW.md](DEMO_NOW.md). Run `python3 application/scripts/demo-now.py` from this directory. It reuses port 4022 and starts no hardware or payment.
+
 **Open the phone demo: <http://127.0.0.1:4022/demo/>.** Load it once through USB and wait for **Saved in this browser**. Its original real evidence then works without the laptop. Fresh tests use the [live station](http://127.0.0.1:4022). Port 4021 is the separate labeled rehearsal.
 
 The starting wedge is equipment handover for facility teams and installation contractors. The proposed business model is a paid inspection per handover. Demand and pricing remain unvalidated. The demo shows a real defect, a useful paid report, and the evidence that blocks acceptance.
@@ -12,9 +22,11 @@ The goal is agent-orchestrated commissioning with a useful paid inspector and an
 
 ## Submission checkpoint
 
-Open [the morning demo handoff](MORNING_HANDOFF.md) for launch steps, recording backups, and remaining physical requirements.
+The owner handles pitch, filming, editing, and Devfolio. [DEMO_NOW.md](DEMO_NOW.md) owns the local click sequence and recovery steps. [The private handoff](MORNING_HANDOFF.md) routes technical continuation.
 
-Use **Open real inspection** to restore the exact reviewed attempt. Use **Check demo** to verify its packet and recheck the original payment. Neither action starts a capture or purchase. **Focus view** hides setup for recording. The proof-trail cards open the corresponding evidence.
+**API3 NOT QUALIFIED:** the deployed four tamper rejections replay successfully. The valid original transaction rejected because its inspection prerequisite was false. The CVE verdict does not materially determine that terminal decision. [The qualification audit](application/submission/evidence/api3-qualification-audit.json) records this gap.
+
+Use **View the recorded inspection** to restore the exact reviewed attempt. Use **Recheck saved record** to verify its packet and recheck the original payment. Neither action starts a capture or purchase. **Focus view** hides setup for recording. The proof-trail cards open the corresponding evidence.
 
 **The project is not submission-complete.** The local software baseline works. The original paid inspection and deployed source checks are verified. Physical evidence and the complete video remain incomplete.
 
@@ -37,6 +49,7 @@ Start here, then open the document for your task. Keep each fact in its canonica
 | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------- |
 | [README](README.md)                                          | Run the project, find context, and select the next action                                   |
 | [Implementation plan](PROOF_OF_READY_IMPLEMENTATION_PLAN.md) | Product goals, completion criteria, and owner decisions                                     |
+| [Design authority](docs/DESIGN.md)                         | Canonical visual, interaction, language, and presentation design rules                       |
 | [Engineering reference](docs/ENGINEERING.md)                 | Implemented architecture, interfaces, configuration, operating procedures, and recovery     |
 | [Evidence](research/EVIDENCE.md)                             | Verified checks, dated external findings, hardware inventory, provenance, and evidence gaps |
 | [Agent handoff](PROOF_OF_READY_AGENT_HANDOFF.md)             | Resume work with the correct boundaries and reading order                                   |
@@ -45,7 +58,7 @@ Start here, then open the document for your task. Keep each fact in its canonica
 | [API3 guide](application/api3/README.md)                     | Paid NVD access, deployment preparation, deployed judge checks, and payment recovery        |
 | [AGENTS.md](AGENTS.md)                                       | Repository instructions, permissions, and file ownership                                    |
 
-The private HTML overview embeds all nine current Markdown documents and its styling. It is a generated snapshot, not another source of truth. Original inputs and archived notes remain historical references. Check current code and observable behavior when documents conflict with them.
+The private HTML overview embeds all ten current Markdown documents and its styling. It is a generated snapshot, not another source of truth. Original inputs and archived notes remain historical references. Check current code and observable behavior when documents conflict with them.
 
 ## Export documentation offline
 
@@ -53,9 +66,9 @@ From `application/`, run `npm run overview`. The command generates three private
 
 | Artifact                                 | Contents                                                                                                                          |
 | ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| `application/public/overview.html`       | Standalone overview, embedded styling, complete text of all nine documents, and original Markdown downloads                       |
+| `application/public/overview.html`       | Standalone overview, embedded styling, complete text of all ten documents, and original Markdown downloads                       |
 | `application/public/overview.md`         | Combined Markdown context for processing or export                                                                                |
-| `application/public/overview-export.zip` | HTML, combined Markdown, nine original Markdown files with repository paths, linked local reference files, and a SHA-256 manifest |
+| `application/public/overview-export.zip` | HTML, combined Markdown, ten original Markdown files with repository paths, linked local reference files, and a SHA-256 manifest |
 
 Copy `overview.html` alone to read the overview and full document text offline. Select **Export Markdown** for combined context. Expand a full document to download its original Markdown. External services and the running application remain separate. The ZIP preserves referenced local files but does not contain the complete application or archived originals.
 
@@ -77,11 +90,11 @@ In a second terminal, run `npm run demo:preflight` from `application/`. The read
 Open <http://127.0.0.1:4021>. The private overview is at <http://127.0.0.1:4021/overview.html>.
 
 1. Enter the installation reference.
-2. Select **Approve work order**.
+2. Select **Confirm inspection requirements**.
 3. Select a rehearsal condition.
 4. Select **Run rehearsal**.
 5. Inspect the predicates and installation decision.
-6. Select **Verify packet** or **Test an edited packet**.
+6. Select **Verify evidence files** or **Try changing the evidence**.
 7. Select **Export evidence packet** to save the original evidence.
 
 A correct rehearsal returns REVIEW because optical and external evidence remain incomplete. Misplacement, a stuck contact, or missing delivery returns REWORK. A corrected attempt preserves the previous record. Rehearsals move no funds and make no hardware calls.
@@ -107,7 +120,7 @@ Owner-confirmed hardware and wiring state live in [Available hardware](research/
 | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
 | Coordinator             | Immutable approval, signed contact/optical/photo records, durable claims, original inspector bindings, pinned contract reads, packet reconstruction | Complete physical installation with its own original external evidence                                     |
 | Camera                  | OpenCV marker detection, planar guidance, tracked optical sampling, phase reconstruction, cleanup, printable target                                 | Physical accuracy, real-time throughput, and camera/emitter matching                                       |
-| Masumi                  | Useful paid REVIEW, exact transport hashes, hosted execution, confirmed withdrawal and positive seller receipt                                      | Actual physical inspection input and live refund recovery                                                  |
+| Masumi                  | Useful paid FAIL on actual camera evidence, exact transport hashes, confirmed withdrawal and positive seller receipt. Earlier synthetic REVIEW remains separate | Complete physical commissioning and live refund recovery                                                  |
 | API3                    | Native verifier, bounded CVE evaluator, durable paid-fetch client, genuine paid CVE response, deployed policy, pinned reader                        | Installed-build provenance and physical installation acceptance. Historical paid REVIEW finalized REJECTED |
 | ESP32                   | ESP32-C6 builds, signed protocol, persistent replay claims, reviewed optical-only flash and USB startup                                             | Runtime enrollment, reviewed button wiring, and actual optical/contact/camera tests                        |
 | Seeker                  | API 36 debug APK, signed photo claims, request reservation, restricted WebView, read-only BLE preflight                                             | Authorized install, Android SQLite instrumentation, lifecycle, camera, and BLE checks                      |
@@ -143,7 +156,7 @@ Tests run serially to isolate browser lifecycle checks. Browser modules require 
 
 Use **Judge evidence** to inspect saved original chain records and download their exact-byte hashes. **Reset presentation** clears the screen and stops the camera. It preserves saved attempts, device state and financial records. The manifest records all five deployed source checks and the mined rejection. They describe the historical paid REVIEW, not the selected attempt. After API3 dependency installation, run `npm --prefix api3 run judge:submission` for credential-free historical chain replay.
 
-After isolated dependency installation, run `npm run test:integrations`. [Engineering](docs/ENGINEERING.md#verification-commands) lists package, Foundry, firmware, Python, and Android commands. [Evidence](research/EVIDENCE.md#current-local-implementation-evidence) records observed results and their limits. `submission:check` checks tracked artifact boundaries. It does not publish or establish submission readiness.
+After isolated dependency installation, run `npm run test:integrations`. [Engineering](docs/ENGINEERING.md#verification-commands) lists package, Foundry, firmware, Python, and Android commands. [Evidence](research/EVIDENCE.md#current-local-implementation-evidence) records observed results and their limits. `submission:check` checks tracked artifact boundaries and qualification consistency. Public candidates also enforce the explicit source allowlist and file hashes. `--require-ready` fails while submission evidence is incomplete. No check publishes anything.
 
 ## Owner actions on the critical path
 
@@ -200,3 +213,14 @@ A separate optical-only physical station is configured on loopback port 4022. It
 The real-camera negative inspection now has a completed paid Task with confirmed escrow and result transactions. Seller collection is verified, with a positive net of 1 test USDM. The original paid REVIEW and its positive seller receipt remain preserved separately. Read the morning handoff before resuming this operation.
 
 The real-evidence demo is at <http://127.0.0.1:4022>. Its paid-inspection gate passes through fresh seller-receipt verification. Its actual placement defect still returns REWORK. Port 4021 remains an explicitly labeled rehearsal.
+
+
+## Private workspace and public release
+
+Keep the current private Git history private. Internal plans, account notes, hardware inventory, research history, and operator handoffs remain in their canonical locations. This preserves the proven station and its documentation links.
+
+`npm --prefix application run release:prepare` exports a separate candidate under ignored `.local/release-candidates/`. Its Markdown set is only setup, evidence, and judge instructions. The candidate contains reviewed source, lockfiles, licenses, and original evidence. It excludes private documents, credential files, runtime ledgers, private exports, and private Git history. Its public profile blocks private-document HTTP routes. Its `RELEASE.json` pins every distributed file.
+
+The public-facing document templates are [setup](application/submission/release/README.md) and [judge instructions](application/submission/release/JUDGE.md). The evidence index is generated from the reviewed manifest. These documents serve public release. They do not replace private operating instructions.
+
+Public publication still requires owner authorization. API3 qualification and physical acceptance remain incomplete even when the source candidate passes its clean-checkout rehearsal.
