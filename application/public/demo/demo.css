@@ -354,3 +354,12 @@ footer {
   overflow-wrap: anywhere;
   font: 14px/1.7 var(--mono);
 }
+/* Keep the saved-copy label visible when a judge follows an evidence link. */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+section {
+  scroll-margin-top: 130px;
+}
