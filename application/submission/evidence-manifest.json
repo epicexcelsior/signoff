@@ -325,15 +325,15 @@
       }
     },
     "submission": {
-      "status": "draft",
+      "status": "remote-draft-saved-publication-pending",
       "publicRepositoryUrl": null,
       "demoVideoUrl": null,
       "devfolioProjectUrl": null,
       "remaining": [
-        "Record owner pitch and explanation; edit the preserved genuine proof clips",
-        "Review public release candidate",
-        "Owner authorizes publication and Devfolio submission",
-        "Review the final video no longer than 150 seconds; preserve separate-run labels"
+        "Upload 1\u20136 actual application screenshots to the saved Devfolio draft",
+        "Review final video with owner recordings and verify its public playback",
+        "Review existing repository history before changing that same repository to public",
+        "Add public repository and video links, then authorize and complete Devfolio submission"
       ]
     }
   },

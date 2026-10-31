@@ -1,10 +1,13 @@
 {
   "schema": "proof-of-ready/devfolio-draft/v1",
-  "status": "draft-not-submitted",
-  "formMapping": "Draft content. Confirm field names and required links in the actual Devfolio form.",
+  "status": "saved-remote-draft-not-submitted",
+  "formMapping": "Browser editor field names and saved values verified after reload. Devfolio-specific MCP tools are unavailable in this session; Chrome browser connector supplied draft editing.",
   "projectName": "Proof of Ready",
   "tagline": "Know before you approve.",
-  "selectedPartnerTracks": ["Cardano", "API3"],
+  "selectedPartnerTracks": [
+    "Cardano",
+    "API3"
+  ],
   "automaticTrack": "TUM Blockchain Track",
   "problem": "Facility operators accept monitoring equipment installed by independent contractors. Failed installations create disputed handovers, manual checks, and potential repeat visits. An installation photo does not establish that equipment meets the agreed checks.",
   "solution": "Remote acceptance testing for contractor-installed monitoring equipment. The operator defines the checks, reviews camera and device evidence, and receives an independent paid report before accepting the handover. The demonstrated installation fails placement, and its paid report explains the defect.",
@@ -55,5 +58,39 @@
     "cardano": "Actual paid useful FAIL on camera evidence with verified positive seller receipt.",
     "api3": "Source-dependent software admission verified on Base Sepolia with a fresh paid NVD response, four deployed tamper rejections, vulnerable-build rejection, and unsigned-bypass rejection. Final judging remains with the organizer.",
     "physicalInstallation": "NOT ACCEPTED: placement fails and complete signed contact/optical commissioning evidence is missing."
+  },
+  "remoteDraft": {
+    "editUrl": "https://devfolio.co/projects/proof-of-ready-e852/update",
+    "verifiedAt": "2026-10-31T12:52:05.556453+00:00",
+    "published": false,
+    "savedFields": [
+      "projectName",
+      "tagline",
+      "The problem it solves",
+      "Challenges I ran into",
+      "Cardano track and explanation",
+      "API3 track and explanation",
+      "Solidity",
+      "HTML",
+      "Node.js",
+      "CSS",
+      "JavaScript",
+      "Web platform"
+    ],
+    "problemCharacterCount": 2010,
+    "challengesCharacterCount": 882,
+    "screenshotsUploaded": 0,
+    "remaining": [
+      "Upload 1\u20136 actual application screenshots. Chrome upload connector denied the local asset paths outside its configured workspace roots.",
+      "Add approved public repository URL. Preserve the existing repository identity.",
+      "Add approved final video URL and verify signed-out playback.",
+      "Approve publication and publish the completed project before the deadline."
+    ],
+    "claimLimits": [
+      "Physical installation stays REWORK.",
+      "The actual-camera paid FAIL stays distinct from the earlier paid synthetic REVIEW.",
+      "API3 evidence uses source-dependent software admission, not the earlier failed-inspection rejection.",
+      "Separate LED, camera, paid attempt and source-admission runs do not establish one completed installation."
+    ]
   }
 }
