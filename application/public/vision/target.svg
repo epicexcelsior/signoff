@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="210mm" height="297mm" viewBox="0 0 210 297" role="img" aria-labelledby="title description">
+<title id="title">signoff planar reference and device marker</title>
+<desc id="description">Print at 100 percent. Measure the 60 millimeter reference marker and 100 millimeter ruler. The device target center sits 100 millimeters to the right of the reference center.</desc>
+<rect width="210" height="297" fill="white"/>
+<g fill="black" font-family="sans-serif">
+<text x="16" y="18" font-size="7">signoff</text>
+<text x="16" y="27" font-size="4">Print at 100%. Disable fit-to-page.</text>
+<text x="16" y="34" font-size="4">Measure the black reference edge: 60 mm.</text>
+<g shape-rendering="crispEdges" transform="translate(30 50) scale(10)"><rect width="6" height="6" fill="white"/><rect x="0" y="0" width="1" height="1"/><rect x="1" y="0" width="1" height="1"/><rect x="2" y="0" width="1" height="1"/><rect x="3" y="0" width="1" height="1"/><rect x="4" y="0" width="1" height="1"/><rect x="5" y="0" width="1" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="2" y="1" width="1" height="1"/><rect x="5" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="1" y="2" width="1" height="1"/><rect x="3" y="2" width="1" height="1"/><rect x="5" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="1" y="3" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="5" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="1" y="4" width="1" height="1"/><rect x="2" y="4" width="1" height="1"/><rect x="4" y="4" width="1" height="1"/><rect x="5" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="1" y="5" width="1" height="1"/><rect x="2" y="5" width="1" height="1"/><rect x="3" y="5" width="1" height="1"/><rect x="4" y="5" width="1" height="1"/><rect x="5" y="5" width="1" height="1"/></g>
+<text x="30" y="119" font-size="4">Reference ID 0 · 60 mm</text>
+<g fill="none" stroke="#555" stroke-width="0.5" stroke-dasharray="2 2"><rect x="145" y="65" width="30" height="30"/><path d="M140 80h40m-20-20v40"/></g>
+<text x="140" y="110" font-size="4">Device target</text>
+<text x="140" y="117" font-size="4">x = 100 mm, y = 0</text>
+<path d="M30 142h100m-100-3v6m100-6v6" fill="none" stroke="black" stroke-width="0.5"/>
+<text x="57" y="151" font-size="4">Check this ruler: 100 mm</text>
+<text x="16" y="171" font-size="4">Keep both markers flat on the same plane.</text>
+<text x="16" y="178" font-size="4">Align the device marker's top edge with the reference.</text>
+<text x="16" y="185" font-size="4">This reference supports planar guidance, not safety certification.</text>
+<path d="M20 201h170" stroke="#777" stroke-width="0.4" stroke-dasharray="2 2"/>
+<text x="16" y="212" font-size="4">Cut below this line. Attach the marker rigidly to the device.</text>
+<g shape-rendering="crispEdges" transform="translate(45 225) scale(5)"><rect width="6" height="6" fill="white"/><rect x="0" y="0" width="1" height="1"/><rect x="1" y="0" width="1" height="1"/><rect x="2" y="0" width="1" height="1"/><rect x="3" y="0" width="1" height="1"/><rect x="4" y="0" width="1" height="1"/><rect x="5" y="0" width="1" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="5" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="2" y="2" width="1" height="1"/><rect x="3" y="2" width="1" height="1"/><rect x="5" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="3" y="3" width="1" height="1"/><rect x="5" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="1" y="4" width="1" height="1"/><rect x="2" y="4" width="1" height="1"/><rect x="3" y="4" width="1" height="1"/><rect x="5" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="1" y="5" width="1" height="1"/><rect x="2" y="5" width="1" height="1"/><rect x="3" y="5" width="1" height="1"/><rect x="4" y="5" width="1" height="1"/><rect x="5" y="5" width="1" height="1"/></g>
+<text x="88" y="236" font-size="4">Device ID 10 · 30 mm</text>
+<text x="88" y="244" font-size="4">Keep a white border around this marker.</text>
+<text x="16" y="280" font-size="3.5">OpenCV 4.13.0 · DICT_4X4_50 · Reference center: (0, 0)</text>
+</g></svg>

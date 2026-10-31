@@ -1,0 +1,55 @@
+{
+  "scope": "One owner-requested camera diagnostic. Generated diagnostic binding, not an approved installation. Screen recording is not commissioning camera evidence.",
+  "phase": "RECEIPT_RETURNED",
+  "challenge": {
+    "work_order_digest": "0x6c02e1d45df6f93392824a47e8b38fa1d83bb89495bddc953b144d8f0077ae4d",
+    "session_id": "362224da3838986b",
+    "request_id": "6fcfe378aaaa179e",
+    "nonce": 1167303781,
+    "bits": "4cfaa5c1",
+    "half_symbol_ms": 250,
+    "requested_at": 1793411711,
+    "expires_at": 1793411756
+  },
+  "claimsBefore": 63,
+  "startedAt": 1793411711,
+  "receipt": {
+    "protocol": "proof-of-ready/optical-execution/v1",
+    "provider": "proof-ready-reference",
+    "sensor": "optical-led",
+    "work_order_digest": "0x6c02e1d45df6f93392824a47e8b38fa1d83bb89495bddc953b144d8f0077ae4d",
+    "session_id": "362224da3838986b",
+    "request_id": "6fcfe378aaaa179e",
+    "nonce": 1167303781,
+    "bits": "4cfaa5c1",
+    "half_symbol_ms": 250,
+    "started_at": 1793411713,
+    "completed_at": 1793411731,
+    "symbol_count": 72,
+    "receipt_signature": "v3:yMc1QJ96Nkz88PHF9a861ReGo3Tpo0PSKxMeFxZMGLACn+eKqAK0Dp7/1OkXiU5oqJqrpBsrwzg+PqWWjPTvGA=="
+  },
+  "finishedAt": 1793411741,
+  "signatureVerified": true,
+  "cameraDiagnostic": {
+    "source": "Seeker native preview screen recording",
+    "trackedCommissioningCapture": false,
+    "pixelRegion": {
+      "x": 28,
+      "y": 96,
+      "variance": 11935.467581733075
+    },
+    "low": 17.04,
+    "high": 207.24,
+    "matched": 72,
+    "startAtMs": 10490,
+    "totalSymbols": 72
+  },
+  "claimsAfter": 62,
+  "publicKeyJwk": {
+    "kty": "EC",
+    "crv": "P-256",
+    "x": "YhjFI5FDP5pod0MZLFVYoSEyC4-mZJMeWqobbl-_NC8",
+    "y": "lBGRPItyyRo-e5di4053lV7WA1uB-ierd3DdjUki7WM"
+  },
+  "recordingSha256": "d9e190a099f5af69a524e88adf430704737eafde4c939d295304415a1023b90a"
+}

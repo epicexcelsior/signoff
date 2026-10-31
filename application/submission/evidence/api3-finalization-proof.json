@@ -1,0 +1,17 @@
+{
+  "schema": "proof-of-ready/api3-finalization-proof/v1",
+  "chainId": 84532,
+  "contract": "0x98023c425670A9690AB362c00fBea1Bc11dCE2Cb",
+  "jobId": "0x283a22d5708fb1dd4b9b723c2094732c1e30d2aea46f0d1baf7edecceed944bc",
+  "transactionHash": "0xa94e48a5d72065ad46c4c558d26a7c3f618aa491fe46e6d012fd7aa7b1356eab",
+  "blockNumber": "52413614",
+  "blockHash": "0x5ade5c2750f588e1e66fc2cc1308b6d13ce0a5177ed368b359f79d3e3d1d3735",
+  "judgeBlockNumber": "52413566",
+  "judgeBlockHash": "0xa127f28b4460389c27e687142ee1b1eabb7be30c0ea77b5f5b7098b2b3e4acda",
+  "decision": "REJECTED",
+  "sourceResponseDigest": "0xb2d9196409667ff1fda3829c6dfae655f26aec2d6572ddaa7d68b195eb1655f7",
+  "acceptanceHash": "0x50025b20479023a6d1a64b26f6105c9438e03af45edee8f1c3a1b6d1ac7c3153",
+  "gasUsed": "906065",
+  "mode": "MINED_TRANSACTION_AND_PINNED_STATE",
+  "limitation": "Cardano payment remains an independently verified operator assertion. The contract does not verify Cardano consensus or physical truth."
+}

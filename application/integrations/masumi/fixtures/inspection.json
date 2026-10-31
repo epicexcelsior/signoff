@@ -1,0 +1,18 @@
+{
+  "mode": "simulation",
+  "workOrderHash": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "evidenceBundleHash": "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "requiredChecks": ["contact", "delivery"],
+  "checks": [
+    {
+      "id": "contact",
+      "outcome": "FAIL",
+      "reason": "The observed contact did not change during the required transition."
+    },
+    {
+      "id": "delivery",
+      "outcome": "PASS",
+      "reason": "The receiver recorded the original observations within the required deadline."
+    }
+  ]
+}

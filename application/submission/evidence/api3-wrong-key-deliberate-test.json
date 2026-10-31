@@ -1,0 +1,7 @@
+{
+  "airnode": "0xF54E361B9Fc8e2D2cF56Ca1B1c3C00da044378A4",
+  "requestHash": "0x3f0881fb062ac6b989c133e0b5651d19947e38aebe4d94750627fa612f447d15",
+  "timestamp": "1793404581",
+  "data": "{\"configurations\":[{\"nodes\":[{\"operator\":\"OR\",\"negate\":false,\"cpeMatch\":[{\"vulnerable\":true,\"criteria\":\"cpe:2.3:a:apache:nimble:*:*:*:*:*:*:*:*\",\"versionEndExcluding\":\"1.9.0\",\"matchCriteriaId\":\"DC033019-AA62-465E-AD0A-8018D8C89ED3\"}]}]}],\"cveId\":\"CVE-2025-62235\",\"cvssV31\":[{\"source\":\"134c704f-9b21-4f2e-91b3-4a467353bcc0\",\"type\":\"Secondary\",\"cvssData\":{\"version\":\"3.1\",\"vectorString\":\"CVSS:3.1/AV:A/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N\",\"baseScore\":8.1,\"baseSeverity\":\"HIGH\",\"attackVector\":\"ADJACENT_NETWORK\",\"attackComplexity\":\"LOW\",\"privilegesRequired\":\"NONE\",\"userInteraction\":\"NONE\",\"scope\":\"UNCHANGED\",\"confidentialityImpact\":\"HIGH\",\"integrityImpact\":\"HIGH\",\"availabilityImpact\":\"NONE\"},\"exploitabilityScore\":2.8,\"impactScore\":5.2}],\"lastModified\":\"2026-06-17T09:51:37.280\",\"sourceGeneratedAt\":\"2026-10-30T23:56:20.986\",\"status\":\"Analyzed\",\"totalResults\":1}",
+  "signature": "0x455f6fbc7bc0315c8957d4992e5b5d20f748a4ab9aa29ac5363ab5b17b73907704d6bea3f7f41f586e2f936158ed024bc6a25ed001277312961269380c3c67da1b"
+}

@@ -1,0 +1,186 @@
+/* Canonical tokens: docs/DESIGN.md. Local fonts also work offline. */
+@font-face {
+  font-family: "Barlow Condensed";
+  src: url("/fonts/BarlowCondensed-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Barlow Condensed";
+  src: url("/fonts/BarlowCondensed-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Atkinson Hyperlegible Next";
+  src: url("/fonts/AtkinsonHyperlegibleNext.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+:root {
+  --por-canvas: #f5f1e8;
+  --por-surface: #ffffff;
+  --por-ink: #172424;
+  --por-muted: #52615e;
+  --por-rule: #c7cdc5;
+  --por-highlight: #f1cf54;
+  --por-accent: #216247;
+  --por-darkpanel: #172424;
+  --por-rework: #a6362a;
+  --por-rework-bg: #fff2ed;
+  --por-review: #805511;
+  --por-review-bg: #fff6dd;
+  --por-ready: #216247;
+  --por-ready-bg: #e7f5ea;
+  --por-on-dark: #f5f1e8;
+  --por-display: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --por-body: "Atkinson Hyperlegible Next", system-ui, sans-serif;
+  --por-mono: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  /* Existing page aliases keep the observation and mobile routes compatible. */
+  --ink: var(--por-ink);
+  --muted: var(--por-muted);
+  --line: var(--por-rule);
+  --blue: var(--por-accent);
+  --pale: var(--por-review-bg);
+  --white: var(--por-surface);
+  --paper: var(--por-canvas);
+  --green: var(--por-ready);
+  --orange: var(--por-rework);
+  --amber: var(--por-review);
+  --cyan: var(--por-highlight);
+  --night: var(--por-darkpanel);
+  --signal: var(--por-highlight);
+  --shadow: none;
+  --mono: var(--por-mono);
+  --body: var(--por-body);
+  --display: var(--por-display);
+  color-scheme: light;
+  font-family: var(--body);
+  color: var(--ink);
+  background: var(--paper);
+  font-synthesis: none;
+}
+h1,
+h2,
+h3,
+.verdict,
+.stamp {
+  font-family: var(--display);
+}
+:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 4px;
+}
+header :focus-visible,
+.masthead :focus-visible {
+  outline-color: var(--signal);
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition: none !important;
+  }
+}
+/* The measurement sheet uses only saved marker coordinates. */
+.saved-measurement {
+  background: var(--night);
+  color: var(--por-on-dark);
+  position: relative;
+  border: 1px solid var(--ink);
+}
+.saved-measurement::before,
+.saved-measurement::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-color: var(--signal);
+  border-style: solid;
+  pointer-events: none;
+}
+.saved-measurement::before {
+  top: 12px;
+  left: 12px;
+  border-width: 2px 0 0 2px;
+}
+.saved-measurement::after {
+  right: 12px;
+  bottom: 12px;
+  border-width: 0 2px 2px 0;
+}
+.saved-measurement svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 330px;
+}
+.measured-reference {
+  fill: none;
+  stroke: var(--signal);
+  stroke-width: 4;
+}
+.measured-device {
+  fill: var(--por-rework-bg);
+  stroke: var(--por-rework-bg);
+  stroke-width: 4;
+}
+.marker-id {
+  fill: var(--ink);
+  font: 700 52px var(--display);
+}
+.measured-reference + .marker-id {
+  fill: var(--signal);
+}
+.diagram-label {
+  fill: var(--por-on-dark);
+  font: 26px var(--mono);
+}
+.measured-target {
+  stroke: var(--signal);
+  stroke-width: 4;
+}
+.measurement-leader {
+  stroke: var(--por-on-dark);
+  stroke-width: 2;
+  stroke-dasharray: 8 8;
+}
+.measurement-values {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 0 24px 24px;
+}
+.measurement-values strong {
+  display: block;
+  font: 600 clamp(34px, 3vw, 48px) / 1.1 var(--display);
+  color: var(--signal);
+}
+.measurement-values span,
+.measurement-values small {
+  display: block;
+  font: 16px/1.6 var(--body);
+}
+.measurement-values small {
+  color: var(--por-on-dark);
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 20;
+  top: 8px;
+  left: 8px;
+  background: var(--signal);
+  color: var(--ink);
+  padding: 12px;
+  transform: translateY(-160%);
+}
+.skip-link:focus {
+  transform: none;
+}
+:focus {
+  scroll-margin-top: 130px;
+  scroll-margin-bottom: 100px;
+}

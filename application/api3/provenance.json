@@ -1,0 +1,85 @@
+{
+  "upstream": {
+    "api3": {
+      "repository": "https://github.com/api3dao/airnodehub-hackathon-starter",
+      "revision": "52933ae1fb9371446a927338473466c3d320e19a",
+      "license": "MIT"
+    },
+    "solady": {
+      "repository": "https://github.com/vectorized/solady",
+      "revision": "acd959aa4bd04720d640bf4e6a5c71037510cc4b",
+      "license": "MIT"
+    },
+    "openzeppelin": {
+      "repository": "https://github.com/OpenZeppelin/openzeppelin-contracts",
+      "revision": "cab19933c33c2ad1d4c7a84864a3601dddfd16f3",
+      "license": "MIT"
+    }
+  },
+  "sha256": {
+    "api3/src/vendor/LICENSE": "e6bf4f274d851673ecc81d8809b7d40fe2fd693bbe9faffcfc4d16f55da9f1f8",
+    "api3/src/vendor/airnode-v2.ts": "acd6267874ba13f6441646444511c1214e6ad4809955939b989b113f5ec360c5",
+    "contracts/src/vendor/api3/AirnodeV2Attestation.sol": "76a6f2cff1060ff1f45c1a09a5a400f31e095054aa071e8c4fd1bb630fa9ecbc",
+    "contracts/src/vendor/api3/IsoTimestamp.sol": "d470121962ed07441f7e0ce0825c81026edca1b25122964a975484fb65f4cc2b",
+    "contracts/src/vendor/api3/LICENSE": "e6bf4f274d851673ecc81d8809b7d40fe2fd693bbe9faffcfc4d16f55da9f1f8",
+    "contracts/src/vendor/api3/ProjectedJson.sol": "28cec87ee36e4f61a2a6dfcc0d1cb0b8a2287b12802875054d7d891c548f29c2",
+    "contracts/vendor/openzeppelin/LICENSE": "20aebc68b11c063133aa2af0ef4bb29875477c6d16d715718f0daec563938b84",
+    "contracts/vendor/openzeppelin/contracts/utils/Bytes.sol": "78b01e1da6f6e6aaa8ef97b5d5ed885f638520bfdafb65e813b900a14c9d4eac",
+    "contracts/vendor/openzeppelin/contracts/utils/Panic.sol": "270fc8401c1a13fae6a7a4a2dd6e381b95d658896701e51f0d3e2688acab3dec",
+    "contracts/vendor/openzeppelin/contracts/utils/Strings.sol": "e318709bbe73a7831d64c1351e8bdc43780b245f25191234e361e6ab9b98c67b",
+    "contracts/vendor/openzeppelin/contracts/utils/cryptography/ECDSA.sol": "e3758f08ce5e53ada22c743450d3b61d965c92d4c76fcc8633a7eebd0455eb7c",
+    "contracts/vendor/openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol": "538a0d7c4f0ec5a8562f58561890f7b49d14580674ecf58bc5f505b45c73df65",
+    "contracts/vendor/openzeppelin/contracts/utils/math/Math.sol": "bdfdbe133991c0c78042957ff5cd97167926fcaf6d15664f3835a076cb066457",
+    "contracts/vendor/openzeppelin/contracts/utils/math/SafeCast.sol": "5779bc848bde39f1ad7bc02b4f708a0040888e0083b1a33f119cd94639350134",
+    "contracts/vendor/openzeppelin/contracts/utils/math/SignedMath.sol": "1ed50b1056af886752f0fb48a0165d381e69bb4a4b18b893b066dc144a7e08d7",
+    "contracts/vendor/solady/LICENSE.txt": "493162a2c0272e52d0fcb05f6e5c9ca6891dccffb4cb4d252384eebe0f69e91b",
+    "contracts/vendor/solady/src/utils/DateTimeLib.sol": "cb4c3e6b09cd71ba78abacf1b86da4bc1b9d888daacd20fe5155e623c163f4ff",
+    "contracts/vendor/solady/src/utils/JSONParserLib.sol": "5f02240efa9f88bdb6f77ad155e956f4125f1336613a892f52abf9c8d50f61a5",
+    "contracts/vendor/solady/src/utils/LibBytes.sol": "163fbab6b2c84609c55371ec54e1dc029b85e97bd6b3db6df141ce75795eefa9",
+    "contracts/vendor/solady/src/utils/LibString.sol": "af977db918909a91c1613df076cd0b893bbf7193dec824a91a6e45c5b9696cd1"
+  },
+  "fixtures": {
+    "nvd-cpe-signed-response.json": "Original public historical API3-signed CPE lookup. Protocol smoke only.",
+    "nvd-cve-unsigned-projection.json": "Projection of direct NVD API response fetched 2026-10-30. Unsigned by API3. Policy/parser fixture only.",
+    "nvdSource": "https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=CVE-2025-62235"
+  },
+  "policy": {
+    "cveId": "CVE-2025-62235",
+    "requestHash": "0x3f0881fb062ac6b989c133e0b5651d19947e38aebe4d94750627fa612f447d15",
+    "airnode": "0x41dd84D5B6503D9aA3c374a49F546e335423a1b8",
+    "shape": "Exactly one configuration containing one non-negated OR node and one Apache NimBLE CPE range ending before 1.9.0. Exactly one approved CISA secondary CVSS 3.1 metric. Additional or changed applicability, bounds, metrics, duplicates, unknown fields and missing timestamps require REVIEW.",
+    "versionEncoding": "major * 1000000 + minor * 1000 + patch, components 0..999",
+    "firmwareProvenance": "Operator enrollment only. No implemented remote measured attestation or real board build claim.",
+    "paymentTrust": "The contract records the operator assertion that seller receipt occurred. It does not verify Cardano consensus.",
+    "freshness": "Signed timestamp and NVD source-generation UTC timestamp are checked separately. CVE modification time is historical and must not exceed source generation.",
+    "contractDomain": "Acceptance uses Keccak over ABI(chainId,contract,jobId,workOrderDigest,buildManifestDigest,inspectionDigest,paymentEvidenceDigest,sourceResponseDigest,decision). It is separate from canonical artifact SHA-256 and Masumi transport hashes.",
+    "sourceCommitment": "SHA-256 over ABI(requestHash,timestamp,exactDataBytes,signature).",
+    "sources": [
+      "https://airnodehub-docs.api3.org/airnode/attestation",
+      "https://github.com/api3dao/airnodehub-hackathon-starter",
+      "https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=CVE-2025-62235",
+      "https://mynewt.apache.org/cve/"
+    ],
+    "sourceCheckDate": "2026-10-30"
+  },
+  "verification": {
+    "node": "24.10.0",
+    "solidity": "0.8.37",
+    "foundry": "1.8.7",
+    "fixtures": "All signed CVE examples use disposable local test keys. The genuine historical CPE response proves native signature compatibility only.",
+    "liveCveResponse": true,
+    "publicDeployment": true,
+    "liveCardanoReceipt": false,
+    "deploymentScope": "Base Sepolia CommissioningPolicy contract only. Source release and submission remain private.",
+    "fiveDeployedJudgeCases": false,
+    "liveEvidence": "../submission/evidence-manifest.json"
+  },
+  "accessClient": {
+    "reviewedStarterRevision": "52933ae1fb9371446a927338473466c3d320e19a",
+    "reviewDate": "2026-10-30",
+    "source": "https://github.com/api3dao/airnodehub-hackathon-starter/blob/52933ae1fb9371446a927338473466c3d320e19a/src/x402.ts",
+    "compatibility": "Latest fetched starter revision matches the existing native verifier pin. Starter uses viem ^2.57.3 and x402 ^2.28.0. This isolated client uses existing pinned viem 2.57.3 for EIP-3009 and durable one-claim recovery. No production dependency added.",
+    "livePayment": false,
+    "limits": "Pinned 0.01 aUSD per NVD CVE request and original EIP-3009 terms. New quote or recipient changes reject. Existing ledger pins total budget and payer."
+  }
+}

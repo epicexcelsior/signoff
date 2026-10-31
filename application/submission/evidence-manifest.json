@@ -1,0 +1,371 @@
+{
+  "schema": "proof-of-ready/submission-evidence/v1",
+  "checkedAt": "2026-10-31T10:52:57.090437+00:00",
+  "readyForSubmission": false,
+  "publicationAuthorized": false,
+  "deadline": "2026-10-31T15:00:00+01:00",
+  "sources": {
+    "organizer": "https://hackathon.tum-blockchain.com/prizes#how-to-submit",
+    "organizerRevision": "f61c409acb3242facaac6fdf9a25a91adc34bb52",
+    "masumiSkill": "https://www.masumi.network/tum-hackathon/skill/SKILL.md",
+    "masumiSkillSha256": "9bdc7d32ed20edfb975164f560e74dfa6dd4dcc883b8db6cf98a5d8300d058fe",
+    "api3StarterRevision": "52933ae1fb9371446a927338473466c3d320e19a"
+  },
+  "liveEvidence": [
+    {
+      "id": "api3-faucet-mint",
+      "chainId": 84532,
+      "transactionHash": "0x28c410b46dd8952c2c5e76b658d929963f6840afe22239fb0109486fb36854b7",
+      "status": "confirmed",
+      "amountAUsd": "0.02",
+      "qualificationScope": "Funding only. Not a paid NVD request or Cardano inspection."
+    },
+    {
+      "id": "api3-paid-nvd-first",
+      "chainId": 84532,
+      "transactionHash": "0x3181a67600791341a237df0b1131fe0da7ddae30b5206cdfb2c9ff821b16945f",
+      "status": "settled-and-delivered",
+      "amountAUsd": "0.01",
+      "cveId": "CVE-2025-62235",
+      "requestHash": "0x3f0881fb062ac6b989c133e0b5651d19947e38aebe4d94750627fa612f447d15",
+      "expectedAirnode": "0x41dd84D5B6503D9aA3c374a49F546e335423a1b8",
+      "originalResponseSha256": "54ffd855925dc58cce9fb4f37680f0f4a5f8b740f60fe8f3175c3b1250324f4b",
+      "signedAt": "1793393013",
+      "verification": "Native source verification at original ingestion. Reconciliation matched token, payer, recipient, amount, original authorization nonce and confirmation depth.",
+      "currentFreshnessClaim": false,
+      "originalResponsePublicPath": "application/submission/evidence/nvd-paid-first-original.json"
+    },
+    {
+      "id": "api3-policy-deployment",
+      "chainId": 84532,
+      "contract": "0x98023c425670a9690ab362c00fbea1bc11dce2cb",
+      "transactionHash": "0x44eec5fc19615ad7d0060d1ec71dc47242a58e8e7fc297e5060bf0481ae16d3b",
+      "runtimeCodeHash": "0x4bb4ff98ff0dadd2bd529eb0330e84d8d0dcc8ad38ca51d2ede63b5b7d702366",
+      "bytecodeHash": "0x6002c9a4bc14e21d96c152b5ce7fb47b050304fbe7795141507758ff59e7202f",
+      "initCodeHash": "0x592400696bdb0de436d81b5c589ae4f8c5865cb1c03472740d0f205385534cca",
+      "requestHash": "0x3f0881fb062ac6b989c133e0b5651d19947e38aebe4d94750627fa612f447d15",
+      "airnode": "0x41dd84D5B6503D9aA3c374a49F546e335423a1b8",
+      "maxAttestationAge": 300,
+      "maxSourceAge": 300,
+      "blockNumber": "52355879",
+      "status": "confirmed-constructor-verified",
+      "qualificationScope": "Deployed policy only. No paid-inspection job finalized yet."
+    },
+    {
+      "id": "deployed-policy-helper-historical",
+      "status": "observed",
+      "artifact": "application/submission/evidence/deployed-policy-helper.json",
+      "scope": "Historical eth_call of actual deployed policy helper at deployment block. Native signature verified. 1.8.0 FAIL and1.9.0 PASS. No state override, no transaction, no mandatory judge-case completion."
+    },
+    {
+      "id": "masumi-hosted-execution-only",
+      "taskId": "01a18ec9-f3a1-73fc-8cc1-53c6413222d3",
+      "status": "completed",
+      "outcome": "REVIEW",
+      "taskCredits": 0,
+      "fixtureInput": true,
+      "paid": false,
+      "sellerPaid": false,
+      "physicalEvidence": false,
+      "qualificationScope": "Hosted transport and exact original input/result binding only. Synthetic evidence. No paid Cardano qualification or physical acceptance."
+    },
+    {
+      "id": "cardano-seller-registration",
+      "network": "Cardano Preprod",
+      "transactionHash": "125819c7d184382c18c0d4acfae697dae7cc77a72c12411d434f4d1ee76f7b74",
+      "status": "confirmed",
+      "blockNumber": 5354856,
+      "feeLovelace": "276826",
+      "qualificationScope": "Seller registration only. Not the paid inspection transaction or seller receipt."
+    },
+    {
+      "id": "cardano-paid-inspection-delivery",
+      "network": "Cardano Preprod",
+      "taskId": "01a18f06-3ca7-707b-b8d6-0db33451e754",
+      "status": "delivered-and-seller-collection-confirmed",
+      "transactionHash": "f868a2406be729ffbbc57796f56f5ae61d82920bb3ac333aa5f67cef5fb6dfcd",
+      "blockNumber": 5354867,
+      "resultTransactionHash": "405a406634d221ea635aff5e85b58928cf44fd181fde3048829b8d42108f6465",
+      "resultBlockNumber": 5354869,
+      "usefulReportSha256": "25879a51e15c483be65468e50e3a68bb38ded3bda07007affcc1315868a83aea",
+      "originalReportPublicPath": "application/submission/evidence/cardano-paid-report-original.json",
+      "originalBindingsPublicPath": "application/submission/evidence/cardano-paid-hosted-bindings.json",
+      "outcome": "REVIEW",
+      "taskCredits": 100,
+      "fixtureInput": true,
+      "physicalEvidence": false,
+      "sellerPaid": true,
+      "qualificationScope": "Actual paid hosted REVIEW, confirmed escrow/result, and positive seller collection. Original capture is synthetic and lacks optical evidence. No physical acceptance follows.",
+      "independentChainProofPublicPath": "application/submission/evidence/cardano-paid-chain-proof.json",
+      "independentChainProofSha256": "1f7c2fc54d0a94098e68bd589681c7061f2f89a74035abc471fef0c7d5b5614c",
+      "originalRequestPublicPath": "application/submission/evidence/cardano-paid-request-original.json",
+      "sellerReceiptPublicPath": "application/submission/evidence/cardano-seller-receipt.json",
+      "sellerReceiptSha256": "8acd2e92f84a8bb2721f4732b9d5526265c30e29caaeaed6081dae31556e4185"
+    },
+    {
+      "id": "cardano-seller-collection",
+      "network": "Cardano Preprod",
+      "taskId": "01a18f06-3ca7-707b-b8d6-0db33451e754",
+      "transactionHash": "344fd5f6fd40f469ff72e0feac7b58ae9f9a100f472a29429e1082ae42aaa202",
+      "blockNumber": 5354974,
+      "status": "confirmed-positive-net-receipt",
+      "netAtomicUnits": "1000000",
+      "unit": "16a55b2a349361ff88c03788f93e1e966e5d689605d044fef722ddde0014df10745553444d",
+      "artifact": "application/submission/evidence/cardano-seller-receipt.json",
+      "qualificationScope": "Confirmed seller collection for the original useful paid REVIEW. Original inspection input is synthetic. No physical acceptance follows."
+    },
+    {
+      "id": "api3-paid-nvd-final",
+      "chainId": 84532,
+      "transactionHash": "0x1774cd765ea09588d9731c02034f104c59f664949f59c17dc9444e2a47018396",
+      "status": "settled-and-delivered",
+      "amountAUsd": "0.01",
+      "requestHash": "0x3f0881fb062ac6b989c133e0b5651d19947e38aebe4d94750627fa612f447d15",
+      "expectedAirnode": "0x41dd84D5B6503D9aA3c374a49F546e335423a1b8",
+      "signedAt": "1793404581",
+      "originalResponseSha256": "281d0e74cbd3243f87070056274fd5701d0c4107a00798d8f5dbf70bd2df31f0",
+      "originalResponsePublicPath": "application/submission/evidence/nvd-paid-final-original.json",
+      "settlementPublicPath": "application/submission/evidence/api3-final-access-settlement.json",
+      "currentFreshnessClaim": false,
+      "qualificationScope": "Genuine second paid NVD response. Authenticated at ingestion and used in the pinned deployed check and mined finalization. The full 0.02 aUSD budget is consumed."
+    },
+    {
+      "id": "api3-deployed-five-cases",
+      "chainId": 84532,
+      "status": "five-cases-passed-at-pinned-block",
+      "blockNumber": "52413566",
+      "blockHash": "0xa127f28b4460389c27e687142ee1b1eabb7be30c0ea77b5f5b7098b2b3e4acda",
+      "artifact": "application/submission/evidence/api3-five-deployed-cases.json",
+      "qualificationScope": "One valid eth_call succeeded. Edited, other-request and wrong-key returned NotSignedByAirnode. Stale returned InvalidOracle. All cases used genuine paid-inspection commitments at one deployed block. Wrong-key data is deliberate negative-test input.",
+      "nativeSourcePolicy": "PASS"
+    },
+    {
+      "id": "api3-paid-review-finalization",
+      "chainId": 84532,
+      "contract": "0x98023c425670A9690AB362c00fBea1Bc11dCE2Cb",
+      "jobId": "0x283a22d5708fb1dd4b9b723c2094732c1e30d2aea46f0d1baf7edecceed944bc",
+      "transactionHash": "0xa94e48a5d72065ad46c4c558d26a7c3f618aa491fe46e6d012fd7aa7b1356eab",
+      "blockNumber": "52413614",
+      "status": "confirmed-rejected",
+      "decision": "REJECTED",
+      "artifact": "application/submission/evidence/api3-finalization-proof.json",
+      "contextPublicPath": "application/submission/evidence/api3-policy-evaluation.json",
+      "qualificationScope": "Mined valid response changed OPEN to REJECTED. The genuine paid REVIEW has a false inspection predicate. Original capture is synthetic and the declared reference version does not identify installed firmware. This historical evaluation does not renew the original work order."
+    },
+    {
+      "id": "esp32-optical-flash",
+      "status": "flash-and-usb-startup-verified",
+      "artifact": "application/submission/evidence/esp32-optical-flash-proof.json",
+      "scope": "Approved flash and USB startup only. Startup initializes GPIO8 and sends an OFF pixel. No signed optical challenge, contact transition or camera measurement exists. Existing receipt identity remains preserved."
+    },
+    {
+      "id": "esp32-optical-diagnostic",
+      "status": "signature-verified-camera-diagnostic",
+      "artifact": "application/submission/evidence/esp32-optical-diagnostic.json",
+      "artifactSha256": "4034794f9c09bf0b5d61d4f56a09ffcff9969655f87e11be809490a6d225b9db",
+      "qualificationScope": "Real signed 18-second LED response. Offline phone-recording analysis matched 72 of 72 symbols. Production OpenCV replay detected both markers in 90 of 90 sampled frames at 5 Hz. All 90 frames failed the default placement policy. Diagnostic binding only. No live tracked commissioning capture, contact test, or acceptance."
+    },
+    {
+      "id": "physical-camera-placement-rework",
+      "status": "real-camera-rework-packet-verified",
+      "artifact": "application/submission/evidence/physical-camera-rework-packet.json",
+      "artifactSha256": "501a247c8183cd8685a7c0cf83c84a8d6069936f31c400784b8d9f0012fb6d7d",
+      "workOrderDigest": "0xcb85f28d835c04fd5413b0f52bf9eac9b751958ae61b002a62648e19e2e55e5e",
+      "capturedAt": 1793414979755,
+      "qualificationScope": "Real Seeker camera measurement through the physical station. Default placement failed and the original packet verified as REWORK. Camera origin remains unattested. Contact input and optical emission were disabled. No fresh device receipt, paid physical inspection, or commissioning acceptance."
+    },
+    {
+      "id": "cardano-physical-camera-inspection",
+      "network": "Cardano Preprod",
+      "taskId": "01a18fed-4517-7319-a5be-cecbf6f4f4f7",
+      "status": "completed-seller-collection-verified",
+      "outcome": "FAIL",
+      "transactionHash": "cd48db80ffb0494b8a092af67f8ec9e33dbdb3c1f8bce8ced1eaf1d5864782ca",
+      "resultTransactionHash": "d0c178019710413818159fcc3098ae1c733dbc8a070954b3c80b2a6b77f90280",
+      "inputHash": "f8089c16284627d791ef7dfb01c22035e6ce8ea9c69549bef5de3f3988a7e297",
+      "resultHash": "566bac5476676deeca25d97d8105b58f74203cabc56c8d35fa4c3ef10fdeb2a7",
+      "workOrderDigest": "0xcb85f28d835c04fd5413b0f52bf9eac9b751958ae61b002a62648e19e2e55e5e",
+      "evidenceBundleDigest": "0x2b52726ddd4d5a1f74f32636de59d3321057bf6167be949ec9054232f607da12",
+      "escrowConfirmed": true,
+      "resultConfirmed": true,
+      "sellerPaid": true,
+      "amountTestUsdm": 1,
+      "sellerUnlockAt": "2026-10-31T03:43:45.140Z",
+      "physicalCameraEvidence": true,
+      "signedPhysicalSequence": false,
+      "qualificationScope": "Useful FAIL report on actual Seeker camera evidence. Exact hosted input/result, confirmed escrow/result, withdrawal, and positive seller net of 1 test USDM verified. Missing signed contact and optical evidence prevents installation acceptance.",
+      "sellerReceiptTransactionHash": "f6493d441afbffcbe7a4f9ae8626318a9551bfbe7a8095a076eece5c01ff0029",
+      "usefulReportSha256": "566bac5476676deeca25d97d8105b58f74203cabc56c8d35fa4c3ef10fdeb2a7",
+      "reportArtifactId": "physical-paid-inspection-report",
+      "sellerReceiptSha256": "5da95a049fa0cb13446ac5ab652c762f5e8f1779bdc843df00a7d22a753a60f7"
+    },
+    {
+      "id": "api3-source-gate-deployment",
+      "schema": "proof-of-ready/api3-admission-deployment/v1",
+      "checkedAt": "2026-10-31T10:38:22.757Z",
+      "chainId": 84532,
+      "contract": "0x1ed0ebc0c5104702e688eccc567d84b66107e60b",
+      "transactionHash": "0xe72492181583aae380fc0cf4424aa92aef166478f330f7f94e09575d8affaa63",
+      "blockNumber": "52606168",
+      "blockHash": "0x97c753ed2dfb11cd9b797eb8608ef4a42db870a05846abae3173499fc407504c",
+      "runtimeCodeHash": "0x211a0eddd90b8daaa65a67c86d3e28840b33323226bcf84f7821d3b95db20232",
+      "bytecodeHash": "0x8d0fe7059562848f524186071e36462fe459d3af5a666c1a5b1aa910d8149192",
+      "initCodeHash": "0x71e58b35f5d770e5ffa69e1f0980423538cc7eed0b68e53550d4ac794d2b52a6",
+      "operator": "0x5AB1B25d13bd13Ebd3c9480F438CF0530F37e831",
+      "airnode": "0x41dd84D5B6503D9aA3c374a49F546e335423a1b8",
+      "requestHash": "0x3f0881fb062ac6b989c133e0b5651d19947e38aebe4d94750627fa612f447d15",
+      "maxAttestationAge": 300,
+      "maxSourceAge": 300,
+      "gasUsed": "3703958",
+      "constructorVerified": true,
+      "sourceAdmissionExecuted": false,
+      "artifact": "application/submission/evidence/api3-admission-deployment.json",
+      "qualificationScope": "Deployed source gate. An unsigned job-opening call always rejects.",
+      "status": "confirmed-constructor-verified"
+    },
+    {
+      "id": "api3-paid-nvd-admission",
+      "chainId": 84532,
+      "status": "settled-and-delivered",
+      "amountAUsd": "0.01",
+      "transactionHash": "0xc4a903a84cc6d50dcf2cab5e877b01a2042648afff778ca37838c1a9d43896a5",
+      "originalResponsePublicPath": "application/submission/evidence/nvd-admission-original.json",
+      "originalResponseSha256": "fbf045d95c373a47e46dc63c9f60c3d9d7293d828a43c7502d7322fb9847306d",
+      "qualificationScope": "Third genuine paid NVD response. Fresh at the software-admission transaction. No current freshness claim."
+    },
+    {
+      "id": "api3-source-dependent-admission",
+      "schema": "proof-of-ready/api3-source-dependent-admission/v1",
+      "chainId": 84532,
+      "contract": "0x1Ed0EBc0c5104702E688eCCC567D84b66107e60b",
+      "jobId": "0xd9986df0464d0f2f19b1aa54fd1eb16919831d756f54d9a21a3ffba63cb18420",
+      "transactionHash": "0xbcba0ba8a582c06cc72351290de98a2bcabc03b6fe2916f6dbac6e237ef92798",
+      "blockNumber": "52609392",
+      "blockHash": "0x390650f28537b618e1bdacbc581a16dcbc599a7f90b8ceecba9c265bfd7bcda4",
+      "decision": "SOFTWARE_ADMITTED",
+      "jobDecision": "OPEN",
+      "inspectionRecorded": false,
+      "sourceDependentAction": true,
+      "sourceResponseDigest": "0x013362eb6f6b4e975da7ab2b369dd86ac976c6423972182de0c6e2ca0fd93efe",
+      "signedAt": "1793443653",
+      "gasUsed": "964639",
+      "networkWrites": false,
+      "scope": "Authenticated NVD data authorized opening a work order before inspection. The build is declared, not measured on the ESP32. This is not physical installation acceptance.",
+      "artifact": "application/submission/evidence/api3-admission-proof.json",
+      "qualificationScope": "Authenticated NVD data authorized opening a work order before inspection. The build is declared, not measured on the ESP32. This is not physical installation acceptance.",
+      "status": "mined-source-dependent-software-admission"
+    }
+  ],
+  "mandatoryEvidence": {
+    "cardano": {
+      "status": "verified-paid-review",
+      "network": "Cardano Preprod",
+      "taskId": "01a18f06-3ca7-707b-b8d6-0db33451e754",
+      "transactionHash": "f868a2406be729ffbbc57796f56f5ae61d82920bb3ac333aa5f67cef5fb6dfcd",
+      "usefulReportSha256": "25879a51e15c483be65468e50e3a68bb38ded3bda07007affcc1315868a83aea",
+      "sellerReceiptSha256": "8acd2e92f84a8bb2721f4732b9d5526265c30e29caaeaed6081dae31556e4185",
+      "remaining": [],
+      "sellerReceiptTransactionHash": "344fd5f6fd40f469ff72e0feac7b58ae9f9a100f472a29429e1082ae42aaa202"
+    },
+    "api3": {
+      "status": "verified-source-dependent-software-admission",
+      "contract": "0x1ed0ebc0c5104702e688eccc567d84b66107e60b",
+      "jobId": "0xd9986df0464d0f2f19b1aa54fd1eb16919831d756f54d9a21a3ffba63cb18420",
+      "admissionTransactionHash": "0xbcba0ba8a582c06cc72351290de98a2bcabc03b6fe2916f6dbac6e237ef92798",
+      "softwareDecision": "SOFTWARE_ADMITTED",
+      "physicalJobDecision": "OPEN",
+      "inspectionRecordedAtAdmission": false,
+      "judgeBlockNumber": "52608967",
+      "judgeCases": {
+        "valid-causes-state-change": "passed-mined-software-admission-and-work-order-opened",
+        "edited-rejects": "passed-NotSignedByAirnode",
+        "stale-rejects": "passed-InvalidOracle",
+        "other-request-rejects": "passed-NotSignedByAirnode",
+        "wrong-key-rejects": "passed-NotSignedByAirnode"
+      },
+      "qualificationConfirmed": true,
+      "remaining": [],
+      "judgeSuppliedResponseCommand": "npm --prefix application/api3 run judge:admission -- ../submission/evidence/api3-admission-context.json RESPONSE_FILE",
+      "originalHistoricalFinalization": {
+        "status": "not-qualified-source-dependent-decision-missing",
+        "contract": "0x98023c425670a9690ab362c00fbea1bc11dce2cb",
+        "judgeCases": {
+          "valid-causes-state-change": "passed-mined-open-to-rejected",
+          "edited-rejects": "passed-NotSignedByAirnode",
+          "stale-rejects": "passed-InvalidOracle",
+          "other-request-rejects": "passed-NotSignedByAirnode",
+          "wrong-key-rejects": "passed-NotSignedByAirnode"
+        },
+        "remaining": [
+          "Demonstrate a source-dependent terminal decision with genuine inspection prerequisites"
+        ],
+        "jobId": "0x283a22d5708fb1dd4b9b723c2094732c1e30d2aea46f0d1baf7edecceed944bc",
+        "finalizationTransactionHash": "0xa94e48a5d72065ad46c4c558d26a7c3f618aa491fe46e6d012fd7aa7b1356eab",
+        "terminalDecision": "REJECTED",
+        "judgeBlockNumber": "52413566",
+        "qualificationConfirmed": false,
+        "judgeSuppliedResponseCommand": "npm --prefix application/api3 run judge:candidate -- RESPONSE_FILE"
+      }
+    },
+    "hardware": {
+      "status": "real-camera-rework-optical-commissioning-incomplete",
+      "physicalEvidencePacketSha256": "501a247c8183cd8685a7c0cf83c84a8d6069936f31c400784b8d9f0012fb6d7d",
+      "remaining": [
+        "Correct physical marker placement and the board LED sampling region before a new signed test",
+        "Complete continuous optical capture bound to the approved work order; preserve at least four claims",
+        "Identify button terminals, review GPIO2-to-GND wiring, and run signed contact transitions"
+      ],
+      "physicalEvidencePacketScope": "Partial negative packet: actual camera only. No signed device sequence, optical capture, or acceptance.",
+      "finalAttempt": {
+        "checkedAt": "2026-10-31T10:21:28.858Z",
+        "phoneConnected": true,
+        "usbSerialEndpointPresent": true,
+        "newOpticalRequest": false,
+        "result": "Both markers detected. Orientation passed at 0.78 degrees. Placement failed at 141.71 mm offset. Camera stopped afterward. No ESP32 request or wiring change."
+      }
+    },
+    "submission": {
+      "status": "remote-draft-saved-publication-pending",
+      "publicRepositoryUrl": null,
+      "demoVideoUrl": null,
+      "devfolioProjectUrl": null,
+      "remaining": [
+        "Review final video with owner recordings and verify its public playback",
+        "Review existing repository history before changing that same repository to public",
+        "Add public repository and video links, then authorize and complete Devfolio submission"
+      ],
+      "screenshotsUploaded": 3
+    }
+  },
+  "limits": [
+    "Local fixtures and Anvil results do not establish live settlement or physical truth.",
+    "First paid CVE response is preserved for authenticity and stale rejection, not indefinitely current policy.",
+    "Contract payment evidence is an operator assertion, not Cardano consensus verification.",
+    "The five source cases and mined rejection use a genuine paid REVIEW on synthetic input. No complete physical installation or installed-build provenance exists.",
+    "Source-gated software admission verifies an operator-declared reference build, not firmware measured on the ESP32. Physical installation acceptance remains blocked."
+  ],
+  "primaryRealDemo": "cardano-physical-camera-inspection",
+  "api3Qualification": {
+    "qualified": true,
+    "sourceDependentOnChainAction": true,
+    "fourTamperRejectionsVerified": true,
+    "auditArtifact": "application/submission/evidence/api3-admission-qualification-audit.json",
+    "auditSha256": "6a7c3e061623f48f5a7398e8b4164a07fb373710a283d5afd96c2c587fab4590",
+    "scope": "Authenticated NVD data controls software admission before inspection. Physical acceptance and installed firmware remain unverified."
+  },
+  "releaseCandidate": {
+    "published": false,
+    "sourceSanitized": true,
+    "privateHistoryIncluded": false
+  },
+  "videoProduction": {
+    "status": "FIRST_CUT_OWNER_RECORDINGS_PENDING",
+    "durationSeconds": 122.021333,
+    "width": 1920,
+    "height": 1080,
+    "frameRate": 30,
+    "audio": "Silent placeholder track. Owner recordings pending.",
+    "publicUrl": null,
+    "finalExportReviewed": false
+  }
+}

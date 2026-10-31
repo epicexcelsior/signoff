@@ -1,0 +1,390 @@
+{
+  "schema": "proof-of-ready/packet/v1",
+  "workOrder": {
+    "schema": "proof-of-ready/work-order/v1",
+    "id": "ddd045b1a8d8bb8e",
+    "asset": "Bench placement check · optical-only board",
+    "approvedAt": 1793414919037,
+    "expiresAt": 1793501319037,
+    "device": {
+      "contact": {
+        "provider": "proof-ready-reference",
+        "sensor": "disabled-contact",
+        "location": "demo-gate"
+      },
+      "publicKey": "046218c52391433f9a687743192c5558a121320b8fa664931e5aaa1b6e5fbf342f9411913c8b72c91a3e7b9762e34e77955ed6035b81fa27ab7770dd8d4922ed63"
+    },
+    "vision": {
+      "referenceMarkerId": 0,
+      "deviceMarkerId": 10,
+      "referenceSizeMm": 60,
+      "target": {
+        "xMm": 100,
+        "yMm": 0,
+        "angleDeg": 0
+      },
+      "tolerance": {
+        "positionMm": 8,
+        "angleDeg": 8
+      }
+    },
+    "optical": {
+      "roi": {
+        "x": 1.1,
+        "y": 0.25,
+        "width": 0.35,
+        "height": 0.35
+      },
+      "halfSymbolMs": 250
+    },
+    "function": {
+      "transitions": 3,
+      "destination": "local-owner-monitor",
+      "deadlineMs": 5000
+    },
+    "requirements": {
+      "vision": true,
+      "optical": true,
+      "delivery": true,
+      "paidInspection": true,
+      "softwarePolicy": true
+    },
+    "software": {
+      "state": "unenrolled",
+      "manifestDigest": null
+    },
+    "phone": {
+      "provider": "seeker-inspector",
+      "publicKey": null
+    },
+    "authority": "local-operator-session",
+    "sourceMode": "physical"
+  },
+  "evidence": {
+    "schema": "proof-of-ready/evidence/v1",
+    "sessionId": "f4885b7b06931803",
+    "workOrderDigest": "0xcb85f28d835c04fd5413b0f52bf9eac9b751958ae61b002a62648e19e2e55e5e",
+    "sourceMode": "physical",
+    "startedAt": 1793414976965,
+    "closedAt": 1793414979755,
+    "expiresAt": 1793415096965,
+    "sequence": [
+      true,
+      false,
+      true
+    ],
+    "device": [],
+    "delivery": [],
+    "vision": {
+      "source": "browser-camera",
+      "frame": {
+        "markers": [
+          {
+            "id": 0,
+            "corners": [
+              {
+                "x": 418.87115478515625,
+                "y": 75.93925476074219
+              },
+              {
+                "x": 637.844970703125,
+                "y": 74.33540344238281
+              },
+              {
+                "x": 646.02587890625,
+                "y": 294.1045837402344
+              },
+              {
+                "x": 420.80914306640625,
+                "y": 297.4817199707031
+              }
+            ]
+          },
+          {
+            "id": 10,
+            "corners": [
+              {
+                "x": 822.0670776367188,
+                "y": 226.68939208984375
+              },
+              {
+                "x": 704.8727416992188,
+                "y": 230.04226684570312
+              },
+              {
+                "x": 698.4610595703125,
+                "y": 115.02494812011719
+              },
+              {
+                "x": 813.674560546875,
+                "y": 111.76734161376953
+              }
+            ]
+          }
+        ],
+        "resolution": {
+          "width": 960,
+          "height": 540
+        },
+        "capturedAt": 1793414978380,
+        "calibrationId": "0xdb01a1e70d354866c32f1755f8a57869db48fb22fef3d519283e729f995bf413"
+      },
+      "frameDigest": "0x06cc4fbb4e0ba689815c2a261d473a98f754dd4636618fe7a9b1d229053bbf75",
+      "camera": {
+        "id": "0x7a4247c6426e3a7f667aa462e6fdab124a4e8a1da95f54aea78c02189fa27517",
+        "resolution": {
+          "width": 1280,
+          "height": 720
+        },
+        "facingMode": "environment",
+        "zoom": 1,
+        "calibrationMode": "planar"
+      },
+      "measurement": {
+        "capturedAt": 1793414978380,
+        "markers": [
+          {
+            "id": 0,
+            "corners": [
+              {
+                "x": 418.87115478515625,
+                "y": 75.93925476074219
+              },
+              {
+                "x": 637.844970703125,
+                "y": 74.33540344238281
+              },
+              {
+                "x": 646.02587890625,
+                "y": 294.1045837402344
+              },
+              {
+                "x": 420.80914306640625,
+                "y": 297.4817199707031
+              }
+            ]
+          },
+          {
+            "id": 10,
+            "corners": [
+              {
+                "x": 822.0670776367188,
+                "y": 226.68939208984375
+              },
+              {
+                "x": 704.8727416992188,
+                "y": 230.04226684570312
+              },
+              {
+                "x": 698.4610595703125,
+                "y": 115.02494812011719
+              },
+              {
+                "x": 813.674560546875,
+                "y": 111.76734161376953
+              }
+            ]
+          }
+        ],
+        "pose": {
+          "xMm": 62.386303818929505,
+          "yMm": -3.0117534240694632,
+          "angleDeg": 178.98607274703534
+        },
+        "calibration": {
+          "mode": "planar",
+          "id": "0xdb01a1e70d354866c32f1755f8a57869db48fb22fef3d519283e729f995bf413",
+          "resolution": {
+            "width": 960,
+            "height": 540
+          }
+        },
+        "quality": {
+          "scope": "planar-placement-guidance",
+          "cameraSource": "browser-unattested",
+          "assumptions": [
+            "measured-reference-size",
+            "coplanar-markers",
+            "unmodeled-lens-distortion"
+          ],
+          "markerQuality": [
+            {
+              "id": 0,
+              "minimumSidePx": 218.97968946166645,
+              "areaPx": 49019.216353164986,
+              "sideRatio": 1.0285979267476693,
+              "convex": true,
+              "usable": true
+            },
+            {
+              "id": 10,
+              "minimumSidePx": 115.19589087526151,
+              "areaPx": 13384.393574769842,
+              "sideRatio": 1.0177644994125035,
+              "convex": true,
+              "usable": true
+            }
+          ],
+          "offsetMm": 37.73408007477155,
+          "angleErrorDeg": 178.98607274703534
+        },
+        "state": "FAIL",
+        "predicates": [
+          {
+            "id": "reference-marker",
+            "state": "PASS",
+            "reason": "One required marker is visible.",
+            "actual": 1,
+            "expected": 0
+          },
+          {
+            "id": "device-marker",
+            "state": "PASS",
+            "reason": "One required marker is visible.",
+            "actual": 1,
+            "expected": 10
+          },
+          {
+            "id": "image-quality",
+            "state": "PASS",
+            "reason": "Marker edges support planar guidance.",
+            "actual": null,
+            "expected": null
+          },
+          {
+            "id": "position",
+            "state": "FAIL",
+            "reason": "Planar offset uses the declared reference size.",
+            "actual": 37.73408007477155,
+            "expected": 8
+          },
+          {
+            "id": "orientation",
+            "state": "FAIL",
+            "reason": "Planar angle is clockwise from the reference marker axis.",
+            "actual": 178.98607274703534,
+            "expected": 8
+          }
+        ],
+        "guidance": {
+          "referenceCenter": {
+            "x": 531.2804976987601,
+            "y": 183.90012316003447
+          },
+          "targetCenter": {
+            "x": 896.6611489818789,
+            "y": 179.84251839271388
+          },
+          "targetAxis": {
+            "x": 1004.472675005167,
+            "y": 178.64525586546188
+          }
+        }
+      }
+    },
+    "optical": null
+  },
+  "report": {
+    "schema": "proof-of-ready/inspection-report/v1",
+    "evaluatorVersion": "1",
+    "workOrderHash": "0xcb85f28d835c04fd5413b0f52bf9eac9b751958ae61b002a62648e19e2e55e5e",
+    "evidenceBundleHash": "0x2b52726ddd4d5a1f74f32636de59d3321057bf6167be949ec9054232f607da12",
+    "outcome": "FAIL",
+    "predicates": [
+      {
+        "id": "session",
+        "outcome": "PASS",
+        "reason": "Evidence binds the approved work order and capture window.",
+        "evidenceRefs": [
+          "0x2b52726ddd4d5a1f74f32636de59d3321057bf6167be949ec9054232f607da12"
+        ]
+      },
+      {
+        "id": "device",
+        "outcome": "REVIEW",
+        "reason": "A complete valid signed sequence is required.",
+        "evidenceRefs": [
+          "0x2b52726ddd4d5a1f74f32636de59d3321057bf6167be949ec9054232f607da12"
+        ]
+      },
+      {
+        "id": "function",
+        "outcome": "REVIEW",
+        "reason": "Function requires the verified signed sequence.",
+        "evidenceRefs": [
+          "0x2b52726ddd4d5a1f74f32636de59d3321057bf6167be949ec9054232f607da12"
+        ]
+      },
+      {
+        "id": "delivery",
+        "outcome": "FAIL",
+        "reason": "The receiving application lacks a timely matching observation.",
+        "evidenceRefs": [
+          "0x2b52726ddd4d5a1f74f32636de59d3321057bf6167be949ec9054232f607da12"
+        ]
+      },
+      {
+        "id": "vision",
+        "outcome": "FAIL",
+        "reason": "Planar offset uses the declared reference size. Planar angle is clockwise from the reference marker axis.",
+        "evidenceRefs": [
+          "0x79768bc04505f8162fc99faef57ce91b176246d5817d5c14c6d64ff112fa10e1"
+        ]
+      },
+      {
+        "id": "optical",
+        "outcome": "REVIEW",
+        "reason": "A signed optical execution and matching camera samples are not present.",
+        "evidenceRefs": []
+      }
+    ],
+    "limitations": [
+      "The coordinator supplies verified checks. This inspector does not independently authenticate raw physical evidence.",
+      "The coordinator supplies normalized verified checks to the inspector.",
+      "Camera evidence trusts the browser, measured reference size, and common marker plane.",
+      "The local receiving application shares the coordinator trust boundary.",
+      "The device signature does not establish mounting or installed firmware provenance.",
+      "The verifier trusts the coordinator's original challenge and capture-time records."
+    ]
+  },
+  "acceptance": {
+    "schema": "proof-of-ready/acceptance/v1",
+    "decision": "REWORK",
+    "predicates": [
+      {
+        "id": "inspection",
+        "outcome": "FAIL",
+        "reason": "Local inspection returned FAIL.",
+        "evidenceRefs": [
+          "0xd41a547b140e32fc232f280d68240f2d92bcc9de92cca3cab4eb6556d3fc152f"
+        ]
+      },
+      {
+        "id": "physical-origin",
+        "outcome": "PASS",
+        "reason": "The configured physical adapter supplied the reads.",
+        "evidenceRefs": []
+      },
+      {
+        "id": "paid-inspection",
+        "outcome": "REVIEW",
+        "reason": "No verified Masumi seller receipt binds this inspection.",
+        "evidenceRefs": []
+      },
+      {
+        "id": "software-policy",
+        "outcome": "REVIEW",
+        "reason": "No pinned deployed contract decision binds this work order and inspection.",
+        "evidenceRefs": []
+      }
+    ],
+    "liveSettlement": false,
+    "contractVerified": false
+  },
+  "digests": {
+    "workOrder": "0xcb85f28d835c04fd5413b0f52bf9eac9b751958ae61b002a62648e19e2e55e5e",
+    "evidence": "0x2b52726ddd4d5a1f74f32636de59d3321057bf6167be949ec9054232f607da12",
+    "report": "0xd41a547b140e32fc232f280d68240f2d92bcc9de92cca3cab4eb6556d3fc152f",
+    "acceptance": "0x49ec74df444bef3bc054c4ca993cd2846a5776e945d60bc79f588cdee0b1a542"
+  }
+}

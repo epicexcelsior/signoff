@@ -1,0 +1,7 @@
+{
+  "operation": "searchCpes",
+  "parameters": {
+    "cpeMatchString": "cpe:2.3:a:apache:nimble:1.8.0",
+    "resultsPerPage": 1
+  }
+}

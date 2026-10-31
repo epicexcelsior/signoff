@@ -1,0 +1,42 @@
+menu "signoff commissioning device"
+config PROOFREADY_PROVIDER
+    string "Provisioned provider identifier"
+    default "proof-ready-reference"
+config PROOFREADY_BOARD_REVIEWED
+    bool "Exact board, pinout and low-voltage circuit received operator review"
+    default n
+config PROOFREADY_CONTACT_ENABLED
+    bool "Enable the read-only dry-contact input"
+    depends on PROOFREADY_BOARD_REVIEWED
+    default n
+config PROOFREADY_CONTACT_GPIO
+    int "Explicit dry-contact input GPIO"
+    depends on PROOFREADY_CONTACT_ENABLED
+    range -1 48
+    default -1
+config PROOFREADY_OPTICAL_ENABLED
+    bool "Enable authorized optical emission"
+    depends on PROOFREADY_BOARD_REVIEWED
+    default n
+config PROOFREADY_OPTICAL_GPIO
+    int "Explicit reviewed emitter GPIO"
+    depends on PROOFREADY_OPTICAL_ENABLED
+    range -1 48
+    default -1
+config PROOFREADY_OPTICAL_WS2812
+    bool "Emitter is one reviewed WS2812-compatible RGB LED"
+    depends on PROOFREADY_OPTICAL_ENABLED
+    default n
+    help
+        Use RMT to send one white GRB pixel. GPIO level writes cannot drive
+        an addressable LED. This option does not identify the carrier board.
+config PROOFREADY_OPTICAL_BRIGHTNESS
+    int "WS2812 white channel brightness (1-64)"
+    depends on PROOFREADY_OPTICAL_WS2812
+    range 1 64
+    default 32
+config PROOFREADY_OPTICAL_ACTIVE_LOW
+    bool "Emitter output is active-low"
+    depends on PROOFREADY_OPTICAL_ENABLED && !PROOFREADY_OPTICAL_WS2812
+    default n
+endmenu

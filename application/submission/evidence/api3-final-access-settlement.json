@@ -1,0 +1,20 @@
+{
+  "schema": "proof-of-ready/api3-access-settlement/v1",
+  "checkedAt": "2026-10-30T23:56:35.738Z",
+  "chainId": 84532,
+  "transactionHash": "0x1774cd765ea09588d9731c02034f104c59f664949f59c17dc9444e2a47018396",
+  "blockHash": "0x4ab4df9561eed96fd74ab242d24a15d5dedd2b70f6697f3a19fd37e46cfc685a",
+  "blockNumber": "52413564",
+  "confirmationsAtRead": 70,
+  "asset": "0xbeA34973e5f67F18F656A2C6070C64326C791808",
+  "amountAtomicUnits": "10000",
+  "requestHash": "0x3f0881fb062ac6b989c133e0b5651d19947e38aebe4d94750627fa612f447d15",
+  "originalResponseSha256": "281d0e74cbd3243f87070056274fd5701d0c4107a00798d8f5dbf70bd2df31f0",
+  "authorizationNonceSha256": "948996719dc14565c86fbc3bacec96e90979ceb3ff5386c6b03ca4b6ad81fb24",
+  "verified": true,
+  "method": "Original token transfer, payer, recipient, amount, and AuthorizationUsed nonce matched through the pinned RPC.",
+  "totalBudgetAtomicUnits": "20000",
+  "totalReservedAtomicUnits": "20000",
+  "remainingBudgetAtomicUnits": "0",
+  "scope": "Paid source access only. No physical truth or current installation authorization follows."
+}

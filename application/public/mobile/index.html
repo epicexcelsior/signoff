@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#103c49" />
+    <title>Seeker preparation · signoff</title>
+    <link rel="stylesheet" href="/theme.css" />
+    <style>
+      :root {
+        font-family: var(--body);
+        color: var(--ink);
+        background: var(--paper);
+        line-height: 1.55;
+      }
+      body {
+        margin: 0;
+      }
+      main {
+        max-width: 58rem;
+        margin: 0 auto;
+        padding: 2rem 1.25rem 4rem;
+      }
+      a {
+        color: var(--blue);
+        text-underline-offset: 0.2em;
+      }
+      a:focus-visible {
+        outline: 3px solid var(--amber);
+        outline-offset: 5px;
+      }
+      header {
+        border-left: 0.5rem solid var(--blue);
+        padding: 0.5rem 0 0.5rem 1.25rem;
+        margin: 2.5rem 0;
+      }
+      h1 {
+        font-size: clamp(2rem, 6vw, 3.5rem);
+        line-height: 1.07;
+        letter-spacing: -0.035em;
+        margin: 0.5rem 0 1rem;
+      }
+      h2 {
+        font-size: 1.3rem;
+        margin-top: 2rem;
+      }
+      .eyebrow {
+        font-size: 0.8rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--blue);
+        font-weight: 750;
+      }
+      .status {
+        background: var(--pale);
+        padding: 1rem 1.25rem;
+        border-radius: 0.5rem;
+      }
+      .flows {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin: 2rem 0;
+      }
+      article {
+        border-top: 3px solid var(--blue);
+        padding: 0 1rem 1rem;
+        background: #fff;
+        border-radius: 0.25rem;
+      }
+      article h2 {
+        margin-top: 1rem;
+      }
+      li {
+        padding-left: 0.3rem;
+        margin: 0.65rem 0;
+      }
+      code {
+        font-family: ui-monospace, monospace;
+        font-size: 0.9em;
+        overflow-wrap: anywhere;
+      }
+      footer {
+        border-top: 1px solid #bcc9d6;
+        padding-top: 1rem;
+        margin-top: 3rem;
+        color: var(--muted);
+      }
+      @media (max-width: 650px) {
+        .flows {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <nav aria-label="Project"><a href="/">← Commissioning station</a></nav>
+      <header>
+        <div class="eyebrow">Seeker companion · Local preparation</div>
+        <h1>Your phone.<br />The inspection desk.</h1>
+        <p>
+          Use the Android phone for the local station, a signed photo witness,
+          and a configured Bluetooth preflight.
+        </p>
+      </header>
+      <p class="status">
+        <strong>Start with the phone demo or the live station.</strong>
+        <a href="/demo/">Open the saved phone demo</a> to show the original real
+        evidence. <a href="/">Open the live station</a> for new camera tests
+        through USB. The optional native companion remains a separate
+        preparation path.
+      </p>
+      <section class="flows" aria-label="Companion workflows">
+        <article>
+          <h2>Station</h2>
+          <p>
+            Open the same commissioning interface through USB forwarding. Camera
+            access stays at the selected laptop loopback origin.
+          </p>
+        </article>
+        <article>
+          <h2>Phone witness</h2>
+          <p>
+            Reserve one fresh request. Capture and sign one image digest. Keep
+            the JPEG private and send only its signed envelope.
+          </p>
+        </article>
+        <article>
+          <h2>BLE preflight</h2>
+          <p>
+            Read the manifest from one configured board address. This flow
+            performs no scan, characteristic write, or actuator command.
+          </p>
+        </article>
+      </section>
+      <section aria-labelledby="prepare">
+        <h2 id="prepare">Prepare the phone</h2>
+        <ol>
+          <li>
+            Build the debug APK with
+            <code>npm --prefix application/mobile run build</code>.
+          </li>
+          <li>
+            Inspect the USB plan with
+            <code
+              >npm --prefix application/mobile run usb:plan --
+              EXPLICIT_ADB_SERIAL 4022</code
+            >.
+          </li>
+          <li>
+            After device-operation authorization, install the APK and forward
+            the selected coordinator port.
+          </li>
+          <li>
+            Transfer the phone's public key through a trusted channel and enroll
+            it before approving a work order.
+          </li>
+          <li>
+            Start a capture attempt, then load its original request in
+            <strong>Phone witness</strong>.
+          </li>
+        </ol>
+        <p>
+          The lane README contains exact setup commands, recovery rules, and the
+          signed-envelope interface.
+        </p>
+      </section>
+      <section aria-labelledby="limits">
+        <h2 id="limits">What the signature establishes</h2>
+        <p>
+          A valid envelope binds an enrolled phone key, one work order, one
+          request, a capture time, and an image digest. Camera origin and
+          installation truth remain separate checks.
+        </p>
+        <p>
+          An interrupted request stays consumed. Start a new coordinator attempt
+          after permission denial, expiry, camera failure, pause, or changed
+          geometry.
+        </p>
+      </section>
+      <footer>
+        No wallet or chain integration exists in this companion. No fixture
+        establishes physical installation or payment settlement.
+      </footer>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "schema": "proof-of-ready/api3-admission-context/v1",
+  "chainId": 84532,
+  "contract": "0x1ed0ebc0c5104702e688eccc567d84b66107e60b",
+  "operator": "0x5AB1B25d13bd13Ebd3c9480F438CF0530F37e831",
+  "runtimeCodeHash": "0x211a0eddd90b8daaa65a67c86d3e28840b33323226bcf84f7821d3b95db20232",
+  "jobId": "0xd9986df0464d0f2f19b1aa54fd1eb16919831d756f54d9a21a3ffba63cb18420",
+  "buildVersion": 1009000,
+  "blockNumber": "52608967",
+  "blockHash": "0xea77cea0d5c9445b5cba548267c90b33afbe61675b00563b7833eba999e772e6",
+  "spec": {
+    "workOrderDigest": "0x3812fb1ce050bfea197293ff463aa3e9c5b747d4ea03804afd763648b7a09cf8",
+    "buildManifestDigest": "0xa19b63a84199400520f789749b3bdf281d384c77984dfaaf8b552b31b9ecd569",
+    "deadline": 1793530062,
+    "maxCvssTenths": 70
+  }
+}

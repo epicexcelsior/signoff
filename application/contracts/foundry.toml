@@ -1,0 +1,19 @@
+[profile.default]
+src = "src"
+test = "test"
+out = "out"
+cache_path = "cache"
+libs = ["vendor"]
+solc_version = "0.8.37"
+optimizer = true
+optimizer_runs = 200
+evm_version = "cancun"
+remappings = ["@openzeppelin/contracts/=vendor/openzeppelin/contracts/", "solady/=vendor/solady/src/"]
+fs_permissions = [{ access = "read", path = "../api3/test/fixtures" }]
+ignored_warnings_from = ["vendor", "src/vendor"]
+
+[fuzz]
+runs = 256
+
+[fmt]
+line_length = 120

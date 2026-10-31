@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#172424" />
+    <title>signoff · saved inspection</title>
+    <link rel="stylesheet" href="/theme.css" />
+    <link rel="stylesheet" href="/demo/demo.css" />
+    <script type="module" src="/demo/view.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to inspection</a>
+    <header>
+      <a class="brand" href="/demo/">⌜ signoff</a
+      ><span class="saved-mode">SAVED COPY · NOT LIVE</span>
+    </header>
+    <main id="main">
+      <p class="eyebrow">Monitoring device / recorded camera check</p>
+      <h1 id="saved-heading">Saved inspection</h1>
+      <p class="pitch" id="saved-reason">
+        Loading the saved result. This is not a new inspection.
+      </p>
+      <section
+        id="camera-proof"
+        class="decision-card"
+        aria-labelledby="decision-heading"
+        data-proof
+        hidden
+      >
+        <div class="saved-hero">
+          <div class="measurement-panel">
+            <p class="eyebrow">
+              Saved camera measurement · diagram, not a photo
+            </p>
+            <div id="saved-measurement" class="saved-measurement"></div>
+          </div>
+          <div class="verdict-panel">
+            <p class="eyebrow">Installation / fix required</p>
+            <strong class="stamp">REWORK</strong>
+            <h2 id="decision-heading">Placement is outside the target.</h2>
+            <p id="placement">Loading the original camera measurement…</p>
+            <p class="paid-summary">
+              <strong>Independent inspection: FAIL</strong><br />Inspector paid
+              1 test USDM on Cardano Preprod.
+            </p>
+            <p class="fix">
+              <strong>What to fix</strong><br />Move the device marker toward
+              the target. Rotate it to face the same way as the reference
+              marker.
+            </p>
+          </div>
+        </div>
+        <div class="saved-checks">
+          <p><strong>Placement · FAIL</strong>Outside the approved target.</p>
+          <p>
+            <strong>Device tests · MISSING</strong>Contact and full
+            light-response tests are incomplete.
+          </p>
+          <p>
+            <strong>Paid inspection · FAIL</strong>Inspector received 1 test
+            USDM on Cardano Preprod.
+          </p>
+        </div>
+      </section>
+      <p id="phone-status" class="status" role="status">
+        Preparing saved evidence on this phone…
+      </p>
+      <section id="file-proof" aria-labelledby="proof-heading">
+        <h2 id="proof-heading">Verify the saved evidence.</h2>
+        <p>
+          This verifies the saved files. It does not recheck the device or
+          blockchain.
+        </p>
+        <button id="verify-files" disabled>Verify saved evidence</button>
+        <p id="verification" class="status" role="status">
+          Loading the reviewed files…
+        </p>
+        <details>
+          <summary>Original device and security-policy evidence</summary>
+          <p>
+            The ESP32 diagnostic matched 72 of 72 optical symbols in a phone
+            recording. Its original signature verified at capture.
+          </p>
+          <p>
+            These earlier paid NVD records show authenticated source checks and
+            a rejected job. Later source-gated software admission has separate
+            evidence in the live station. Neither record identifies installed
+            firmware or approves this installation.
+          </p>
+          <p class="note">
+            These earlier records are separate from the failed camera attempt.
+            They do not complete its missing device tests.
+          </p>
+          <div id="files" class="file-list"></div>
+        </details>
+      </section>
+      <nav class="proof-nav" aria-label="Explore saved proof" data-proof hidden>
+        <a href="#camera-proof"
+          ><span aria-hidden="true">⌖</span>Camera found a defect</a
+        ><a href="#payment-proof"
+          ><span aria-hidden="true">↗</span>Inspector received payment</a
+        ><a href="#file-proof"
+          ><span aria-hidden="true">✓</span>Verify saved evidence</a
+        >
+      </nav>
+      <section
+        id="payment-proof"
+        aria-labelledby="payment-heading"
+        data-proof
+        hidden
+      >
+        <p class="eyebrow">Useful report / real inspector payment</p>
+        <h2 id="payment-heading">Inspection complete · issues found.</h2>
+        <p>
+          The independent inspector returned <strong>FAIL</strong> on the actual
+          camera evidence. The seller received
+          <strong>1 test USDM on Cardano Preprod</strong>.
+        </p>
+        <div id="transactions" class="actions"></div>
+        <details>
+          <summary>Read the original inspector report · FAIL</summary>
+          <div id="report"></div>
+        </details>
+        <details id="receipt-details">
+          <summary>View payment receipt · saved original</summary>
+          <p>
+            This is the original saved receipt. It does not recheck current
+            chain state.
+          </p>
+          <pre id="receipt"></pre>
+        </details>
+        <p class="note">
+          These are saved original transactions. Explorer links need internet
+          access. This page does not recheck current chain state. Payment covers
+          the inspection report. It is not a contractor payment.
+        </p>
+      </section>
+      <details class="story">
+        <summary>The pitch in 20 seconds</summary>
+        <p>
+          “A contractor says the monitoring equipment is installed. The operator
+          needs evidence before accepting the handover. Here, the real camera
+          found incorrect placement. An independent inspector received payment
+          for a useful FAIL report. The installation stays blocked until the
+          contractor corrects placement and completes the missing tests.”
+        </p>
+        <p>
+          <strong>Starting business model:</strong> a paid inspection per
+          equipment handover. Customer demand and pricing remain unvalidated.
+        </p>
+        <p>
+          <strong>Later uses:</strong> refrigeration monitoring, industrial
+          sensor retrofits, and building controls. These uses remain proposals.
+        </p>
+      </details>
+      <a class="live-link" href="/">Open live station →</a>
+      <p class="note">
+        Fresh tests require the local coordinator and USB connection. This saved
+        viewer performs no capture, payment, or device operation.
+      </p>
+    </main>
+    <footer>
+      Saved evidence viewer · Saved evidence can show a real failure. It cannot
+      replace a fresh physical test.
+    </footer>
+  </body>
+</html>

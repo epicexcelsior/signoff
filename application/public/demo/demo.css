@@ -1,0 +1,365 @@
+* {
+  box-sizing: border-box;
+}
+[hidden] {
+  display: none !important;
+}
+body {
+  margin: 0;
+  line-height: 1.5;
+  font-size: 18px;
+}
+a {
+  color: var(--blue);
+  text-underline-offset: 4px;
+}
+header {
+  background: var(--night);
+  color: var(--por-on-dark);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  padding: 20px max(24px, calc((100vw - 1420px) / 2));
+}
+.brand {
+  font: 700 28px var(--display);
+  color: var(--por-on-dark);
+  text-transform: none;
+  text-decoration: none;
+}
+.saved-mode {
+  font: 14px/1.5 var(--mono);
+  color: var(--signal);
+  border: 1px solid var(--signal);
+  padding: 8px 12px;
+  white-space: nowrap;
+}
+main {
+  max-width: 1516px;
+  padding: 24px 48px 48px;
+  margin: auto;
+}
+h1 {
+  font: 700 clamp(44px, 4vw, 64px) / 1.05 var(--display);
+  margin: 8px 0 12px;
+}
+h2 {
+  font: 600 32px/1.15 var(--display);
+  margin: 8px 0 16px;
+}
+p {
+  margin: 12px 0;
+}
+.eyebrow {
+  font: 13px/1.6 var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0 0 8px;
+}
+.pitch {
+  color: var(--muted);
+  margin: 0;
+}
+.note {
+  font-size: 16px;
+  color: var(--muted);
+}
+.status {
+  border-left: 3px solid var(--line);
+  padding: 8px 12px;
+  font-size: 16px;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.status[data-error="true"] {
+  border-color: var(--orange);
+  color: var(--orange);
+  background: var(--por-rework-bg);
+}
+section {
+  background: var(--white);
+  padding: 24px;
+  border: 1px solid var(--line);
+  margin: 20px 0;
+  scroll-margin-top: 20px;
+}
+.saved-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: 32px;
+  align-items: start;
+}
+.stamp {
+  display: block;
+  font: 700 clamp(72px, 6.2vw, 116px) / 1 var(--display);
+  letter-spacing: 1px;
+  color: var(--orange);
+  border-left: 4px solid var(--orange);
+  padding-left: 16px;
+  background: var(--por-rework-bg);
+}
+.fix {
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+#placement {
+  font-size: 16px;
+  color: var(--muted);
+}
+.saved-checks {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 24px;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+.saved-checks p {
+  margin: 0;
+  font-size: 16px;
+}
+.saved-checks strong {
+  display: block;
+  margin-bottom: 8px;
+}
+button {
+  background: var(--ink);
+  border: 1px solid var(--ink);
+  color: white;
+  font: 600 18px/1.4 var(--body);
+  padding: 12px 24px;
+  min-height: 48px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+button:hover:not(:disabled) {
+  background: var(--blue);
+}
+button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+#file-proof {
+  border-top: 3px solid var(--signal);
+}
+#file-proof h2 {
+  font-size: 28px;
+}
+#file-proof > p {
+  font-size: 16px;
+}
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+.actions a,
+.live-link {
+  display: inline-block;
+  min-height: 44px;
+  padding: 12px 16px;
+  border: 1px solid var(--muted);
+  border-radius: 4px;
+  font-size: 16px;
+  background: var(--white);
+  text-decoration: none;
+}
+.actions a[aria-disabled="true"] {
+  color: var(--muted);
+  border-style: dashed;
+}
+details {
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+  margin-top: 20px;
+}
+summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  min-height: 44px;
+  padding: 8px 0;
+}
+summary:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.result {
+  border-bottom: 1px solid var(--line);
+  padding: 16px 0;
+  font-size: 16px;
+}
+.result strong {
+  display: block;
+}
+.result p {
+  color: var(--muted);
+}
+.file-list a {
+  display: block;
+  padding: 12px 0;
+  font-size: 16px;
+  overflow-wrap: anywhere;
+}
+.proof-nav {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  border-block: 1px solid var(--line);
+  padding: 12px 0;
+  margin: 24px 0;
+}
+.proof-nav a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  min-height: 44px;
+}
+.story {
+  padding: 16px 0;
+  max-width: 70ch;
+}
+.live-link {
+  margin-top: 24px;
+}
+footer {
+  padding: 24px max(24px, calc((100vw - 1420px) / 2));
+  border-top: 1px solid var(--line);
+  font-size: 14px;
+  color: var(--muted);
+}
+@media (max-width: 1000px) {
+  main {
+    padding: 24px;
+  }
+  .saved-hero {
+    gap: 24px;
+  }
+}
+@media (max-width: 760px) {
+  body {
+    font-size: 16px;
+  }
+  header {
+    padding: 16px;
+    flex-direction: column;
+    align-items: start;
+    gap: 16px;
+  }
+  .saved-mode {
+    font-size: 13px;
+  }
+  main {
+    padding: 20px 16px;
+  }
+  h1 {
+    font-size: 44px;
+  }
+  section {
+    padding: 16px;
+  }
+  .saved-hero {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .verdict-panel {
+    grid-row: 1;
+  }
+  .stamp {
+    font-size: 80px;
+  }
+  h2 {
+    font-size: 30px;
+  }
+  .saved-checks {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .saved-checks strong {
+    margin-bottom: 4px;
+  }
+  .proof-nav {
+    flex-direction: column;
+    gap: 8px;
+  }
+  #verify-files {
+    width: 100%;
+  }
+  .actions {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 760px) {
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .brand {
+    font-size: 24px;
+  }
+  .saved-mode {
+    font-size: 13px;
+  }
+  body {
+    padding-bottom: 88px;
+  }
+  #verify-files {
+    position: fixed;
+    z-index: 6;
+    bottom: 16px;
+    left: 16px;
+    width: calc(100% - 32px);
+    min-height: 52px;
+    border: 2px solid var(--por-on-dark);
+    outline: 4px solid var(--paper);
+  }
+  #verify-files:focus-visible {
+    outline: 3px solid var(--ink);
+    outline-offset: 4px;
+  }
+}
+
+@media (max-width: 760px) {
+  header {
+    gap: 8px;
+  }
+  header .brand {
+    font-size: 22px;
+  }
+  header .saved-mode {
+    padding: 6px;
+  }
+  main > h1 {
+    font-size: 38px;
+  }
+  .saved-checks {
+    gap: 12px;
+  }
+  .verdict-panel {
+    position: relative;
+  }
+}
+
+#receipt {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font: 14px/1.7 var(--mono);
+}
+/* Keep the saved-copy label visible when a judge follows an evidence link. */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+section {
+  scroll-margin-top: 130px;
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "proof-of-ready/cardano-physical-seller-receipt/v1",
+  "taskId": "01a18fed-4517-7319-a5be-cecbf6f4f4f7",
+  "verified": true,
+  "transactionHash": "f6493d441afbffcbe7a4f9ae8626318a9551bfbe7a8095a076eece5c01ff0029",
+  "netAtomicUnits": "1000000",
+  "unit": "16a55b2a349361ff88c03788f93e1e966e5d689605d044fef722ddde0014df10745553444d",
+  "exactReportSha256": "566bac5476676deeca25d97d8105b58f74203cabc56c8d35fa4c3ef10fdeb2a7",
+  "exactInputSha256": "f8089c16284627d791ef7dfb01c22035e6ce8ea9c69549bef5de3f3988a7e297",
+  "workOrderHash": "0xcb85f28d835c04fd5413b0f52bf9eac9b751958ae61b002a62648e19e2e55e5e",
+  "evidenceBundleHash": "0x2b52726ddd4d5a1f74f32636de59d3321057bf6167be949ec9054232f607da12",
+  "method": "Matched Core receipt, confirmed MPS withdrawal, and seller net transaction token outputs.",
+  "scope": "Actual camera input. No signed contact sequence or optical capture. No installation acceptance.",
+  "checkedAt": "2026-10-31T07:37:47.972Z",
+  "blockHash": "487663b655a3c0bb01d2127337314d7415a3c241da8d1ceff76438619343ba5b",
+  "blockHeight": 5355650,
+  "feeLovelace": "677153",
+  "originalResultTransactionHash": "d0c178019710413818159fcc3098ae1c733dbc8a070954b3c80b2a6b77f90280",
+  "originalResultConsumed": true
+}

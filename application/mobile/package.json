@@ -1,0 +1,15 @@
+{
+  "name": "signoff-seeker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "check": "node --check src/phone-evidence.mjs && node --check scripts/usb.mjs",
+    "build": "bash build-offline.sh",
+    "usb:plan": "node scripts/usb.mjs plan",
+    "usb:connect": "node scripts/usb.mjs connect",
+    "format": "node ../node_modules/prettier/bin/prettier.cjs --write src/phone-evidence.mjs scripts test package.json ../public/mobile/index.html",
+    "format:check": "node ../node_modules/prettier/bin/prettier.cjs --check src/phone-evidence.mjs scripts test package.json ../public/mobile/index.html"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "signoff-masumi",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "exports": "./src/index.js",
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "check": "node scripts/check.js",
+    "fixture": "node scripts/fixture.js",
+    "setup:plan": "node scripts/setup-plan.js",
+    "worker": "node --env-file-if-exists=.env scripts/worker.js",
+    "format": "prettier --write src scripts test fixtures package.json .env.example PROVENANCE.json --ignore-unknown",
+    "format:check": "prettier --check src scripts test fixtures package.json .env.example PROVENANCE.json --ignore-unknown"
+  },
+  "dependencies": {
+    "@masumi_network/sokosumi": "1.1.0",
+    "zod": "4.6.6"
+  },
+  "devDependencies": {
+    "prettier": "3.5.2"
+  }
+}

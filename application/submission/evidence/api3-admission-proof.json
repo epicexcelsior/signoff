@@ -1,0 +1,18 @@
+{
+  "schema": "proof-of-ready/api3-source-dependent-admission/v1",
+  "chainId": 84532,
+  "contract": "0x1Ed0EBc0c5104702E688eCCC567D84b66107e60b",
+  "jobId": "0xd9986df0464d0f2f19b1aa54fd1eb16919831d756f54d9a21a3ffba63cb18420",
+  "transactionHash": "0xbcba0ba8a582c06cc72351290de98a2bcabc03b6fe2916f6dbac6e237ef92798",
+  "blockNumber": "52609392",
+  "blockHash": "0x390650f28537b618e1bdacbc581a16dcbc599a7f90b8ceecba9c265bfd7bcda4",
+  "decision": "SOFTWARE_ADMITTED",
+  "jobDecision": "OPEN",
+  "inspectionRecorded": false,
+  "sourceDependentAction": true,
+  "sourceResponseDigest": "0x013362eb6f6b4e975da7ab2b369dd86ac976c6423972182de0c6e2ca0fd93efe",
+  "signedAt": "1793443653",
+  "gasUsed": "964639",
+  "networkWrites": false,
+  "scope": "Authenticated NVD data authorized opening a work order before inspection. The build is declared, not measured on the ESP32. This is not physical installation acceptance."
+}

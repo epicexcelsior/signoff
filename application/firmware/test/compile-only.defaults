@@ -1,0 +1,8 @@
+# Compiler coverage only. These synthetic pins are not a reviewed hardware profile.
+# Do not flash this build or use these pins on a board.
+CONFIG_PROOFREADY_BOARD_REVIEWED=y
+CONFIG_PROOFREADY_CONTACT_ENABLED=y
+CONFIG_PROOFREADY_CONTACT_GPIO=2
+CONFIG_PROOFREADY_OPTICAL_ENABLED=y
+CONFIG_PROOFREADY_OPTICAL_GPIO=3
+CONFIG_PROOFREADY_OPTICAL_ACTIVE_LOW=y

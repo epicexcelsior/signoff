@@ -1,0 +1,13 @@
+{
+  "name": "signoff-x402-inspector",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env src/main.js",
+    "buyer": "node --env-file-if-exists=.env scripts/buyer.js",
+    "test": "node --test test/*.test.js"
+  }
+}

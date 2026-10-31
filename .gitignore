@@ -1,0 +1,14 @@
+**/node_modules/
+**/.env
+**/.env.*
+!**/.env.example
+**/artifacts/
+**/test-results/
+**/playwright-report/
+**/__pycache__/
+**/out/
+**/cache/
+*.sqlite*
+*.db*
+application/public/demo/evidence.json
+application/public/demo/sw.js

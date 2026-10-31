@@ -1,0 +1,11 @@
+public/vendor/
+
+# Generated documentation snapshots preserve original Markdown bytes.
+public/overview.md
+
+# Preserve the exact delivered HTTP response bytes.
+submission/evidence/nvd-*-original.json
+
+# Generated phone snapshot preserves reviewed bytes and deterministic cache versions.
+public/demo/evidence.json
+public/demo/sw.js
