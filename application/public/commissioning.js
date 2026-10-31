@@ -1,3 +1,4 @@
+import { renderMeasurement } from "/measurement.js";
 import { createVisionController } from "/vision/controller.js";
 import { refreshJudgeEvidence } from "/judge-evidence.js";
 
@@ -210,6 +211,8 @@ function showSession(session) {
   $("history").value = session.id;
   order = orders.find((item) => item.id === session.workOrderId) ?? null;
   showOrder();
+  $("inspection-job").textContent =
+    order?.asset ?? "Remote equipment inspection";
   $("capture-state").textContent =
     session.state === "INSPECTED"
       ? "Capture sealed"
@@ -241,6 +244,50 @@ function showSession(session) {
   $("acceptance-gates").hidden = !session.report;
   $("download").hidden = !session.report;
   $("packet-status").textContent = "";
+  const recordedMeasurement = Boolean(
+    session.report && session.vision?.measurement,
+  );
+  $("saved-measurement").hidden = !recordedMeasurement;
+  $("camera-stage").hidden = recordedMeasurement && !camera;
+  if (recordedMeasurement)
+    renderMeasurement(
+      $("saved-measurement"),
+      session.vision.measurement,
+      order.vision,
+    );
+  $("measurement-source").textContent =
+    session.sourceMode === "fixture"
+      ? "REHEARSAL · synthetic measurement"
+      : session.report
+        ? "SAVED RECORDING · camera measurement"
+        : "REAL TEST · camera capture";
+  $("measurement-caption").textContent = recordedMeasurement
+    ? `Diagram from ${session.sourceMode === "fixture" ? "synthetic" : "saved camera"} coordinates, not a photo. ${new Date(session.vision.measurement.capturedAt).toISOString()}. Planar estimate using the declared reference size.`
+    : "Camera preview. The target illustration is not a measurement.";
+  $("report-heading").textContent =
+    session.acceptance?.decision === "REWORK"
+      ? "Fix required."
+      : session.acceptance?.decision === "READY"
+        ? "Meets the approved checks."
+        : "More evidence needed.";
+  $("human-checks").replaceChildren();
+  for (const [label, value] of [
+    ["Placement", session.vision?.measurement?.state ?? "Not measured"],
+    [
+      "Device tests",
+      session.report
+        ? (session.report.predicates.find((p) => p.id === "function")
+            ?.outcome ?? "Missing")
+        : "Not completed",
+    ],
+    ["Inspection", session.report?.outcome ?? "Not completed"],
+  ]) {
+    const row = document.createElement("p");
+    const title = document.createElement("strong");
+    title.textContent = label;
+    row.append(title, document.createTextNode(value));
+    $("human-checks").append(row);
+  }
   const geometry = session.vision?.measurement?.quality;
   $("placement-summary").hidden = !geometry || !session.report;
   $("placement-summary").textContent = geometry
@@ -271,7 +318,7 @@ function showSession(session) {
       "Check the button, then follow the requested states in a new attempt.",
     delivery: "Check the receiving monitor before another attempt.",
     vision:
-      "Align both markers with the approved target, then save a new camera measurement.",
+      "Align both markers with the approved target. Move the device marker toward the target and rotate it to face the reference. Measure again.",
     optical: "Capture the complete signed LED test with both markers visible.",
     "physical-origin":
       "Capture the actual installation with the physical adapter.",
@@ -286,7 +333,9 @@ function showSession(session) {
     session.acceptance?.decision === "READY"
       ? "The configured readers verified every acceptance requirement. Check external evidence again before using an expired decision."
       : session.report?.outcome === "FAIL"
-        ? "A required check failed. Correct the defect and start a new attempt."
+        ? session.vision?.measurement?.state === "FAIL"
+          ? "Placement is outside the approved target."
+          : "A required check failed. Correct the defect and start a new attempt."
         : session.report
           ? "Inspect the missing evidence before accepting this installation."
           : "Follow the contact sequence and save the camera measurement before inspection.";
@@ -673,6 +722,11 @@ $("start-camera").addEventListener("click", () =>
         "Approve the work order before starting camera guidance.",
       );
     camera?.stop();
+    $("camera-stage").hidden = false;
+    $("saved-measurement").hidden = true;
+    $("measurement-source").textContent = "REAL TEST · live camera preview";
+    $("measurement-caption").textContent =
+      "Live preview. Save a measurement during a fresh attempt.";
     $("camera").hidden = false;
     $("overlay").hidden = false;
     $("placement-preview").hidden = true;
@@ -736,6 +790,7 @@ function stopCamera() {
   $("placement-preview").hidden = false;
   $("camera-status").textContent = "Camera off · frames stay on this device";
   $("stop-camera").disabled = true;
+  if (current) showSession(current);
   feedback("Camera stopped. Saved evidence remains unchanged.");
   renderControls();
 }
@@ -891,7 +946,7 @@ try {
     $("project-overview-link").textContent = "Saved real evidence";
   }
   $("mode").textContent =
-    config.mode === "simulation" ? "Local rehearsal" : "Physical adapter";
+    config.mode === "simulation" ? "REHEARSAL" : "REAL STATION";
   $("rehearsal-controls").hidden = config.mode !== "simulation";
   $("physical-controls").hidden = config.mode === "simulation";
   $("demo-launch").hidden = config.mode === "simulation";
@@ -909,7 +964,7 @@ try {
     config.mode === "simulation"
       ? "Local rehearsal uses synthetic physical evidence. No funds move. Contact readings are simulated."
       : current?.report
-        ? "Saved inspection restored. Select Check demo to verify the packet and recheck the original payment."
+        ? "Saved inspection restored. Recheck saved record verifies its files and rechecks the original payment. No new inspection starts."
         : "Physical reads use the configured device. Start a fresh capture for each attempt.",
   );
   renderControls();

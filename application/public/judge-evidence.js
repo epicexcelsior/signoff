@@ -5,7 +5,7 @@ const labels = {
   submission: "Submission",
 };
 const caseLabels = {
-  "valid-causes-state-change": "Valid source changes contract state",
+  "valid-causes-state-change": "Valid response accepted by the saved call",
   "edited-rejects": "Edited evidence rejects",
   "stale-rejects": "Stale evidence rejects",
   "other-request-rejects": "Another request rejects",
@@ -247,6 +247,75 @@ async function readJudgeEvidence() {
       }
       if (record.taskId) row.append(element("code", `Task ${record.taskId}`));
       records.append(row);
+    }
+    const sourceTests = document.getElementById("judge-source-tests");
+    sourceTests.replaceChildren();
+    const sourceArtifact = artifacts.find(
+      (item) => item.id === "policy-five-cases",
+    );
+    if (sourceArtifact) {
+      const sourceResponse = await fetch(sourceArtifact.href);
+      if (!sourceResponse.ok)
+        throw new Error("Saved source tests are unavailable.");
+      const bytes = await sourceResponse.arrayBuffer();
+      const actualHash = [
+        ...new Uint8Array(await crypto.subtle.digest("SHA-256", bytes)),
+      ]
+        .map((v) => v.toString(16).padStart(2, "0"))
+        .join("");
+      if (actualHash !== sourceArtifact.sha256)
+        throw new Error(
+          "Saved source tests differ from the reviewed file hash.",
+        );
+      const saved = JSON.parse(new TextDecoder().decode(bytes));
+      sourceTests.append(
+        element(
+          "p",
+          `Base Sepolia · block ${saved.blockNumber} · saved read-only calls`,
+          "note",
+        ),
+      );
+      const address = element("a", saved.contract);
+      address.href = `https://sepolia.basescan.org/address/${saved.contract}`;
+      address.target = "_blank";
+      address.rel = "noopener noreferrer";
+      sourceTests.append(address);
+      const table = element("table");
+      const caption = element(
+        "caption",
+        "Expected and observed source checks · original saved results",
+      );
+      table.append(caption);
+      const head = element("thead");
+      const headings = element("tr");
+      for (const title of ["Input", "Expected", "Observed"]) {
+        const cell = element("th", title);
+        cell.scope = "col";
+        headings.append(cell);
+      }
+      head.append(headings);
+      table.append(head);
+      const body = element("tbody");
+      const names = {
+        valid: "Valid · original signed response",
+        edited: "Edited value · deliberate test",
+        stale: "Too old · original signed response",
+        "other-request": "Different request · original signed response",
+        "wrong-key": "Wrong signer · deliberate test",
+      };
+      for (const test of saved.results) {
+        const row = element("tr");
+        const title = element("th", names[test.case] ?? test.case);
+        title.scope = "row";
+        row.append(
+          title,
+          element("td", test.expectedRevert ?? test.expected),
+          element("td", test.observedRevert ?? test.observed),
+        );
+        body.append(row);
+      }
+      table.append(body);
+      sourceTests.append(table);
     }
     const cases = document.getElementById("judge-cases");
     cases.replaceChildren();

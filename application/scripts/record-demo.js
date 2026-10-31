@@ -43,22 +43,28 @@ try {
   });
   browser = await chromium.launch({ channel: "chrome", headless: true });
   context = await browser.newContext({
-    viewport: { width: 1280, height: 900 },
-    recordVideo: { dir, size: { width: 1280, height: 900 } },
+    viewport: { width: 1920, height: 1080 },
+    recordVideo: { dir, size: { width: 1920, height: 1080 } },
   });
   const page = await context.newPage();
   const errors = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto(origin);
   await page
-    .getByRole("button", { name: "Approve work order", exact: true })
+    .getByRole("button", {
+      name: "Confirm inspection requirements",
+      exact: true,
+    })
     .waitFor();
   await wait(6000);
   await page
     .getByLabel("Installation reference")
     .fill("Cabinet 07 · recorded rehearsal");
   await page
-    .getByRole("button", { name: "Approve work order", exact: true })
+    .getByRole("button", {
+      name: "Confirm inspection requirements",
+      exact: true,
+    })
     .click();
   await wait(5000);
   await page
@@ -73,7 +79,7 @@ try {
     .evaluate((node) => node.scrollIntoView({ block: "start" }));
   await wait(10000);
   await page
-    .getByRole("button", { name: "Verify packet", exact: true })
+    .getByRole("button", { name: "Verify evidence files", exact: true })
     .click();
   await page.waitForFunction(() =>
     document
@@ -83,7 +89,7 @@ try {
   await wait(5000);
   await page.locator(".advanced-tools > summary").click();
   await page
-    .getByRole("button", { name: "Test an edited packet", exact: true })
+    .getByRole("button", { name: "Try changing the evidence", exact: true })
     .click();
   await wait(5000);
   await page.getByLabel("Rehearsal condition").selectOption("misplaced");

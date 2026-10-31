@@ -90,7 +90,9 @@ test("commissioning desktop and phone: approve, inspect defects, verify packets,
         () => !document.getElementById("approve").disabled,
       );
       await page.getByLabel("Installation reference").fill(`Cabinet ${width}`);
-      await page.getByRole("button", { name: "Approve work order" }).focus();
+      await page
+        .getByRole("button", { name: "Confirm inspection requirements" })
+        .focus();
       await page.keyboard.press("Enter");
       await page.waitForFunction(
         () =>
@@ -110,7 +112,7 @@ test("commissioning desktop and phone: approve, inspect defects, verify packets,
         /Align both markers/,
       );
       await page
-        .getByRole("button", { name: "Verify packet", exact: true })
+        .getByRole("button", { name: "Verify evidence files", exact: true })
         .click();
       await page.waitForFunction(() =>
         document
@@ -118,7 +120,9 @@ test("commissioning desktop and phone: approve, inspect defects, verify packets,
           .textContent.includes("Packet verified"),
       );
       await page.locator(".advanced-tools > summary").click();
-      await page.getByRole("button", { name: "Test an edited packet" }).click();
+      await page
+        .getByRole("button", { name: "Try changing the evidence" })
+        .click();
       await page.waitForFunction(() =>
         document
           .getElementById("packet-status")
@@ -312,7 +316,9 @@ test("camera UI saves the controller frame shape and backend recomputes placemen
     await page.waitForFunction(
       () => !document.getElementById("approve").disabled,
     );
-    await page.getByRole("button", { name: "Approve work order" }).click();
+    await page
+      .getByRole("button", { name: "Confirm inspection requirements" })
+      .click();
     await page.getByRole("button", { name: "Start capture attempt" }).click();
     await page.getByRole("button", { name: "Start camera" }).click();
     assert.match(await page.locator("#camera-status").innerText(), /38.0 mm/);
@@ -406,7 +412,10 @@ test("lost rehearsal response recovers the saved attempt after refresh without a
     const page = await browser.newPage();
     await page.goto(origin);
     await page
-      .getByRole("button", { name: "Approve work order", exact: true })
+      .getByRole("button", {
+        name: "Confirm inspection requirements",
+        exact: true,
+      })
       .click();
     await page.evaluate(() => {
       Object.defineProperty(navigator.mediaDevices, "getUserMedia", {
@@ -546,7 +555,10 @@ test("operator can cancel unanswered camera permission and recover controls befo
     const page = await browser.newPage();
     await page.goto(origin);
     await page
-      .getByRole("button", { name: "Approve work order", exact: true })
+      .getByRole("button", {
+        name: "Confirm inspection requirements",
+        exact: true,
+      })
       .click();
     await page.evaluate(() =>
       Object.defineProperty(navigator.mediaDevices, "getUserMedia", {
@@ -598,7 +610,10 @@ test("late camera enumeration cannot revive stopped camera controls", async (t) 
     const page = await browser.newPage();
     await page.goto(origin);
     await page
-      .getByRole("button", { name: "Approve work order", exact: true })
+      .getByRole("button", {
+        name: "Confirm inspection requirements",
+        exact: true,
+      })
       .click();
     await page.evaluate(() => {
       Object.defineProperty(navigator.mediaDevices, "getUserMedia", {
@@ -678,7 +693,10 @@ test("camera restart blocks optical dispatch until a new passing measurement bin
     });
     await page.goto(origin);
     await page
-      .getByRole("button", { name: "Approve work order", exact: true })
+      .getByRole("button", {
+        name: "Confirm inspection requirements",
+        exact: true,
+      })
       .click();
     await page
       .getByRole("button", { name: "Start capture attempt", exact: true })
@@ -700,7 +718,7 @@ test("camera restart blocks optical dispatch until a new passing measurement bin
       .click();
     assert.equal(
       await page
-        .getByRole("button", { name: "Capture signed optical test" })
+        .getByRole("button", { name: "Check the device’s light response" })
         .isDisabled(),
       true,
     );
@@ -738,7 +756,7 @@ test("camera restart blocks optical dispatch until a new passing measurement bin
     );
     assert.equal(
       await page
-        .getByRole("button", { name: "Capture signed optical test" })
+        .getByRole("button", { name: "Check the device’s light response" })
         .isDisabled(),
       true,
     );
@@ -893,7 +911,10 @@ test("demo shortcuts select exact evidence, avoid new captures, and surface paym
         .click();
       const before = reads;
       await page
-        .getByRole("button", { name: "Open real inspection", exact: true })
+        .getByRole("button", {
+          name: "View the recorded inspection",
+          exact: true,
+        })
         .click();
       await page.waitForFunction(
         (id) => document.getElementById("history").value === id,
@@ -928,10 +949,23 @@ test("demo shortcuts select exact evidence, avoid new captures, and surface paym
           () => document.documentElement.scrollWidth > innerWidth,
         ),
         false,
+        JSON.stringify(
+          await page.evaluate(() =>
+            [...document.querySelectorAll("body *")]
+              .filter((e) => e.getBoundingClientRect().right > innerWidth + 1)
+              .map((e) => ({
+                tag: e.tagName,
+                id: e.id,
+                class: e.className,
+                right: e.getBoundingClientRect().right,
+                text: e.textContent.slice(0, 80),
+              })),
+          ),
+        ),
       );
       available = false;
       await page
-        .getByRole("button", { name: "Check demo", exact: true })
+        .getByRole("button", { name: "Recheck saved record", exact: true })
         .click();
       await page.waitForFunction(() =>
         document
@@ -949,7 +983,7 @@ test("demo shortcuts select exact evidence, avoid new captures, and surface paym
       matching = false;
       const beforeMissing = reads;
       await page
-        .getByRole("button", { name: "Check demo", exact: true })
+        .getByRole("button", { name: "Recheck saved record", exact: true })
         .click();
       await page.waitForFunction(() =>
         document
