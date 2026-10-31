@@ -163,7 +163,7 @@
       "status": "signature-verified-camera-diagnostic",
       "artifact": "application/submission/evidence/esp32-optical-diagnostic.json",
       "artifactSha256": "4034794f9c09bf0b5d61d4f56a09ffcff9969655f87e11be809490a6d225b9db",
-      "qualificationScope": "Real signed 18-second LED response. Offline phone-recording analysis matched 72 of 72 symbols. Diagnostic binding only. No continuous marker tracking, approved installation capture, contact test, or acceptance."
+      "qualificationScope": "Real signed 18-second LED response. Offline phone-recording analysis matched 72 of 72 symbols. Production OpenCV replay detected both markers in 90 of 90 sampled frames at 5 Hz. All 90 frames failed the default placement policy. Diagnostic binding only. No live tracked commissioning capture, contact test, or acceptance."
     }
   ],
   "mandatoryEvidence": {
