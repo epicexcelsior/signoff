@@ -94,6 +94,25 @@ def inspect_build(build, backup=None):
                 int(config.get("CONFIG_PARTITION_TABLE_OFFSET", "0x8000"), 0))
         except PreservationError as error:
             raise PlanError(str(error)) from error
+    blocked_by = [
+        "Identify carrier board and manufacturer pinout.",
+        "Review USB power and preserve native USB pins.",
+    ]
+    if profile["contact_enabled"] == "y":
+        blocked_by.append(
+            "Review actual button terminals, pull-up input, ground and contact GPIO."
+        )
+    if profile["optical_enabled"] == "y":
+        blocked_by.append(
+            "Review onboard WS2812 power, data routing and optical GPIO."
+            if profile["optical_ws2812"] == "y"
+            else "Review external LED, resistor, polarity and optical GPIO circuit."
+        )
+    blocked_by.extend([
+        "Reject compiler-coverage profiles. Build an approved physical profile.",
+        "Verify provisioning, receipt-key enrollment and private recovery backup.",
+        "Approve exact image hashes, offsets, port, reset and flash action.",
+    ])
     return {
         "schema": "proof-of-ready/firmware-flash-review/v1",
         "flashAuthorized": False,
@@ -105,13 +124,7 @@ def inspect_build(build, backup=None):
         "flashSettings": flash.get("flash_settings"),
         "storagePreservation": preservation,
         "artifacts": sorted(artifacts, key=lambda item: int(item["offset"], 16)),
-        "blockedBy": [
-            "Identify carrier board and manufacturer pinout.",
-            "Review actual button, LED, resistor, power and GPIO circuit.",
-            "Reject compiler-coverage profiles. Build an approved physical profile.",
-            "Verify provisioning, receipt-key enrollment and private recovery backup.",
-            "Approve exact image hashes, offsets, port, reset and flash action.",
-        ],
+        "blockedBy": blocked_by,
         "flashCommandForLaterReview": [
             "idf.py",
             "-C",

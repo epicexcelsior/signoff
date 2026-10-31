@@ -58,6 +58,49 @@ class FirmwarePlanTests(unittest.TestCase):
         self.assertEqual(plan["configuredProfile"]["optical_brightness"], "32")
         self.assertFalse(plan["flashAuthorized"])
 
+    def test_onboard_optical_only_review_excludes_external_parts(self):
+        (self.build / "sdkconfig").write_text(
+            "CONFIG_PROOFREADY_BOARD_REVIEWED=y\n"
+            "CONFIG_PROOFREADY_OPTICAL_ENABLED=y\n"
+            "CONFIG_PROOFREADY_OPTICAL_GPIO=8\n"
+            "CONFIG_PROOFREADY_OPTICAL_WS2812=y\n"
+        )
+        plan = inspect_build(self.build)
+        requirements = " ".join(plan["blockedBy"])
+        self.assertIn("WS2812", requirements)
+        self.assertNotIn("button", requirements)
+        self.assertNotIn("resistor", requirements)
+        self.assertNotIn("external LED", requirements)
+        self.assertIn("USB power", requirements)
+        self.assertFalse(plan["flashAuthorized"])
+        self.assertFalse(plan["hardwareEvidence"])
+        self.assertFalse(plan["boardReviewVerified"])
+        self.assertEqual(plan["storagePreservation"]["status"], "UNVERIFIED")
+
+    def test_discrete_contact_review_requires_both_circuits(self):
+        requirements = " ".join(inspect_build(self.build)["blockedBy"])
+        self.assertIn("button", requirements)
+        self.assertIn("pull-up", requirements)
+        self.assertIn("external LED", requirements)
+        self.assertIn("resistor", requirements)
+        self.assertIn("polarity", requirements)
+        self.assertNotIn("WS2812", requirements)
+
+    def test_disabled_optical_profiles_do_not_require_optical_parts(self):
+        for contact in (False, True):
+            with self.subTest(contact=contact):
+                (self.build / "sdkconfig").write_text(
+                    "CONFIG_PROOFREADY_BOARD_REVIEWED=y\n"
+                    + ("CONFIG_PROOFREADY_CONTACT_ENABLED=y\n" if contact else "")
+                )
+                plan = inspect_build(self.build)
+                requirements = " ".join(plan["blockedBy"])
+                self.assertEqual("button" in requirements, contact)
+                self.assertNotIn("LED", requirements)
+                self.assertNotIn("resistor", requirements)
+                self.assertIn("USB power", requirements)
+                self.assertFalse(plan["flashAuthorized"])
+
     def test_wrong_target_and_empty_artifacts_reject(self):
         self.flash["extra_esptool_args"]["chip"] = "esp32"
         self.write_flash()
