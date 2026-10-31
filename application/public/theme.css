@@ -184,3 +184,17 @@ header :focus-visible,
   scroll-margin-top: 130px;
   scroll-margin-bottom: 100px;
 }
+
+.brand-logo {
+  display: block;
+  width: 180px;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+@media (max-width: 760px) {
+  .brand-logo {
+    width: 132px;
+  }
+}
