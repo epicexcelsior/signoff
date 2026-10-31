@@ -16,6 +16,8 @@ A facility operator needs evidence before accepting the handover. The recorded c
 
 [Recording summary](docs/ENGINEERING.md#technical-clip-summary) lists the six primary clips, durations, judge-facing message, evidence boundaries, and remaining owner actions.
 
+**Pitch recording:** open the private [pitch and video workspace](.local/pitch/index.html). Record the customer opening, technical walkthrough, and closing as separate takes. Start with the [plain-language voiceover](.local/pitch/video/voiceover.md) or its [recording view](.local/pitch/video/record.html). The separate deck, PDF, illustrations, and video cards follow FIELD NOTE. [The edit plan](.local/pitch/video/edit-plan.md) maps speech to genuine technical clips. The [122-second first cut](.local/production-first-cut/proof-of-ready-first-cut.mp4) combines all six proof clips with replaceable introduction and closing cards. Owner recordings and final review remain pending.
+
 **Open the phone demo: <http://127.0.0.1:4022/demo/>.** Load it once through USB and wait for **Saved in this browser**. Its original real evidence then works without the laptop. Fresh tests use the [live station](http://127.0.0.1:4022). Port 4021 is the separate labeled rehearsal.
 
 The starting wedge is equipment handover for facility teams and installation contractors. The proposed business model is a paid inspection per handover. Demand and pricing remain unvalidated. The demo shows a real defect, a useful paid report, and the evidence that blocks acceptance.

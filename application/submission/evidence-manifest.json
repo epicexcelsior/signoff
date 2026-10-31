@@ -356,10 +356,22 @@
   },
   "releaseCandidate": {
     "published": false,
-    "testedCleanCheckout": false,
+    "testedCleanCheckout": true,
     "internalDocumentsIncluded": false,
     "privateHistoryIncluded": false,
-    "status": "REBUILD_PENDING_AFTER_SOURCE_GATE_CORRECTION",
-    "previousReviewedCandidateCommit": "56e1d3bb94a14c6721bf588a0aa16022e6195d4c"
+    "status": "CLEAN_CHECKOUT_VERIFIED_PUBLICATION_PENDING",
+    "testedCandidateCommit": "018fa75",
+    "sourceArchiveSha256": "fc8ee8d845c232abded4c6386f5094d882d70660ffec09afdecfc8ff6d800519",
+    "verificationScope": "280-file sanitized snapshot. Base 80, Masumi 32, API3 37, x402 5 tests. Exact custom-response command verified for all five inputs. Aggregate replay remains subject to HTTP failure."
+  },
+  "videoProduction": {
+    "status": "FIRST_CUT_OWNER_RECORDINGS_PENDING",
+    "durationSeconds": 122.021333,
+    "width": 1920,
+    "height": 1080,
+    "frameRate": 30,
+    "audio": "Silent placeholder track. Owner recordings pending.",
+    "publicUrl": null,
+    "finalExportReviewed": false
   }
 }
