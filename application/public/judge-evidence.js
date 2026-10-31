@@ -12,6 +12,8 @@ const caseLabels = {
   "wrong-key-rejects": "Another signing key rejects",
 };
 const recordLabels = {
+  "physical-camera-placement-rework":
+    "Real camera inspection · incorrect placement rejected",
   "esp32-optical-diagnostic": "Real device response · 72 of 72 optical symbols",
   "esp32-optical-flash": "Device firmware and startup",
   "api3-faucet-mint": "Test funding",

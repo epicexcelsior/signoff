@@ -109,6 +109,7 @@ export function createApp(service) {
       token,
       mode: service.config.mode,
       contact: service.profile.contact,
+      contact_enabled: service.profile.contact.sensor !== "disabled-contact",
       price: "2 tADA",
       spend_authorized: service.config.spendAuthorized,
       optical_authorized: service.config.opticalAuthorized === true,

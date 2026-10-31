@@ -4,6 +4,7 @@ import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { fileURLToPath } from "node:url";
 import { receiptMessage } from "./evidence.js";
+import { AppError } from "./store.js";
 
 const execute = promisify(execFile);
 
@@ -68,6 +69,14 @@ export function simulatedReceipt(challenge, contact, privateKey, closed) {
 }
 
 export function makeObserver(config, identity) {
+  if (config.contact?.sensor === "disabled-contact")
+    return async () => {
+      throw new AppError(
+        "CONTACT_DISABLED",
+        "The enrolled board disables contact input. No device request ran.",
+        403,
+      );
+    };
   if (config.mode === "simulation") {
     return async (job) =>
       simulatedReceipt(

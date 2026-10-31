@@ -63,6 +63,10 @@ export function loadConfig(env = process.env) {
   if (mode !== "simulation") {
     const pins = JSON.parse(readFileSync(env.FIELDPROOF_RECEIPT_PINS, "utf8"));
     config.contact = validateContact(pins.contact);
+    if (mode === "preprod" && config.contact.sensor === "disabled-contact")
+      throw new Error(
+        "The Preprod contact service requires an enabled physical contact sensor.",
+      );
     if (config.contact.sensor === "simulated-contact")
       throw new Error(
         "Physical reads require an enrolled physical contact sensor.",

@@ -8,7 +8,7 @@ This document defines goals and completion criteria. [README](README.md#current-
 
 An operator delegates installation checks to an agent. The agent proposes structured requirements, coordinates evidence providers, buys specialist inspection, and explains the result. Deterministic checks decide READY, REWORK, or REVIEW.
 
-The first specimen is a marked monitoring station with a button-contact test and a camera-observed LED. ESP32 is the first adapter. The next available camera is a webcam or the confirmed Solana Mobile Seeker. The phone's Station browser camera route still requires actual device validation.
+The first specimen is a marked monitoring station with a button-contact test and a camera-observed LED. ESP32 is the first adapter. The next available camera is a webcam or the confirmed Solana Mobile Seeker. The Seeker browser camera now supplies a real physical-station measurement and a verified negative packet. Full tracked optical commissioning remains incomplete.
 
 The customer hypothesis is an operator accepting subcontracted monitoring installations. Demand, pricing, and revisit savings remain unvalidated. They do not block authorized engineering.
 
@@ -74,11 +74,11 @@ Photos match a documented SuperMini layout, with onboard WS2812 GPIO8 and GPIO2 
 
 | Input or grant     | Current state                                                                              | Required before                                                                       |
 | ------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------- |
-| Product and camera | Proof of Ready selected. Webcam or Seeker is the next available camera                     | Actual camera connection and device validation                                        |
-| Physical specimen  | USB-only C6 SuperMini layout matched. Private backup and GPIO8 optical-only flash complete | Camera connection, runtime enrollment, and later button-terminal/wiring review        |
+| Product and camera | Proof of Ready selected. Real Seeker browser camera inspection returned REWORK                     | Correct physical marker/LED geometry and complete bound optical capture                                        |
+| Physical specimen  | USB-only C6 SuperMini layout matched. Private backup and GPIO8 optical-only flash complete | Correct marker/LED geometry, bound optical capture, and later button-terminal/wiring review        |
 | Printing           | Supplied target exists. Physical dimensions remain unmeasured                              | Metric placement claim                                                                |
 | Firmware           | Both build profiles compiled. Reviewed image flashed. Signed diagnostic and 72/72 recorded symbols verified | Continuous tracked station capture bound to an approved work order                            |
-| Seeker             | APK compiled. Phone not installed or tested                                                | Explicit install, forwarding, and native checks                                       |
+| Seeker             | APK compiled. Native app uninstalled. Browser camera tested                                                | Explicit install, forwarding, and native checks                                       |
 | Sokosumi           | Personal grant, useful paid REVIEW and positive seller receipt verified                    | Actual physical inspection input                                                      |
 | Blockfrost         | Preprod key passes authenticated latest-block check                                        | Dedicated payment resource configuration                                              |
 | Masumi payment     | Original paid Task completed and seller collection confirmed                               | Preserve original Task, transactions and receipt. No new purchase is needed           |

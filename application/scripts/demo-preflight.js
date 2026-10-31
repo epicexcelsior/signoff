@@ -4,6 +4,7 @@ import {
   submissionArtifact,
 } from "../src/submission-evidence.js";
 import { verifyOpticalExecution } from "../src/optical.js";
+import { verifyPacket } from "../src/commissioning.js";
 
 const check = (condition, message) => {
   if (!condition) throw new Error(message);
@@ -76,6 +77,16 @@ try {
   );
   const parse = (id) => JSON.parse(submissionArtifact(id));
   const manifest = local.manifest;
+  const physicalRecord = manifest.liveEvidence.find(
+    (item) => item.id === "physical-camera-placement-rework",
+  );
+  check(physicalRecord, "The saved real-camera inspection record is missing.");
+  const physicalPacket = parse("physical-camera-rework-packet");
+  check(
+    verifyPacket(physicalPacket, physicalRecord.workOrderDigest).decision ===
+      "REWORK",
+    "The saved real-camera negative packet does not verify as REWORK.",
+  );
   const receipt = parse("paid-inspection-seller-receipt");
   check(
     receipt.verified === true &&
@@ -151,6 +162,8 @@ try {
           opticalGrant: config.optical_authorized === true,
         },
         savedEvidence: {
+          physicalCamera:
+            "Original real-camera REWORK packet verifies; no signed device sequence",
           originalArtifactHashes: "MATCH",
           cardano:
             "Positive saved seller receipt; original synthetic inspection",

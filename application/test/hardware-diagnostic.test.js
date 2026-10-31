@@ -45,3 +45,36 @@ test("preserved physical diagnostic verifies and rejects edited challenge eviden
   assert.equal(evidence.claimsAfter, 62);
   assert.equal(Object.hasOwn(evidence, "recording"), false);
 });
+
+test("original real-camera negative packet preserves disabled contact and rejects edits", async () => {
+  const { verifyPacket } = await import("../src/commissioning.js");
+  const manifest = JSON.parse(
+    readFileSync(
+      new URL("../submission/evidence-manifest.json", import.meta.url),
+    ),
+  );
+  const record = manifest.liveEvidence.find(
+    (item) => item.id === "physical-camera-placement-rework",
+  );
+  const bytes = readFileSync(
+    new URL(
+      "../submission/evidence/physical-camera-rework-packet.json",
+      import.meta.url,
+    ),
+  );
+  const packet = JSON.parse(bytes);
+  const { createHash } = await import("node:crypto");
+  assert.equal(
+    createHash("sha256").update(bytes).digest("hex"),
+    record.artifactSha256,
+  );
+  assert.equal(packet.evidence.sourceMode, "physical");
+  assert.equal(packet.evidence.vision.source, "browser-camera");
+  assert.equal(packet.evidence.vision.measurement.state, "FAIL");
+  assert.equal(packet.evidence.device.length, 0);
+  assert.equal(packet.evidence.optical, null);
+  assert.equal(packet.workOrder.device.contact.sensor, "disabled-contact");
+  assert.equal(verifyPacket(packet, record.workOrderDigest).decision, "REWORK");
+  packet.evidence.vision.frame.markers[0].corners[0].x++;
+  assert.throws(() => verifyPacket(packet, record.workOrderDigest));
+});

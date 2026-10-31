@@ -116,6 +116,7 @@ function renderControls() {
     camera?.getState().phase !== "ACTIVE";
   $("contact-step").disabled =
     blocked ||
+    config?.contact_enabled === false ||
     expired ||
     !active ||
     Boolean(current?.pending) ||
@@ -151,13 +152,16 @@ function renderControls() {
     $(id).disabled = blocked || !current?.report;
   $("verify").disabled = blocked || !current?.report;
   $("tamper").disabled = blocked || !current?.report;
-  const instruction = expired
-    ? "The capture window expired. Start a new attempt for another physical read."
-    : current?.pending
-      ? "The original contact read is pending or interrupted. Start a new attempt for another read."
-      : active && current.device.length < 3
-        ? `Set the contact ${current.sequence[current.device.length] ? "CLOSED" : "OPEN"}, then read step ${current.device.length + 1} of 3.`
-        : "The contact sequence is complete. Close the capture for inspection.";
+  const instruction =
+    config?.contact_enabled === false
+      ? "This board disables contact input. Contact testing requires reviewed hardware and a new enrolled profile."
+      : expired
+        ? "The capture window expired. Start a new attempt for another physical read."
+        : current?.pending
+          ? "The original contact read is pending or interrupted. Start a new attempt for another read."
+          : active && current.device.length < 3
+            ? `Set the contact ${current.sequence[current.device.length] ? "CLOSED" : "OPEN"}, then read step ${current.device.length + 1} of 3.`
+            : "The contact sequence is complete. Close the capture for inspection.";
   $("contact-instruction").textContent = instruction;
 }
 function showOrder() {
@@ -263,9 +267,12 @@ function showSession(session) {
     )) {
       const gate = document.createElement("div");
       const title = document.createElement("strong");
-      title.textContent = `${predicate.id.replaceAll("-", " ")} · ${predicate.outcome}`;
+      title.textContent = `${predicate.id === "physical-origin" ? "physical adapter mode" : predicate.id.replaceAll("-", " ")} · ${predicate.outcome}`;
       const reason = document.createElement("p");
-      reason.textContent = predicate.reason;
+      reason.textContent =
+        predicate.id === "physical-origin" && predicate.outcome === "PASS"
+          ? "Configuration only. Device signatures and camera-origin authentication remain separate checks."
+          : predicate.reason;
       gate.append(title, reason);
       $("acceptance-gates").append(gate);
     }

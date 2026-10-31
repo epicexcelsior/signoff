@@ -509,6 +509,15 @@ export class CommissioningService {
       invalid("Select contact step 0, 1, or 2.");
     const session = this.store.get("sessions", id);
     if (body.step < session.device.length) return session;
+    if (
+      this.store.get("orders", session.workOrderId).device.contact.sensor ===
+      "disabled-contact"
+    )
+      throw new AppError(
+        "CONTACT_DISABLED",
+        "This enrolled board disables contact input. Contact testing requires reviewed hardware and a new enrolled profile.",
+        403,
+      );
     const key = `${id}:${body.step}`;
     if (this.inFlight.has(key)) return this.inFlight.get(key);
     const claimed = this.store.change(id, (current) => {

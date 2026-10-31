@@ -612,3 +612,82 @@ test("verified reader commitments control READY and fresh reconciliation superse
     secondStore.close();
   }
 });
+
+test("optical-only enrollment rejects contact dispatch without changing the capture", async (t) => {
+  let reads = 0;
+  const f = fixture(t, {
+    observe: async () => {
+      reads++;
+      throw new Error("Contact adapter must not run");
+    },
+  });
+  const pins = join(f.dir, "optical-only-pins.json");
+  const contact = { ...f.profile.contact, sensor: "disabled-contact" };
+  writeFileSync(
+    pins,
+    JSON.stringify({ publicKey: f.identity.publicKey, contact }),
+  );
+  const config = loadConfig({
+    FIELDPROOF_MODE: "physical",
+    FIELDPROOF_RECEIPT_PINS: pins,
+    FIELDPROOF_BLE_ADDRESS: "00:11:22:33:44:55",
+    FIELDPROOF_DEVICE_SECRET: "fixture-secret-only",
+    FIELDPROOF_STATE_DIR: f.dir,
+  });
+  assert.equal(config.contact.sensor, "disabled-contact");
+  assert.throws(
+    () =>
+      loadConfig({
+        FIELDPROOF_MODE: "preprod",
+        FIELDPROOF_RECEIPT_PINS: pins,
+        FIELDPROOF_BLE_ADDRESS: "00:11:22:33:44:55",
+        FIELDPROOF_DEVICE_SECRET: "fixture-secret-only",
+        SELLER_ADDRESS: "addr_test1" + "q".repeat(60),
+        BLOCKFROST_PROJECT_ID: "preprod-fixture",
+      }),
+    /requires an enabled physical contact sensor/,
+  );
+
+  Object.assign(f.config, config);
+  f.profile.contact = contact;
+  const c = f.service.commissioning;
+  const order = c.createOrder({
+    asset: "Optical-only bench",
+    idempotency_key: "optical-only-order",
+  });
+  const session = c.createSession(order.id, {
+    scenario: "correct",
+    idempotency_key: "optical-only-session",
+  });
+  const before = c.store.get("sessions", session.id);
+  const origin = await server(t, f.service);
+  const publicConfig = await (await fetch(`${origin}/api/config`)).json();
+  assert.equal(publicConfig.contact_enabled, false);
+  const response = await fetch(
+    `${origin}/api/commissioning/sessions/${session.id}/contact`,
+    {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-fieldproof-token": publicConfig.token,
+      },
+      body: JSON.stringify({ step: 0 }),
+    },
+  );
+  assert.equal(response.status, 403);
+  assert.equal((await response.json()).code, "CONTACT_DISABLED");
+  assert.equal(reads, 0);
+  assert.deepEqual(c.store.get("sessions", session.id), before);
+  assert.equal(c.prepareOptical(session.id).half_symbol_ms, 250);
+  const result = c.inspect(session.id);
+  assert.notEqual(result.acceptance.decision, "READY");
+  assert.equal(
+    result.report.predicates.find((item) => item.id === "function").outcome,
+    "REVIEW",
+  );
+  const { makeObserver } = await import("../src/observation.js");
+  await assert.rejects(
+    makeObserver(config, null)({}),
+    (error) => error.code === "CONTACT_DISABLED",
+  );
+});

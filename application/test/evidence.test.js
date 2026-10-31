@@ -145,3 +145,25 @@ test("cached decisions expire from the original capture time", (t) => {
     "WAIT",
   );
 });
+
+test("a signed contact receipt cannot override an explicitly disabled enrollment", (t) => {
+  const { identity, profile } = fixture(t);
+  const contact = { ...profile.contact, sensor: "disabled-contact" };
+  const challenge = createChallenge("0123456789abcdef");
+  const receipt = simulatedReceipt(
+    challenge,
+    contact,
+    identity.privateKey,
+    true,
+  );
+  assert.throws(
+    () =>
+      verifyEvidence({
+        receipt,
+        challenge,
+        contact,
+        publicKey: identity.publicKey,
+      }),
+    (error) => error.code === "CONTACT_DISABLED",
+  );
+});

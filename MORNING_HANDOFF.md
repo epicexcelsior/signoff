@@ -75,3 +75,9 @@ The read-only preflight reports station availability, saved-evidence integrity, 
 If you change or restart the camera, start a new capture attempt and save a passing placement measurement before the LED test. The browser blocks emission from an old camera measurement or a failed placement measurement.
 
 The optical driver now refuses emission at four remaining claims and rejects invalid manifest counts. It also rejects a competing cooperating optical client. Do not bypass that reserve or use another tool to consume it without a new targeted owner decision. The installed firmware and original claim store remain unchanged.
+
+## Real physical camera inspection
+
+The optical-only physical station runs at `http://127.0.0.1:4022`. If it stops, run `python3 .local/private-config/hardware/optical-only-station-launch.py` from the repository root. Run `FIELDPROOF_PORT=4022 npm --prefix application run demo:preflight` to check it. The launcher reuses the original private build secret and verified receipt-key pin. It does not emit light or read contact input.
+
+The real Seeker camera inspection returned REWORK. Open its saved attempt or download **physical camera rework packet** from Judge evidence. The original work-order digest was saved before capture, and packet verification passed. Contact and optical controls stayed blocked. The camera stopped afterward. This packet contains actual camera evidence, failed placement, and no device receipts. It is not a paid physical inspection or full commissioning result.

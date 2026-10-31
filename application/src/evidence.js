@@ -30,6 +30,7 @@ export function validateContact(contact) {
     contact.location !== "demo-gate" ||
     !(
       contact.sensor === "simulated-contact" ||
+      contact.sensor === "disabled-contact" ||
       (sensorPin && contactPins.has(Number(sensorPin[1])))
     )
   ) {
@@ -89,6 +90,11 @@ export function verifyEvidence({
   now = Math.floor(Date.now() / 1000),
 }) {
   validateContact(contact);
+  if (contact.sensor === "disabled-contact")
+    fail(
+      "CONTACT_DISABLED",
+      "The enrolled profile disables contact observations.",
+    );
   const key = receiptPublicKey(publicKey);
   if (
     !Number.isInteger(maxAgeSeconds) ||

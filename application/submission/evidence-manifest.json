@@ -1,6 +1,6 @@
 {
   "schema": "proof-of-ready/submission-evidence/v1",
-  "checkedAt": "2026-10-31T02:02:08.373942+00:00",
+  "checkedAt": "2026-10-31T02:51:26.010815+00:00",
   "readyForSubmission": false,
   "publicationAuthorized": false,
   "deadline": "2026-10-31T15:00:00+01:00",
@@ -164,6 +164,15 @@
       "artifact": "application/submission/evidence/esp32-optical-diagnostic.json",
       "artifactSha256": "4034794f9c09bf0b5d61d4f56a09ffcff9969655f87e11be809490a6d225b9db",
       "qualificationScope": "Real signed 18-second LED response. Offline phone-recording analysis matched 72 of 72 symbols. Production OpenCV replay detected both markers in 90 of 90 sampled frames at 5 Hz. All 90 frames failed the default placement policy. Diagnostic binding only. No live tracked commissioning capture, contact test, or acceptance."
+    },
+    {
+      "id": "physical-camera-placement-rework",
+      "status": "real-camera-rework-packet-verified",
+      "artifact": "application/submission/evidence/physical-camera-rework-packet.json",
+      "artifactSha256": "501a247c8183cd8685a7c0cf83c84a8d6069936f31c400784b8d9f0012fb6d7d",
+      "workOrderDigest": "0xcb85f28d835c04fd5413b0f52bf9eac9b751958ae61b002a62648e19e2e55e5e",
+      "capturedAt": 1793414979755,
+      "qualificationScope": "Real Seeker camera measurement through the physical station. Default placement failed and the original packet verified as REWORK. Camera origin remains unattested. Contact input and optical emission were disabled. No fresh device receipt, paid physical inspection, or commissioning acceptance."
     }
   ],
   "mandatoryEvidence": {
@@ -198,13 +207,14 @@
       "judgeSuppliedResponseCommand": "npm --prefix application/api3 run judge:candidate -- RESPONSE_FILE"
     },
     "hardware": {
-      "status": "diagnostic-verified-commissioning-incomplete",
-      "physicalEvidencePacketSha256": null,
+      "status": "real-camera-rework-optical-commissioning-incomplete",
+      "physicalEvidencePacketSha256": "501a247c8183cd8685a7c0cf83c84a8d6069936f31c400784b8d9f0012fb6d7d",
       "remaining": [
-        "Integrate continuous phone camera capture with the approved station work order",
-        "Enroll the original runtime and preserve at least four remaining claims",
+        "Correct physical marker placement and the board LED sampling region before a new signed test",
+        "Complete continuous optical capture bound to the approved work order; preserve at least four claims",
         "Identify button terminals, review GPIO2-to-GND wiring, and run signed contact transitions"
-      ]
+      ],
+      "physicalEvidencePacketScope": "Partial negative packet: actual camera only. No signed device sequence, optical capture, or acceptance."
     },
     "submission": {
       "status": "draft",
