@@ -1,90 +1,66 @@
-# Morning demonstration handoff
+# Demo walkthrough
 
-The real optical diagnostic works. Full physical commissioning remains incomplete.
+Open **http://127.0.0.1:4022**. This is the real-evidence demo.
 
-## Launch and demonstrate
+## Show the demo
 
-1. Open `http://127.0.0.1:4022` for the real-evidence demo.
-2. Inspect the actual camera REWORK report and paid-inspection PASS gate.
-3. Select **Check external acceptance** to repeat the real read-only payment verification.
-4. Open **Judge evidence** and expand the real-camera FAIL inspection report.
-5. Open its escrow, result, and inspector-payment transaction links.
-6. Show the original signed LED diagnostic as recorded hardware evidence. It is not a live commissioning capture.
-7. Show the genuine historical API3 deployed checks with their stated acceptance limits.
+1. Show **REWORK** and the failed placement measurement.
+2. Explain: “The camera found incorrect placement, so the installation is not accepted.”
+3. Show **paid inspection · PASS**.
+4. Explain: “The inspector reviewed this actual camera evidence and received payment on Cardano Preprod.”
+5. Open **Judge evidence**.
+6. Expand **Read the real-camera inspection report · FAIL**.
+7. Open **Escrow transaction**, **Result transaction**, or **Inspector payment** to show the original transaction.
+8. Select **Verify packet** to check the saved evidence.
+9. Select **Export evidence packet** to download it.
 
-If the physical station stops, run `python3 .local/private-config/hardware/optical-only-station-launch.py` from the repository root. Check it with `FIELDPROOF_PORT=4022 npm --prefix application run demo:preflight`.
+**Check external acceptance** repeats the real, read-only payment verification. It requires internet access. It does not purchase another inspection.
 
-Port 4021 is a separate, explicitly labeled rehearsal. Its simulated readings and payments are not judge evidence. Real hardware commissioning still needs corrected marker/LED placement and a complete fresh signed optical capture.
+## What is real
 
-## Genuine evidence
+- The Seeker supplied the saved camera measurement.
+- The paid inspector delivered this camera inspection's FAIL report.
+- Escrow, result submission, withdrawal, and positive seller collection are verified.
+- The current report's paid-inspection PASS uses the original Task and fresh payment readers.
+- The original ESP32 diagnostic has a verified signature and 72 matching recorded optical symbols.
+- The API3 evidence contains genuine paid NVD responses and deployed contract checks.
 
-- Cardano Preprod: useful paid REVIEW, result transaction, withdrawal, and positive seller receipt. The original input is synthetic.
-- API3: two settled paid NVD responses, five deployed source checks, and a mined REJECTED decision. Full qualification remains unconfirmed because the saved false inspection predicate forces rejection independently of the CVE verdict.
-- ESP32: signed 18-second diagnostic receipt. Offline Seeker recording analysis matched all 72 symbols. The last recorded manifest reported 62 claims. No fresh manifest read occurred in this continuation.
+The hardware diagnostic and API3 evidence retain their original recording times and limits. They are not fresh tests of this current attempt.
 
-The evidence manifest in `application/submission/` owns exact identifiers. Judge evidence exposes reviewed originals and hashes. The original phone video stays private.
+## What remains incomplete
 
-## Remaining work before recording
+The current placement fails. Contact input is disabled. A complete fresh signed optical commissioning capture does not exist. Software-policy acceptance remains REVIEW.
 
-- Phone Chrome now saves a real station camera measurement through USB localhost forwarding. Select rear camera 2 after camera permission.
-- Fix specimen placement and the LED sampling region before any new optical challenge. The observed guide region missed the board LED.
-- Save camera measurement waits when the phone clock precedes the session start. Synchronize clocks if the wait persists.
-- Enroll the physical runtime. Preserve the installed image, identity, and claim journal.
-- Review button terminals and wiring before any contact test. Manual transitions require the owner.
-- Preserve at least four claims. Stop hardware operations on failure. Never reset NVS or resend uncertain operations.
-- Complete physical inspection input and installed-build provenance before claiming full acceptance.
+Do not present REWORK as successful commissioning. Do not describe the recorded LED diagnostic as a live commissioning test. Port 4021 is a separate, labeled rehearsal.
 
-## Video and release checklist
+## Recover without losing evidence
 
-- Use the existing 150-second shot list and narration in `docs/ENGINEERING.md`.
-- Keep diagnostic, historical paid evidence, and rehearsal labels visible.
-- Record the real device response and the strongest genuinely verified result.
-- Do not present REVIEW or REWORK as successful commissioning.
-- Review `application/submission/devfolio-draft.json` against actual evidence.
-- Check all public artifacts for secrets and personal information.
-- Obtain owner authorization before public repository publication or Devfolio submission.
+- If the page looks wrong, refresh it.
+- After **Reset presentation**, select **Bench placement check · optical-only board** under **Saved attempts**.
+- If `OUTCOME_UNKNOWN` appears, refresh before another operation.
+- If camera permission stalls, select **Stop camera**.
+- Do not create a replacement paid Task. Seller collection is complete.
 
-No new API3 paid calls fit the consumed 0.02 aUSD ceiling. Preserve at least 0.001 ETH. Existing paid evidence needs no replacement transaction.
+If the station stops, run this command from the repository root:
 
-## Recording backup
+```sh
+python3 .local/private-config/hardware/optical-only-station-launch.py
+```
 
-The private clip `.local/runtime/sessions/demonstrations/optical-diagnostic-backup/recorded-diagnostic.mp4` preserves 22 seconds of the real diagnostic recording. Its caption states that this is recorded diagnostic evidence, not installation acceptance. The adjacent `scope.json` records original and derived hashes. The clip contains no audio. It supplements the complete original video and does not replace the final product demonstration.
+Check the local station with:
 
-A 96.7-second private presentation backup now exists at `.local/runtime/sessions/demonstrations/recording-kEmQxS/presentation-backup-upright.mp4`. It combines an actual interface recording with the recorded real optical diagnostic. Captions distinguish local rehearsal, historical sponsor evidence, and diagnostic hardware evidence. It contains no audio and does not establish complete commissioning. The adjacent `scope.json` records the hashes and transforms. Run `npm run demo:record` from `application/` to recreate the interface segment with an isolated station.
+```sh
+FIELDPROOF_PORT=4022 npm --prefix application run demo:preflight
+```
 
-## Physical setup correction
+The launcher reuses the saved private enrollment. It does not flash firmware, read contact input, or emit light.
 
-Offline production OpenCV replay detected both markers in all 90 sampled frames across the original 18-second challenge. All frames failed the current placement policy. The first frame estimated a 62 mm offset and nearly 180-degree device-marker rotation, assuming the declared 60 mm reference. The approved template requires 100 mm and zero degrees. Measure the printed reference before using metric guidance. Reposition the device marker to the approved target and place the board LED inside the highlighted sampling region. Do not change the approved template merely to make this setup pass. No new LED operation is needed to check marker guidance. Button wiring still requires electrical review and manual transitions.
+## Before a new live device test
 
-## Recovery controls
+Correct the marker and LED placement first. Keep both markers visible. A camera change requires a new attempt and passing camera measurement. Preserve at least four claims. Stop after failure or an uncertain operation. Button wiring requires electrical review.
 
-- If camera permission does not resolve, select **Stop camera**. The other controls recover immediately.
-- If `OUTCOME_UNKNOWN` appears, refresh to recover the saved attempt. The station blocks repeat actions until refresh.
-- Camera guidance now shows the estimated offset and angle difference with their approved limits.
-- Saved attempts retain their approved work orders after newer empty orders fill the recent-order list.
+## Recording and release
 
-The local rehearsal station restarted with the recovery fixes. An actual rehearsal returned REVIEW, and browser refresh restored the same attempt. The station remains a rehearsal and historical-evidence demonstration until the physical setup corrections and runtime enrollment are complete.
+Use the 150-second shot list in `docs/ENGINEERING.md`. Show the real inspection, payment, and original device evidence with their scope labels. The private 96.7-second backup includes labeled rehearsal footage and is not a real-only final submission video. Its path and original evidence details remain in `research/EVIDENCE.md` and the private demonstration directory.
 
-Camera-choice enumeration does not block station controls. A late result cannot revive a stopped camera. Uncertain-operation recovery instructions remain visible until refresh, including after camera errors or Stop camera. Work-order changes stay blocked during that uncertainty.
-
-The read-only preflight reports station availability, saved-evidence integrity, and remaining requirements. A successful rehearsal preflight is not physical acceptance. If it fails, follow its error before recording. The latest phone battery check reported 9 percent, USB charging, and no active camera session.
-
-If you change or restart the camera, start a new capture attempt and save a passing placement measurement before the LED test. The browser blocks emission from an old camera measurement or a failed placement measurement.
-
-The optical driver now refuses emission at four remaining claims and rejects invalid manifest counts. It also rejects a competing cooperating optical client. Do not bypass that reserve or use another tool to consume it without a new targeted owner decision. The installed firmware and original claim store remain unchanged.
-
-## Real physical camera inspection
-
-The optical-only physical station runs at `http://127.0.0.1:4022`. If it stops, run `python3 .local/private-config/hardware/optical-only-station-launch.py` from the repository root. Run `FIELDPROOF_PORT=4022 npm --prefix application run demo:preflight` to check it. The launcher reuses the original private build secret and verified receipt-key pin. It does not emit light or read contact input.
-
-The real Seeker camera inspection returned REWORK. Open its saved attempt or download **physical camera rework packet** from Judge evidence. The original work-order digest was saved before capture, and packet verification passed. Contact and optical controls stayed blocked. The camera stopped afterward. This packet contains actual camera evidence, failed placement, and no device receipts. It is not a paid physical inspection or full commissioning result.
-
-The sealed physical report now shows the saved offset and rotation with their approved limits. Its first correction is marker alignment before downstream monitor checks. The original negative packet and decision remain unchanged.
-
-## Settled paid real-camera inspection
-
-Task `01a18fed-4517-7319-a5be-cecbf6f4f4f7` delivered its real-camera FAIL report and reached SELLER_PAID. The bounded monitor finished successfully. Seller withdrawal `f6493d441afbffcbe7a4f9ae8626318a9551bfbe7a8095a076eece5c01ff0029` consumed the original result output and delivered a positive net of 1 test USDM. The purchase used exactly 100 Personal credits.
-
-Use `http://127.0.0.1:4022` for the real-evidence demonstration. Its current report shows paid inspection PASS through fresh read-only verification. Placement remains REWORK. Judge evidence shows the exact real-camera inspection report and escrow/result/payment links. Contact and signed optical commissioning remain incomplete. Use port 4021 only as the explicitly labeled rehearsal.
-
-Do not create another Task or payment. The original records remain under `.local/private-config/masumi/physical-camera-paid-20261031/`.
+Public publication and Devfolio submission still require owner authorization.
