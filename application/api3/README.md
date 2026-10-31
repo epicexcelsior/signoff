@@ -226,3 +226,19 @@ The result reports `SUCCEEDED` or the actual `NotSignedByAirnode` or `InvalidOra
 The outer `airnode` and `requestHash` fields are transport metadata. The contract uses its own pinned signer and request. Changing only those labels leaves the actual contract arguments unchanged. The output states that distinction and hashes the exact data bytes and calldata.
 
 Freshness uses the original block timestamp, October 30, 2026 at 23:56:22 UTC. A newly fetched response can be in the future at that block and return `InvalidOracle`. Use historical response copies to isolate signature tampering. This command needs historical Base Sepolia RPC access. It reads no key, buys no data, and changes no current state. A successful historical call does not establish physical acceptance.
+
+## Source-gated software admission
+
+The original deployment and five historical cases remain unchanged. Its failed inspection fixes the final rejection regardless of NVD data.
+
+`SourceGatedCommissioningPolicy` adds a mandatory authenticated NVD check before opening a work order. The inherited unsigned opening route rejects. A vulnerable or unsupported declared build cannot open a job. An eligible declared build opens a job before any physical inspection exists. Later failed inspection still rejects installation acceptance.
+
+This gate checks a declared reference build. It does not identify firmware installed on the ESP32. The correction passes local contract and Anvil checks. Base Sepolia deployment and fresh-response execution remain pending. The existing 0.02 aUSD access ceiling is consumed.
+
+The read-only judge command accepts a reviewed admission context and a copied response:
+
+```sh
+npm run judge:admission -- CONTEXT_FILE RESPONSE_FILE
+```
+
+It verifies the original chain, runtime, operator, source, build, unopened job, and block before testing the candidate. RPC failures remain inconclusive. It signs no transaction and spends no funds. Only a mined admission with original source evidence can close the live qualification gap.

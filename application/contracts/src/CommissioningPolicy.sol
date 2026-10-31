@@ -99,7 +99,7 @@ contract CommissioningPolicy {
         emit BuildEnrolled(manifestDigest, version);
     }
 
-    function openJob(bytes32 jobId, JobSpec calldata spec) external onlyOperator {
+    function openJob(bytes32 jobId, JobSpec calldata spec) public virtual onlyOperator {
         if (
             jobId == 0 || jobs[jobId].decision != Decision.Missing || spec.workOrderDigest == 0
                 || !builds[spec.buildManifestDigest].enrolled || spec.deadline <= block.timestamp

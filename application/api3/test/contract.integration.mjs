@@ -16,7 +16,13 @@ import {
   stringToHex,
 } from "viem";
 import { generatePrivateKey, privateKeyToAccount } from "viem/accounts";
-import { NVD_REQUEST_HASH } from "../src/index.mjs";
+import { NVD_REQUEST_HASH, NVD_SIGNER } from "../src/index.mjs";
+import {
+  admissionAbi,
+  prepareAdmissionCall,
+  judgeAdmissionCandidate,
+  verifyAdmission,
+} from "../src/admission.mjs";
 import {
   commissioningAbi,
   prepareEnrollBuild,
@@ -84,6 +90,8 @@ test(
         String(port),
         "--timestamp",
         String(time),
+        "--chain-id",
+        "84532",
         "--accounts",
         "0",
         "--fund-accounts",
@@ -112,13 +120,22 @@ test(
         });
       });
       const chain = defineChain({
-        id: 31337,
+        id: 84532,
         name: "Local commissioning fixture",
         nativeCurrency: { name: "Fixture ETH", symbol: "ETH", decimals: 18 },
         rpcUrls: { default: { http: [`http://127.0.0.1:${port}`] } },
       });
-      const client = createPublicClient({ chain, transport: http() });
-      const wallet = createWalletClient({ account, chain, transport: http() });
+      const client = createPublicClient({
+        chain,
+        transport: http(),
+        pollingInterval: 20,
+      });
+      const wallet = createWalletClient({
+        account,
+        chain,
+        transport: http(),
+        pollingInterval: 20,
+      });
       const deployment = await wallet.deployContract({
         abi: artifact.abi,
         bytecode: artifact.bytecode.object,
@@ -134,7 +151,7 @@ test(
         hash: deployment,
       });
       assert.equal(receipt.status, "success");
-      const config = { chainId: 31337, contract: receipt.contractAddress };
+      const config = { chainId: 84532, contract: receipt.contractAddress };
       const commitment = (text) => sha256(stringToHex(text));
       const jobId = commitment("fixture job corrected");
       const expected = {
@@ -156,6 +173,7 @@ test(
           (await client.waitForTransactionReceipt({ hash })).status,
           "success",
         );
+        return hash;
       };
       await send(
         prepareEnrollBuild(config, {
@@ -300,6 +318,178 @@ test(
           })
         ).verdict,
         "REVIEW",
+      );
+
+      // Rehearse admission with genuine saved signatures at their historical time.
+      // This remains a disposable local Anvil chain, not live Base Sepolia evidence.
+      const original = async (name) =>
+        JSON.parse(
+          await readFile(
+            new URL(`../../submission/evidence/${name}`, import.meta.url),
+            "utf8",
+          ),
+        );
+      const genuine = await original("nvd-paid-final-original.json");
+      await client.request({
+        method: "evm_setNextBlockTimestamp",
+        params: [Number(genuine.timestamp)],
+      });
+      await client.request({ method: "evm_mine" });
+      const admissionArtifact = JSON.parse(
+        await readFile(
+          join(
+            contracts,
+            "out/SourceGatedCommissioningPolicy.sol/SourceGatedCommissioningPolicy.json",
+          ),
+          "utf8",
+        ),
+      );
+      assert.deepEqual(admissionArtifact.abi, admissionAbi);
+      const admissionDeployment = await wallet.deployContract({
+        abi: admissionAbi,
+        bytecode: admissionArtifact.bytecode.object,
+        args: [account.address, NVD_SIGNER, NVD_REQUEST_HASH],
+      });
+      const deployed = await client.waitForTransactionReceipt({
+        hash: admissionDeployment,
+      });
+      const admissionConfig = {
+        chainId: 84532,
+        contract: deployed.contractAddress,
+      };
+      await send(
+        prepareEnrollBuild(admissionConfig, {
+          manifestDigest: expected.buildManifestDigest,
+          version: 1_009_000,
+        }),
+      );
+      const vulnerableDigest = commitment("fixture vulnerable declared build");
+      await send(
+        prepareEnrollBuild(admissionConfig, {
+          manifestDigest: vulnerableDigest,
+          version: 1_008_000,
+        }),
+      );
+      const pinned = await client.getBlock();
+      const snapshot = {
+        ...admissionConfig,
+        operator: account.address,
+        jobId: commitment("fixture source-gated work order"),
+        blockNumber: String(pinned.number),
+        blockHash: pinned.hash,
+        buildVersion: 1_009_000,
+        runtimeCodeHash: keccak256(
+          await client.getBytecode({ address: admissionConfig.contract }),
+        ),
+        spec: {
+          workOrderDigest: expected.workOrderDigest,
+          buildManifestDigest: expected.buildManifestDigest,
+          deadline: Number(pinned.timestamp) + 3600,
+          maxCvssTenths: 70,
+        },
+      };
+      const nonceBeforeChecks = await client.getTransactionCount({
+        address: account.address,
+      });
+      const validAdmission = await judgeAdmissionCandidate({
+        client,
+        snapshot,
+        candidate: genuine,
+      });
+      assert.equal(validAdmission.observed, "SUCCEEDED");
+      for (const [name, candidate, expectedError] of [
+        [
+          "edited",
+          { ...genuine, data: genuine.data + " " },
+          "NotSignedByAirnode",
+        ],
+        [
+          "stale",
+          await original("nvd-paid-first-original.json"),
+          "InvalidOracle",
+        ],
+        [
+          "other-request",
+          await original("api3-other-request-original.json"),
+          "NotSignedByAirnode",
+        ],
+        [
+          "wrong-key",
+          await original("api3-wrong-key-deliberate-test.json"),
+          "NotSignedByAirnode",
+        ],
+      ]) {
+        const result = await judgeAdmissionCandidate({
+          client,
+          snapshot,
+          candidate,
+        });
+        assert.equal(result.observed, "REVERTED", name);
+        assert.equal(result.observedRevert, expectedError, name);
+      }
+      const vulnerable = await judgeAdmissionCandidate({
+        client,
+        snapshot: {
+          ...snapshot,
+          jobId: commitment("fixture vulnerable work order"),
+          buildVersion: 1_008_000,
+          spec: { ...snapshot.spec, buildManifestDigest: vulnerableDigest },
+        },
+        candidate: genuine,
+      });
+      assert.equal(vulnerable.observedRevert, "SoftwareNotEligible");
+      assert.equal(
+        await client.getTransactionCount({ address: account.address }),
+        nonceBeforeChecks,
+        "Judge checks wrote a transaction",
+      );
+      await assert.rejects(
+        client.simulateContract({
+          address: admissionConfig.contract,
+          abi: admissionAbi,
+          account: account.address,
+          functionName: "openJob",
+          args: [
+            snapshot.jobId,
+            { ...snapshot.spec, deadline: BigInt(snapshot.spec.deadline) },
+          ],
+        }),
+      );
+      const admittedHash = await send(prepareAdmissionCall(snapshot, genuine));
+      const proof = await verifyAdmission({
+        client,
+        snapshot,
+        candidate: genuine,
+        transactionHash: admittedHash,
+      });
+      assert.equal(proof.sourceDependentAction, true);
+      assert.equal(proof.inspectionRecorded, false);
+      assert.equal(proof.jobDecision, "OPEN");
+      await send(
+        prepareRecordInspection(admissionConfig, {
+          jobId: snapshot.jobId,
+          ...expected,
+          inspectionDigest: commitment("fixture failed physical inspection"),
+          passed: false,
+          sellerReceived: true,
+        }),
+      );
+      await send(
+        prepareFinalize(admissionConfig, {
+          jobId: snapshot.jobId,
+          response: genuine,
+        }),
+      );
+      const rejected = await client.readContract({
+        address: admissionConfig.contract,
+        abi: admissionAbi,
+        functionName: "getJob",
+        args: [snapshot.jobId],
+      });
+      assert.equal(
+        Number(rejected.decision),
+        3,
+        "Software admission must not approve a failed installation",
       );
     } finally {
       proc.kill("SIGTERM");
