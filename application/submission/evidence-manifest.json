@@ -1,6 +1,6 @@
 {
   "schema": "proof-of-ready/submission-evidence/v1",
-  "checkedAt": "2026-10-31T00:46:35.870Z",
+  "checkedAt": "2026-10-31T02:02:08.373942+00:00",
   "readyForSubmission": false,
   "publicationAuthorized": false,
   "deadline": "2026-10-31T15:00:00+01:00",
@@ -157,6 +157,13 @@
       "status": "flash-and-usb-startup-verified",
       "artifact": "application/submission/evidence/esp32-optical-flash-proof.json",
       "scope": "Approved flash and USB startup only. Startup initializes GPIO8 and sends an OFF pixel. No signed optical challenge, contact transition or camera measurement exists. Existing receipt identity remains preserved."
+    },
+    {
+      "id": "esp32-optical-diagnostic",
+      "status": "signature-verified-camera-diagnostic",
+      "artifact": "application/submission/evidence/esp32-optical-diagnostic.json",
+      "artifactSha256": "4034794f9c09bf0b5d61d4f56a09ffcff9969655f87e11be809490a6d225b9db",
+      "qualificationScope": "Real signed 18-second LED response. Offline phone-recording analysis matched 72 of 72 symbols. Diagnostic binding only. No continuous marker tracking, approved installation capture, contact test, or acceptance."
     }
   ],
   "mandatoryEvidence": {
@@ -191,12 +198,11 @@
       "judgeSuppliedResponseCommand": "npm --prefix application/api3 run judge:candidate -- RESPONSE_FILE"
     },
     "hardware": {
-      "status": "blocked",
+      "status": "diagnostic-verified-commissioning-incomplete",
       "physicalEvidencePacketSha256": null,
       "remaining": [
-        "Connect webcam or Seeker for a real camera measurement",
-        "Enroll the captured receipt public key and configure the original provider, BLE address, and authorization secret",
-        "Review and approve one signed 18-second optical challenge",
+        "Integrate continuous phone camera capture with the approved station work order",
+        "Enroll the original runtime and preserve at least four remaining claims",
         "Identify button terminals, review GPIO2-to-GND wiring, and run signed contact transitions"
       ]
     },

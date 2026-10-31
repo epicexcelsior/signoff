@@ -63,3 +63,7 @@ Assign non-overlapping files before parallel edits. Use separate managed worktre
 - Test rejection, concurrency, restart, and recovery. Never present fixtures as live settlement or sponsor qualification.
 
 Local implementation and private reviewed commits/backups are authorized. Routine private setup and funded testnet transactions have owner authorization within the documented reserve. Electrical review, public release, and submission remain separate gates.
+
+## Overnight continuation checkpoint
+
+The original Seeker camera diagnostic now appears in Judge evidence with its signed receipt, public key, and private-video hash. Replay verifies the actual receipt without BLE operations. It remains a diagnostic binding, not installation acceptance. The station can run locally in simulation mode. Continue continuous phone camera capture and physical runtime enrollment. Preserve at least four hardware claims and stop hardware operations on failure. Read `MORNING_HANDOFF.md` for launch and recording limits.

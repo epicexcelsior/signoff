@@ -9,6 +9,13 @@ const manifestUrl = new URL(
 const artifacts = new Map([
   ["manifest", manifestUrl],
   [
+    "device-optical-diagnostic",
+    new URL(
+      "../submission/evidence/esp32-optical-diagnostic.json",
+      import.meta.url,
+    ),
+  ],
+  [
     "device-flash-proof",
     new URL(
       "../submission/evidence/esp32-optical-flash-proof.json",

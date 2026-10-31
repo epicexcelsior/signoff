@@ -14,12 +14,12 @@ The goal is agent-orchestrated commissioning with a useful paid inspector and an
 | ---------- | --------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
 | Cardano    | Useful paid REVIEW, confirmed escrow/result, withdrawal and positive seller net receipt                   | Physical inspection input and installation acceptance                                           |
 | API3       | Two settled NVD responses, five deployed source checks and mined REJECTED decision                        | Installed-build provenance and physical acceptance                                              |
-| Hardware   | Reviewed GPIO8 optical-only image flashed. USB startup and public key verified                            | Available camera, enrolled runtime, approved optical challenge, and reviewed button wiring/test |
+| Hardware   | GPIO8 image and startup verified. Signed diagnostic and 72/72 recorded optical symbols verified                            | Continuous station camera capture, approved work-order binding, and reviewed button wiring/test |
 | Submission | Setup README, original live API3 artifacts, evidence manifest, Devfolio draft, 150-second video procedure | Physical evidence, complete video, approved public release, actual Devfolio submission          |
 
-Next: connect a camera, test the flashed optical-only fixture, then review the button circuit and record the complete video. The original paid REVIEW now binds all five deployed source checks and a mined REJECTED decision. Its synthetic input cannot authorize a physical installation. Both approved NVD calls settled. The 0.02 aUSD ceiling is consumed.
+Next: integrate the verified Seeker optical diagnostic into continuous station capture, then review the button circuit and record the complete video. The original paid REVIEW now binds all five deployed source checks and a mined REJECTED decision. Its synthetic input cannot authorize a physical installation. Both approved NVD calls settled. The 0.02 aUSD ceiling is consumed.
 
-The Seeker companion already builds. The owner plans to connect the Seeker overnight. Native installation, forwarding, camera/BLE tests, and Android instrumentation remain unexecuted. They do not replace the immediate button/LED/camera baseline.
+The Seeker companion already builds. The Seeker is connected and supplied the recorded optical diagnostic. Native installation, forwarding, camera/BLE tests, and Android instrumentation remain unexecuted. They do not replace the immediate button/LED/camera baseline.
 
 ## Documentation map
 
@@ -84,7 +84,7 @@ The fixed policy uses markers 0 and 10, a 60 mm reference, and a target 100 mm t
 | ---------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
 | Cardano    | Original paid REVIEW and positive seller net receipt verified                                | Preserve the original paid REVIEW and verified seller receipt. No replacement purchase is needed              |
 | API3       | Two genuine paid NVD responses settled. Five deployed cases and mined rejection verified     | Preserve the original five-case block and mined rejection. Do not spend beyond the consumed 0.02 aUSD ceiling |
-| Hardware   | Reviewed GPIO8 optical-only image flashed. USB startup and public key verified               | Enroll the runtime, approve one camera-observed optical challenge, then review and test the button circuit    |
+| Hardware   | GPIO8 image and startup verified. Signed diagnostic and 72/72 recorded optical symbols verified               | Enroll the runtime, approve one camera-observed optical challenge, then review and test the button circuit    |
 | Submission | Public-safe setup instructions, evidence manifest, Devfolio draft, and video procedure exist | Fill missing real evidence, record video, then obtain public-release/submission authorization                 |
 
 The API3 paid-access client and deployed judge tooling are integrated. The first paid response supplied the stale case. The second paid response supplied the valid finalization. Historical replay preserves their original freshness window. [The evidence manifest](application/submission/evidence-manifest.json) distinguishes confirmed live artifacts from missing requirements.

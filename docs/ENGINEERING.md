@@ -283,7 +283,7 @@ Camera frames stay in the browser. The server receives corners, measurements, ca
 
 ### Run an authorized physical attempt
 
-The supplied photos match the documented SuperMini layout. The first candidate uses onboard WS2812 GPIO8 with contact disabled. It needs no external LED or resistor. The owner-approved full backup and exact optical-only flash completed. Three image hashes and the preserved NVS/PHY layout passed. USB startup exposed the receipt key without an initialization failure. A real camera and separate one-emission approval remain prerequisites for the complete optical challenge. Keep external wires and battery pads disconnected. The later GPIO2 button requires terminal identification and its own wiring review.
+The supplied photos match the documented SuperMini layout. The first candidate uses onboard WS2812 GPIO8 with contact disabled. It needs no external LED or resistor. The owner-approved full backup and exact optical-only flash completed. Three image hashes and the preserved NVS/PHY layout passed. USB startup exposed the receipt key without an initialization failure. The Seeker diagnostic preserves a verified receipt and 72/72 matching symbols from offline recording analysis. Continuous station capture remains incomplete. Keep external wires and battery pads disconnected. The later GPIO2 button requires terminal identification and its own wiring review.
 
 1. Open the station and check **Physical adapter**.
 2. Approve the actual button-contact work order.
@@ -391,7 +391,7 @@ Select **Reset presentation** to stop the camera and reload an empty work-order 
 
 ### Capture plan with exact spoken copy
 
-Use one work order for a complete installation journey. The current paid report covers a synthetic capture. It cannot authorize a later physical capture. Keep that distinction visible when recording the historical receipt. The optical-only image and startup are verified. The physical segment still needs a camera, actual optical testing, and reviewed button wiring/testing.
+Use one work order for a complete installation journey. The current paid report covers a synthetic capture. It cannot authorize a later physical capture. Keep that distinction visible when recording the historical receipt. The optical-only image and startup are verified. The physical segment still needs continuous station camera capture, approved work-order binding, and reviewed button wiring/testing.
 
 | Time     | Screen and action                                                                                          | Spoken copy                                                                                                                                                                                                         |
 | -------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -406,3 +406,5 @@ Use one work order for a complete installation journey. The current paid report 
 Do not record an unfinished row as successful. The current contract demonstration uses a paid REVIEW and must end REJECTED. Its failed inspection predicate determines that rejection regardless of the CVE result. The source signature and source commitments still gate finalization. Show the separate bounded policy helper to explain affected versus corrected reference versions.
 
 For recovery, preserve the original recording and an adjacent scope file with its capture time, Task ID and evidence limits. The paid-delivery backup is a historical interface recording. It does not replace missing physical video. The later deployed checks and mined rejection have separate original artifacts. Keep all recordings local until public-release approval.
+
+The Judge evidence panel exposes the sanitized original optical diagnostic and public verification key. Its recording hash identifies the private original video. Run `node --test test/hardware-diagnostic.test.js` from `application/` to check the signature and challenge binding without hardware. This diagnostic cannot authorize an installation.

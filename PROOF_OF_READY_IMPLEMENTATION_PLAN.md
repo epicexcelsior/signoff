@@ -77,7 +77,7 @@ Photos match a documented SuperMini layout, with onboard WS2812 GPIO8 and GPIO2 
 | Product and camera | Proof of Ready selected. Webcam or Seeker is the next available camera                     | Actual camera connection and device validation                                        |
 | Physical specimen  | USB-only C6 SuperMini layout matched. Private backup and GPIO8 optical-only flash complete | Camera connection, runtime enrollment, and later button-terminal/wiring review        |
 | Printing           | Supplied target exists. Physical dimensions remain unmeasured                              | Metric placement claim                                                                |
-| Firmware           | Both build profiles compiled. Reviewed optical-only image flashed and USB startup verified | One signed optical challenge and actual camera observation                            |
+| Firmware           | Both build profiles compiled. Reviewed image flashed. Signed diagnostic and 72/72 recorded symbols verified | Continuous tracked station capture bound to an approved work order                            |
 | Seeker             | APK compiled. Phone not installed or tested                                                | Explicit install, forwarding, and native checks                                       |
 | Sokosumi           | Personal grant, useful paid REVIEW and positive seller receipt verified                    | Actual physical inspection input                                                      |
 | Blockfrost         | Preprod key passes authenticated latest-block check                                        | Dedicated payment resource configuration                                              |

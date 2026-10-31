@@ -12,6 +12,7 @@ const caseLabels = {
   "wrong-key-rejects": "Another signing key rejects",
 };
 const recordLabels = {
+  "esp32-optical-diagnostic": "Real device response · 72 of 72 optical symbols",
   "esp32-optical-flash": "Device firmware and startup",
   "api3-faucet-mint": "Test funding",
   "api3-paid-nvd-first": "Paid original NVD response",
