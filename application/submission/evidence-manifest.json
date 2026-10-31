@@ -326,13 +326,12 @@
     },
     "submission": {
       "status": "remote-draft-saved-publication-pending",
-      "publicRepositoryUrl": null,
+      "publicRepositoryUrl": "https://github.com/epicexcelsior/signoff",
       "demoVideoUrl": null,
       "devfolioProjectUrl": null,
       "remaining": [
-        "Review final video with owner recordings and verify its public playback",
-        "Review existing repository history before changing that same repository to public",
-        "Add public repository and video links, then authorize and complete Devfolio submission"
+        "Add the final public video URL and verify playback.",
+        "Approve and publish the completed Devfolio submission."
       ],
       "screenshotsUploaded": 3
     }
@@ -354,7 +353,7 @@
     "scope": "Authenticated NVD data controls software admission before inspection. Physical acceptance and installed firmware remain unverified."
   },
   "releaseCandidate": {
-    "published": false,
+    "published": true,
     "sourceSanitized": true,
     "privateHistoryIncluded": false
   },

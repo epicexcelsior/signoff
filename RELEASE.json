@@ -228,7 +228,7 @@
     "application/src/service.js": "69c271293454e3c5db4ecf2c47e1c8fc97a126f64512a5b3d6232461c60274ab",
     "application/src/store.js": "7fd297c0d998ebe81e80be4e940a2ecac3be842ee65ea19a2fd44c52b5a48558",
     "application/src/submission-evidence.js": "ae184b6937b7c78739fc0d2fdc486fe502c91bab8d44e7161102248a38600dfd",
-    "application/submission/evidence-manifest.json": "fea52d82a16f312deae250fb6a05852451cd25df0327aa8b5c61902ac17d6b91",
+    "application/submission/evidence-manifest.json": "296739cd7d9f424bfab215024d8b4bbf13b831274c442b5fe0fb86e276d419d5",
     "application/submission/evidence/api3-admission-access-settlement.json": "e6b863af24aad70120747f3cd2de32ff4b7fc4affadf6051f02270b5ee3be1de",
     "application/submission/evidence/api3-admission-context.json": "1908d47074ed0ffb7591bc0e2378080c3a01500c65da8cee63cb95d50b866afa",
     "application/submission/evidence/api3-admission-deployment.json": "c9d6ed774390d7f66923a8f4e945edf41b56faa90794e729f78197ab334445c7",
