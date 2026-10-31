@@ -1,7 +1,7 @@
 {
   "schema": "proof-of-ready/release-candidate/v1",
   "preparedAt": "2026-10-31T13:23:00.072Z",
-  "privateHistoryIncluded": false,
+  "privateHistoryIncluded": true,
   "publicReleaseProfile": true,
   "api3Qualified": true,
   "physicalInstallationAccepted": false,
@@ -228,7 +228,7 @@
     "application/src/service.js": "69c271293454e3c5db4ecf2c47e1c8fc97a126f64512a5b3d6232461c60274ab",
     "application/src/store.js": "7fd297c0d998ebe81e80be4e940a2ecac3be842ee65ea19a2fd44c52b5a48558",
     "application/src/submission-evidence.js": "ae184b6937b7c78739fc0d2fdc486fe502c91bab8d44e7161102248a38600dfd",
-    "application/submission/evidence-manifest.json": "296739cd7d9f424bfab215024d8b4bbf13b831274c442b5fe0fb86e276d419d5",
+    "application/submission/evidence-manifest.json": "bf9cf9582ddf89edf6363e52eea4ff63b36eec65d79fdce86eea182d910ee972",
     "application/submission/evidence/api3-admission-access-settlement.json": "e6b863af24aad70120747f3cd2de32ff4b7fc4affadf6051f02270b5ee3be1de",
     "application/submission/evidence/api3-admission-context.json": "1908d47074ed0ffb7591bc0e2378080c3a01500c65da8cee63cb95d50b866afa",
     "application/submission/evidence/api3-admission-deployment.json": "c9d6ed774390d7f66923a8f4e945edf41b56faa90794e729f78197ab334445c7",
@@ -284,6 +284,7 @@
     "application/test/vision.test.js": "af99dc6a93ca926792099acc83d5223d2bcb30b66399dee2224cedb8d19d16a2",
     "docs/EVIDENCE.md": "8e3df74be279a5da418fe27662ca5fc49707337bf8a84e5490d548a9db9e5abb",
     "docs/JUDGE.md": "10dc9408526967aea7eb769d7ad611525f412db2e5a6597fa03c7b3e842618b6",
-    "README.md": "93301b6f26a5d63a51f0e1e7111c227942e161f27aa922853923efc6e6f09889"
-  }
+    "README.md": "0c25641207b3c634cb9c9fa58d7fe8d718df53f80d8822f3973a746a92ed3862"
+  },
+  "historyPreserved": true
 }

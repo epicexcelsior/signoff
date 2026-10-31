@@ -355,7 +355,8 @@
   "releaseCandidate": {
     "published": true,
     "sourceSanitized": true,
-    "privateHistoryIncluded": false
+    "privateHistoryIncluded": true,
+    "historyScope": "The public main branch preserves reviewed development history. Internal documents are excluded from its current source tree."
   },
   "videoProduction": {
     "status": "FIRST_CUT_OWNER_RECORDINGS_PENDING",

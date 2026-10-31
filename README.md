@@ -61,4 +61,4 @@ For a browser outside the default Chrome path, set `FIELDPROOF_BROWSER_EXECUTABL
 
 Camera geometry trusts the declared reference size and common marker plane. A device signature identifies its key. It does not prove mounting or installed firmware. File hashes establish snapshot integrity, not fresh settlement or physical truth. The contract does not verify Cardano consensus.
 
-This release excludes internal plans, account notes, operator handoffs, private documentation exports, credentials, runtime ledgers, and private Git history. Third-party licenses and OpenCV provenance remain with their source files.
+The current source tree excludes internal plans, account notes, operator handoffs, private exports, credentials, and runtime ledgers. Earlier commits preserve development history. Third-party licenses and OpenCV provenance remain with their source files.
