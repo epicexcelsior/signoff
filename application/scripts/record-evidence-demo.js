@@ -15,8 +15,8 @@ const browser = await chromium.launch({ channel: "chrome", headless: true });
 let context;
 try {
   context = await browser.newContext({
-    viewport: { width: 1280, height: 900 },
-    recordVideo: { dir, size: { width: 1280, height: 900 } },
+    viewport: { width: 1920, height: 1080 },
+    recordVideo: { dir, size: { width: 1920, height: 1080 } },
   });
   const page = await context.newPage();
   const errors = [];
@@ -48,7 +48,7 @@ try {
   await page.locator("#report").scrollIntoViewIfNeeded();
   await wait(8500);
   await page.locator("#file-proof").scrollIntoViewIfNeeded();
-  await page.getByRole("button", { name: "Verify saved files" }).click();
+  await page.getByRole("button", { name: "Verify saved evidence" }).click();
   await wait(6000);
   await page.getByText("The pitch in 20 seconds", { exact: true }).click();
   await page.locator(".story").scrollIntoViewIfNeeded();

@@ -3,37 +3,24 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#103c49" />
-    <title>Proof of Ready · phone demo</title>
+    <meta name="theme-color" content="#172424" />
+    <title>Proof of Ready · saved inspection</title>
     <link rel="stylesheet" href="/theme.css" />
     <link rel="stylesheet" href="/demo/demo.css" />
     <script type="module" src="/demo/view.js"></script>
   </head>
   <body>
+    <a class="skip-link" href="#main">Skip to inspection</a>
     <header>
-      <a class="brand" href="/demo/">↳ Proof of Ready</a
-      ><span>Saved real evidence</span>
+      <a class="brand" href="/demo/">⌜ Proof of Ready</a
+      ><span class="saved-mode">SAVED COPY · NOT LIVE</span>
     </header>
-    <main>
-      <p class="eyebrow">Equipment handover / paid inspection</p>
-      <h1>Prove the work.<br /><span>Before handover.</span></h1>
-      <p class="pitch">
-        Facility teams need proof before they accept contractor-installed
-        monitoring equipment. Proof of Ready checks the installation, pays an
-        inspector, and keeps the evidence behind the decision.
+    <main id="main">
+      <p class="eyebrow">Door monitor / recorded camera check</p>
+      <h1 id="saved-heading">Saved inspection</h1>
+      <p class="pitch" id="saved-reason">
+        Loading the saved result. This is not a new inspection.
       </p>
-      <p id="phone-status" class="status" role="status">
-        Preparing saved evidence on this phone…
-      </p>
-      <nav class="proof-nav" aria-label="Explore saved proof" data-proof hidden>
-        <a href="#camera-proof"
-          ><span aria-hidden="true">⌖</span>Camera found a defect</a
-        ><a href="#payment-proof"
-          ><span aria-hidden="true">↗</span>Inspector received payment</a
-        ><a href="#file-proof"
-          ><span aria-hidden="true">✓</span>Check the saved files</a
-        >
-      </nav>
       <section
         id="camera-proof"
         class="decision-card"
@@ -41,47 +28,51 @@
         data-proof
         hidden
       >
-        <div class="decision-intro">
-          <div>
-            <p class="eyebrow">Actual Seeker camera inspection</p>
-            <h2 id="decision-heading">The defect stops acceptance.</h2>
+        <div class="saved-hero">
+          <div class="measurement-panel">
+            <p class="eyebrow">
+              Saved camera measurement · diagram, not a photo
+            </p>
+            <div id="saved-measurement" class="saved-measurement"></div>
           </div>
-          <strong class="stamp">REWORK</strong>
+          <div class="verdict-panel">
+            <p class="eyebrow">Installation / fix required</p>
+            <strong class="stamp">REWORK</strong>
+            <h2 id="decision-heading">Placement is outside the target.</h2>
+            <p id="placement">Loading the original camera measurement…</p>
+            <p class="paid-summary">
+              <strong>Independent inspection: FAIL</strong><br />Inspector paid
+              1 test USDM on Cardano Preprod.
+            </p>
+            <p class="fix">
+              <strong>What to fix</strong><br />Move the device marker toward
+              the target. Rotate it to face the same way as the reference
+              marker.
+            </p>
+          </div>
         </div>
-        <p id="placement">Loading the original camera measurement…</p>
-        <p class="note">
-          Contact and complete optical commissioning tests are missing. This
-          installation is not accepted.
-        </p>
+        <div class="saved-checks">
+          <p><strong>Placement · FAIL</strong>Outside the approved target.</p>
+          <p>
+            <strong>Device tests · MISSING</strong>Contact and full
+            light-response tests are incomplete.
+          </p>
+          <p>
+            <strong>Paid inspection · FAIL</strong>Inspector received 1 test
+            USDM on Cardano Preprod.
+          </p>
+        </div>
       </section>
-      <section
-        id="payment-proof"
-        aria-labelledby="payment-heading"
-        data-proof
-        hidden
-      >
-        <p class="eyebrow">Useful report / real inspector payment</p>
-        <h2 id="payment-heading">
-          A rejected installation still needs an inspection.
-        </h2>
-        <p>
-          The independent inspector returned <strong>FAIL</strong> on the actual
-          camera evidence. The seller received
-          <strong>1 test USDM on Cardano Preprod</strong>.
-        </p>
-        <div id="transactions" class="actions"></div>
-        <details>
-          <summary>Read the original inspector report · FAIL</summary>
-          <div id="report"></div>
-        </details>
-        <p class="note">
-          These are saved original transactions. Explorer links need internet
-          access. This page does not recheck current chain state.
-        </p>
-      </section>
+      <p id="phone-status" class="status" role="status">
+        Preparing saved evidence on this phone…
+      </p>
       <section id="file-proof" aria-labelledby="proof-heading">
-        <h2 id="proof-heading">Check the saved proof.</h2>
-        <button id="verify-files" disabled>Verify saved files</button>
+        <h2 id="proof-heading">Verify the saved evidence.</h2>
+        <p>
+          This verifies the saved files. It does not recheck the device or
+          blockchain.
+        </p>
+        <button id="verify-files" disabled>Verify saved evidence</button>
         <p id="verification" class="status" role="status">
           Loading the reviewed files…
         </p>
@@ -92,8 +83,9 @@
             recording. Its original signature verified at capture.
           </p>
           <p>
-            Earlier paid NVD responses underpin the saved deployed contract
-            checks. They retain their original times and limits.
+            Earlier paid NVD responses were checked by the deployed contract.
+            API3 qualification is not established. The failed inspection forces
+            rejection regardless of the CVE value.
           </p>
           <p class="note">
             These earlier records are separate from the failed camera attempt.
@@ -101,6 +93,47 @@
           </p>
           <div id="files" class="file-list"></div>
         </details>
+      </section>
+      <nav class="proof-nav" aria-label="Explore saved proof" data-proof hidden>
+        <a href="#camera-proof"
+          ><span aria-hidden="true">⌖</span>Camera found a defect</a
+        ><a href="#payment-proof"
+          ><span aria-hidden="true">↗</span>Inspector received payment</a
+        ><a href="#file-proof"
+          ><span aria-hidden="true">✓</span>Verify saved evidence</a
+        >
+      </nav>
+      <section
+        id="payment-proof"
+        aria-labelledby="payment-heading"
+        data-proof
+        hidden
+      >
+        <p class="eyebrow">Useful report / real inspector payment</p>
+        <h2 id="payment-heading">Inspection complete · issues found.</h2>
+        <p>
+          The independent inspector returned <strong>FAIL</strong> on the actual
+          camera evidence. The seller received
+          <strong>1 test USDM on Cardano Preprod</strong>.
+        </p>
+        <div id="transactions" class="actions"></div>
+        <details>
+          <summary>Read the original inspector report · FAIL</summary>
+          <div id="report"></div>
+        </details>
+        <details id="receipt-details">
+          <summary>View payment receipt · saved original</summary>
+          <p>
+            This is the original saved receipt. It does not recheck current
+            chain state.
+          </p>
+          <pre id="receipt"></pre>
+        </details>
+        <p class="note">
+          These are saved original transactions. Explorer links need internet
+          access. This page does not recheck current chain state. Payment covers
+          the inspection report. It is not a contractor payment.
+        </p>
       </section>
       <details class="story">
         <summary>The pitch in 20 seconds</summary>

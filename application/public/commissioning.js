@@ -248,7 +248,7 @@ function showSession(session) {
     session.report && session.vision?.measurement,
   );
   $("saved-measurement").hidden = !recordedMeasurement;
-  $("camera-stage").hidden = recordedMeasurement && !camera;
+  $("camera-stage").hidden = recordedMeasurement;
   if (recordedMeasurement)
     renderMeasurement(
       $("saved-measurement"),

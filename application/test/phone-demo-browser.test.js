@@ -40,8 +40,12 @@ test("phone demo reopens with the coordinator stopped and rejects corrupt cached
     );
     await stop();
     await context.setOffline(true);
-    for (const width of [1440, 390]) {
-      await page.setViewportSize({ width, height: 1000 });
+    for (const [width, height] of [
+      [1920, 1080],
+      [1366, 768],
+      [390, 844],
+    ]) {
+      await page.setViewportSize({ width, height });
       await page.reload();
       await page.waitForFunction(
         () => !document.getElementById("verify-files").disabled,
@@ -55,16 +59,54 @@ test("phone demo reopens with the coordinator stopped and rejects corrupt cached
         await page.locator("#phone-status").getAttribute("data-error"),
         "false",
       );
-      await page.getByRole("button", { name: "Verify saved files" }).click();
+      assert.equal(
+        await page.locator(".saved-mode").textContent(),
+        "SAVED COPY · NOT LIVE",
+      );
+      assert.match(
+        await page.locator("#saved-heading").textContent(),
+        /requires rework/,
+      );
+      assert.equal(await page.locator(".stamp").textContent(), "REWORK");
+      assert.equal(
+        await page.locator("#saved-measurement svg").getAttribute("role"),
+        "img",
+      );
+      assert.equal(
+        await page.evaluate(async () => {
+          const fonts = await document.fonts.load(
+            '700 80px "Barlow Condensed"',
+          );
+          const body = await document.fonts.load(
+            '400 18px "Atkinson Hyperlegible Next"',
+          );
+          return (
+            fonts.length > 0 &&
+            body.length > 0 &&
+            [...fonts, ...body].every((f) => f.status === "loaded")
+          );
+        }),
+        true,
+      );
+      if (width === 390) {
+        const bounds = await page.locator("#verify-files").boundingBox();
+        assert.ok(bounds.y >= 0 && bounds.y + bounds.height <= height);
+      }
+
+      await page.getByRole("button", { name: "Verify saved evidence" }).click();
       assert.match(
         await page.locator("#verification").textContent(),
         /6 saved file hashes match/,
       );
       assert.match(
         await page.locator("#placement").textContent(),
-        /Camera placement FAIL/,
+        /Placement failed/,
       );
       assert.equal(await page.locator("#transactions a").count(), 3);
+      const receipt = JSON.parse(await page.locator("#receipt").textContent());
+      assert.equal(receipt.netAtomicUnits, "1000000");
+      assert.equal(receipt.verified, true);
+      assert.match(receipt.scope, /No installation acceptance/);
       assert.equal(
         await page.locator("section[data-proof]:visible").count(),
         2,

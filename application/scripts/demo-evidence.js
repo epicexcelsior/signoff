@@ -62,12 +62,18 @@ const assets = [
   "/demo/demo.css",
   "/demo/evidence.json",
   "/theme.css",
+  "/measurement.js",
+  "/fonts/BarlowCondensed-SemiBold.woff2",
+  "/fonts/BarlowCondensed-Bold.woff2",
+  "/fonts/AtkinsonHyperlegibleNext.woff2",
 ];
 const root = new URL("../public/", import.meta.url);
 const version = hash(
   data +
-    ["demo/index.html", "demo/view.js", "demo/demo.css", "theme.css"]
-      .map((path) => readFileSync(new URL(path, root), "utf8"))
+    assets
+      .filter((path) => !["/demo/", "/demo/evidence.json"].includes(path))
+      .map((path) => path.slice(1))
+      .map((path) => readFileSync(new URL(path, root)).toString("base64"))
       .join("\n"),
 ).slice(0, 20);
 const worker = `// Generated from reviewed evidence and viewer source. Scope excludes the live station.\nconst CACHE = "proof-ready-evidence-${version}";\nconst ASSETS = ${JSON.stringify(assets)};\nself.addEventListener("install", event => event.waitUntil((async () => {\n  const cache = await caches.open(CACHE);\n  await cache.addAll(ASSETS);\n  await self.skipWaiting();\n})()));\nself.addEventListener("activate", event => event.waitUntil((async () => {\n  for (const key of await caches.keys()) if (key.startsWith("proof-ready-evidence-") && key !== CACHE) await caches.delete(key);\n  await self.clients.claim();\n})()));\nself.addEventListener("fetch", event => {\n  const url = new URL(event.request.url);\n  if (event.request.method !== "GET" || url.origin !== self.location.origin || !ASSETS.includes(url.pathname) || url.search) return;\n  event.respondWith((async () => {\n    const cache = await caches.open(CACHE);\n    const saved = await cache.match(url.pathname);\n    if (saved) return saved;\n    return fetch(event.request);\n  })());\n});\n`;

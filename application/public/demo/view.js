@@ -1,3 +1,4 @@
+import { renderMeasurement } from "/measurement.js";
 const $ = (id) => document.getElementById(id);
 let bundle;
 const urls = [];
@@ -47,9 +48,17 @@ try {
   const file = (id) =>
     JSON.parse(bundle.files.find((entry) => entry.id === id).text);
   const packet = file("physical-camera-rework-packet");
+  $("saved-heading").textContent = "Installation requires rework.";
+  $("saved-reason").textContent =
+    "Placement did not match the approved position.";
   const quality = packet.evidence.vision.measurement.quality;
+  renderMeasurement(
+    $("saved-measurement"),
+    packet.evidence.vision.measurement,
+    packet.workOrder.vision,
+  );
   $("placement").textContent =
-    `Camera placement FAIL. Offset ${quality.offsetMm.toFixed(1)} mm (limit ${packet.workOrder.vision.tolerance.positionMm} mm). Angle ${quality.angleErrorDeg.toFixed(1)}° (limit ${packet.workOrder.vision.tolerance.angleDeg}°).`;
+    `Placement failed. ${quality.offsetMm.toFixed(1)} mm from target (allowed ${packet.workOrder.vision.tolerance.positionMm} mm). Rotation error: ${quality.angleErrorDeg.toFixed(1)}° (allowed ${packet.workOrder.vision.tolerance.angleDeg}°).`;
   for (const [hash, label] of [
     [bundle.inspection.transactionHash, "Escrow transaction"],
     [bundle.inspection.resultTransactionHash, "Result transaction"],
@@ -74,6 +83,11 @@ try {
     row.append(title, reason);
     $("report").append(row);
   }
+  $("receipt").textContent = JSON.stringify(
+    file("physical-paid-seller-receipt"),
+    null,
+    2,
+  );
   for (const original of bundle.files) {
     const link = document.createElement("a");
     link.textContent = `Download ${original.name} ↓`;
@@ -145,3 +159,26 @@ try {
 window.addEventListener("pagehide", () => {
   for (const url of urls) URL.revokeObjectURL(url);
 });
+
+function updateExplorerLinks() {
+  for (const link of document.querySelectorAll("#transactions a")) {
+    const offline = !navigator.onLine;
+    link.setAttribute("aria-disabled", String(offline));
+    link.title = offline
+      ? "Internet is needed. The saved receipt is still available below."
+      : "Open original transaction";
+  }
+}
+window.addEventListener("online", updateExplorerLinks);
+window.addEventListener("offline", updateExplorerLinks);
+$("transactions").addEventListener("click", (event) => {
+  const link = event.target.closest("a");
+  if (link?.getAttribute("aria-disabled") === "true") {
+    event.preventDefault();
+    message(
+      "verification",
+      "Internet is needed for the explorer. The saved report and payment receipt are still available.",
+    );
+  }
+});
+updateExplorerLinks();

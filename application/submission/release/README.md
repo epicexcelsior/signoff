@@ -1,6 +1,6 @@
 # Proof of Ready
 
-Evidence before equipment handover.
+**Know before you approve.** Check the actual device before accepting the installation.
 
 Proof of Ready binds an approved work order, camera measurements, signed device-test protocols, and a paid inspector report. Missing or failed evidence blocks acceptance.
 
@@ -30,9 +30,9 @@ npm --prefix integrations/masumi ci
 npm start
 ```
 
-Open **http://127.0.0.1:4021/demo/** for saved real evidence. Wait for **Saved in this browser**. Select **Verify saved files**. After one load, this viewer can reopen without the coordinator. On-device offline installation on the Seeker remains unverified.
+Open **http://127.0.0.1:4021/demo/** for saved real evidence. Wait for **Saved in this browser**. Select **Verify saved evidence**. After one load, this viewer can reopen without the coordinator. A Seeker Chrome saved load and offline hash check passed. Final portrait QA on the device remains unverified.
 
-Open **http://127.0.0.1:4021/** for a labeled synthetic rehearsal. Approve a work order, choose a rehearsal condition, and select **Run rehearsal**. Rehearsal moves no funds and does not establish physical acceptance.
+Open **http://127.0.0.1:4021/** for a labeled synthetic rehearsal. Confirm inspection requirements, choose a rehearsal condition, and select **Run rehearsal**. Rehearsal moves no funds and does not establish physical acceptance.
 
 The saved viewer performs no capture, payment, or fresh chain verification. Explorer links require internet access. Actual hardware commissioning requires separately configured device identity and authorization. Private wallets and operator runtime records are not distributed.
 
