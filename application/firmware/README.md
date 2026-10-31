@@ -2,7 +2,7 @@
 
 This package prepares signed contact reads and challenge-bound optical emission for an ESP32. The default build initializes no GPIO. It advertises no operation until a secret and an explicitly reviewed hardware profile exist.
 
-A read-only USB query identified the connected chip as **ESP32-C6FH4, revision 0.2, with 4 MB embedded flash**. The owner identifies an ESP32-C6 SuperMini carrier. Three supplied photos show Super Mini / ESP32-C6 markings and a layout matching the seller schematic below. No maker or revision appears. The owner-approved optical-only image is flashed. USB startup/public-key validation passed. Its first boot sent an OFF pixel. No signed optical challenge or contact test ran.
+A read-only USB query identified the connected chip as **ESP32-C6FH4, revision 0.2, with 4 MB embedded flash**. The owner identifies an ESP32-C6 SuperMini carrier. Three supplied photos show Super Mini / ESP32-C6 markings and a layout matching the seller schematic below. No maker or revision appears. The owner-approved optical-only image is flashed. USB startup/public-key validation passed. Its first boot sent an OFF pixel. A later owner-authorized diagnostic blink returned a verified 18-second signed receipt. The owner confirmed visible blinking. No camera waveform or contact test exists.
 
 ## Check without hardware
 
