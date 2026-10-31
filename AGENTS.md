@@ -1,5 +1,7 @@
 # Project instructions
 
+- [docs/DESIGN.md](docs/DESIGN.md) is the canonical visual, interaction, language, and presentation design authority. Read it before UI or submission design changes. Use clear, common words. Preserve source modes, evidence bindings, offline storage, and exact result enums.
+
 - Read README.md for the execution index and documentation map. Use PROOF_OF_READY_IMPLEMENTATION_PLAN.md for goals and acceptance criteria, docs/ENGINEERING.md for implemented interfaces, and research/EVIDENCE.md for verified facts. Use PROOF_OF_READY_AGENT_HANDOFF.md for continuation routing.
 - Read `.local/README.md` and `.local/hackathon-resources/README.md` for ignored local references when present. Keep downloaded sources, snapshots, copied skills, and generated artifacts out of Git. Keep active wallets and ledgers at their original secure locations.
 - For Sokosumi setup, check the existing Personal Workspace and credits before requesting pooled TUM access. CLI 1.0.4 uses the removed `/v1/users/me/workspace-access` route. Verify the current published CLI/API when a route returns 404 instead of treating it as missing account permission.
