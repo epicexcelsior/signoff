@@ -46,3 +46,7 @@ The evidence manifest in `application/submission/` owns exact identifiers. Judge
 - Obtain owner authorization before public repository publication or Devfolio submission.
 
 No new API3 paid calls fit the consumed 0.02 aUSD ceiling. Preserve at least 0.001 ETH. Existing paid evidence needs no replacement transaction.
+
+## Recording backup
+
+The private clip `.local/runtime/sessions/demonstrations/optical-diagnostic-backup/recorded-diagnostic.mp4` preserves 22 seconds of the real diagnostic recording. Its caption states that this is recorded diagnostic evidence, not installation acceptance. The adjacent `scope.json` records original and derived hashes. The clip contains no audio. It supplements the complete original video and does not replace the final product demonstration.
