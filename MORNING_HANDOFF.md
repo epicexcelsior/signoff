@@ -73,3 +73,5 @@ Camera-choice enumeration does not block station controls. A late result cannot 
 The read-only preflight reports station availability, saved-evidence integrity, and remaining requirements. A successful rehearsal preflight is not physical acceptance. If it fails, follow its error before recording. The latest phone battery check reported 9 percent, USB charging, and no active camera session.
 
 If you change or restart the camera, start a new capture attempt and save a passing placement measurement before the LED test. The browser blocks emission from an old camera measurement or a failed placement measurement.
+
+The optical driver now refuses emission at four remaining claims and rejects invalid manifest counts. It also rejects a competing cooperating optical client. Do not bypass that reserve or use another tool to consume it without a new targeted owner decision. The installed firmware and original claim store remain unchanged.

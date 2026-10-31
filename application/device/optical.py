@@ -11,6 +11,7 @@ from pathlib import Path
 import re
 import sys
 import time
+from contextlib import contextmanager
 
 # Support both direct script execution and package imports from local checks.
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -28,8 +29,60 @@ from device.ble_transport import (  # noqa: E402
 )
 
 
+CLAIM_RESERVE = 4
+
+
 class OpticalAuthorizationError(OpticalError, PermissionError):
     pass
+
+
+@contextmanager
+def exclusive_board(env):
+    """Serialize cooperating optical clients across the fresh manifest and write."""
+    address = env.get("FIELDPROOF_BLE_ADDRESS", "")
+    if not re.fullmatch(r"(?:[0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}", address):
+        raise OpticalError("Configure the pinned board address.")
+    directory = (
+        Path(env.get("HOME") or Path.home())
+        / ".local/state/proof-of-ready/device-locks"
+    )
+    directory.mkdir(mode=0o700, parents=True, exist_ok=True)
+    name = hashlib.sha256(address.lower().encode()).hexdigest() + ".lock"
+    flags = os.O_RDWR | os.O_CREAT | getattr(os, "O_NOFOLLOW", 0)
+    with os.fdopen(os.open(directory / name, flags, 0o600), "r+b") as lease:
+        if os.name == "nt":
+            import msvcrt
+
+            if os.fstat(lease.fileno()).st_size == 0:
+                lease.write(b"\0")
+                lease.flush()
+            lease.seek(0)
+
+            def acquire():
+                msvcrt.locking(lease.fileno(), msvcrt.LK_NBLCK, 1)
+
+            def release():
+                lease.seek(0)
+                msvcrt.locking(lease.fileno(), msvcrt.LK_UNLCK, 1)
+        else:
+            import fcntl
+
+            def acquire():
+                fcntl.flock(lease.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+
+            def release():
+                fcntl.flock(lease.fileno(), fcntl.LOCK_UN)
+        try:
+            acquire()
+        except OSError as error:
+            raise OpticalError(
+                "Cannot acquire exclusive board access. "
+                "Another optical client can hold it. No request ran."
+            ) from error
+        try:
+            yield
+        finally:
+            release()
 
 
 CHALLENGE_FIELDS = {
@@ -228,6 +281,13 @@ async def _execute(envelope, env, scanner=None, client_factory=None):
                 "The pinned board does not offer the prepared optical protocol."
             )
         validate_request(envelope)
+        claims = manifest.get("remaining_claims")
+        if type(claims) is not int or not 0 <= claims <= 64:
+            raise OpticalError(
+                "The board has no valid remaining-claims count. No optical request ran."
+            )
+        if claims <= CLAIM_RESERVE:
+            raise OpticalError("The board must retain four claims. No optical request ran.")
         payload = make_payload(c, provider, manifest.get("boot_id"), secret)
         ready = asyncio.Event()
         await client.start_notify(RECEIPT, lambda _sender, _data: ready.set())
@@ -264,7 +324,8 @@ async def execute(envelope, env, scanner=None, client_factory=None):
     remaining = min(45, challenge["expires_at"] - time.time())
     try:
         async with asyncio.timeout(remaining):
-            return await _execute(envelope, env, scanner, client_factory)
+            with exclusive_board(env):
+                return await _execute(envelope, env, scanner, client_factory)
     except TimeoutError as error:
         raise OpticalError(
             "The original optical operation timed out. Do not repeat it automatically."

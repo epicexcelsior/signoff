@@ -2,7 +2,7 @@
 
 This package prepares signed contact reads and challenge-bound optical emission for an ESP32. The default build initializes no GPIO. It advertises no operation until a secret and an explicitly reviewed hardware profile exist.
 
-A read-only USB query identified the connected chip as **ESP32-C6FH4, revision 0.2, with 4 MB embedded flash**. The owner identifies an ESP32-C6 SuperMini carrier. Three supplied photos show Super Mini / ESP32-C6 markings and a layout matching the seller schematic below. No maker or revision appears. The owner-approved optical-only image is flashed. USB startup/public-key validation passed. Its first boot sent an OFF pixel. A later owner-authorized diagnostic blink returned a verified 18-second signed receipt. The owner confirmed visible blinking. No camera waveform or contact test exists.
+A read-only USB query identified the connected chip as **ESP32-C6FH4, revision 0.2, with 4 MB embedded flash**. The owner identifies an ESP32-C6 SuperMini carrier. Three supplied photos show Super Mini / ESP32-C6 markings and a layout matching the seller schematic below. No maker or revision appears. The owner-approved optical-only image is flashed. USB startup/public-key validation passed. Its first boot sent an OFF pixel. A later owner-authorized diagnostic blink returned a verified 18-second signed receipt. The owner confirmed visible blinking. A later phone diagnostic recording matched the complete waveform. Tracked commissioning capture and contact testing remain incomplete.
 
 ## Check without hardware
 
@@ -268,3 +268,5 @@ For separately authorized physical execution, install `application/device/requir
 The driver sends one request sequence. A disconnect or uncertain write never starts another sequence. It polls the original receipt and verifies page commitments. An absent receipt requires inspection of the original operation. No automatic retry or GPIO fallback exists.
 
 [Provenance](PROVENANCE.json) records the vendored parser, reused local reference revision, SDK revision, and source hashes. The root [engineering reference](../../docs/ENGINEERING.md) defines coordinator integration.
+
+The optical host driver preserves a four-claim reserve. It rejects invalid remaining-claim counts and refuses emission when four or fewer remain. A private board-address file lock serializes cooperating optical clients under the same HOME across manifest checks and request completion. Other tools and users must preserve the same reserve independently. This host policy does not change the installed firmware or its claim store.

@@ -1,3 +1,6 @@
+import tempfile
+import subprocess
+import sys
 import base64
 import copy
 import hashlib
@@ -55,6 +58,18 @@ def receipt(c):
 
 
 class OpticalTests(unittest.IsolatedAsyncioTestCase):
+    def setUp(self):
+        self.private_home = tempfile.TemporaryDirectory()
+        self.addCleanup(self.private_home.cleanup)
+
+    def authorized_env(self):
+        return {
+            "HOME": self.private_home.name,
+            "PROOFREADY_OPTICAL_AUTHORIZED": "true",
+            "FIELDPROOF_BLE_ADDRESS": "00:11:22:33:44:55",
+            "FIELDPROOF_DEVICE_SECRET": "disposable-test-secret",
+        }
+
     def test_original_binding_and_timing_validation(self):
         request = envelope()
         self.assertEqual(optical.validate_request(request)[1], "proof-ready-reference")
@@ -147,6 +162,7 @@ class OpticalTests(unittest.IsolatedAsyncioTestCase):
         request = envelope()
         client = FakeClient(request, receipt(request["challenge"]))
         env = {
+            "HOME": self.private_home.name,
             "PROOFREADY_OPTICAL_AUTHORIZED": "true",
             "FIELDPROOF_BLE_ADDRESS": "00:11:22:33:44:55",
             "FIELDPROOF_DEVICE_SECRET": "disposable-test-secret",
@@ -183,6 +199,7 @@ class OpticalTests(unittest.IsolatedAsyncioTestCase):
         client = FakeClient(request, receipt(request["challenge"]))
         client.manifest["device_id"] = "another-provider"
         env = {
+            "HOME": self.private_home.name,
             "PROOFREADY_OPTICAL_AUTHORIZED": "true",
             "FIELDPROOF_BLE_ADDRESS": "00:11:22:33:44:55",
             "FIELDPROOF_DEVICE_SECRET": "disposable-test-secret",
@@ -192,6 +209,47 @@ class OpticalTests(unittest.IsolatedAsyncioTestCase):
                 request, env, FakeScanner, lambda *_args, **_kwargs: client
             )
         self.assertEqual(client.writes, [])
+
+    async def test_claim_reserve_and_invalid_manifest_counts_never_write(self):
+        for count in [None, True, -1, 0, 4, 65, "5"]:
+            with self.subTest(count=count):
+                request = envelope()
+                client = FakeClient(request, receipt(request["challenge"]))
+                client.manifest["remaining_claims"] = count
+                with self.assertRaises(ValueError):
+                    await optical.execute(request, self.authorized_env(), FakeScanner, lambda *_args, **_kwargs: client)
+                self.assertEqual(client.writes, [])
+        request = envelope()
+        client = FakeClient(request, receipt(request["challenge"]))
+        client.manifest["remaining_claims"] = 5
+        await optical.execute(request, self.authorized_env(), FakeScanner, lambda *_args, **_kwargs: client)
+        self.assertTrue(client.writes)
+
+    async def test_concurrent_client_rejects_before_discovery_and_lock_releases(self):
+        with optical.exclusive_board(self.authorized_env()):
+            with self.assertRaisesRegex(ValueError, "exclusive board access"):
+                await optical.execute(envelope(), self.authorized_env(), FakeScanner, lambda *_args, **_kwargs: self.fail("No client must connect"))
+        request = envelope()
+        client = FakeClient(request, receipt(request["challenge"]))
+        await optical.execute(request, self.authorized_env(), FakeScanner, lambda *_args, **_kwargs: client)
+        self.assertTrue(client.writes)
+
+    def test_board_lease_contends_across_processes_and_releases(self):
+        program = """
+import importlib.util, sys
+spec = importlib.util.spec_from_file_location('optical', sys.argv[1])
+optical = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(optical)
+try:
+    with optical.exclusive_board({'HOME': sys.argv[2], 'FIELDPROOF_BLE_ADDRESS': '00:11:22:33:44:55'}):
+        pass
+except ValueError:
+    sys.exit(7)
+"""
+        command = [sys.executable, "-c", program, str(PATH), self.private_home.name]
+        with optical.exclusive_board(self.authorized_env()):
+            self.assertEqual(subprocess.run(command, timeout=5).returncode, 7)
+        self.assertEqual(subprocess.run(command, timeout=5).returncode, 0)
 
 
 class FakeScanner:
@@ -216,6 +274,7 @@ class FakeClient:
             "device_id": "proof-ready-reference",
             "boot_id": "0" * 16,
             "authorization_provisioned": True,
+            "remaining_claims": 64,
             "request_chunks": "proof-of-ready/request-chunks/v1",
             "receipt_pages": optical.PAGES,
             "capabilities": [{"id": "optical.emit", "half_symbol_ms": 250}],
