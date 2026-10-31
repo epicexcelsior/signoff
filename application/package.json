@@ -28,7 +28,8 @@
     "prestart": "node scripts/demo-evidence.js",
     "demo:prepare": "node scripts/demo-evidence.js",
     "demo:check": "node scripts/demo-evidence.js --check",
-    "demo:record:real": "node scripts/record-evidence-demo.js"
+    "demo:record:real": "node scripts/record-evidence-demo.js",
+    "release:prepare": "node scripts/prepare-release.js"
   },
   "dependencies": {
     "@evolution-sdk/evolution": "0.5.14",

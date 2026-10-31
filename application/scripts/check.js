@@ -17,7 +17,7 @@ for (const folder of ["src", "scripts", "test", "public"]) checkFolder(folder);
 // Compile without creating bytecode in the source directory.
 execFileSync("python3", [
   "-c",
-  'import ast; ast.parse(open("scripts/observe.py").read())',
+  "import ast,pathlib; [ast.parse(path.read_text(), filename=str(path)) for path in pathlib.Path('scripts').glob('*.py')]",
 ]);
 for (const file of ["package.json", "package-lock.json"])
   JSON.parse(readFileSync(file, "utf8"));
