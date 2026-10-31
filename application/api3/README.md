@@ -41,7 +41,7 @@ The EIP-712 domain is `AirnodeHub USD`, version `1`. The supported transfer meth
 4. Preserve the public wallet address and private credentials outside source.
 5. Review the exact recipient, token, request and total payment budget before authorizing payment.
 
-The facilitator pays the access-transfer gas. Application deployment/finalization and faucet minting have separate gas requirements. The approved mint, first genuine paid NVD request, and CommissioningPolicy deployment now confirmed on Base Sepolia. [The evidence manifest](../submission/evidence-manifest.json) records their actual transactions. Five deployed judge cases remain pending genuine paid-inspection commitments.
+The facilitator pays the access-transfer gas. Application deployment/finalization and faucet minting have separate gas requirements. The approved mint, both genuine paid NVD requests, and CommissioningPolicy transactions confirmed on Base Sepolia. [The evidence manifest](../submission/evidence-manifest.json) records the original five-case block and mined REJECTED decision. The actual paid REVIEW used synthetic input. It does not authorize a physical installation.
 
 Cardano escrow can outlast the five-minute API3 source freshness window. Fetch fresh CVE data near contract finalization. An earlier response can test authenticity without satisfying later freshness. A 0.02 aUSD total budget covers two 0.01 aUSD requests. It does not include application gas.
 
@@ -88,7 +88,7 @@ For an external wallet, sign the original saved typed-data plan. Import only its
 npm run access -- import-signature ORIGINAL_ACCESS_ID /private/proof-ready/api3/original-signature
 ```
 
-These commands are instructions for a later authorized operation. The first approved request used the existing live test wallet and settled. Preserve its original ledger. Remaining calls require the budget and reserve checks.
+These commands are instructions for a later authorized operation. Both approved requests used the existing wallet and settled. Preserve the original ledger. The 20,000-atomic-unit ceiling is consumed. Another paid request requires a separately authorized budget. Keep at least 0.001 ETH in reserve.
 
 The client commits SIGNING before invoking a signer. It commits SUBMITTING before sending the paid HTTP request. Another connection or restart cannot repeat either claim. A lost signing reply requires the original signature. A lost paid response remains UNRESOLVED. No automatic new quote, nonce, signature or HTTP retry exists.
 
@@ -168,7 +168,7 @@ The checker pins every read and simulation to one block. It records that block n
 
 The valid case must succeed. Edited, other-request, and wrong-key cases must return `NotSignedByAirnode`. The stale case must return `InvalidOracle`. Other errors fail the check. Fresh negative cases isolate signature rejection from expiry. A finalized job, expired job, or RPC failure cannot satisfy a rejection case.
 
-The output states `mode:ETH_CALL_ONLY`. It preserves the source commitment and returns the unsigned valid finalization call. These deployed-code simulations do not send transactions or change contract state. Submit the approved valid call separately, preserve its transaction hash, and read the actual terminal decision. No judge result exists until the command runs against the genuine prepared deployment. Local tests inject verifier/client fixtures and never establish sponsor qualification.
+The output states `mode:ETH_CALL_ONLY`. It preserves the source commitment and returns the unsigned valid finalization call. These deployed-code simulations do not send transactions or change contract state. Submit the approved valid call separately, preserve its transaction hash, and read the actual terminal decision. The saved submission artifacts now contain actual deployed checks and a mined rejection. Freshness claims apply at their original block only. Local tests inject verifier/client fixtures and never establish sponsor qualification.
 
 ## Replay judge checks and verify mined finalization
 
@@ -183,3 +183,17 @@ npm run judge -- finalized /private/api3/judge-config.json /private/api3/finaliz
 This command repeats the five historical checks. It then checks the mined transaction and terminal state at the receipt block. The transaction must match the original unsigned call exactly. The proof checks the block hashes, runtime code, all job commitments, source digest, terminal decision, and acceptance hash.
 
 A successful proof states `mode:MINED_TRANSACTION_AND_PINNED_STATE`. An `ETH_CALL_ONLY` report alone does not establish a state change. The Cardano payment remains an independently verified operator assertion. The contract does not establish Cardano consensus or physical truth.
+
+## Replay the saved submission evidence
+
+From this package, run:
+
+```sh
+npm run judge:submission
+```
+
+The command reads the reviewed public originals under `application/submission/evidence/`. It repeats all five checks at block 52,413,566 and verifies the mined transaction at block 52,413,614. It compares every result with the saved proof. It needs historical Base Sepolia RPC access. It reads no wallet or private credential and sends no transaction.
+
+The native source-policy verdict is PASS for declared Apache NimBLE 1.9.0. The actual terminal decision is REJECTED because the useful paid report returns REVIEW. The original inspection input is synthetic. The declared reference version has no installed-build provenance. A separate evaluation deadline does not renew the original work order.
+
+Both paid source requests settled within the 0.02 aUSD ceiling. No paid-access budget remains. Preserve the original ledger and both responses. Replaying their historical block needs no fresh paid request.

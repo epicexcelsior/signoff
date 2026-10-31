@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { keccak256, decodeFunctionData } from "viem";
 import {
   prepareDeployment,
@@ -120,7 +121,7 @@ function fixture() {
       signature: `0x${"ef".repeat(65)}`,
     },
     verifyResponse: async (_response, options) => {
-      assert.equal(options.buildVersion, 1009000);
+      assert.equal(options.buildVersion, "1.9.0");
       assert.equal(options.sourceMaxAgeSeconds, 300);
       return { authenticated: true, verdict: "PASS" };
     },
@@ -146,6 +147,48 @@ test("judge reports all five deployed eth_call outcomes and returns unsigned fin
     "finalize",
   );
   assert.equal(result.unsignedValidCall.authorization, "UNSIGNED");
+});
+test("judge evaluates the contract-encoded version through the real native verifier", async () => {
+  const f = fixture();
+  const original = (name) =>
+    JSON.parse(
+      readFileSync(
+        new URL(`../../submission/evidence/${name}`, import.meta.url),
+      ),
+    );
+  f.validResponse = original("nvd-paid-final-original.json");
+  f.staleResponse = original("nvd-paid-first-original.json");
+  f.wrongRequestResponse = original("api3-other-request-original.json");
+  f.wrongKeyResponse = original("api3-wrong-key-deliberate-test.json");
+  delete f.verifyResponse;
+  delete f.verifySignature;
+  const now = Number(f.validResponse.timestamp) + 1;
+  f.job.deadline = BigInt(now + 3600);
+  f.client.getBlock = async () => ({
+    timestamp: BigInt(now),
+    number: 100n,
+    hash: digest,
+  });
+  f.client.simulateContract = async ({ args }) => {
+    if (
+      args[1] === BigInt(f.validResponse.timestamp) &&
+      args[2] === `0x${Buffer.from(f.validResponse.data).toString("hex")}` &&
+      args[3] === f.validResponse.signature
+    )
+      return;
+    const error = new Error("fixture revert");
+    error.name = "ContractFunctionRevertedError";
+    error.data = {
+      errorName:
+        args[1] === BigInt(f.staleResponse.timestamp)
+          ? "InvalidOracle"
+          : "NotSignedByAirnode",
+    };
+    throw error;
+  };
+  const result = await judgeReadOnly(f);
+  assert.equal(result.validSourcePolicy, "PASS");
+  assert.equal(result.expectedTerminalDecision, "ACCEPTED");
 });
 test("judge never counts RPC failure, missing prerequisites, wrong code or ineffective negative cases as rejection evidence", async () => {
   let f = fixture();

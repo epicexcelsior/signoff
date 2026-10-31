@@ -1,0 +1,69 @@
+{
+  "schema": "proof-of-ready/historical-policy-transactions/v1",
+  "context": {
+    "schema": "proof-of-ready/historical-paid-policy-evaluation/v1",
+    "workOrderDigest": "0x029d81e61982dfc20ff1f32947e4da3acb0f35876333a5091d047b45f94fa76d",
+    "evidenceBundleDigest": "0x05897ab0a57240a4da93d96bc5286da7020bbfeb406381804325dd354bd808aa",
+    "inspectionId": "por-97acb87d3b5fb991",
+    "physicalEvidence": false,
+    "fixtureInspectionInput": true,
+    "manifest": {
+      "schema": "proof-of-ready/policy-reference-version/v1",
+      "component": "apache-nimble",
+      "version": "1.9.0",
+      "provenance": "declared-reference-only",
+      "installedBuild": false,
+      "purpose": "Bounded CVE policy reference only. No compiled or installed device provenance."
+    },
+    "buildManifestDigest": "0x3740caca5679014b6fd081048dac4e99d017557607cba97236bdb1c218e435af",
+    "maxCvssTenths": 70,
+    "inspectionPassed": false,
+    "expectedTerminalDecision": "REJECTED",
+    "limitations": [
+      "The original work order and physical capture are historical synthetic evidence.",
+      "The paid inspector returns REVIEW for missing physical evidence.",
+      "An independent policy-evaluation deadline does not renew the original work order.",
+      "The declared Apache NimBLE version does not identify compiled or installed firmware.",
+      "The false inspection predicate determines REJECTED regardless of CVE verdict.",
+      "The authentic NVD signature and exact source commitments still gate finalization."
+    ],
+    "jobId": "0x283a22d5708fb1dd4b9b723c2094732c1e30d2aea46f0d1baf7edecceed944bc",
+    "preparedAt": "2026-10-30T23:55:25.384Z",
+    "deadline": 1793411725,
+    "inspectionDigest": "0x661d6a2d8db2cc7e4ca03dd77efc7ec9071d10cfc2f1a86332b8e2a1316071d8",
+    "paymentEvidenceDigest": "0x6900ed518572fd7cb553b3f34618e0036422d98963274805100ae4a4769b0ba6",
+    "sellerReceiptVerified": true,
+    "sellerReceiptTransactionHash": "344fd5f6fd40f469ff72e0feac7b58ae9f9a100f472a29429e1082ae42aaa202",
+    "deadlineScope": "Separate historical policy-evaluation window. Does not renew or authorize the original installation work order."
+  },
+  "actions": [
+    {
+      "id": "policy-enroll-reference",
+      "purpose": "Declare reference version only",
+      "transactionHash": "0xcee057fdf5107d57572fd32ebd9b56abd553cfb0d0fcbd29c38c736581051fa7",
+      "blockNumber": "52413294",
+      "gasUsed": "48270"
+    },
+    {
+      "id": "policy-open-paid-review",
+      "purpose": "Open separate historical policy-evaluation window",
+      "transactionHash": "0x8adb54dd501b6b32b2cbb2bf225dae2e8ba2e6d252336c054a6d737700d3b4f4",
+      "blockNumber": "52413344",
+      "gasUsed": "97124"
+    },
+    {
+      "id": "policy-record-paid-review",
+      "purpose": "Bind original paid REVIEW and verified seller collection",
+      "transactionHash": "0xd3ca39d3096316b4b1827a9420b532be7ae40f3a3e78d35cd8181be27f42fa33",
+      "blockNumber": "52413395",
+      "gasUsed": "77113"
+    },
+    {
+      "id": "policy-finalize-paid-review",
+      "purpose": "Finalize REJECTED using genuine final NVD response",
+      "transactionHash": "0xa94e48a5d72065ad46c4c558d26a7c3f618aa491fe46e6d012fd7aa7b1356eab",
+      "blockNumber": "52413614",
+      "gasUsed": "906065"
+    }
+  ]
+}

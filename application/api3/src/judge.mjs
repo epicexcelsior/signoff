@@ -227,11 +227,17 @@ export async function judgeReadOnly({
   const build = await read("builds", [job.buildManifestDigest]);
   if (!build[0])
     fail("JUDGE_BUILD_NOT_ENROLLED", "The job build manifest is not enrolled.");
+  const version = Number(build[1]);
+  const buildVersion = [
+    Math.floor(version / 1_000_000),
+    Math.floor((version % 1_000_000) / 1000),
+    version % 1000,
+  ].join(".");
   const valid = await verifyResponse(validResponse, {
     now,
     maxAgeSeconds: Number(maxAge),
     sourceMaxAgeSeconds: Number(maxSourceAge),
-    buildVersion: Number(build[1]),
+    buildVersion,
     maxCvssTenths: job.maxCvssTenths,
   });
   await verifySignature(staleResponse, NVD_SIGNER, NVD_REQUEST_HASH);
