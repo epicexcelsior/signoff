@@ -349,3 +349,36 @@ test(
     );
   },
 );
+
+test("explicit camera selection requests that exact lens and releases its stream", async (t) => {
+  const page = await visionBrowser(t);
+  await installCameraFixture(page);
+  const result = await page.evaluate(async (policy) => {
+    const acquire = navigator.mediaDevices.getUserMedia;
+    let requested;
+    Object.defineProperty(navigator.mediaDevices, "getUserMedia", {
+      configurable: true,
+      value: async (constraints) => {
+        requested = constraints;
+        return acquire(constraints);
+      },
+    });
+    const { createVisionController } = await import("/vision/controller.js");
+    const controller = createVisionController({
+      video: document.getElementById("camera"),
+      deviceId: "selected-rear-lens",
+      policy,
+    });
+    await controller.start();
+    controller.stop();
+    return {
+      requested,
+      ended: cameraFixture.streams[0].getVideoTracks()[0].readyState,
+    };
+  }, placementPolicy);
+  assert.deepEqual(result.requested.video.deviceId, {
+    exact: "selected-rear-lens",
+  });
+  assert.equal(Object.hasOwn(result.requested.video, "facingMode"), false);
+  assert.equal(result.ended, "ended");
+});

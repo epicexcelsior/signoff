@@ -57,6 +57,7 @@ function renderControls() {
   $("run-rehearsal").disabled = busy || !order;
   $("begin-capture").disabled = busy || !order;
   $("scenario").disabled = busy;
+  $("camera-device").disabled = busy || current?.optical?.stage === "EXECUTING";
   $("history").disabled = busy;
   $("new-order").hidden = !order;
   $("reset-presentation").disabled = busy || !config;
@@ -423,6 +424,7 @@ $("start-camera").addEventListener("click", () =>
       canvas: $("overlay"),
       policy: order.vision,
       opticalRoi: order.optical?.roi,
+      deviceId: $("camera-device").value || null,
       onState: (state) => {
         $("camera-status").textContent =
           state.error?.message ?? `Camera ${state.phase.toLowerCase()}`;
@@ -440,6 +442,19 @@ $("start-camera").addEventListener("click", () =>
     });
     try {
       await camera.start();
+      const selectedDevice = $("camera-device").value;
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      $("camera-device").replaceChildren(
+        new Option("Automatic rear camera", ""),
+      );
+      for (const device of devices.filter(
+        (item) => item.kind === "videoinput",
+      )) {
+        $("camera-device").add(
+          new Option(device.label || "Camera", device.deviceId),
+        );
+      }
+      $("camera-device").value = selectedDevice;
       $("stop-camera").disabled = false;
       feedback("Camera guidance started. Frames stay on this device.");
     } catch (error) {
@@ -459,6 +474,10 @@ function stopCamera() {
   renderControls();
 }
 $("stop-camera").addEventListener("click", stopCamera);
+$("camera-device").addEventListener("change", () => {
+  stopCamera();
+  feedback("Camera changed. Start camera and save a new measurement.");
+});
 $("capture-frame").addEventListener("click", () =>
   act(async () => {
     const capture = await camera.capture({ sessionId: current.id });

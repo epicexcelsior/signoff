@@ -160,6 +160,7 @@ export function createVisionController({
   canvas = null,
   policy: suppliedPolicy,
   opticalRoi: suppliedOpticalRoi = null,
+  deviceId = null,
   onState = () => {},
   onMeasurement = () => {},
 }) {
@@ -359,7 +360,9 @@ export function createVisionController({
           video: {
             width: { ideal: 1280 },
             height: { ideal: 720 },
-            facingMode: "environment",
+            ...(deviceId
+              ? { deviceId: { exact: deviceId } }
+              : { facingMode: "environment" }),
           },
           audio: false,
         });

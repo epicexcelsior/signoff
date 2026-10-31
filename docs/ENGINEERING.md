@@ -274,6 +274,9 @@ Print [the target](../application/public/vision/target.svg) at actual size. Meas
 
 1. Approve the work order.
 2. Select **Start camera**.
+
+After camera permission, the Camera selector lists available lenses. If the automatic view crops the target, select another rear camera and start again. Changing the camera stops its stream. Save a new measurement after each change. On the connected Seeker, camera 2 showed both markers. Camera 6 cropped the target.
+
 3. Select **Start capture attempt**.
 4. Align the markers with the guidance.
 5. Select **Save camera measurement**.
@@ -408,3 +411,5 @@ Do not record an unfinished row as successful. The current contract demonstratio
 For recovery, preserve the original recording and an adjacent scope file with its capture time, Task ID and evidence limits. The paid-delivery backup is a historical interface recording. It does not replace missing physical video. The later deployed checks and mined rejection have separate original artifacts. Keep all recordings local until public-release approval.
 
 The Judge evidence panel exposes the sanitized original optical diagnostic and public verification key. Its recording hash identifies the private original video. Run `node --test test/hardware-diagnostic.test.js` from `application/` to check the signature and challenge binding without hardware. This diagnostic cannot authorize an installation.
+
+For a USB-connected Android browser, run `adb reverse tcp:4021 tcp:4021`, then open `http://127.0.0.1:4021` on the phone. The server stays on laptop loopback. Camera permission applies separately to the site and Android application. If the phone clock precedes the station clock, immediate capture can reject as outside the session window. The observed difference was about one second. Waiting after starting the attempt permitted capture. This is a timing limitation, not a repaired clock contract.
