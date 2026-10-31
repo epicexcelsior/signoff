@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#103c49" />
+    <title>Proof of Ready · phone demo</title>
+    <link rel="stylesheet" href="/theme.css" />
+    <link rel="stylesheet" href="/demo/demo.css" />
+    <script type="module" src="/demo/view.js"></script>
+  </head>
+  <body>
+    <header>
+      <a class="brand" href="/demo/">↳ Proof of Ready</a
+      ><span>Saved real evidence</span>
+    </header>
+    <main>
+      <p class="eyebrow">Equipment handover / paid inspection</p>
+      <h1>Prove the work.<br /><span>Before handover.</span></h1>
+      <p class="pitch">
+        Facility teams need proof before they accept contractor-installed
+        monitoring equipment. Proof of Ready checks the installation, pays an
+        inspector, and keeps the evidence behind the decision.
+      </p>
+      <p id="phone-status" class="status" role="status">
+        Preparing saved evidence on this phone…
+      </p>
+      <nav class="proof-nav" aria-label="Explore saved proof" data-proof hidden>
+        <a href="#camera-proof"
+          ><span aria-hidden="true">⌖</span>Camera found a defect</a
+        ><a href="#payment-proof"
+          ><span aria-hidden="true">↗</span>Inspector received payment</a
+        ><a href="#file-proof"
+          ><span aria-hidden="true">✓</span>Check the saved files</a
+        >
+      </nav>
+      <section
+        id="camera-proof"
+        class="decision-card"
+        aria-labelledby="decision-heading"
+        data-proof
+        hidden
+      >
+        <div class="decision-intro">
+          <div>
+            <p class="eyebrow">Actual Seeker camera inspection</p>
+            <h2 id="decision-heading">The defect stops acceptance.</h2>
+          </div>
+          <strong class="stamp">REWORK</strong>
+        </div>
+        <p id="placement">Loading the original camera measurement…</p>
+        <p class="note">
+          Contact and complete optical commissioning tests are missing. This
+          installation is not accepted.
+        </p>
+      </section>
+      <section
+        id="payment-proof"
+        aria-labelledby="payment-heading"
+        data-proof
+        hidden
+      >
+        <p class="eyebrow">Useful report / real inspector payment</p>
+        <h2 id="payment-heading">
+          A rejected installation still needs an inspection.
+        </h2>
+        <p>
+          The independent inspector returned <strong>FAIL</strong> on the actual
+          camera evidence. The seller received
+          <strong>1 test USDM on Cardano Preprod</strong>.
+        </p>
+        <div id="transactions" class="actions"></div>
+        <details>
+          <summary>Read the original inspector report · FAIL</summary>
+          <div id="report"></div>
+        </details>
+        <p class="note">
+          These are saved original transactions. Explorer links need internet
+          access. This page does not recheck current chain state.
+        </p>
+      </section>
+      <section id="file-proof" aria-labelledby="proof-heading">
+        <h2 id="proof-heading">Check the saved proof.</h2>
+        <button id="verify-files" disabled>Verify saved files</button>
+        <p id="verification" class="status" role="status">
+          Loading the reviewed files…
+        </p>
+        <details>
+          <summary>Original device and security-policy evidence</summary>
+          <p>
+            The ESP32 diagnostic matched 72 of 72 optical symbols in a phone
+            recording. Its original signature verified at capture.
+          </p>
+          <p>
+            Earlier paid NVD responses underpin the saved deployed contract
+            checks. They retain their original times and limits.
+          </p>
+          <p class="note">
+            These earlier records are separate from the failed camera attempt.
+            They do not complete its missing device tests.
+          </p>
+          <div id="files" class="file-list"></div>
+        </details>
+      </section>
+      <details class="story">
+        <summary>The pitch in 20 seconds</summary>
+        <p>
+          “We help facility teams accept monitoring installations with evidence.
+          A phone checks placement, a device signs its test, and a paid
+          inspector explains defects. Here, the real camera found a defect and
+          the inspector received payment. Acceptance stays blocked until the
+          missing tests pass.”
+        </p>
+        <p>
+          <strong>Starting business model:</strong> a paid inspection per
+          equipment handover. Customer demand and pricing remain unvalidated.
+        </p>
+        <p>
+          <strong>Later uses:</strong> refrigeration monitoring, industrial
+          sensor retrofits, and building controls. These uses remain proposals.
+        </p>
+      </details>
+      <a class="live-link" href="/">Open live station →</a>
+      <p class="note">
+        Fresh tests require the local coordinator and USB connection. This saved
+        viewer performs no capture, payment, or device operation.
+      </p>
+    </main>
+    <footer>
+      Private local demo · Saved evidence can show a real failure. It cannot
+      replace a fresh physical test.
+    </footer>
+  </body>
+</html>

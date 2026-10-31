@@ -5,3 +5,7 @@ public/overview.md
 
 # Preserve the exact delivered HTTP response bytes.
 submission/evidence/nvd-paid-first-original.json
+
+# Generated phone snapshot preserves reviewed bytes and deterministic cache versions.
+public/demo/evidence.json
+public/demo/sw.js

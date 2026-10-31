@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#2447cd" />
+    <meta name="theme-color" content="#103c49" />
     <title>Proof of Ready — commissioning station</title>
     <link rel="stylesheet" href="/commissioning.css" />
     <script type="module" src="/commissioning.js"></script>
@@ -14,31 +14,24 @@
         ><span class="brand-mark" aria-hidden="true">↳</span> Proof of Ready</a
       >
       <div class="header-meta">
-        <a href="/observation.html">Observation lab ↗</a
-        ><span id="mode">Connecting</span>
+        <a href="/demo/">Phone demo ↗</a>
+        <button id="focus-view" class="text-button" aria-pressed="false">
+          Focus view
+        </button>
+        <span id="mode">Connecting</span>
       </div>
     </header>
     <main>
       <div class="intro">
         <div>
           <p class="eyebrow">Equipment acceptance / operator station</p>
-          <h1>Commission the work.<br /><span>Keep the proof.</span></h1>
+          <h1>Work inspected.<br /><span>Proof attached.</span></h1>
         </div>
         <p>
-          Approve the test. Follow the physical sequence. Inspect what passed,
-          what failed, and what still needs evidence.
+          Accept an installation with evidence. See the defect, trace the paid
+          inspection, and know what needs to happen next.
         </p>
       </div>
-      <ol class="flow" aria-label="Commissioning steps">
-        <li id="flow-order" aria-current="step">
-          <span>1</span> Approve work order
-        </li>
-        <li id="flow-placement"><span>2</span> Check placement</li>
-        <li id="flow-capture"><span>3</span> Test the device</li>
-        <li id="flow-inspector"><span>4</span> Paid inspection</li>
-        <li id="flow-policy"><span>5</span> Security policy</li>
-        <li id="flow-report"><span>6</span> Accept or reject</li>
-      </ol>
       <div class="presentation-bar">
         <p id="evidence-origin">Current attempt · waiting for a work order</p>
         <div>
@@ -48,138 +41,56 @@
           </button>
         </div>
       </div>
-      <div class="station">
-        <section class="order-panel" aria-labelledby="order-heading">
-          <p class="eyebrow">Operator / work order</p>
-          <h2 id="order-heading">Define ready.</h2>
-          <label for="asset">Installation reference</label
-          ><input
-            id="asset"
-            maxlength="120"
-            value="Cabinet 07 · contact monitor"
-          />
-          <dl class="spec">
-            <div>
-              <dt>Placement</dt>
-              <dd>100 mm right of reference<br />±8 mm / ±8°</dd>
-            </div>
-            <div>
-              <dt>Function</dt>
-              <dd>Three fresh contact states</dd>
-            </div>
-            <div>
-              <dt>Delivery</dt>
-              <dd>Local owner monitor / 5 s</dd>
-            </div>
-            <div>
-              <dt>Acceptance</dt>
-              <dd>Physical evidence, paid inspection, software policy</dd>
-            </div>
-          </dl>
-          <button class="primary" id="approve" disabled>
-            Approve work order <span aria-hidden="true">→</span>
+      <section
+        id="demo-launch"
+        class="demo-launch"
+        aria-label="Real inspection demo"
+        hidden
+      >
+        <div>
+          <p class="eyebrow">Real camera · paid inspector · Cardano Preprod</p>
+          <p>Show the defect. Trace the inspector's payment.</p>
+        </div>
+        <div class="demo-actions">
+          <button id="open-real-inspection" class="primary" disabled>
+            Open real inspection
           </button>
-          <p id="order-status" class="note">
-            The approved requirements stay fixed for every capture attempt.
-          </p>
-          <div class="divider"></div>
-          <label for="history">Saved attempts</label
-          ><select id="history">
-            <option value="">No attempts yet</option>
-          </select>
-          <button class="text-button" id="new-order" hidden>
-            Approve a different work order
-          </button>
-        </section>
-        <section class="capture-panel" aria-labelledby="capture-heading">
-          <div class="section-top">
-            <div>
-              <p class="eyebrow">Technician / evidence capture</p>
-              <h2 id="capture-heading">Show the installation.</h2>
-            </div>
-            <span id="capture-state" class="pill">No capture</span>
-          </div>
-          <div class="camera-stage" id="camera-stage">
-            <video id="camera" muted playsinline hidden></video
-            ><canvas id="overlay" hidden></canvas>
-            <div
-              class="placement-preview"
-              id="placement-preview"
-              aria-label="Reference marker and device marker target illustration"
-            >
-              <div class="reference-marker">
-                <span>0</span><small>REFERENCE</small>
-              </div>
-              <div class="dimension"><span>100 mm</span><i></i></div>
-              <div class="device-marker">
-                <span>10</span><small>DEVICE</small>
-              </div>
-              <p>Align the device marker with the approved target.</p>
-            </div>
-            <div class="stage-footer">
-              <span id="camera-status"
-                >Camera off · frames stay on this device</span
-              ><a href="/vision/target.svg" target="_blank" rel="noopener"
-                >Print markers ↗</a
-              >
-            </div>
-          </div>
-          <div class="camera-actions">
-            <label for="camera-device"
-              >Camera
-              <select id="camera-device">
-                <option value="">Automatic rear camera</option>
-              </select>
-            </label>
-            <button class="secondary" id="start-camera">Start camera</button
-            ><button class="secondary" id="begin-capture" disabled>
-              Start capture attempt</button
-            ><button class="secondary" id="capture-frame" disabled>
-              Save camera measurement</button
-            ><button class="text-button" id="stop-camera" disabled>
-              Stop camera
-            </button>
-          </div>
-          <div id="rehearsal-controls" class="rehearsal-controls">
-            <label for="scenario"
-              >Rehearsal condition<select id="scenario">
-                <option value="correct">Correct placement and function</option>
-                <option value="misplaced">Device outside the target</option>
-                <option value="stuck">Contact stuck in one state</option>
-                <option value="missing-delivery">
-                  Observation never reaches owner
-                </option>
-              </select></label
-            ><button class="primary" id="run-rehearsal" disabled>
-              Run rehearsal <span aria-hidden="true">↗</span>
-            </button>
-          </div>
-          <div id="physical-controls" class="physical-controls" hidden>
-            <p id="contact-instruction">
-              Start a fresh attempt before reading the contact.
-            </p>
-            <button class="secondary" id="contact-step" disabled>
-              Read contact</button
-            ><button class="secondary" id="inspect" disabled>
-              Close capture and inspect
-            </button>
-            <button class="secondary" id="capture-optical" disabled>
-              Capture signed optical test
-            </button>
-            <p class="note" id="optical-status">
-              The optical emitter needs a configured board driver and explicit
-              authorization.
-            </p>
-            <a class="text-button" href="/mobile/"
-              >Prepare the Seeker inspector</a
-            >
-          </div>
-          <p id="feedback" class="feedback" role="status" aria-live="polite">
-            Connecting to the local coordinator.
-          </p>
-          <p id="capture-deadline" class="note"></p>
-        </section>
-      </div>
+          <button id="check-demo" class="secondary" disabled>Check demo</button>
+          <a class="secondary" href="/demo/">Phone demo ↗</a>
+        </div>
+        <p id="demo-status" class="note" role="status">
+          Opens saved evidence. Check demo verifies the packet and rechecks
+          payment. It starts no payment or device test.
+        </p>
+      </section>
+      <p id="feedback" class="feedback" role="status" aria-live="polite">
+        Connecting to the local coordinator.
+      </p>
+      <nav class="proof-trail" aria-label="Explore the proof trail">
+        <button id="trail-camera" data-outcome="REVIEW">
+          <span class="trail-icon" aria-hidden="true">⌖</span
+          ><span
+            ><strong>Camera measurement</strong
+            ><small id="trail-camera-state">No saved measurement</small></span
+          ><span aria-hidden="true">↗</span>
+        </button>
+        <button id="trail-inspector" data-outcome="REVIEW">
+          <span class="trail-icon" aria-hidden="true">↗</span
+          ><span
+            ><strong>Paid inspection</strong
+            ><small id="trail-inspector-state"
+              >Check the original report</small
+            ></span
+          ><span aria-hidden="true">↗</span>
+        </button>
+        <button id="trail-decision" data-outcome="REVIEW">
+          <span class="trail-icon" aria-hidden="true">✓</span
+          ><span
+            ><strong>Acceptance decision</strong
+            ><small id="trail-decision-state">Waiting for evidence</small></span
+          ><span aria-hidden="true">↗</span>
+        </button>
+      </nav>
       <section class="report-panel" aria-labelledby="report-heading">
         <div class="report-intro">
           <div>
@@ -199,13 +110,18 @@
         <p id="next-action" class="next-action" role="status">
           Next action: approve a work order.
         </p>
-        <div id="results" class="results">
-          <p class="empty-state">
-            Approve a work order and run the first capture. Its predicate
-            results appear here.
-          </p>
-        </div>
+        <p id="placement-summary" class="placement-summary" hidden></p>
         <div id="acceptance-gates" class="acceptance-gates" hidden></div>
+        <details id="physical-checks" open>
+          <summary>Physical checks and measurements</summary>
+          <div id="adapter-status" class="acceptance-gates" hidden></div>
+          <div id="results" class="results">
+            <p class="empty-state">
+              Approve a work order and run the first capture. Its predicate
+              results appear here.
+            </p>
+          </div>
+        </details>
         <div class="record-footer">
           <p id="record-reference">
             Each attempt preserves its original challenges and signed
@@ -216,20 +132,25 @@
               >Export evidence packet ↓</a
             ><button id="verify" class="secondary" disabled>
               Verify packet</button
-            ><button id="tamper" class="text-button" disabled>
+            ><button id="reconcile-acceptance" class="secondary" disabled>
+              Check external acceptance
+            </button>
+          </div>
+        </div>
+        <details class="advanced-tools">
+          <summary>More evidence tools</summary>
+          <div class="tool-actions">
+            <button id="tamper" class="text-button" disabled>
               Test an edited packet
             </button>
             <button id="prepare-inspection" class="secondary" disabled>
               Export inspector request
             </button>
-            <button id="reconcile-acceptance" class="secondary" disabled>
-              Check external acceptance
-            </button>
             <button id="contract-plan" class="text-button" disabled>
               Export unsigned contract calls
             </button>
           </div>
-        </div>
+        </details>
         <p id="packet-status" class="note" role="status" aria-live="polite"></p>
         <details id="limitations">
           <summary>Evidence and trust limits</summary>
@@ -248,6 +169,154 @@
           </ul>
         </details>
       </section>
+      <details id="inspection-setup" class="inspection-setup" open>
+        <summary>Camera setup and new inspection</summary>
+        <p class="note">
+          Use this section to capture new evidence. Saved reports remain
+          available above.
+        </p>
+        <ol class="flow" aria-label="Commissioning steps">
+          <li id="flow-order" aria-current="step">
+            <span>1</span> Approve work order
+          </li>
+          <li id="flow-placement"><span>2</span> Check placement</li>
+          <li id="flow-capture"><span>3</span> Test the device</li>
+          <li id="flow-inspector"><span>4</span> Paid inspection</li>
+          <li id="flow-policy"><span>5</span> Security policy</li>
+          <li id="flow-report"><span>6</span> Accept or reject</li>
+        </ol>
+        <div class="station">
+          <section class="order-panel" aria-labelledby="order-heading">
+            <p class="eyebrow">Operator / work order</p>
+            <h2 id="order-heading">Define ready.</h2>
+            <label for="asset">Installation reference</label
+            ><input
+              id="asset"
+              maxlength="120"
+              value="Cabinet 07 · contact monitor"
+            />
+            <dl class="spec">
+              <div>
+                <dt>Placement</dt>
+                <dd>100 mm right of reference<br />±8 mm / ±8°</dd>
+              </div>
+              <div>
+                <dt>Function</dt>
+                <dd>Three fresh contact states</dd>
+              </div>
+              <div>
+                <dt>Delivery</dt>
+                <dd>Local owner monitor / 5 s</dd>
+              </div>
+              <div>
+                <dt>Acceptance</dt>
+                <dd>Physical evidence, paid inspection, software policy</dd>
+              </div>
+            </dl>
+            <button class="primary" id="approve" disabled>
+              Approve work order <span aria-hidden="true">→</span>
+            </button>
+            <p id="order-status" class="note">
+              The approved requirements stay fixed for every capture attempt.
+            </p>
+            <div class="divider"></div>
+            <label for="history">Saved attempts</label
+            ><select id="history">
+              <option value="">No attempts yet</option>
+            </select>
+            <button class="text-button" id="new-order" hidden>
+              Approve a different work order
+            </button>
+          </section>
+          <section class="capture-panel" aria-labelledby="capture-heading">
+            <div class="section-top">
+              <div>
+                <p class="eyebrow">Technician / evidence capture</p>
+                <h2 id="capture-heading">Show the installation.</h2>
+              </div>
+              <span id="capture-state" class="pill">No capture</span>
+            </div>
+            <div class="camera-stage" id="camera-stage">
+              <video id="camera" muted playsinline hidden></video
+              ><canvas id="overlay" hidden></canvas>
+              <div
+                class="placement-preview"
+                id="placement-preview"
+                aria-label="Reference marker and device marker target illustration"
+              >
+                <div class="reference-marker">
+                  <span>0</span><small>REFERENCE</small>
+                </div>
+                <div class="dimension"><span>100 mm</span><i></i></div>
+                <div class="device-marker">
+                  <span>10</span><small>DEVICE</small>
+                </div>
+                <p>Align the device marker with the approved target.</p>
+              </div>
+              <div class="stage-footer">
+                <span id="camera-status"
+                  >Camera off · frames stay on this device</span
+                ><a href="/vision/target.svg" target="_blank" rel="noopener"
+                  >Print markers ↗</a
+                >
+              </div>
+            </div>
+            <div class="camera-actions">
+              <label for="camera-device"
+                >Camera
+                <select id="camera-device">
+                  <option value="">Automatic rear camera</option>
+                </select>
+              </label>
+              <button class="secondary" id="start-camera">Start camera</button
+              ><button class="secondary" id="begin-capture" disabled>
+                Start capture attempt</button
+              ><button class="secondary" id="capture-frame" disabled>
+                Save camera measurement</button
+              ><button class="text-button" id="stop-camera" disabled>
+                Stop camera
+              </button>
+            </div>
+            <div id="rehearsal-controls" class="rehearsal-controls">
+              <label for="scenario"
+                >Rehearsal condition<select id="scenario">
+                  <option value="correct">
+                    Correct placement and function
+                  </option>
+                  <option value="misplaced">Device outside the target</option>
+                  <option value="stuck">Contact stuck in one state</option>
+                  <option value="missing-delivery">
+                    Observation never reaches owner
+                  </option>
+                </select></label
+              ><button class="primary" id="run-rehearsal" disabled>
+                Run rehearsal <span aria-hidden="true">↗</span>
+              </button>
+            </div>
+            <div id="physical-controls" class="physical-controls" hidden>
+              <p id="contact-instruction">
+                Start a fresh attempt before reading the contact.
+              </p>
+              <button class="secondary" id="contact-step" disabled>
+                Read contact</button
+              ><button class="secondary" id="inspect" disabled>
+                Close capture and inspect
+              </button>
+              <button class="secondary" id="capture-optical" disabled>
+                Capture signed optical test
+              </button>
+              <p class="note" id="optical-status">
+                The optical emitter needs a configured board driver and explicit
+                authorization.
+              </p>
+              <a class="text-button" href="/mobile/"
+                >Prepare the Seeker inspector</a
+              >
+            </div>
+            <p id="capture-deadline" class="note"></p>
+          </section>
+        </div>
+      </details>
       <section
         id="judge-panel"
         class="report-panel"
@@ -269,22 +338,25 @@
         <p id="judge-status" class="note" role="status">
           Loading the reviewed evidence manifest.
         </p>
-        <div id="judge-requirements" class="judge-requirements"></div>
         <section
           id="judge-paid-inspection"
           class="judge-paid-inspection"
           aria-label="Original paid inspection"
         ></section>
-        <div id="judge-records" class="judge-records"></div>
-        <details>
-          <summary>Five required deployed policy tests</summary>
-          <p class="note">
-            Each rejection must come from its intended invalid evidence. A
-            finalized job cannot stand in for an evidence rejection.
-          </p>
-          <dl id="judge-cases" class="judge-cases"></dl>
+        <details id="earlier-evidence">
+          <summary>Device, security policy, and earlier evidence</summary>
+          <div id="judge-requirements" class="judge-requirements"></div>
+          <div id="judge-records" class="judge-records"></div>
+          <details>
+            <summary>Five required deployed policy tests</summary>
+            <p class="note">
+              Each rejection must come from its intended invalid evidence. A
+              finalized job cannot stand in for an evidence rejection.
+            </p>
+            <dl id="judge-cases" class="judge-cases"></dl>
+          </details>
+          <div id="judge-artifacts" class="judge-artifacts"></div>
         </details>
-        <div id="judge-artifacts" class="judge-artifacts"></div>
         <p class="note">
           Use Verify packet and Test an edited packet above for the selected
           attempt. A reset preserves every original record.
@@ -294,7 +366,8 @@
     <footer>
       <span
         >Proof of Ready / local commissioning station ·
-        <a href="/overview.html">Project overview</a></span
+        <a href="/overview.html">Project overview</a> ·
+        <a href="/observation.html">Observation lab</a></span
       ><span id="footer-mode">No equipment actuation · local station</span>
     </footer>
   </body>

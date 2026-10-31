@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "node --env-file-if-exists=.env src/main.js",
-    "pretest": "node scripts/overview.js",
+    "pretest": "node scripts/overview.js && node scripts/demo-evidence.js",
     "buyer": "node --env-file-if-exists=.env scripts/buyer.js",
     "test": "node --test --test-concurrency=1 test/*.test.js",
     "check": "node scripts/check.js",
@@ -24,7 +24,11 @@
     "test:integrations": "npm --prefix integrations/masumi test && npm --prefix api3 test && npm --prefix integrations/x402-inspector test",
     "test:contract": "npm --prefix api3 run test:contract",
     "demo:record": "node scripts/record-demo.js",
-    "demo:preflight": "node scripts/demo-preflight.js"
+    "demo:preflight": "node scripts/demo-preflight.js",
+    "prestart": "node scripts/demo-evidence.js",
+    "demo:prepare": "node scripts/demo-evidence.js",
+    "demo:check": "node scripts/demo-evidence.js --check",
+    "demo:record:real": "node scripts/record-evidence-demo.js"
   },
   "dependencies": {
     "@evolution-sdk/evolution": "0.5.14",

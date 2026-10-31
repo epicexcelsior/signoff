@@ -97,6 +97,10 @@ function renderControls() {
   $("new-order").hidden = !order;
   $("new-order").disabled = blocked;
   $("reset-presentation").disabled = blocked || !config;
+  $("focus-view").disabled = !config;
+  document.body.dataset.busy = String(busy);
+  for (const id of ["open-real-inspection", "check-demo"])
+    $(id).disabled = blocked || !config || config.mode === "simulation";
   const active = current?.state === "CAPTURING";
   const beforeCaptureWindow = active && Date.now() < current.startedAt;
   const expired = active && Date.now() > current.expiresAt;
@@ -175,6 +179,34 @@ function showOrder() {
 }
 function showSession(session) {
   current = session;
+  const paidOutcome =
+    session.acceptance?.predicates.find(
+      (entry) => entry.id === "paid-inspection",
+    )?.outcome ?? "REVIEW";
+  for (const [id, outcome, description] of [
+    [
+      "camera",
+      session.vision?.measurement?.state ?? "REVIEW",
+      session.vision
+        ? `Placement ${session.vision.measurement.state} · inspect measurement`
+        : "No saved measurement",
+    ],
+    ["inspector", paidOutcome, `Payment ${paidOutcome} · open saved evidence`],
+    [
+      "decision",
+      session.acceptance?.decision === "REWORK"
+        ? "FAIL"
+        : session.acceptance?.decision === "READY"
+          ? "PASS"
+          : "REVIEW",
+      `${session.acceptance?.decision ?? "REVIEW"} · see the required next step`,
+    ],
+  ]) {
+    $("trail-" + id).dataset.outcome = outcome;
+    $("trail-" + id).querySelector(".trail-icon").textContent =
+      outcome === "FAIL" ? "!" : outcome === "PASS" ? "✓" : "…";
+    $("trail-" + id + "-state").textContent = description;
+  }
   $("history").value = session.id;
   order = orders.find((item) => item.id === session.workOrderId) ?? null;
   showOrder();
@@ -202,9 +234,16 @@ function showSession(session) {
       : "Place the LED beside the device marker in the approved optical region. Emission requires explicit authorization.");
   $("results").replaceChildren();
   $("acceptance-gates").replaceChildren();
+  $("adapter-status").replaceChildren();
+  $("adapter-status").hidden = !session.report;
   $("acceptance-gates").hidden = !session.report;
   $("download").hidden = !session.report;
   $("packet-status").textContent = "";
+  const geometry = session.vision?.measurement?.quality;
+  $("placement-summary").hidden = !geometry || !session.report;
+  $("placement-summary").textContent = geometry
+    ? `Camera placement · ${session.vision.measurement.state}. Offset ${geometry.offsetMm.toFixed(1)} mm / limit ${order.vision.tolerance.positionMm} mm. Angle ${geometry.angleErrorDeg.toFixed(1)}° / limit ${order.vision.tolerance.angleDeg}°.`
+    : "";
   $("acceptance-decision").textContent =
     session.acceptance?.decision ?? "REVIEW";
   $("decision-block").dataset.decision =
@@ -278,6 +317,7 @@ function showSession(session) {
       (entry) => entry.id !== "inspection",
     )) {
       const gate = document.createElement("div");
+      gate.dataset.outcome = predicate.outcome;
       const title = document.createElement("strong");
       title.textContent = `${predicate.id === "physical-origin" ? "physical adapter mode" : predicate.id.replaceAll("-", " ")} · ${predicate.outcome}`;
       const reason = document.createElement("p");
@@ -286,7 +326,11 @@ function showSession(session) {
           ? "Configuration only. Device signatures and camera-origin authentication remain separate checks."
           : predicate.reason;
       gate.append(title, reason);
-      $("acceptance-gates").append(gate);
+      $(
+        predicate.id === "physical-origin"
+          ? "adapter-status"
+          : "acceptance-gates",
+      ).append(gate);
     }
     $("download").href = `/api/commissioning/sessions/${session.id}/packet`;
     $("limitations-list").replaceChildren();
@@ -439,6 +483,128 @@ $("reset-presentation").addEventListener("click", () => {
   sessionStorage.setItem("proof-ready-reset", "true");
   location.reload();
 });
+$("focus-view").addEventListener("click", () => {
+  const focused = document.body.dataset.focus !== "true";
+  document.body.dataset.focus = String(focused);
+  $("focus-view").setAttribute("aria-pressed", String(focused));
+  $("focus-view").textContent = focused ? "Exit focus view" : "Focus view";
+});
+$("trail-camera").addEventListener("click", () => {
+  $("physical-checks").open = true;
+  $("physical-checks").scrollIntoView({
+    block: "center",
+    behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
+      ? "auto"
+      : "smooth",
+  });
+});
+$("trail-inspector").addEventListener("click", () => {
+  const report = document.querySelector(".judge-physical-report");
+  if (report) report.open = true;
+  $("judge-panel").scrollIntoView({
+    block: "start",
+    behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
+      ? "auto"
+      : "smooth",
+  });
+});
+$("trail-decision").addEventListener("click", () => {
+  $("report-heading").scrollIntoView({
+    block: "start",
+    behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
+      ? "auto"
+      : "smooth",
+  });
+});
+async function openRealInspection() {
+  $("demo-status").textContent =
+    "Opening saved evidence. The payment check has not run in this view.";
+  feedback("Opening the original real-camera inspection…");
+  const { manifest } = await api("/api/submission-evidence");
+  const record = manifest.liveEvidence.find(
+    (entry) =>
+      entry.id === "cardano-physical-camera-inspection" &&
+      entry.physicalCameraEvidence === true &&
+      entry.sellerPaid === true,
+  );
+  if (!record)
+    throw new Error(
+      "No reviewed real-camera paid inspection is available. Use Saved attempts to inspect existing evidence.",
+    );
+  await refreshHistory();
+  for (const session of sessions.filter(
+    (entry) =>
+      entry.sourceMode === "physical" &&
+      entry.report &&
+      entry.workOrderDigest === record.workOrderDigest,
+  )) {
+    const packet = await api(
+      `/api/commissioning/sessions/${session.id}/packet`,
+    );
+    if (packet.digests.evidence !== record.evidenceBundleDigest) continue;
+    const saved = await api(`/api/commissioning/sessions/${session.id}`);
+    if (camera) stopCamera();
+    showSession(saved);
+    $("inspection-setup").open = false;
+    $("physical-checks").open = false;
+    $("report-heading").scrollIntoView({ block: "start" });
+    return;
+  }
+  throw new Error(
+    "The original real-camera inspection is absent from this station. Open the real-evidence station on port 4022.",
+  );
+}
+$("open-real-inspection").addEventListener("click", () =>
+  act(async () => {
+    await openRealInspection();
+    feedback(
+      "Real inspection opened. The saved camera placement failed. Open Judge evidence to trace the paid report and original payment.",
+    );
+  }),
+);
+async function checkDemo() {
+  try {
+    await openRealInspection();
+    $("demo-status").textContent =
+      "Checking the original inspector payment and evidence packet…";
+    feedback("Checking the original inspector payment and evidence packet…");
+    showSession(
+      await api(
+        `/api/commissioning/sessions/${current.id}/reconcile-acceptance`,
+        {},
+      ),
+    );
+    const packet = await api(
+      `/api/commissioning/sessions/${current.id}/packet`,
+    );
+    const verified = await api("/api/commissioning/verify", {
+      packet,
+      expectedWorkOrderDigest: current.workOrderDigest,
+    });
+    $("packet-status").textContent =
+      `Packet verified against the saved work order. Inspection ${verified.report}; acceptance ${verified.decision}.`;
+    await refreshHistory();
+    const paid = current.acceptance.predicates.find(
+      (entry) => entry.id === "paid-inspection",
+    );
+    if (paid?.outcome !== "PASS")
+      throw new Error(
+        `Payment check needs attention: ${paid?.reason ?? "No verified receipt is available."} Open Phone demo for the saved real report and receipts. Check the internet connection and inspector service before another Check demo.`,
+      );
+    $("demo-status").textContent =
+      `Demo checked at ${new Date().toLocaleTimeString()}. Packet verified. Inspector payment PASS. Installation ${current.acceptance.decision}.`;
+    feedback(
+      "Demo check complete. Packet verified and inspector payment PASS. The installation remains " +
+        current.acceptance.decision +
+        ".",
+    );
+  } catch (error) {
+    $("demo-status").textContent =
+      `Demo check did not complete. ${error.message}`;
+    throw error;
+  }
+}
+$("check-demo").addEventListener("click", () => act(checkDemo));
 $("refresh-evidence").addEventListener("click", () => refreshJudgeEvidence());
 void refreshJudgeEvidence();
 $("verify").addEventListener("click", () =>
@@ -722,14 +888,23 @@ try {
     config.mode === "simulation" ? "Local rehearsal" : "Physical adapter";
   $("rehearsal-controls").hidden = config.mode !== "simulation";
   $("physical-controls").hidden = config.mode === "simulation";
+  $("demo-launch").hidden = config.mode === "simulation";
   await refreshHistory();
   const newOrder = sessionStorage.getItem("proof-ready-new-order");
   sessionStorage.removeItem("proof-ready-new-order");
-  if (sessions.length && !newOrder) showSession(sessions[0]);
+  if (sessions.length && !newOrder) {
+    showSession(sessions[0]);
+    if (config.mode !== "simulation" && current.report) {
+      $("inspection-setup").open = false;
+      $("physical-checks").open = false;
+    }
+  }
   feedback(
     config.mode === "simulation"
       ? "Local rehearsal uses synthetic physical evidence. No funds move. Contact readings are simulated."
-      : "Physical reads use the configured device. Start a fresh capture for each attempt.",
+      : current?.report
+        ? "Saved inspection restored. Select Check demo to verify the packet and recheck the original payment."
+        : "Physical reads use the configured device. Start a fresh capture for each attempt.",
   );
   renderControls();
   if (sessionStorage.getItem("proof-ready-reset")) {

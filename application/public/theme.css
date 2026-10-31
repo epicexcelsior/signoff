@@ -1,0 +1,59 @@
+/* Proof of Ready: petrol instruments, cyan signals, amber attention. */
+:root {
+  --ink: #173c48;
+  --muted: #516d76;
+  --line: #cedfe1;
+  --blue: #066d78;
+  --pale: #e4f4f2;
+  --white: #fff;
+  --paper: #edf4f5;
+  --green: #176948;
+  --orange: #b54430;
+  --amber: #915908;
+  --cyan: #48d9cc;
+  --night: #103c49;
+  --signal: #ffc56b;
+  --shadow: 0 8px 28px #173c4809;
+  --mono: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  --body: "Segoe UI", Arial, sans-serif;
+  --display: "Trebuchet MS", "Segoe UI", Arial, sans-serif;
+  font-family: var(--body);
+  color: var(--ink);
+  background: var(--paper);
+  font-synthesis: none;
+}
+h1,
+h2,
+h3 {
+  font-family: var(--display);
+}
+button,
+a,
+summary,
+input,
+select {
+  transition:
+    background-color 150ms,
+    border-color 150ms,
+    box-shadow 150ms,
+    transform 150ms;
+}
+button:not(:disabled):hover {
+  transform: translateY(-1px);
+}
+button:not(:disabled):active {
+  transform: translateY(1px);
+}
+:focus-visible {
+  outline: 3px solid var(--amber);
+  outline-offset: 4px;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition: none !important;
+  }
+}

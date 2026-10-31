@@ -81,6 +81,7 @@ try {
       .textContent.includes("Packet verified"),
   );
   await wait(5000);
+  await page.locator(".advanced-tools > summary").click();
   await page
     .getByRole("button", { name: "Test an edited packet", exact: true })
     .click();
@@ -99,10 +100,15 @@ try {
   await wait(10000);
   await page.reload();
   await page.locator("#judge-paid-inspection").scrollIntoViewIfNeeded();
+  await page.locator(".judge-history > summary").click();
   await page
     .getByText("Read the original inspection report · REVIEW", { exact: true })
     .click();
   await wait(15000);
+  await page.locator("#earlier-evidence > summary").click();
+  await page
+    .getByText("Five required deployed policy tests", { exact: true })
+    .click();
   await page.locator("#judge-cases").scrollIntoViewIfNeeded();
   await wait(10000);
   await page

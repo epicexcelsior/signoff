@@ -2,7 +2,7 @@
 
 The Android companion prepares the Solana Mobile Seeker for local commissioning. It contains no Solana integration, wallet, payment code, or actuator command.
 
-Optical execution uses the station's browser camera controller and the laptop's Python BLE driver. The Station WebView permits camera capture only for its selected forwarded loopback origin. Real Seeker camera/optical performance remains untested. The native phone-witness photo is separate and cannot replace the complete optical waveform.
+Optical execution uses the station's browser camera controller and the laptop's Python BLE driver. The Station WebView permits camera capture only for its selected forwarded loopback origin. Seeker Chrome supplied an actual placement measurement and a separate recorded optical diagnostic. Continuous optical commissioning and native WebView camera performance remain unverified. The native phone-witness photo is separate and cannot replace the complete optical waveform.
 
 The app has three separate flows:
 

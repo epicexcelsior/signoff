@@ -35,6 +35,7 @@ test("judge view rejects edited original report bytes and recovers after the ori
     assert.equal(await page.locator(".judge-lifecycle li").count(), 0);
     await page.unroute(path);
     await page.getByRole("button", { name: "Refresh evidence" }).click();
+    await page.locator(".judge-history > summary").click();
     await page
       .getByText("Read the original inspection report · REVIEW", {
         exact: true,
@@ -116,6 +117,7 @@ test("commissioning desktop and phone: approve, inspect defects, verify packets,
           .getElementById("packet-status")
           .textContent.includes("Packet verified"),
       );
+      await page.locator(".advanced-tools > summary").click();
       await page.getByRole("button", { name: "Test an edited packet" }).click();
       await page.waitForFunction(() =>
         document
@@ -179,6 +181,8 @@ test("commissioning desktop and phone: approve, inspect defects, verify packets,
         .getByText("Local inspection: REVIEW", { exact: true })
         .waitFor();
       assert((await page.locator("#history option").count()) >= 2);
+      await page.locator("#earlier-evidence > summary").click();
+      await page.locator(".judge-history > summary").click();
       await page
         .locator("#judge-panel")
         .getByText("Paid original NVD response", { exact: true })
@@ -792,6 +796,7 @@ test("partial physical inspection prioritizes placement correction and shows sav
       await page.locator("#next-action").innerText(),
       /Align both markers/,
     );
+    await page.locator("#physical-checks > summary").click();
     assert.match(
       await page.locator("#results").innerText(),
       /Estimated offset: \d+\.\d mm/,
@@ -801,6 +806,171 @@ test("partial physical inspection prioritizes placement correction and shows sav
       /Estimated angle difference: \d+\.\d°/,
     );
     assert.deepEqual(c.store.get("sessions", session.id), before);
+  } finally {
+    await browser.close();
+  }
+});
+
+test("demo shortcuts select exact evidence, avoid new captures, and surface payment failure", async (t) => {
+  // Disposable physical-mode data and a fake reader test UI behavior, not settlement.
+  const { service } = fixture(t);
+  service.config.mode = "physical";
+  service.profile.contact.sensor = "disabled-contact";
+  const c = service.commissioning;
+  const order = c.createOrder({
+    idempotency_key: "demo-shortcut-order",
+    asset: "Shortcut test",
+  });
+  const saved = c.createSession(order.id, {
+    idempotency_key: "demo-shortcut-original",
+    scenario: "correct",
+  });
+  c.inspect(saved.id);
+  const packet = c.packet(saved.id);
+  const decoy = c.createSession(order.id, {
+    idempotency_key: "demo-shortcut-decoy",
+    scenario: "correct",
+  });
+  c.inspect(decoy.id);
+  let reads = 0;
+  let available = true;
+  c.external = {
+    readInspection: async () => {
+      reads++;
+      return available
+        ? {
+            outcome: "PASS",
+            reason: "Disposable test reader verified its receipt.",
+          }
+        : { outcome: "REVIEW", reason: "Disposable test reader unavailable." };
+    },
+  };
+  const origin = await server(t, service);
+  const browser = await chromium.launch({ channel: "chrome", headless: true });
+  let matching = true;
+  const errors = [];
+  const writes = [];
+  try {
+    for (const width of [1440, 390]) {
+      const page = await browser.newPage({ viewport: { width, height: 1000 } });
+      page.on("pageerror", (error) => errors.push(error.message));
+      page.on("request", (request) => {
+        if (request.method() === "POST")
+          writes.push(new URL(request.url()).pathname);
+      });
+      await page.route("**/api/submission-evidence", async (route) => {
+        const response = await route.fetch();
+        const body = await response.json();
+        const record = body.manifest.liveEvidence.find(
+          (entry) => entry.id === "cardano-physical-camera-inspection",
+        );
+        record.workOrderDigest = packet.digests.workOrder;
+        record.evidenceBundleDigest = matching
+          ? packet.digests.evidence
+          : "0x" + "0".repeat(64);
+        await route.fulfill({ response, json: body });
+      });
+      await page.goto(origin);
+      await page.waitForFunction(
+        () => !document.getElementById("check-demo").disabled,
+      );
+      assert.equal(
+        await page.locator("#inspection-setup").getAttribute("open"),
+        null,
+      );
+      await page.locator("#trail-camera").click();
+      assert.equal(
+        await page.locator("#physical-checks").getAttribute("open"),
+        "",
+      );
+      await page
+        .getByRole("button", { name: "Focus view", exact: true })
+        .click();
+      assert.equal(await page.locator("#inspection-setup").isVisible(), false);
+      assert.equal(await page.locator("#verify").isVisible(), true);
+      await page
+        .getByRole("button", { name: "Exit focus view", exact: true })
+        .click();
+      const before = reads;
+      await page
+        .getByRole("button", { name: "Open real inspection", exact: true })
+        .click();
+      await page.waitForFunction(
+        (id) => document.getElementById("history").value === id,
+        saved.id,
+      );
+      assert.equal(reads, before);
+      assert.equal(
+        await page.locator("#physical-checks").getAttribute("open"),
+        null,
+      );
+      await page.evaluate(() => {
+        document.getElementById("check-demo").click();
+        document.getElementById("check-demo").click();
+      });
+      await page.waitForFunction(() =>
+        document
+          .getElementById("feedback")
+          .textContent.includes("Demo check complete"),
+      );
+      assert.equal(reads, before + 1);
+      assert.match(
+        await page.locator("#packet-status").textContent(),
+        /Packet verified/,
+      );
+      assert.match(
+        await page.locator("#demo-status").textContent(),
+        /Inspector payment PASS. Installation REWORK/,
+      );
+      assert.equal(c.store.list("sessions").length, 2);
+      assert.equal(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth > innerWidth,
+        ),
+        false,
+      );
+      available = false;
+      await page
+        .getByRole("button", { name: "Check demo", exact: true })
+        .click();
+      await page.waitForFunction(() =>
+        document
+          .getElementById("feedback")
+          .textContent.includes("Payment check needs attention"),
+      );
+      assert.doesNotMatch(
+        await page.locator("#demo-status").textContent(),
+        /payment PASS/,
+      );
+      assert.match(
+        await page.locator("#acceptance-gates").textContent(),
+        /paid inspection · REVIEW/,
+      );
+      matching = false;
+      const beforeMissing = reads;
+      await page
+        .getByRole("button", { name: "Check demo", exact: true })
+        .click();
+      await page.waitForFunction(() =>
+        document
+          .getElementById("feedback")
+          .textContent.includes("absent from this station"),
+      );
+      assert.equal(reads, beforeMissing);
+      assert.equal(c.store.list("sessions").length, 2);
+      matching = available = true;
+      await page.close();
+    }
+    assert.deepEqual(errors, []);
+    assert(writes.length > 0);
+    assert(
+      writes.every(
+        (path) =>
+          path ===
+            `/api/commissioning/sessions/${saved.id}/reconcile-acceptance` ||
+          path === "/api/commissioning/verify",
+      ),
+    );
   } finally {
     await browser.close();
   }

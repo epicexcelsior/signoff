@@ -8,6 +8,8 @@ This document defines goals and completion criteria. [README](README.md#current-
 
 An operator delegates installation checks to an agent. The agent proposes structured requirements, coordinates evidence providers, buys specialist inspection, and explains the result. Deterministic checks decide READY, REWORK, or REVIEW.
 
+The demo wedge is equipment handover for facility teams and installation contractors. A paid inspection per handover is the proposed model. Customer demand and pricing remain unvalidated. Saved phone presentation can operate without the laptop after one USB load. Fresh commissioning still requires the coordinator.
+
 The first specimen is a marked monitoring station with a button-contact test and a camera-observed LED. ESP32 is the first adapter. The next available camera is a webcam or the confirmed Solana Mobile Seeker. The Seeker browser camera now supplies a real physical-station measurement and a verified negative packet. Full tracked optical commissioning remains incomplete.
 
 The customer hypothesis is an operator accepting subcontracted monitoring installations. Demand, pricing, and revisit savings remain unvalidated. They do not block authorized engineering.

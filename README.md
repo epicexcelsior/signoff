@@ -1,6 +1,8 @@
 # Proof of Ready
 
-**Immediate real-evidence demo: <http://127.0.0.1:4022>.** It shows the real camera rejection and verified inspector payment. Port 4021 is the separate labeled rehearsal.
+**Open the phone demo: <http://127.0.0.1:4022/demo/>.** Load it once through USB and wait for **Saved in this browser**. Its original real evidence then works without the laptop. Fresh tests use the [live station](http://127.0.0.1:4022). Port 4021 is the separate labeled rehearsal.
+
+The starting wedge is equipment handover for facility teams and installation contractors. The proposed business model is a paid inspection per handover. Demand and pricing remain unvalidated. The demo shows a real defect, a useful paid report, and the evidence that blocks acceptance.
 
 Proof of Ready coordinates equipment commissioning. An operator approves a work order. A technician supplies camera measurements and signed contact tests. An inspector explains defects and missing evidence.
 
@@ -12,18 +14,20 @@ The goal is agent-orchestrated commissioning with a useful paid inspector and an
 
 Open [the morning demo handoff](MORNING_HANDOFF.md) for launch steps, recording backups, and remaining physical requirements.
 
+Use **Open real inspection** to restore the exact reviewed attempt. Use **Check demo** to verify its packet and recheck the original payment. Neither action starts a capture or purchase. **Focus view** hides setup for recording. The proof-trail cards open the corresponding evidence.
+
 **The project is not submission-complete.** The local software baseline works. The original paid inspection and deployed source checks are verified. Physical evidence and the complete video remain incomplete.
 
 | Area       | Complete now                                                                                              | Still missing                                                                                   |
 | ---------- | --------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| Cardano    | Useful paid REVIEW, confirmed escrow/result, withdrawal and positive seller net receipt                   | Physical inspection input and installation acceptance                                           |
+| Cardano    | Paid FAIL on actual camera evidence, confirmed escrow/result, withdrawal and positive seller receipt. Earlier paid synthetic REVIEW remains separate | Complete physical evidence and installation acceptance |
 | API3       | Two settled NVD responses, five deployed source checks and mined REJECTED decision                        | Installed-build provenance and physical acceptance                                              |
 | Hardware   | GPIO8 image and startup verified. Signed diagnostic and 72/72 recorded symbols verified. Real physical camera capture returned REWORK                            | Correct marker/LED placement, complete signed optical capture, and reviewed button wiring/test |
 | Submission | Setup README, original live API3 artifacts, evidence manifest, Devfolio draft, 150-second video procedure | Physical evidence, complete video, approved public release, actual Devfolio submission          |
 
 Next: correct marker and LED placement, complete signed optical capture through the configured physical station, then review the button circuit and record the complete video. The original paid REVIEW now binds all five deployed source checks and a mined REJECTED decision. Its synthetic input cannot authorize a physical installation. Both approved NVD calls settled. The 0.02 aUSD ceiling is consumed.
 
-The Seeker companion already builds. The Seeker is connected and supplied the recorded optical diagnostic. Native installation, forwarding, camera/BLE tests, and Android instrumentation remain unexecuted. They do not replace the immediate button/LED/camera baseline.
+The Seeker companion already builds. Seeker Chrome supplied the actual camera measurement and optical diagnostic recording through USB forwarding. The owner temporarily disconnected devices. Native companion installation, native camera/BLE tests, and Android instrumentation remain unverified. They do not replace the immediate button/LED/camera baseline.
 
 ## Documentation map
 

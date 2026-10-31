@@ -1,16 +1,4 @@
-:root {
-  --ink: #1d2a40;
-  --muted: #53657c;
-  --line: #cbd5e1;
-  --blue: #2447cd;
-  --paper: #f3f5f8;
-  --white: #fff;
-  --cyan: #0b6372;
-  color: var(--ink);
-  background: var(--paper);
-  font-family: "Segoe UI", Arial, sans-serif;
-  font-synthesis: none;
-}
+@import url("/theme.css");
 * {
   box-sizing: border-box;
 }
@@ -67,11 +55,9 @@ section {
   scroll-margin-top: 24px;
 }
 .intro {
-  max-width: 1000px;
   padding-top: 32px;
 }
 .eyebrow {
-  color: var(--cyan);
   font:
     11px ui-monospace,
     monospace;
@@ -80,8 +66,8 @@ section {
   margin: 0 0 18px;
 }
 h1 {
-  font-family: "Arial Narrow", "Roboto Condensed", "Segoe UI", sans-serif;
-  font-size: clamp(38px, 5.2vw, 68px);
+  font-family: var(--display);
+  font-size: clamp(36px, 4.2vw, 56px);
   letter-spacing: -2px;
   line-height: 1.02;
   max-width: 1050px;
@@ -115,7 +101,6 @@ strong {
 .evidence-strip {
   display: flex;
   align-items: stretch;
-  background: var(--ink);
   color: var(--white);
   margin: 0 -5vw;
   padding: 0 5vw;
@@ -167,7 +152,7 @@ td {
 td:first-child {
   font-weight: 700;
   min-width: 145px;
-  color: var(--cyan);
+  color: var(--blue);
 }
 td:nth-child(3) {
   color: var(--muted);
@@ -304,5 +289,49 @@ footer {
 
 .document-source {
   white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+header {
+  max-width: none;
+  background: var(--night);
+  color: white;
+  padding: 24px 5vw;
+  border: 0;
+}
+header .brand {
+  color: white;
+}
+header .brand span {
+  color: var(--cyan);
+}
+header nav a {
+  color: #c2ece9;
+  font-size: 13px;
+}
+.evidence-strip {
+  background: var(--night);
+}
+.intro {
+  max-width: 950px;
+}
+.eyebrow {
+  color: var(--blue);
+}
+main > section > details {
+  border: 1px solid var(--line);
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+
+.sources li {
+  min-width: 0;
+}
+.sources a {
+  overflow-wrap: anywhere;
+}
+summary {
   overflow-wrap: anywhere;
 }

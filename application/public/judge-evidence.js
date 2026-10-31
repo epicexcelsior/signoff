@@ -57,7 +57,11 @@ async function paidInspectionSummary(records) {
     (record) => record.id === "cardano-seller-collection",
   );
   const report = await inspectorReport(delivery);
-  section.replaceChildren(
+  const history = element("details", undefined, "judge-history");
+  history.append(
+    element("summary", "Earlier paid inspection · synthetic input"),
+  );
+  history.append(
     element("h3", "One inspection. Trace its result and payment."),
     element(
       "p",
@@ -88,7 +92,8 @@ async function paidInspectionSummary(records) {
     if (link) item.append(link);
     steps.append(item);
   }
-  section.append(steps, report);
+  history.append(steps, report);
+  const content = [history];
   const physical = records.find(
     (record) =>
       record.id === "cardano-physical-camera-inspection" && record.sellerPaid,
@@ -108,11 +113,12 @@ async function paidInspectionSummary(records) {
       [physical.sellerReceiptTransactionHash, "Inspector payment ↗"],
     ]) {
       const link = cardanoLink(hash, label);
-      if (link) current.append(link, document.createTextNode(" · "));
+      if (link) current.append(link);
     }
     current.append(await inspectorReport(physical));
-    section.prepend(current);
+    content.unshift(current);
   }
+  section.replaceChildren(...content);
 }
 
 async function inspectorReport(record) {
@@ -171,7 +177,19 @@ async function inspectorReport(record) {
   return details;
 }
 
-export async function refreshJudgeEvidence() {
+let evidenceRead = null;
+export function refreshJudgeEvidence() {
+  // One refresh owns the view until all original report hashes are checked.
+  if (!evidenceRead) {
+    document.getElementById("refresh-evidence").disabled = true;
+    evidenceRead = readJudgeEvidence().finally(() => {
+      evidenceRead = null;
+      document.getElementById("refresh-evidence").disabled = false;
+    });
+  }
+  return evidenceRead;
+}
+async function readJudgeEvidence() {
   const status = document.getElementById("judge-status");
   status.textContent = "Reading saved original evidence…";
   try {
