@@ -32,6 +32,7 @@ test("judge view rejects edited original report bytes and recovers after the ori
         .textContent.includes("differs from its saved manifest hash"),
     );
     assert.equal(await page.locator(".judge-report").count(), 0);
+    assert.equal(await page.locator(".judge-lifecycle li").count(), 0);
     await page.unroute(path);
     await page.getByRole("button", { name: "Refresh evidence" }).click();
     await page
@@ -39,6 +40,12 @@ test("judge view rejects edited original report bytes and recovers after the ori
         exact: true,
       })
       .waitFor();
+    assert.equal(await page.locator(".judge-lifecycle li").count(), 4);
+    await page.evaluate(async () => {
+      const { refreshJudgeEvidence } = await import("/judge-evidence.js");
+      await Promise.all([refreshJudgeEvidence(), refreshJudgeEvidence()]);
+    });
+    assert.equal(await page.locator(".judge-lifecycle li").count(), 4);
   } finally {
     await browser.close();
   }
@@ -181,6 +188,33 @@ test("commissioning desktop and phone: approve, inspect defects, verify packets,
         /Saved evidence/,
       );
       assert.equal(await page.locator("#judge-cases dt").count(), 5);
+      assert.equal(await page.locator(".judge-lifecycle li").count(), 4);
+      const paidSummary = page.locator("#judge-paid-inspection");
+      assert.match(
+        await paidSummary.textContent(),
+        /Historical inspection of synthetic input/,
+      );
+      assert.match(
+        await paidSummary.textContent(),
+        /Positive seller receipt confirmed/,
+      );
+      const chainLinks = await paidSummary
+        .locator("a")
+        .evaluateAll((links) => links.map((link) => link.href));
+      assert(
+        chainLinks.some((href) =>
+          href.endsWith(
+            "405a406634d221ea635aff5e85b58928cf44fd181fde3048829b8d42108f6465",
+          ),
+        ),
+      );
+      assert(
+        chainLinks.some((href) =>
+          href.endsWith(
+            "344fd5f6fd40f469ff72e0feac7b58ae9f9a100f472a29429e1082ae42aaa202",
+          ),
+        ),
+      );
       await page
         .getByRole("heading", { name: "Confirmed inspector payment" })
         .waitFor();
@@ -276,7 +310,7 @@ test("camera UI saves the controller frame shape and backend recomputes placemen
     );
     await page.getByRole("button", { name: "Approve work order" }).click();
     await page.getByRole("button", { name: "Start capture attempt" }).click();
-    await page.getByRole("button", { name: "Start laptop camera" }).click();
+    await page.getByRole("button", { name: "Start camera" }).click();
     await page.getByRole("button", { name: "Save camera measurement" }).click();
     await page
       .getByText(

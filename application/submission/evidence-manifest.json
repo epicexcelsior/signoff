@@ -1,6 +1,6 @@
 {
   "schema": "proof-of-ready/submission-evidence/v1",
-  "checkedAt": "2026-10-31T00:06:00.568Z",
+  "checkedAt": "2026-10-31T00:46:35.870Z",
   "readyForSubmission": false,
   "publicationAuthorized": false,
   "deadline": "2026-10-31T15:00:00+01:00",
@@ -151,6 +151,12 @@
       "artifact": "application/submission/evidence/api3-finalization-proof.json",
       "contextPublicPath": "application/submission/evidence/api3-policy-evaluation.json",
       "qualificationScope": "Mined valid response changed OPEN to REJECTED. The genuine paid REVIEW has a false inspection predicate. Original capture is synthetic and the declared reference version does not identify installed firmware. This historical evaluation does not renew the original work order."
+    },
+    {
+      "id": "esp32-optical-flash",
+      "status": "flash-and-usb-startup-verified",
+      "artifact": "application/submission/evidence/esp32-optical-flash-proof.json",
+      "scope": "Approved flash and USB startup only. Startup initializes GPIO8 and sends an OFF pixel. No signed optical challenge, contact transition or camera measurement exists. Existing receipt identity remains preserved."
     }
   ],
   "mandatoryEvidence": {
@@ -174,20 +180,24 @@
         "other-request-rejects": "passed-NotSignedByAirnode",
         "wrong-key-rejects": "passed-NotSignedByAirnode"
       },
-      "remaining": [],
+      "remaining": [
+        "Demonstrate a source-dependent terminal decision with genuine inspection prerequisites"
+      ],
       "jobId": "0x283a22d5708fb1dd4b9b723c2094732c1e30d2aea46f0d1baf7edecceed944bc",
       "finalizationTransactionHash": "0xa94e48a5d72065ad46c4c558d26a7c3f618aa491fe46e6d012fd7aa7b1356eab",
       "terminalDecision": "REJECTED",
-      "judgeBlockNumber": "52413566"
+      "judgeBlockNumber": "52413566",
+      "qualificationConfirmed": false,
+      "judgeSuppliedResponseCommand": "npm --prefix application/api3 run judge:candidate -- RESPONSE_FILE"
     },
     "hardware": {
       "status": "blocked",
       "physicalEvidencePacketSha256": null,
       "remaining": [
-        "Identify exact carrier board and LED/button/resistor",
-        "Review wiring and GPIO profile",
-        "Provision and enroll actual device",
-        "Execute original signed button/LED/camera attempt"
+        "Connect webcam or Seeker for a real camera measurement",
+        "Enroll the captured receipt public key and configure the original provider, BLE address, and authorization secret",
+        "Review and approve one signed 18-second optical challenge",
+        "Identify button terminals, review GPIO2-to-GND wiring, and run signed contact transitions"
       ]
     },
     "submission": {
@@ -199,7 +209,7 @@
         "Complete missing genuine evidence",
         "Review public release candidate",
         "Owner authorizes publication and Devfolio submission",
-        "Record video no longer than150seconds"
+        "Record video no longer than 150 seconds"
       ]
     }
   },
@@ -208,6 +218,7 @@
     "First paid CVE response is preserved for authenticity and stale rejection, not indefinitely current policy.",
     "Contract payment evidence is an operator assertion, not Cardano consensus verification.",
     "The five source cases and mined rejection use a genuine paid REVIEW on synthetic input. No complete physical installation or installed-build provenance exists.",
-    "The 0.02 aUSD paid-access budget is consumed. Preserve both original settled requests. Another paid request needs a separately authorized budget."
+    "The 0.02 aUSD paid-access budget is consumed. Preserve both original settled requests. Another paid request needs a separately authorized budget.",
+    "The saved false inspection predicate forces REJECTED regardless of the CVE verdict. Complete API3 qualification remains unconfirmed until source-dependent decision evidence is adequate."
   ]
 }

@@ -64,6 +64,23 @@ test("judge evidence serves only reviewed originals and their exact hashes witho
   assert.equal(receipt.exactReportSha256, reportArtifact.sha256);
   assert(BigInt(receipt.netAtomicUnits) > 0n);
   assert.equal(receipt.physicalEvidence, false);
+  const flashArtifact = result.artifacts.find(
+    (entry) => entry.id === "device-flash-proof",
+  );
+  const flashResponse = await fetch(`${origin}${flashArtifact.href}`);
+  assert.equal(flashResponse.status, 200);
+  const flashBytes = Buffer.from(await flashResponse.arrayBuffer());
+  assert.equal(
+    createHash("sha256").update(flashBytes).digest("hex"),
+    flashArtifact.sha256,
+  );
+  const flash = JSON.parse(flashBytes);
+  assert.equal(flash.verifiedImageCount, 3);
+  assert.equal(flash.publicReceiptKeyCaptured, true);
+  assert.equal(flash.opticalChallengeRequested, false);
+  assert.equal(flash.opticalWaveformObserved, false);
+  assert.equal(flash.contactEnabled, false);
+  assert.match(flash.scope, /USB startup only/);
   const check = await (
     await fetch(
       `${origin}${result.artifacts.find((entry) => entry.id === "policy-five-cases").href}`,

@@ -2,7 +2,7 @@
 
 This package prepares signed contact reads and challenge-bound optical emission for an ESP32. The default build initializes no GPIO. It advertises no operation until a secret and an explicitly reviewed hardware profile exist.
 
-A read-only USB query identified the connected chip as **ESP32-C6FH4, revision 0.2, with 4 MB embedded flash**. The owner identifies an ESP32-C6 SuperMini carrier. Front/back photos are unavailable in this session, so the carrier revision, exact routing, wiring, and safe header pins remain unverified. No firmware from this package was flashed. No GPIO command from this package ran.
+A read-only USB query identified the connected chip as **ESP32-C6FH4, revision 0.2, with 4 MB embedded flash**. The owner identifies an ESP32-C6 SuperMini carrier. Three supplied photos show Super Mini / ESP32-C6 markings and a layout matching the seller schematic below. No maker or revision appears. The owner-approved optical-only image is flashed. USB startup/public-key validation passed. Its first boot sent an OFF pixel. No signed optical challenge or contact test ran.
 
 ## Check without hardware
 
@@ -40,7 +40,7 @@ Flashing, GPIO enablement, and security-fuse changes require targeted authorizat
 
 ## Prepare the first physical test
 
-The first optical candidate is the onboard WS2812-compatible RGB LED, commonly connected to GPIO8 on C6 SuperMini carriers. Confirm the actual carrier before selecting it. An onboard LED needs no external LED wiring.
+The selected optical-only candidate uses the matching layout's onboard WS2812-compatible RGB LED on GPIO8. The owner approved that exact image and its first boot. The full camera-observed challenge still requires a separate bounded grant. An onboard LED needs no external LED wiring.
 
 The firmware now supports one WS2812-compatible LED through ESP-IDF RMT. Plain GPIO writes cannot drive this addressable LED. The default build keeps both optical and contact capabilities disabled. The external button comes after the first optical test.
 
@@ -48,37 +48,37 @@ Keep external wiring disconnected until the carrier and button terminals receive
 
 ### Resolve the hardware inputs
 
-| Stage | Required evidence | Review decision |
-| --- | --- | --- |
-| Before onboard optical test | Clear front/back carrier photos, silkscreen, and onboard LED routing | Match the actual carrier and confirm the WS2812 GPIO8 route. |
-| Before flash | USB power documentation and actual image configuration | Preserve USB, storage, identity, and unused pins. Select WS2812 mode. |
-| Before external button test | Reviewed input header, ground, and button terminal layout | Identify the two contacts that close only during a press. |
-| Optional discrete-LED fallback only | LED type, polarity, forward voltage, and rated current | Review an external indicator circuit if the onboard LED proves unsuitable. |
-| Optional discrete-LED fallback only | Resistor markings or measured resistance | Calculate current and compare it with LED and GPIO limits. |
+| Stage                               | Required evidence                                                    | Review decision                                                            |
+| ----------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| Before onboard optical test         | Clear front/back carrier photos, silkscreen, and onboard LED routing | Match the actual carrier and confirm the WS2812 GPIO8 route.               |
+| Before flash                        | USB power documentation and actual image configuration               | Preserve USB, storage, identity, and unused pins. Select WS2812 mode.      |
+| Before external button test         | Reviewed input header, ground, and button terminal layout            | Identify the two contacts that close only during a press.                  |
+| Optional discrete-LED fallback only | LED type, polarity, forward voltage, and rated current               | Review an external indicator circuit if the onboard LED proves unsuitable. |
+| Optional discrete-LED fallback only | Resistor markings or measured resistance                             | Calculate current and compare it with LED and GPIO limits.                 |
 
 External LED and resistor identification do not block the onboard WS2812 test. Keep the button disconnected until its later wiring review.
 
 [Espressif's GPIO reference](https://docs.espressif.com/projects/esp-idf/en/v6.1/esp32c6/api-reference/peripherals/gpio.html) identifies USB and flash restrictions. The [C6 datasheet](https://www.espressif.com/sites/default/files/documentation/esp32-c6_datasheet_en.pdf) identifies the strapping pins. The exact carrier can add restrictions.
 
-| C6FH4 pins | Restriction for this commissioning profile |
-| --- | --- |
-| GPIO4, 5, 8, 9, 15 | Boot straps. Do not attach the contact button. GPIO9 commonly connects to BOOT. |
-| GPIO8 | Permit optical output only in WS2812 mode after carrier confirmation. Do not add external loads. |
-| GPIO12, 13 | Preserve native USB Serial/JTAG. Firmware rejects these pins. |
-| GPIO10, 11 and flash GPIO24–30 | Not exposed on C6FH4. Firmware rejects these pins. |
-| GPIO2 | Candidate contact input at chip level. Confirm the actual carrier header and absence of other loads first. |
+| C6FH4 pins                     | Restriction for this commissioning profile                                                                 |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------- |
+| GPIO4, 5, 8, 9, 15             | Boot straps. Do not attach the contact button. GPIO9 commonly connects to BOOT.                            |
+| GPIO8                          | Permit optical output only in WS2812 mode after carrier confirmation. Do not add external loads.           |
+| GPIO12, 13                     | Preserve native USB Serial/JTAG. Firmware rejects these pins.                                              |
+| GPIO10, 11 and flash GPIO24–30 | Not exposed on C6FH4. Firmware rejects these pins.                                                         |
+| GPIO2                          | Candidate contact input at chip level. Confirm the actual carrier header and absence of other loads first. |
 
 The firmware checks all selected pins before configuring any GPIO. It rejects pin sharing between contact and optical functions. These checks enforce chip restrictions. They do not prove carrier routing.
 
 Espressif's [generic C6 Arduino variant](https://github.com/espressif/arduino-esp32/blob/master/variants/esp32c6/pins_arduino.h) selects RGB GPIO8. Its [DevKitM schematic](https://dl.espressif.com/dl/schematics/esp32-c6-devkitm-1-schematics.pdf) connects a WS2812B to GPIO8. These are independent references for the candidate circuit. They do not identify the owner's SuperMini carrier.
 
-The [Nologo manufacturer repository](https://github.com/NologoTech/ESP32C6-SuperMIni/tree/b9f64e2d7dda5d768b8afeb66f9465d22c7304ae) contains only a README heading. Its [Chinese product guide](https://www.nologo.tech/product/esp32/esp32c6/esp32c6supermini/ESP32C6_SuperMini_Getting_Started.html) states that documentation is under update. Neither source supplies a schematic or board revision. The English page's [served content asset](https://www.nologo.tech/assets/ESP32C6_SuperMini_Getting_Started.html-CJAPcTds.js) contains Seeed XIAO instructions. Do not apply its GPIO3/GPIO14 antenna assignments to this SuperMini.
+The [Nologo manufacturer repository](https://github.com/NologoTech/ESP32C6-SuperMIni/tree/b9f64e2d7dda5d768b8afeb66f9465d22c7304ae) contains only a README heading. Its [Chinese product guide](https://www.nologo.tech/product/esp32/esp32c6/esp32c6supermini/ESP32C6_SuperMini_Getting_Started.html) states that documentation is under update. Neither Nologo source supplies a schematic or board revision. The later matching seller schematic below supplies the reviewed candidate routing. The English page's [served content asset](https://www.nologo.tech/assets/ESP32C6_SuperMini_Getting_Started.html-CJAPcTds.js) contains Seeed XIAO instructions. Do not apply its GPIO3/GPIO14 antenna assignments to this SuperMini.
 
 [TinyTronics' Nologo listing](https://www.tinytronics.nl/en/development-boards/microcontroller-boards/with-wi-fi/esp32-c6-supermini-development-board) describes a black 26 × 18 mm carrier with 4 MB flash, WS2812B, and battery pads. Its linked pinout and schematic downloads returned HTTP 403 locally. Their diagrams remain visually unverified. Keep battery pads disconnected for this USB-only test.
 
 The [Hobby Components seller guide](https://forum.hobbycomponents.com/viewtopic.php?f=134&p=9078&t=3163) names RGB GPIO8 and separately demonstrates an ordinary LED on GPIO15. These are separate candidate LED circuits. The GPIO15 blink program cannot drive the GPIO8 WS2812. The selected physical profile uses GPIO8 for the onboard RGB LED and GPIO2 for the button only after carrier/header confirmation. Keep BOOT GPIO9, ordinary LED GPIO15, and USB GPIO12/13 unused by external wiring. No physical header position is approved yet.
 
-Match the front/back silkscreen, header order, USB connector, LED package, and component positions to the actual seller schematic. If that source is unavailable, obtain a power-disconnected continuity measurement of the onboard LED data route. Do not approve GPIO8 solely from the ESP32-C6FH4 chip label.
+The supplied front/back photos match the [direct seller schematic](https://hobbycomponents.com/images/forum/HCDVBD/HCDVBD0051/HCDVBD0051_Schematic.png). The recovered PNG shows WS2812 DIN on GPIO8, BOOT on GPIO9, ordinary LED on GPIO15, and native USB on GPIO12/13. Header labels, battery pads and component positions match. Hidden routing remains an inference from the matching layout. Do not infer a maker or revision from the C6FH4 chip label.
 
 Chip identity does not resolve these inputs. An ESP32-C6 chip label is not a carrier-board model. Never copy GPIO 2/3 from `test/compile-only.defaults` into a physical profile.
 
@@ -173,7 +173,7 @@ python -m esptool --chip esp32c6 --port "${REVIEWED_SERIAL_PORT:?}" \
   read-flash 0x0 0x400000 "${PRIVATE_BACKUP_FILE:?}"
 ```
 
-This command is prepared but unexecuted. Select an unused backup filename. It enters the bootloader and can reset the device. [Espressif's esptool reference](https://docs.espressif.com/projects/esptool/en/latest/esp32c6/esptool/basic-commands.html) defines flash read/write semantics. The local esptool 5.6.0 help confirms the `read-flash ADDRESS SIZE OUTPUT` arguments. Preserve the backup hash and the existing firmware's provenance. The backup can contain credentials and device identity.
+The owner-approved full read completed once and its private hash is preserved in the hardware inventory. For another explicitly authorized backup, select an unused filename. It enters the bootloader and can reset the device. [Espressif's esptool reference](https://docs.espressif.com/projects/esptool/en/latest/esp32c6/esptool/basic-commands.html) defines flash read/write semantics. The local esptool 5.6.0 help confirms the `read-flash ADDRESS SIZE OUTPUT` arguments. Preserve the backup hash and the existing firmware's provenance. The backup can contain credentials and device identity.
 
 Before flash approval, compare the current backup with the actual proposed partition table. Preserve the original backup, its hash, provisioned key, NVS authorization secret, and replay state. A different partition layout requires a reviewed migration. Never erase storage to bypass this check.
 
@@ -186,7 +186,7 @@ idf.py -C application/firmware -B "${PRIVATE_BUILD_DIR:?}" \
   -p "${REVIEWED_SERIAL_PORT:?}" flash
 ```
 
-This command is prepared but unexecuted. Do not add `erase-flash`. Do not flash `test/compile-only.defaults`. A recovery write requires another review. Restoring an old image or NVS snapshot can destroy newer identity or replay evidence.
+The reviewed optical-only flash completed once with three explicit image writes. This generic command does not authorize another flash. Do not add `erase-flash`. Do not flash `test/compile-only.defaults`. A recovery write requires another review. Restoring an old image or NVS snapshot can destroy newer identity or replay evidence.
 
 After authorized flashing, inspect the USB startup log through the trusted port. Enroll its `P256_PUBLIC_KEY` value before approving a physical work order. No private signing key belongs in a receipt-pin file. Confirm the manifest's provider, enabled capabilities, current boot identifier, and remaining claims.
 
@@ -197,7 +197,7 @@ The coordinator issues a three-state contact sequence. Follow each requested sta
 1. Start the station with the independently enrolled provider, public key, BLE address, and exact authorization secret.
 2. Check that the station shows **Physical adapter**.
 3. Approve the work order for the actual specimen.
-4. Start the laptop camera and align both measured markers.
+4. Start the available camera and align both measured markers.
 5. Start one capture attempt.
 6. Save the camera measurement.
 7. Follow each requested button state and select **Read contact**.

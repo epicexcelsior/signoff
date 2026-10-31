@@ -136,7 +136,7 @@ The ABI adapters expose `prepareEnrollBuild`, `prepareOpenJob`, `prepareRecordIn
 
 The contract's Cardano payment evidence is an operator assertion. It does not verify Cardano consensus. Source signatures are portable across chains. The consumer supplies chain/job/contract binding. The coordinator reader checks these commitments against original server state. Historical paid evidence and a pinned mined rejection now exist. The synthetic capture and declared reference version do not authorize a physical installation.
 
-The saved historical policy evaluation uses the original useful paid REVIEW and a verified positive seller receipt. Its declared Apache NimBLE 1.9.0 reference is not an installed-build assertion. Its separate evaluation deadline does not renew the installation work order. All five source checks passed at one pinned block. The valid transaction changed OPEN to REJECTED because `inspectionPassed` is false. From `application/api3/`, run `npm run judge:submission` to replay the public originals and verify the mined proof. The command reads no wallet or credential and sends no transaction. The native judge converts the contract-encoded version into the three-part string required by the evaluator.
+The saved historical policy evaluation uses the original useful paid REVIEW and a verified positive seller receipt. Its declared Apache NimBLE 1.9.0 reference is not an installed-build assertion. Its separate evaluation deadline does not renew the installation work order. All five source checks passed at one pinned block. The valid transaction changed OPEN to REJECTED because `inspectionPassed` is false. From `application/api3/`, run `npm run judge:submission` to replay the public originals and verify the mined proof. The command reads no wallet or credential and sends no transaction. The native judge converts the contract-encoded version into the three-part string required by the evaluator. `npm run judge:candidate -- RESPONSE_FILE` accepts one bounded supplied response. It checks the original open-block context, then submits the exact timestamp/data/signature through one read-only contract simulation. Malformed input, RPC errors and unrelated state failures return INCONCLUSIVE. Intended source reverts remain separate observed results. The historical mined rejection has a false inspection predicate and does not demonstrate the CVE value changing the terminal decision.
 
 ## Physical mode and Seeker
 
@@ -273,7 +273,7 @@ The dedicated seller wallet already exists. Use its saved Cardano Preprod addres
 Print [the target](../application/public/vision/target.svg) at actual size. Measure its ruler and marker dimensions first. Keep both markers in the same plane.
 
 1. Approve the work order.
-2. Select **Start laptop camera**.
+2. Select **Start camera**.
 3. Select **Start capture attempt**.
 4. Align the markers with the guidance.
 5. Select **Save camera measurement**.
@@ -283,7 +283,7 @@ Camera frames stay in the browser. The server receives corners, measurements, ca
 
 ### Run an authorized physical attempt
 
-First identify the carrier board and resistor. Review wiring, GPIO, provisioning, installed-build enrollment, flash, and optical authorization. No pin-to-pin wiring plan exists yet. Keep the current board unwired until review.
+The supplied photos match the documented SuperMini layout. The first candidate uses onboard WS2812 GPIO8 with contact disabled. It needs no external LED or resistor. The owner-approved full backup and exact optical-only flash completed. Three image hashes and the preserved NVS/PHY layout passed. USB startup exposed the receipt key without an initialization failure. A real camera and separate one-emission approval remain prerequisites for the complete optical challenge. Keep external wires and battery pads disconnected. The later GPIO2 button requires terminal identification and its own wiring review.
 
 1. Open the station and check **Physical adapter**.
 2. Approve the actual button-contact work order.
@@ -329,7 +329,7 @@ From `application/`, run `npm run format:check`, `npm run check`, `npm test`, `n
 
 From the repository root, run `python3 application/firmware/test/run.py --sanitize` and `python3 -m unittest discover -s application/device/test -v`. From `application/mobile/`, run `npm test`, `npm run check`, `npm run format:check`, and `npm run build`. Firmware and Android use separate native toolchains. Their guides define actual compile commands and unexecuted device checks.
 
-After isolated installs, run each integration's `format:check`, `check`, `test`, and production dependency audit. `npm run test:integrations` runs both Node integration suites. Masumi fixture/setup commands verify the prepared unexecuted path.
+After isolated installs, run each integration's `format:check`, `check`, `test`, and production dependency audit. `npm run test:integrations` runs the Masumi, API3, and x402 inspector Node suites. Masumi fixture/setup commands verify the prepared unexecuted path.
 
 Run Foundry `fmt --check` and `test` from `application/contracts/`. The local Anvil deployment/read integration runs with `FIELDPROOF_FOUNDRY_BIN=/path/to/foundry/bin npm run test:contract` from `application/`. The variable names a directory containing genuine `forge` and `anvil` binaries. Bare `forge` on this host is unrelated.
 
@@ -383,15 +383,15 @@ Preserve a recording of the actual physical attempt, original packet, paid repor
 
 ### Judge evidence and presentation reset
 
-`GET /api/submission-evidence` reads the canonical submission manifest and computes exact-byte SHA-256 hashes. Artifact downloads use an explicit server allowlist: `manifest`, `nvd-original`, `policy-helper`, `paid-inspection-report`, `paid-inspection-bindings`, `paid-inspection-chain-proof`, `paid-inspection-request`, and `paid-inspection-seller-receipt`. API3 artifacts add `nvd-final-original`, `nvd-final-settlement`, `policy-five-cases`, `policy-finalization`, `policy-evaluation-context`, `policy-other-request-original`, and `policy-wrong-key-test`. The route never exposes private configuration or runtime directories. These saved records do not authorize the current installation.
+`GET /api/submission-evidence` reads the canonical submission manifest and computes exact-byte SHA-256 hashes. Artifact downloads use an explicit server allowlist: `manifest`, `nvd-original`, `policy-helper`, `paid-inspection-report`, `paid-inspection-bindings`, `paid-inspection-chain-proof`, `paid-inspection-request`, and `paid-inspection-seller-receipt`. API3 artifacts add `nvd-final-original`, `nvd-final-settlement`, `policy-five-cases`, `policy-finalization`, `policy-evaluation-context`, `policy-other-request-original`, and `policy-wrong-key-test`. The route also exposes `device-flash-proof`, which contains sanitized image/startup metadata only. It never exposes private configuration, provisioning files or runtime directories. These saved records do not authorize the current installation.
 
-Select **Judge evidence** to inspect historical transactions, missing requirements and the five deployed policy cases. Select **Refresh evidence** after the canonical manifest changes. The panel performs no chain write or payment. Packet verification and edited-packet rejection apply to the selected attempt above.
+Select **Judge evidence** to inspect historical transactions, missing requirements and the five deployed policy cases. Its first panel follows original synthetic input, useful REVIEW, confirmed result transaction and positive seller receipt. The full hash-checked report remains directly available. Select **Refresh evidence** after the canonical manifest changes. The panel performs no chain write or payment. Packet verification and edited-packet rejection apply to the selected attempt above.
 
 Select **Reset presentation** to stop the camera and reload an empty work-order screen. The reset changes browser session state only. Saved attempts, NVS identity, replay claims, receipt pins and financial ledgers remain intact. The history selector can reopen any saved attempt.
 
 ### Capture plan with exact spoken copy
 
-Use one work order for a complete installation journey. The current paid report covers a synthetic capture. It cannot authorize a later physical capture. Keep that distinction visible when recording the historical receipt. The physical segment remains blocked until the carrier review, camera and actual tests succeed.
+Use one work order for a complete installation journey. The current paid report covers a synthetic capture. It cannot authorize a later physical capture. Keep that distinction visible when recording the historical receipt. The optical-only image and startup are verified. The physical segment still needs a camera, actual optical testing, and reviewed button wiring/testing.
 
 | Time     | Screen and action                                                                                          | Spoken copy                                                                                                                                                                                                         |
 | -------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

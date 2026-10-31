@@ -8,24 +8,24 @@ This document defines goals and completion criteria. [README](README.md#current-
 
 An operator delegates installation checks to an agent. The agent proposes structured requirements, coordinates evidence providers, buys specialist inspection, and explains the result. Deterministic checks decide READY, REWORK, or REVIEW.
 
-The first specimen is a marked monitoring station with a button-contact test and a camera-observed LED. ESP32 is the first adapter. Laptop webcam comes first. The confirmed Android phone is Solana Mobile Seeker.
+The first specimen is a marked monitoring station with a button-contact test and a camera-observed LED. ESP32 is the first adapter. The next available camera is a webcam or the confirmed Solana Mobile Seeker. The phone's Station browser camera route still requires actual device validation.
 
 The customer hypothesis is an operator accepting subcontracted monitoring installations. Demand, pricing, and revisit savings remain unvalidated. They do not block authorized engineering.
 
 ## Implemented behavior and remaining goals
 
-| Capability            | Current implementation                                                                              | Goal and completion evidence                                                                       |
-| --------------------- | --------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| Planning              | Operator supplies an asset name. Coordinator instantiates a fixed immutable template                | Agent proposes structured checks. Approval binds requirements before capture                       |
-| Camera                | Worker detects markers and measures planar geometry. Browser tests pass                             | Measured physical accuracy and real-time throughput                                                |
-| Physical function     | Signed contact protocol and durable claims exist                                                    | Reviewed wiring, enrolled board, fresh OPEN/CLOSED sequence, and defect rejection                  |
-| Optical binding       | Signed execution and tracked optical evaluation are integrated and fixture-tested                   | Camera observes the complete challenge from the enrolled device assembly                           |
-| Receiving application | Local monitor records matching receipts and states                                                  | Separate delivery evidence when an independent or remote receiver is required                      |
-| Inspection            | Useful paid REVIEW, exact bindings, confirmed withdrawal and positive seller receipt                  | Paid inspection of an actual physical installation, plus recovery evidence                                     |
-| Software policy       | Genuine NVD, five deployed source checks and mined REJECTED decision bind the paid REVIEW | Installed-build provenance and physical acceptance. Historical policy evaluation does not renew a work order |
-| Phone witness         | Seeker APK builds. Photo verifier and read-only BLE preflight exist                                 | Authorized install, Android SQLite instrumentation, lifecycle, camera, and BLE checks              |
-| Acceptance            | Packets reconstruct evidence. Fresh reader commitments control acceptance in tests                  | Complete physical and paid installation reaches a contract-bound decision                          |
-| Agent orchestration   | Station is deterministic and operator-driven. Optional model helper is not wired into the worker    | Agent coordinates approved steps and explanations without repeating consequential actions          |
+| Capability            | Current implementation                                                                           | Goal and completion evidence                                                                                 |
+| --------------------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| Planning              | Operator supplies an asset name. Coordinator instantiates a fixed immutable template             | Agent proposes structured checks. Approval binds requirements before capture                                 |
+| Camera                | Worker detects markers and measures planar geometry. Browser tests pass                          | Measured physical accuracy and real-time throughput                                                          |
+| Physical function     | Signed contact protocol and durable claims exist                                                 | Reviewed wiring, enrolled board, fresh OPEN/CLOSED sequence, and defect rejection                            |
+| Optical binding       | Signed execution and tracked optical evaluation are integrated and fixture-tested                | Camera observes the complete challenge from the enrolled device assembly                                     |
+| Receiving application | Local monitor records matching receipts and states                                               | Separate delivery evidence when an independent or remote receiver is required                                |
+| Inspection            | Useful paid REVIEW, exact bindings, confirmed withdrawal and positive seller receipt             | Paid inspection of an actual physical installation, plus recovery evidence                                   |
+| Software policy       | Genuine NVD, five deployed source checks and mined REJECTED decision bind the paid REVIEW        | Installed-build provenance and physical acceptance. Historical policy evaluation does not renew a work order |
+| Phone witness         | Seeker APK builds. Photo verifier and read-only BLE preflight exist                              | Authorized install, Android SQLite instrumentation, lifecycle, camera, and BLE checks                        |
+| Acceptance            | Packets reconstruct evidence. Fresh reader commitments control acceptance in tests               | Complete physical and paid installation reaches a contract-bound decision                                    |
+| Agent orchestration   | Station is deterministic and operator-driven. Optional model helper is not wired into the worker | Agent coordinates approved steps and explanations without repeating consequential actions                    |
 
 These are product goals. Fixture demonstrations return REVIEW or REWORK. They do not establish physical truth, live payment, or sponsor qualification.
 
@@ -68,23 +68,23 @@ The browser receives no payment or MPS administration keys. The vision Worker re
 
 The API3 policy covers CVE-2025-62235 for explicitly enrolled NimBLE reference builds. It does not establish general security or identify the installed build. Contract Cardano records are operator assertions, not consensus verification. Source signatures authenticate the configured Airnode response, not independent physical truth.
 
-Carrier-board identity and safe GPIO remain unknown. Chip identity does not establish pin safety. Read [Available hardware](research/EVIDENCE.md#available-hardware) before hardware work. Compiler-coverage pins must never reach hardware.
+Photos match a documented SuperMini layout, with onboard WS2812 GPIO8 and GPIO2 as the later contact candidate. The board's maker and revision remain unmarked. Chip identity alone does not establish pin safety. Read [Available hardware](research/EVIDENCE.md#available-hardware) before hardware work. Compiler-coverage pins must never reach hardware.
 
 ## Owner decisions and preparation
 
-| Input or grant     | Current state                                                                                 | Required before                                                            |
-| ------------------ | --------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| Product and camera | Proof of Ready selected. Laptop webcam first. Seeker confirmed                                | Resolved choices                                                           |
-| Physical specimen  | USB-only ESP32-C6FH4. Button and LED available. Carrier board and resistor unidentified       | Wiring or GPIO selection                                                   |
-| Printing           | Supplied target exists. Physical dimensions remain unmeasured                                 | Metric placement claim                                                     |
-| Firmware           | Both build profiles compiled                                                                  | Reviewed provisioning, flash, recovery, and optical grant                  |
-| Seeker             | APK compiled. Phone not installed or tested                                                   | Explicit install, forwarding, and native checks                            |
-| Sokosumi           | Personal grant, useful paid REVIEW and positive seller receipt verified | Actual physical inspection input                                          |
-| Blockfrost         | Preprod key passes authenticated latest-block check                                           | Dedicated payment resource configuration                                   |
-| Masumi payment     | Original paid Task completed and seller collection confirmed           | Preserve original Task, transactions and receipt. No new purchase is needed |
-| API3 wallet        | Two NVD calls settled. Historical valid finalization mined REJECTED                           | Preserve 0.001 ETH. The 0.02 aUSD ceiling is consumed                          |
-| API3 client        | Five source checks passed against deployed code. Mined proof verified                                | Physical evidence and installed-build provenance             |
-| Publication        | Private development continues                                                                 | Explicit public-release and submission approval                            |
+| Input or grant     | Current state                                                                              | Required before                                                                       |
+| ------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------- |
+| Product and camera | Proof of Ready selected. Webcam or Seeker is the next available camera                     | Actual camera connection and device validation                                        |
+| Physical specimen  | USB-only C6 SuperMini layout matched. Private backup and GPIO8 optical-only flash complete | Camera connection, runtime enrollment, and later button-terminal/wiring review        |
+| Printing           | Supplied target exists. Physical dimensions remain unmeasured                              | Metric placement claim                                                                |
+| Firmware           | Both build profiles compiled. Reviewed optical-only image flashed and USB startup verified | One signed optical challenge and actual camera observation                            |
+| Seeker             | APK compiled. Phone not installed or tested                                                | Explicit install, forwarding, and native checks                                       |
+| Sokosumi           | Personal grant, useful paid REVIEW and positive seller receipt verified                    | Actual physical inspection input                                                      |
+| Blockfrost         | Preprod key passes authenticated latest-block check                                        | Dedicated payment resource configuration                                              |
+| Masumi payment     | Original paid Task completed and seller collection confirmed                               | Preserve original Task, transactions and receipt. No new purchase is needed           |
+| API3 wallet        | Two NVD calls settled. Historical valid finalization mined REJECTED                        | Preserve 0.001 ETH. The 0.02 aUSD ceiling is consumed                                 |
+| API3 client        | Five source checks passed against deployed code. Mined rejection verified                  | Source-dependent terminal decision, physical evidence, and installed-build provenance |
+| Publication        | Private development continues                                                              | Explicit public-release and submission approval                                       |
 
 Use [README's owner actions](README.md#owner-actions-on-the-critical-path) and [private setup](docs/ENGINEERING.md#private-credentials-and-test-funding). Keep credentials, wallet addresses, and runtime records in private configuration. No model key is required for deterministic inspection.
 

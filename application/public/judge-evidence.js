@@ -12,6 +12,7 @@ const caseLabels = {
   "wrong-key-rejects": "Another signing key rejects",
 };
 const recordLabels = {
+  "esp32-optical-flash": "Device firmware and startup",
   "api3-faucet-mint": "Test funding",
   "api3-paid-nvd-first": "Paid original NVD response",
   "api3-policy-deployment": "Deployed security policy",
@@ -29,6 +30,60 @@ function element(tag, text, className) {
   if (text !== undefined) node.textContent = text;
   if (className) node.className = className;
   return node;
+}
+
+function cardanoLink(hash, label) {
+  if (!/^[0-9a-f]{64}$/i.test(hash ?? "")) return null;
+  const link = element("a", label);
+  link.href = `https://preprod.cardanoscan.io/transaction/${hash}`;
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  return link;
+}
+
+async function paidInspectionSummary(records) {
+  const section = document.getElementById("judge-paid-inspection");
+  section.replaceChildren();
+  const delivery = records.find(
+    (record) => record.id === "cardano-paid-inspection-delivery",
+  );
+  if (!delivery) return;
+  const collection = records.find(
+    (record) => record.id === "cardano-seller-collection",
+  );
+  const report = await inspectorReport(delivery);
+  section.replaceChildren(
+    element("h3", "One inspection. Trace its result and payment."),
+    element(
+      "p",
+      "Historical inspection of synthetic input. The useful REVIEW identifies missing physical evidence. It does not approve this installation.",
+      "note",
+    ),
+  );
+  const steps = element("ol", undefined, "judge-lifecycle");
+  for (const [title, text, hash] of [
+    ["Original input", "Synthetic capture, preserved unchanged"],
+    ["Useful report", delivery.outcome],
+    [
+      "Result on chain",
+      "Confirmed result transaction",
+      delivery.resultTransactionHash,
+    ],
+    [
+      "Seller payment",
+      delivery.sellerPaid
+        ? "Positive seller receipt confirmed"
+        : "Collection pending",
+      collection?.transactionHash,
+    ],
+  ]) {
+    const item = element("li");
+    item.append(element("strong", title), element("span", text));
+    const link = cardanoLink(hash, "Open original transaction ↗");
+    if (link) item.append(link);
+    steps.append(item);
+  }
+  section.append(steps, report);
 }
 
 async function inspectorReport(record) {
@@ -94,12 +149,13 @@ export async function refreshJudgeEvidence() {
       const card = element("div");
       card.append(
         element("strong", labels[id] ?? id),
-        element("span", value.status),
+        element("span", value.status.replaceAll("-", " ")),
       );
       if (value.remaining?.length)
         card.append(element("p", value.remaining[0]));
       requirements.append(card);
     }
+    await paidInspectionSummary(manifest.liveEvidence);
     const records = document.getElementById("judge-records");
     records.replaceChildren();
     for (const record of manifest.liveEvidence) {
@@ -108,7 +164,7 @@ export async function refreshJudgeEvidence() {
       row.append(
         element(
           "p",
-          `${record.status}${record.signedAt ? ` · source ${new Date(Number(record.signedAt) * 1000).toISOString()}` : ""}`,
+          `${record.status.replaceAll("-", " ")}${record.signedAt ? ` · source ${new Date(Number(record.signedAt) * 1000).toISOString()}` : ""}`,
         ),
       );
       const scopeText =
@@ -136,8 +192,6 @@ export async function refreshJudgeEvidence() {
         row.append(link);
       }
       if (record.taskId) row.append(element("code", `Task ${record.taskId}`));
-      if (record.id === "cardano-paid-inspection-delivery")
-        row.append(await inspectorReport(record));
       records.append(row);
     }
     const cases = document.getElementById("judge-cases");

@@ -10,14 +10,14 @@ The goal is agent-orchestrated commissioning with a useful paid inspector and an
 
 **The project is not submission-complete.** The local software baseline works. The original paid inspection and deployed source checks are verified. Physical evidence and the complete video remain incomplete.
 
-| Area       | Complete now                                                                                                        | Still missing                                                                                                                 |
-| ---------- | ------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| Cardano    | Useful paid REVIEW, confirmed escrow/result, withdrawal and positive seller net receipt | Physical inspection input and installation acceptance |
-| API3       | Two settled NVD responses, five deployed source checks and mined REJECTED decision | Installed-build provenance and physical acceptance                                 |
-| Hardware   | ESP32-C6 builds, signed protocols, safe preparation and read-only firmware review                                   | Exact carrier/parts, reviewed wiring, provisioning/flash, real button/LED test, available camera and actual capture           |
-| Submission | Setup README, original live API3 artifacts, evidence manifest, Devfolio draft, 150-second video procedure           | Physical evidence, complete video, approved public release, actual Devfolio submission                                 |
+| Area       | Complete now                                                                                              | Still missing                                                                                   |
+| ---------- | --------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Cardano    | Useful paid REVIEW, confirmed escrow/result, withdrawal and positive seller net receipt                   | Physical inspection input and installation acceptance                                           |
+| API3       | Two settled NVD responses, five deployed source checks and mined REJECTED decision                        | Installed-build provenance and physical acceptance                                              |
+| Hardware   | Reviewed GPIO8 optical-only image flashed. USB startup and public key verified                            | Available camera, enrolled runtime, approved optical challenge, and reviewed button wiring/test |
+| Submission | Setup README, original live API3 artifacts, evidence manifest, Devfolio draft, 150-second video procedure | Physical evidence, complete video, approved public release, actual Devfolio submission          |
 
-Next: identify and test the physical fixture, then record the complete video. The original paid REVIEW now binds all five deployed source checks and a mined REJECTED decision. Its synthetic input cannot authorize a physical installation. Both approved NVD calls settled. The 0.02 aUSD ceiling is consumed.
+Next: connect a camera, test the flashed optical-only fixture, then review the button circuit and record the complete video. The original paid REVIEW now binds all five deployed source checks and a mined REJECTED decision. Its synthetic input cannot authorize a physical installation. Both approved NVD calls settled. The 0.02 aUSD ceiling is consumed.
 
 The Seeker companion already builds. The owner plans to connect the Seeker overnight. Native installation, forwarding, camera/BLE tests, and Android instrumentation remain unexecuted. They do not replace the immediate button/LED/camera baseline.
 
@@ -80,12 +80,12 @@ The fixed policy uses markers 0 and 10, a 60 mm reference, and a target 100 mm t
 
 ## Current execution index
 
-| Priority   | Current evidence                                                                                      | Next required result                                                                                          |
-| ---------- | ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| Cardano    | Original paid REVIEW and positive seller net receipt verified | Preserve the original paid REVIEW and verified seller receipt. No replacement purchase is needed           |
-| API3       | Two genuine paid NVD responses settled. Five deployed cases and mined rejection verified            | Preserve the original five-case block and mined rejection. Do not spend beyond the consumed 0.02 aUSD ceiling |
-| Hardware   | Both ESP32-C6 build profiles pass. Safe preparation and read-only flash review exist                  | Identify carrier/parts, review pins, provision and run actual button/LED/camera verification                  |
-| Submission | Public-safe setup instructions, evidence manifest, Devfolio draft, and video procedure exist          | Fill missing real evidence, record video, then obtain public-release/submission authorization                 |
+| Priority   | Current evidence                                                                             | Next required result                                                                                          |
+| ---------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Cardano    | Original paid REVIEW and positive seller net receipt verified                                | Preserve the original paid REVIEW and verified seller receipt. No replacement purchase is needed              |
+| API3       | Two genuine paid NVD responses settled. Five deployed cases and mined rejection verified     | Preserve the original five-case block and mined rejection. Do not spend beyond the consumed 0.02 aUSD ceiling |
+| Hardware   | Reviewed GPIO8 optical-only image flashed. USB startup and public key verified               | Enroll the runtime, approve one camera-observed optical challenge, then review and test the button circuit    |
+| Submission | Public-safe setup instructions, evidence manifest, Devfolio draft, and video procedure exist | Fill missing real evidence, record video, then obtain public-release/submission authorization                 |
 
 The API3 paid-access client and deployed judge tooling are integrated. The first paid response supplied the stale case. The second paid response supplied the valid finalization. Historical replay preserves their original freshness window. [The evidence manifest](application/submission/evidence-manifest.json) distinguishes confirmed live artifacts from missing requirements.
 
@@ -93,15 +93,15 @@ Owner-confirmed hardware and wiring state live in [Available hardware](research/
 
 ## Integration status
 
-| Component               | Verified behavior                                                                                                                             | Remaining evidence                                                                           |
-| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| Coordinator             | Immutable approval, signed contact/optical/photo records, durable claims, original inspector bindings, pinned contract reads, packet reconstruction | Complete physical installation with its own original external evidence                                 |
-| Camera                  | OpenCV marker detection, planar guidance, tracked optical sampling, phase reconstruction, cleanup, printable target                                 | Physical accuracy, real-time throughput, and camera/emitter matching                         |
-| Masumi                  | Useful paid REVIEW, exact transport hashes, hosted execution, confirmed withdrawal and positive seller receipt                                 | Actual physical inspection input and live refund recovery                                  |
-| API3                    | Native verifier, bounded CVE evaluator, durable paid-fetch client, genuine paid CVE response, deployed policy, pinned reader                        | Installed-build provenance and physical installation acceptance. Historical paid REVIEW finalized REJECTED             |
-| ESP32                   | Default-disabled and compiler-coverage ESP32-C6 builds, signed protocol, persistent replay claims, bounded BLE transport                            | Carrier board, safe wiring, authorized flash, installed-build enrollment, and physical tests |
-| Seeker                  | API 36 debug APK, signed photo claims, request reservation, restricted WebView, read-only BLE preflight                                             | Authorized install, Android SQLite instrumentation, lifecycle, camera, and BLE checks        |
-| Direct Cardano baseline | Retained x402 adapter, payment ledger, and restart checks                                                                                           | Live Preprod settlement and physical-board compatibility                                     |
+| Component               | Verified behavior                                                                                                                                   | Remaining evidence                                                                                         |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Coordinator             | Immutable approval, signed contact/optical/photo records, durable claims, original inspector bindings, pinned contract reads, packet reconstruction | Complete physical installation with its own original external evidence                                     |
+| Camera                  | OpenCV marker detection, planar guidance, tracked optical sampling, phase reconstruction, cleanup, printable target                                 | Physical accuracy, real-time throughput, and camera/emitter matching                                       |
+| Masumi                  | Useful paid REVIEW, exact transport hashes, hosted execution, confirmed withdrawal and positive seller receipt                                      | Actual physical inspection input and live refund recovery                                                  |
+| API3                    | Native verifier, bounded CVE evaluator, durable paid-fetch client, genuine paid CVE response, deployed policy, pinned reader                        | Installed-build provenance and physical installation acceptance. Historical paid REVIEW finalized REJECTED |
+| ESP32                   | ESP32-C6 builds, signed protocol, persistent replay claims, reviewed optical-only flash and USB startup                                             | Runtime enrollment, reviewed button wiring, and actual optical/contact/camera tests                        |
+| Seeker                  | API 36 debug APK, signed photo claims, request reservation, restricted WebView, read-only BLE preflight                                             | Authorized install, Android SQLite instrumentation, lifecycle, camera, and BLE checks                      |
+| Direct Cardano baseline | Retained x402 adapter, payment ledger, and restart checks                                                                                           | Live Preprod settlement and physical-board compatibility                                                   |
 
 Masumi remains separate from direct x402. Its fixtures do not establish seller payment. The API3 policy covers **CVE-2025-62235 only** for explicitly enrolled NimBLE reference builds. It does not establish general security or identify the installed ESP32 build.
 
@@ -137,9 +137,13 @@ After isolated dependency installation, run `npm run test:integrations`. [Engine
 
 ## Owner actions on the critical path
 
-1. Supply clear front/back carrier-board photos or their saved local paths.
-2. Enable the laptop webcam privacy switch or attach a camera. The OS currently exposes no video device.
-3. Review the concrete carrier, pin, firmware and recovery plan before flash approval.
+1. Connect the webcam or Seeker by data USB when ready. No camera is available yet.
+2. Review one 18-second optical challenge after the camera and runtime are ready. The approved backup and flash are complete.
+3. Supply a button-terminal photo or continuity result before the later GPIO2-to-GND wiring review.
+
+The supplied front/back photos match the documented SuperMini layout. GPIO8 drives its onboard RGB LED. This path needs no external LED or resistor. Keep the battery pads and external wires disconnected. The board has no visible maker or revision marking. Pin labels take precedence over counting header positions.
+
+For Seeker, enable USB debugging and accept this laptop's authorization prompt when connected. Installation and USB forwarding still need targeted approval. The existing APK and loopback setup are ready. Phone witness photos do not replace the browser's complete optical waveform capture.
 
 The existing inspector has GRANTED access to the Personal Workspace, and its original runtime key remains valid. The installed CLI 1.0.4 used a removed endpoint. Published CLI 1.1.0 uses the current workspace endpoint and resolves the Personal setup. The application pins CLI 1.1.0 and preserves exact Task input through explicit context opt-outs. One hosted execution-only Task completed REVIEW. It consumed zero credits and used synthetic evidence. It proves hosted transport, not payment or physical acceptance.
 
@@ -151,7 +155,7 @@ The EVM wallet is funded. An approved mint supplied 0.02 test aUSD. Two 0.01 aUS
 
 Routine funded testnet transactions are authorized. Keep at least 0.001 ETH in reserve. Stop before a new action threatens that reserve. Public release, Devfolio submission, and electrically unverified hardware actions remain separate.
 
-[Private setup](docs/ENGINEERING.md#private-credentials-and-test-funding) defines credentials, scoped worker resources, and recovery. [Evidence](research/EVIDENCE.md#live-access-and-private-setup) records actual transactions and remaining gaps. The original useful paid Preprod inspection, positive seller receipt, five deployed source checks, and mined rejection are preserved. Physical acceptance remains missing.
+[Private setup](docs/ENGINEERING.md#private-credentials-and-test-funding) defines credentials, scoped worker resources, and recovery. [Evidence](research/EVIDENCE.md#live-access-and-private-setup) records actual transactions and remaining gaps. The original useful paid Preprod inspection, positive seller receipt, five deployed source checks, and mined rejection are preserved. `npm --prefix application/api3 run judge:candidate -- RESPONSE_FILE` lets judges test their own copied response without credentials. Physical acceptance remains missing. The existing rejection does not demonstrate the CVE value changing the terminal decision, so complete API3 qualification remains unconfirmed.
 
 ## Prepare submission
 
@@ -161,7 +165,7 @@ The deadline is **October 31, 2026 at 15:00 CET**. The organizer requires a publ
 
 ## Camera, hardware, and external acceptance
 
-Use [the camera and physical procedure](docs/ENGINEERING.md#operate-the-camera-and-physical-station) after reading its prerequisites. Print [the marker target](application/public/vision/target.svg) at actual size. Keep the board unwired until its carrier and resistor are identified.
+Use [the camera and physical procedure](docs/ENGINEERING.md#operate-the-camera-and-physical-station) after reading its prerequisites. Print [the marker target](application/public/vision/target.svg) at actual size. Use the reviewed onboard RGB path first. No external LED or resistor is required. Keep external wiring disconnected until its separate review.
 
 [The firmware guide](application/firmware/README.md) defines safe builds and transport. [The Seeker guide](application/mobile/README.md) defines phone preparation. Open `/mobile/` for the local setup page. Neither compiled artifact establishes installed hardware behavior.
 
