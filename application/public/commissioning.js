@@ -215,8 +215,12 @@ function showSession(session) {
   const incomplete = session.report
     ? [...session.report.predicates, ...session.acceptance.predicates]
     : [];
+  const failed = incomplete.filter((p) => p.outcome === "FAIL");
   const next =
-    incomplete.find((p) => p.outcome === "FAIL") ??
+    ["session", "device", "vision"]
+      .map((id) => failed.find((predicate) => predicate.id === id))
+      .find(Boolean) ??
+    failed[0] ??
     incomplete.find((p) => p.outcome === "REVIEW");
   const actions = {
     session: "Start a fresh attempt within the capture window.",
@@ -257,6 +261,14 @@ function showSession(session) {
         const cell = document.createElement("span");
         cell.className = className;
         cell.textContent = value;
+        const geometry = session.vision?.measurement?.quality;
+        if (
+          className === "result-reason" &&
+          predicate.id === "vision" &&
+          Number.isFinite(geometry?.offsetMm) &&
+          Number.isFinite(geometry?.angleErrorDeg)
+        )
+          cell.textContent += ` Estimated offset: ${geometry.offsetMm.toFixed(1)} mm (limit ${order.vision.tolerance.positionMm} mm). Estimated angle difference: ${geometry.angleErrorDeg.toFixed(1)}° (limit ${order.vision.tolerance.angleDeg}°). Values use the declared reference size.`;
         if (className === "outcome") cell.dataset.outcome = value;
         row.append(cell);
       }

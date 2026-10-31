@@ -743,3 +743,65 @@ test("camera restart blocks optical dispatch until a new passing measurement bin
     await browser.close();
   }
 });
+
+test("partial physical inspection prioritizes placement correction and shows saved measurements", async (t) => {
+  const { service } = fixture(t);
+  service.config.mode = "physical";
+  service.profile.contact.sensor = "disabled-contact";
+  const c = service.commissioning;
+  const original = JSON.parse(
+    readFileSync(
+      new URL(
+        "../submission/evidence/physical-camera-rework-packet.json",
+        import.meta.url,
+      ),
+    ),
+  );
+  const order = c.createOrder({
+    idempotency_key: "placement-guidance-order",
+    asset: "Placement correction",
+  });
+  const session = c.createSession(order.id, {
+    idempotency_key: "placement-guidance-session",
+    scenario: "correct",
+  });
+  const vision = original.evidence.vision;
+  c.captureVision(session.id, {
+    source: "browser-camera",
+    frame: { ...vision.frame, capturedAt: Date.now() },
+    frameDigest: vision.frameDigest,
+    camera: vision.camera,
+  });
+  c.inspect(session.id);
+  const before = c.store.get("sessions", session.id);
+  assert.equal(
+    before.report.predicates.find((p) => p.id === "vision").outcome,
+    "FAIL",
+  );
+  assert.equal(
+    before.report.predicates.find((p) => p.id === "delivery").outcome,
+    "FAIL",
+  );
+  const origin = await server(t, service);
+  const browser = await chromium.launch({ channel: "chrome", headless: true });
+  try {
+    const page = await browser.newPage();
+    await page.goto(origin);
+    await page.getByText("Local inspection: FAIL", { exact: true }).waitFor();
+    assert.match(
+      await page.locator("#next-action").innerText(),
+      /Align both markers/,
+    );
+    assert.match(
+      await page.locator("#results").innerText(),
+      /Estimated offset: \d+\.\d mm/,
+    );
+    assert.match(
+      await page.locator("#results").innerText(),
+      /Estimated angle difference: \d+\.\d°/,
+    );
+    assert.deepEqual(c.store.get("sessions", session.id), before);
+  } finally {
+    await browser.close();
+  }
+});

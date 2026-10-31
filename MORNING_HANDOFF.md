@@ -81,3 +81,5 @@ The optical driver now refuses emission at four remaining claims and rejects inv
 The optical-only physical station runs at `http://127.0.0.1:4022`. If it stops, run `python3 .local/private-config/hardware/optical-only-station-launch.py` from the repository root. Run `FIELDPROOF_PORT=4022 npm --prefix application run demo:preflight` to check it. The launcher reuses the original private build secret and verified receipt-key pin. It does not emit light or read contact input.
 
 The real Seeker camera inspection returned REWORK. Open its saved attempt or download **physical camera rework packet** from Judge evidence. The original work-order digest was saved before capture, and packet verification passed. Contact and optical controls stayed blocked. The camera stopped afterward. This packet contains actual camera evidence, failed placement, and no device receipts. It is not a paid physical inspection or full commissioning result.
+
+The sealed physical report now shows the saved offset and rotation with their approved limits. Its first correction is marker alignment before downstream monitor checks. The original negative packet and decision remain unchanged.
