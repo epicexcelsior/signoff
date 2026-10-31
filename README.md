@@ -39,7 +39,7 @@ Use **View the recorded inspection** to restore the exact reviewed attempt. Use 
 
 Next: correct marker and LED placement, complete signed optical capture through the configured physical station, then review the button circuit and record the complete video. The original paid REVIEW now binds all five deployed source checks and a mined REJECTED decision. Its synthetic input cannot authorize a physical installation. Both approved NVD calls settled. The 0.02 aUSD ceiling is consumed.
 
-The Seeker companion already builds. Seeker Chrome supplied the actual camera measurement and optical diagnostic recording through USB forwarding. The owner temporarily disconnected devices. Native companion installation, native camera/BLE tests, and Android instrumentation remain unverified. They do not replace the immediate button/LED/camera baseline.
+The Seeker companion already builds. Seeker Chrome supplied the actual camera measurement and optical diagnostic recording through USB forwarding. The phone and ESP32 reconnected. Camera permission is restored, but the current rear-camera image is nearly black and detects neither marker. Native companion installation, native camera/BLE tests, and Android instrumentation remain unverified. They do not replace the immediate button/LED/camera baseline.
 
 ## Documentation map
 
@@ -160,8 +160,8 @@ After isolated dependency installation, run `npm run test:integrations`. [Engine
 
 ## Owner actions on the critical path
 
-1. Connect the webcam or Seeker by data USB when ready. No camera is available yet.
-2. Review one 18-second optical challenge after the camera and runtime are ready. The approved backup and flash are complete.
+1. Keep the Seeker and ESP32 connected by data USB. Aim the rear camera at the lit marker sheet.
+2. Align both markers and the onboard LED. Complete one 18-second optical challenge after placement passes.
 3. Supply a button-terminal photo or continuity result before the later GPIO2-to-GND wiring review.
 
 The supplied front/back photos match the documented SuperMini layout. GPIO8 drives its onboard RGB LED. This path needs no external LED or resistor. Keep the battery pads and external wires disconnected. The board has no visible maker or revision marking. Pin labels take precedence over counting header positions.
