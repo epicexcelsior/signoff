@@ -63,6 +63,7 @@ const assets = [
   "/demo/evidence.json",
   "/theme.css",
   "/brand/signoff.png",
+  "/brand/signoff-icon.png",
   "/measurement.js",
   "/fonts/BarlowCondensed-SemiBold.woff2",
   "/fonts/BarlowCondensed-Bold.woff2",

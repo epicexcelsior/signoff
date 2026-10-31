@@ -325,13 +325,13 @@
       }
     },
     "submission": {
-      "status": "remote-draft-saved-publication-pending",
+      "status": "fields-complete-awaiting-owner-review",
       "publicRepositoryUrl": "https://github.com/epicexcelsior/signoff",
-      "demoVideoUrl": null,
+      "demoVideoUrl": "https://youtu.be/CQrNxj95ZGM",
       "devfolioProjectUrl": null,
       "remaining": [
-        "Add the final public video URL and verify playback.",
-        "Approve and publish the completed Devfolio submission."
+        "Owner reviews final video playback and confirms its duration is at most 150 seconds.",
+        "Owner authorizes and publishes the completed Devfolio submission."
       ],
       "screenshotsUploaded": 3
     }
@@ -356,7 +356,8 @@
     "published": true,
     "sourceSanitized": true,
     "privateHistoryIncluded": true,
-    "historyScope": "The public main branch preserves reviewed development history. Internal documents are excluded from its current source tree."
+    "historyScope": "The public main branch preserves reviewed development history. Internal documents are excluded from its current source tree.",
+    "status": "PUBLIC_SOURCE_FINAL_OWNER_REVIEW_PENDING"
   },
   "videoProduction": {
     "status": "FIRST_CUT_OWNER_RECORDINGS_PENDING",
