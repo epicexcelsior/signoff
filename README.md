@@ -14,6 +14,8 @@ A facility operator needs evidence before accepting the handover. The recorded c
 
 **Recording stage:** the local [technical clip library](.local/tech-demo/index.html) presents separate proof clips and transaction explorer B-roll in viewing order. The owner records the on-camera pitch and explanation. Final editing remains a separate step. The earlier assembled cut remains preserved. No additional hardware test is required for this recording stage.
 
+[Recording summary](docs/ENGINEERING.md#technical-clip-summary) lists the six primary clips, durations, judge-facing message, evidence boundaries, and remaining owner actions.
+
 **Open the phone demo: <http://127.0.0.1:4022/demo/>.** Load it once through USB and wait for **Saved in this browser**. Its original real evidence then works without the laptop. Fresh tests use the [live station](http://127.0.0.1:4022). Port 4021 is the separate labeled rehearsal.
 
 The starting wedge is equipment handover for facility teams and installation contractors. The proposed business model is a paid inspection per handover. Demand and pricing remain unvalidated. The demo shows a real defect, a useful paid report, and the evidence that blocks acceptance.

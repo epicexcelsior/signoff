@@ -376,6 +376,29 @@ Use `application/submission/devfolio-draft.json` as draft content. Map it to the
 
 The current recording stage produces separate technical proof clips, not the owner’s final edit. Open `.local/tech-demo/index.html` for six plain-language primary clips and detailed B-roll. The local `polished/manifest.json` records source scopes, voiceover cues, clip hashes, and decoding checks. The full clip archive includes original evidence and verification links. Regenerate the ignored clip assets with `.local/tech-demo/polish.mjs` and `.local/tech-demo/finish-pack.py`. Preserve the original recordings and their provenance. These assets stay outside Git.
 
+#### Technical clip summary
+
+The central message is: **The inspection did its job: it found a defect. The inspector got paid. The installation stays blocked.**
+
+| Clip | Main point | Duration |
+| --- | --- | --- |
+| Device response | The real ESP32 answered a light challenge. Its signed receipt verified. | 8 seconds |
+| Placement defect | The camera found a marker outside the approved target. | 8 seconds |
+| Paid inspection | The inspector delivered a useful FAIL report and received 1 test USDM on Cardano Preprod. | 12 seconds |
+| Software admission | Separately, authenticated vulnerability data opened a software-gated work order on Base Sepolia. | 10 seconds |
+| Five verification cases | Valid data succeeds. Edited, stale, different-request, and wrong-signer inputs revert. | 14 seconds |
+| Reviewable evidence | The original files remain inspectable. Installation acceptance remains REWORK. | 8 seconds |
+
+The primary clips total 60 seconds. Keep them separate for the owner's edit. Use the detailed recordings as optional B-roll.
+
+Each primary clip presents one plain-language result beside actual footage. Large conclusions lead. Long hashes, raw responses, and addresses stay in supporting evidence. Source labels remain visible. The earlier LED diagnostic, later camera preview, original paid inspection, and software admission are separate genuine runs. They do not establish one complete READY installation.
+
+Review the clips through `.local/tech-demo/index.html`. Download `.local/tech-demo/proof-of-ready-tech-clips.zip` for the primary clips, detailed footage, original evidence, verification links, and hashes. The local manifest supplies a suggested spoken explanation for each primary clip. [Evidence](../research/EVIDENCE.md) records completed checks and remaining verification limits.
+
+Next, the owner records the on-camera pitch and explanation. Final editing, review, public release, and Devfolio submission remain pending. No additional hardware footage or challenge is required for this recording stage. Obtain explicit owner authorization before publication and submission.
+
+#### Example final-edit schedule
+
 Use the saved actual-camera failure and completed paid inspection. Keep the saved-evidence label visible. The full signed physical sequence remains incomplete. Hide account menus, credentials, and unrelated desktop content. Explorer links need internet. The saved phone report works offline after one load.
 
 | Time | Screen and action | Spoken copy |
