@@ -64,7 +64,7 @@ h3 {
 }
 .brand {
   font: 700 28px/1 var(--display);
-  text-transform: uppercase;
+  text-transform: none;
   letter-spacing: 0.4px;
   color: var(--por-on-dark);
   text-decoration: none;

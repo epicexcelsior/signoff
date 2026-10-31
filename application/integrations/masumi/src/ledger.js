@@ -50,8 +50,8 @@ export function openLedger(path) {
         const state = {
           taskId,
           remoteTaskName: context.paid
-            ? `Proof of Ready ${taskId}`
-            : `Proof of Ready execution-only rehearsal (no payment) ${taskId}`,
+            ? `signoff ${taskId}`
+            : `signoff execution-only rehearsal (no payment) ${taskId}`,
           version: 1,
           stage: "CREATED",
           request,

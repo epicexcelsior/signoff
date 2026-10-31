@@ -1,4 +1,4 @@
-# Proof of Ready engineering
+# signoff engineering
 
 This reference describes implemented behavior, configuration, operation, and recovery. [README](../README.md) is the execution index. [The plan](../PROOF_OF_READY_IMPLEMENTATION_PLAN.md) defines goals. [Evidence](../research/EVIDENCE.md) owns verified results and hardware state.
 
@@ -405,7 +405,7 @@ Use the saved actual-camera failure and completed paid inspection. Keep the save
 
 | Time | Screen and action | Spoken copy |
 | --- | --- | --- |
-| 0–15s | Show the monitoring equipment and saved report. | “A contractor says the monitoring equipment is installed. The operator needs evidence before accepting the handover. Proof of Ready provides remote acceptance tests.” |
+| 0–15s | Show the monitoring equipment and saved report. | “A contractor says the monitoring equipment is installed. The operator needs evidence before accepting the handover. signoff provides remote acceptance tests.” |
 | 15–40s | Select Camera found a defect. Show REWORK, 37.7 mm offset, and 179° rotation. | “This recorded camera check found incorrect placement. The contractor must move and rotate the device marker, then complete the missing device tests.” |
 | 40–75s | Select Inspector received payment. Open the original FAIL report and seller receipt. | “An independent inspector reviewed this exact evidence and returned FAIL. Its completed Cardano Preprod payment delivered one test USDM to the inspector.” |
 | 75–110s | Open live Judge evidence. Show the new source-gate cases and admission transaction. | “Fresh signed NVD data controls whether a declared software build can open a work order. This transaction passed before inspection. Four tamper cases reject.” |

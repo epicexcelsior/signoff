@@ -1,4 +1,4 @@
-menu "Proof of Ready commissioning device"
+menu "signoff commissioning device"
 config PROOFREADY_PROVIDER
     string "Provisioned provider identifier"
     default "proof-ready-reference"

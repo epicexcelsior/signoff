@@ -330,11 +330,11 @@
       "demoVideoUrl": null,
       "devfolioProjectUrl": null,
       "remaining": [
-        "Upload 1\u20136 actual application screenshots to the saved Devfolio draft",
         "Review final video with owner recordings and verify its public playback",
         "Review existing repository history before changing that same repository to public",
         "Add public repository and video links, then authorize and complete Devfolio submission"
-      ]
+      ],
+      "screenshotsUploaded": 3
     }
   },
   "limits": [

@@ -1,4 +1,4 @@
-# Proof of Ready — agent handoff
+# signoff — agent handoff
 
 Continue the selected commissioning product. Preserve the application, original inputs, sibling projects, and unresolved runtime records.
 

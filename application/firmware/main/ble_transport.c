@@ -258,7 +258,7 @@ esp_err_t pr_ble_init(void) {
   ble_hs_cfg.sync_cb = sync_ble;
   ble_svc_gap_init();
   ble_svc_gatt_init();
-  if (ble_svc_gap_device_name_set("Proof of Ready") ||
+  if (ble_svc_gap_device_name_set("signoff") ||
       ble_gatts_count_cfg(services) || ble_gatts_add_svcs(services))
     return ESP_FAIL;
   if (xTaskCreate(worker, "proofready-operation", 12288, NULL, 5, NULL) !=

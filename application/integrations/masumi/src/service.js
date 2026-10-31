@@ -72,7 +72,7 @@ export function createInspectionService({
     ledger.update(state.taskId, state.version, changes);
   // Older claims retain their original name for uncertain-operation recovery.
   const name = (state) =>
-    state.remoteTaskName ?? `Proof of Ready ${state.taskId}`;
+    state.remoteTaskName ?? `signoff ${state.taskId}`;
   function assertRemoteInput(task, state) {
     if (
       !task ||

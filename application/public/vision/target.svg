@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="210mm" height="297mm" viewBox="0 0 210 297" role="img" aria-labelledby="title description">
-<title id="title">Proof of Ready planar reference and device marker</title>
+<title id="title">signoff planar reference and device marker</title>
 <desc id="description">Print at 100 percent. Measure the 60 millimeter reference marker and 100 millimeter ruler. The device target center sits 100 millimeters to the right of the reference center.</desc>
 <rect width="210" height="297" fill="white"/>
 <g fill="black" font-family="sans-serif">
-<text x="16" y="18" font-size="7">Proof of Ready</text>
+<text x="16" y="18" font-size="7">signoff</text>
 <text x="16" y="27" font-size="4">Print at 100%. Disable fit-to-page.</text>
 <text x="16" y="34" font-size="4">Measure the black reference edge: 60 mm.</text>
 <g shape-rendering="crispEdges" transform="translate(30 50) scale(10)"><rect width="6" height="6" fill="white"/><rect x="0" y="0" width="1" height="1"/><rect x="1" y="0" width="1" height="1"/><rect x="2" y="0" width="1" height="1"/><rect x="3" y="0" width="1" height="1"/><rect x="4" y="0" width="1" height="1"/><rect x="5" y="0" width="1" height="1"/><rect x="0" y="1" width="1" height="1"/><rect x="2" y="1" width="1" height="1"/><rect x="5" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="1"/><rect x="1" y="2" width="1" height="1"/><rect x="3" y="2" width="1" height="1"/><rect x="5" y="2" width="1" height="1"/><rect x="0" y="3" width="1" height="1"/><rect x="1" y="3" width="1" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="5" y="3" width="1" height="1"/><rect x="0" y="4" width="1" height="1"/><rect x="1" y="4" width="1" height="1"/><rect x="2" y="4" width="1" height="1"/><rect x="4" y="4" width="1" height="1"/><rect x="5" y="4" width="1" height="1"/><rect x="0" y="5" width="1" height="1"/><rect x="1" y="5" width="1" height="1"/><rect x="2" y="5" width="1" height="1"/><rect x="3" y="5" width="1" height="1"/><rect x="4" y="5" width="1" height="1"/><rect x="5" y="5" width="1" height="1"/></g>

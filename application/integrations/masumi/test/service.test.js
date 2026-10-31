@@ -109,7 +109,7 @@ test("legacy uncertain Task creation retains its original name during reconcilia
     stage: "TASK_CREATING",
   });
   const original = await runtime.createTask({
-    name: `Proof of Ready ${state.taskId}`,
+    name: `signoff ${state.taskId}`,
     description: state.exactInput,
   });
   const recovered = await service.reconcile(state.taskId);

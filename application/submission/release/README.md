@@ -1,8 +1,8 @@
-# Proof of Ready
+# signoff
 
 **Know before you approve.** Check the actual device before accepting the installation.
 
-Proof of Ready provides remote acceptance tests for monitoring equipment installed by independent contractors. A facility operator reviews defect evidence and a paid inspector report before accepting the handover. Missing or failed checks block acceptance.
+signoff provides remote acceptance tests for monitoring equipment installed by independent contractors. A facility operator reviews defect evidence and a paid inspector report before accepting the handover. Missing or failed checks block acceptance.
 
 ## What the demonstration proves
 

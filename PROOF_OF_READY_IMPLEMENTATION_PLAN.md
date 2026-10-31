@@ -1,4 +1,4 @@
-# Proof of Ready — product and implementation plan
+# signoff — product and implementation plan
 
 [Design authority](docs/DESIGN.md) defines visual, interaction, language, and presentation rules. Use clear, common words. Preserve the exact evidence flow and result states.
 
@@ -78,7 +78,7 @@ Photos match a documented SuperMini layout, with onboard WS2812 GPIO8 and GPIO2 
 
 | Input or grant     | Current state                                                                              | Required before                                                                       |
 | ------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------- |
-| Product and camera | Proof of Ready selected. Real Seeker browser camera inspection returned REWORK                     | Correct physical marker/LED geometry and complete bound optical capture                                        |
+| Product and camera | signoff selected. Real Seeker browser camera inspection returned REWORK                     | Correct physical marker/LED geometry and complete bound optical capture                                        |
 | Physical specimen  | USB-only C6 SuperMini layout matched. Private backup and GPIO8 optical-only flash complete | Correct marker/LED geometry, bound optical capture, and later button-terminal/wiring review        |
 | Printing           | Supplied target exists. Physical dimensions remain unmeasured                              | Metric placement claim                                                                |
 | Firmware           | Both build profiles compiled. Reviewed image flashed. Signed diagnostic and 72/72 recorded symbols verified | Continuous tracked station capture bound to an approved work order                            |

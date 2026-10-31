@@ -105,7 +105,7 @@ export function setupPlan(env = process.env) {
         name: "account-resources",
         executed: false,
         grant:
-          "One dedicated Proof of Ready Vendor and Coworker, Personal Workspace connection, and one scoped Coworker credential import. Inspect existing resources before each write.",
+          "One dedicated signoff Vendor and Coworker, Personal Workspace connection, and one scoped Coworker credential import. Inspect existing resources before each write.",
         requiredOwnerInputs: [
           "TUM organization membership",
           "Usable Personal Workspace credits",

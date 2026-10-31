@@ -845,7 +845,7 @@ $("prepare-inspection").addEventListener("click", () =>
       `/api/commissioning/sessions/${current.id}/inspection-request`,
       {},
     );
-    downloadJson(request, `proof-of-ready-inspection-${current.id}.json`);
+    downloadJson(request, `signoff-inspection-${current.id}.json`);
     feedback(
       "Original inspection request exported. No external Task or payment started.",
     );
@@ -871,7 +871,7 @@ $("contract-plan").addEventListener("click", () =>
       `/api/commissioning/sessions/${current.id}/contract-plan`,
       {},
     );
-    downloadJson(plan, `proof-of-ready-unsigned-${current.id}.json`);
+    downloadJson(plan, `signoff-unsigned-${current.id}.json`);
     feedback(
       "Unsigned contract calls exported. No transaction was signed or broadcast.",
     );

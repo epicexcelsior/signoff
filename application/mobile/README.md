@@ -1,4 +1,4 @@
-# Proof of Ready Seeker companion
+# signoff Seeker companion
 
 The Android companion prepares the Solana Mobile Seeker for local commissioning. It contains no Solana integration, wallet, payment code, or actuator command.
 
@@ -38,7 +38,7 @@ npm run usb:plan -- EXPLICIT_ADB_SERIAL 4022
 
 The result names one device, the forwarding command, and its removal command. The coordinator remains bound to laptop loopback.
 
-After targeted authorization, install the debug APK with `adb -s EXPLICIT_ADB_SERIAL install -r APK_PATH`. Open **Proof of Ready** on the phone. Enable USB debugging only for the trusted laptop.
+After targeted authorization, install the debug APK with `adb -s EXPLICIT_ADB_SERIAL install -r APK_PATH`. Open **signoff** on the phone. Enable USB debugging only for the trusted laptop.
 
 After separate forwarding authorization, run:
 

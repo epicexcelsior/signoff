@@ -154,7 +154,7 @@ app.use((error, _req, res, _next) =>
 );
 const server = app.listen(port, "127.0.0.1", () =>
   console.log(
-    `Proof of Ready paid inspector: ${origin}; spending ${writesAuthorized ? "authorized" : "disabled"}.`,
+    `signoff paid inspector: ${origin}; spending ${writesAuthorized ? "authorized" : "disabled"}.`,
   ),
 );
 for (const signal of ["SIGTERM", "SIGINT"])

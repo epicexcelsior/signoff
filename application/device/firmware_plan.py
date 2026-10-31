@@ -36,7 +36,7 @@ def inspect_build(build, backup=None):
     ).get("chip") != "esp32c6":
         raise PlanError("Use the compiled ESP32-C6 project and matching flash metadata.")
     if description.get("project_name") != "proof_of_ready_device":
-        raise PlanError("Use a Proof of Ready firmware build.")
+        raise PlanError("Use a signoff firmware build.")
     project_path = description.get("project_path")
     if not isinstance(project_path, str) or not Path(project_path).is_absolute():
         raise PlanError("The build must identify its absolute source directory.")

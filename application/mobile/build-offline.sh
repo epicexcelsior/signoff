@@ -30,7 +30,7 @@ jar cf "$scratch_dir/classes.jar" -C "$scratch_dir/classes" .
 (cd "$scratch_dir/dex" && zip -q "$scratch_dir/base.apk" classes.dex)
 "$build_tools/zipalign" -f 4 "$scratch_dir/base.apk" "$scratch_dir/aligned.apk"
 if test ! -f "$output_dir/debug.keystore"; then
-  keytool -genkeypair -keystore "$output_dir/debug.keystore" -storepass android -keypass android -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 3650 -dname "CN=Proof of Ready local debug,O=Proof of Ready,C=DE" -noprompt >/dev/null 2>&1
+  keytool -genkeypair -keystore "$output_dir/debug.keystore" -storepass android -keypass android -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 3650 -dname "CN=signoff local debug,O=signoff,C=DE" -noprompt >/dev/null 2>&1
 fi
 "$build_tools/apksigner" sign --ks "$output_dir/debug.keystore" --ks-key-alias androiddebugkey --ks-pass pass:android --key-pass pass:android --out "$output_dir/proof-of-ready-seeker-debug.apk" "$scratch_dir/aligned.apk"
 "$build_tools/apksigner" verify --verbose "$output_dir/proof-of-ready-seeker-debug.apk"

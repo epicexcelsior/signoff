@@ -1,8 +1,8 @@
 {
   "schema": "proof-of-ready/devfolio-draft/v1",
   "status": "saved-remote-draft-not-submitted",
-  "formMapping": "Browser editor field names and saved values verified after reload. Devfolio-specific MCP tools are unavailable in this session; Chrome browser connector supplied draft editing.",
-  "projectName": "Proof of Ready",
+  "formMapping": "Devfolio MCP authenticated. Current project, organizer fields, tracks and gallery read back through getMyHackathonProject.",
+  "projectName": "signoff",
   "tagline": "Know before you approve.",
   "selectedPartnerTracks": [
     "Cardano",
@@ -61,7 +61,7 @@
   },
   "remoteDraft": {
     "editUrl": "https://devfolio.co/projects/proof-of-ready-e852/update",
-    "verifiedAt": "2026-10-31T12:52:05.556453+00:00",
+    "verifiedAt": "2026-10-31T13:15:54.904533+00:00",
     "published": false,
     "savedFields": [
       "projectName",
@@ -77,14 +77,13 @@
       "JavaScript",
       "Web platform"
     ],
-    "problemCharacterCount": 2010,
+    "problemCharacterCount": 2003,
     "challengesCharacterCount": 882,
-    "screenshotsUploaded": 0,
+    "screenshotsUploaded": 3,
     "remaining": [
-      "Upload 1\u20136 actual application screenshots. Chrome upload connector denied the local asset paths outside its configured workspace roots.",
-      "Add approved public repository URL. Preserve the existing repository identity.",
+      "Approve sanitized source publication and add the public repository URL.",
       "Add approved final video URL and verify signed-out playback.",
-      "Approve publication and publish the completed project before the deadline."
+      "Approve final publication and submit before the deadline."
     ],
     "claimLimits": [
       "Physical installation stays REWORK.",
@@ -92,5 +91,17 @@
       "API3 evidence uses source-dependent software admission, not the earlier failed-inspection rejection.",
       "Separate LED, camera, paid attempt and source-admission runs do not establish one completed installation."
     ]
-  }
+  },
+  "organizerFieldAnswers": [
+    {
+      "projectFieldUUID": "1388f0912c974a349ff6847fa788e249",
+      "name": "The problem it solves",
+      "value": "Facility operators need proof before accepting contractor-installed equipment. signoff combines camera measurements, signed device evidence and a paid inspection. Our real camera check found incorrect placement. The inspector returned FAIL and received 1 test USDM on Cardano Preprod. Installation acceptance stayed blocked.\n\nProposed customer: facility operators and monitoring integrators managing handovers across sites. Proposed model: paid inspection per handover. Demand and pricing remain unvalidated.\n\nSokosumi/Masumi provides escrow, result delivery and seller withdrawal. API3 authenticates NVD data before our deployed Base Sepolia contract opens a software-gated work order. Original fresh data caused mined admission for a declared reference build. Edited, stale, different-request and wrong-key data reject. Removing API3 prevents admission.\n\nThe LED diagnostic, camera preview, paid attempt and software admission are separate real runs. They do not prove complete physical installation. Full optical/contact tests and installed-firmware provenance remain unfinished. Source signatures do not establish physical truth. We wanted authenticated manufacturer provenance tied to the board, which this source does not provide. The workflow is deterministic and operator-driven.\n\nReal operation needs enrolled devices, reviewed wiring, calibration, reliable network/RPC access and configured inspector credentials.\n\nContract (Base Sepolia): https://sepolia.basescan.org/address/0x1ed0ebc0c5104702e688eccc567d84b66107e60b\nAdmission: https://sepolia.basescan.org/tx/0xbcba0ba8a582c06cc72351290de98a2bcabc03b6fe2916f6dbac6e237ef92798\nCardano escrow: https://preprod.cardanoscan.io/transaction/cd48db80ffb0494b8a092af67f8ec9e33dbdb3c1f8bce8ced1eaf1d5864782ca\nResult: https://preprod.cardanoscan.io/transaction/d0c178019710413818159fcc3098ae1c733dbc8a070954b3c80b2a6b77f90280\nSeller receipt: https://preprod.cardanoscan.io/transaction/f6493d441afbffcbe7a4f9ae8626318a9551bfbe7a8095a076eece5c01ff0029"
+    },
+    {
+      "projectFieldUUID": "014b975116684e4dac8e0a080baaa91e",
+      "name": "Challenges we ran into",
+      "value": "Exact camera evidence, signed receipts, report and payment bindings required immutable approvals, preserved original bytes, durable claims, and restart/concurrency tests.\n\nThe older contract rejected a failed inspection without establishing source dependence. We added mandatory authenticated NVD approval before work-order opening. The new contract produced an actual mined admission. Four tamper inputs reject, as do a vulnerable build and unsigned opening.\n\nReal camera placement still fails. We preserved REWORK and the paid FAIL rather than substituting fixtures for missing evidence. The earlier paid synthetic REVIEW remains separate. Complete physical tests and installed-firmware provenance remain unfinished.\n\nHistorical RPC reads intermittently fail. Those failures are inconclusive, never contract rejection. Original mined proof and historical context remain preserved."
+    }
+  ]
 }

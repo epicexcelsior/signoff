@@ -305,7 +305,7 @@ export function createApp(
     route((req, res) => {
       res.set(
         "Content-Disposition",
-        `attachment; filename="proof-of-ready-${req.params.id.replace(/[^a-zA-Z0-9_-]/g, "")}.json"`,
+        `attachment; filename="signoff-${req.params.id.replace(/[^a-zA-Z0-9_-]/g, "")}.json"`,
       );
       res.json(commissioning.packet(req.params.id));
     }),

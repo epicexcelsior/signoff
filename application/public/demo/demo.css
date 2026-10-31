@@ -25,7 +25,7 @@ header {
 .brand {
   font: 700 28px var(--display);
   color: var(--por-on-dark);
-  text-transform: uppercase;
+  text-transform: none;
   text-decoration: none;
 }
 .saved-mode {

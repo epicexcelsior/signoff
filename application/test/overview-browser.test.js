@@ -51,7 +51,7 @@ test("generated project overview serves canonical sources and fits desktop and p
     }
     const doc = await fetch(origin + "/project-docs/ENGINEERING.md");
     assert.equal(doc.status, 200);
-    assert.match(await doc.text(), /# Proof of Ready engineering/);
+    assert.match(await doc.text(), /# signoff engineering/);
     assert.equal((await fetch(origin + "/project-docs/AGENTS.md")).status, 404);
   } finally {
     await browser.close();

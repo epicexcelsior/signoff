@@ -1,8 +1,8 @@
-# PROOF OF READY — DESIGN SYSTEM & EXPERIENCE STANDARD
+# signoff — DESIGN SYSTEM & EXPERIENCE STANDARD
 
 **Version:** 1.0 · 31 October 2026 · Design authority for this submission and subsequent work.
 
-**Design thesis:** **A field inspection instrument, not a crypto dashboard.** Proof of Ready should look and behave like a beautifully engineered tool used to decide whether contracted work can be accepted. Think quality-control station, annotated field report, calibration target, and unmistakable verdict. Not enterprise admin SaaS, AI chat, cyberpunk DeFi, or a slide full of integrations.
+**Design thesis:** **A field inspection instrument, not a crypto dashboard.** signoff should look and behave like a beautifully engineered tool used to decide whether contracted work can be accepted. Think quality-control station, annotated field report, calibration target, and unmistakable verdict. Not enterprise admin SaaS, AI chat, cyberpunk DeFi, or a slide full of integrations.
 
 **Brand promise:** **Know before you approve.**
 
@@ -40,7 +40,7 @@
 - **Job/file identity:** small mono `INSTALLATION / 014` and `EVIDENCE 03` at top edges, like field engineering drawings. No fake facility names or timestamps.
 - **Rule/bar separators:** thin hairlines, squares, and asymmetric alignment. Minimal box shadows.
 
-**Logo/wordmark:** `PROOF / OF READY`, stacked or single line in Barlow Condensed bold, small registration `⌜ ⌝` motif. Use a plain text mark if there isn't time for a vector logo. Do not create a pseudo-authority seal or certification mark.
+**Logo/wordmark:** `signoff`, stacked or single line in Barlow Condensed bold, small registration `⌜ ⌝` motif. Use a plain text mark if there isn't time for a vector logo. Do not create a pseudo-authority seal or certification mark.
 
 ---
 
@@ -128,7 +128,7 @@ Do not display historical `Observation lab` in primary navigation or default to 
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
-│ [PROOF OF READY]     INSTALLATION 014 • DOOR MONITOR       REAL CAPTURE │
+│ [signoff]     INSTALLATION 014 • DOOR MONITOR       REAL CAPTURE │
 ├────────────────────────────────────────────────────────────────────────┤
 │  Contractor says the sensor is installed.  Does the evidence agree?    │
 │                                                                        │
@@ -184,7 +184,7 @@ Title: **“Try to change the evidence.”** Explainer: **“Only an authentic, 
 - **Hero:** `Know before you approve.`
 - **Subhead:** `Check the actual device before accepting the installation.`
 - **Customer category:** `Remote installation checks for connected equipment.`
-- **Brand line for video/slides:** `Photos show the equipment. Proof of Ready checks what it did.`
+- **Brand line for video/slides:** `Photos show the equipment. signoff checks what it did.`
 - **Do not use as on-screen factual promise:** `AI makes all contractor work trustless`, `Never send an inspector again`, `Guaranteed safe device`, `Automatically pays the contractor`.
 
 ### Screens and actions (preferred exact labels)
@@ -255,7 +255,7 @@ Title: **“Try to change the evidence.”** Explainer: **“Only an authentic, 
 
 ### Slide/video visual templates
 
-- **Title card:** paper background, oversized black `KNOW BEFORE YOU APPROVE.`, one yellow underline/registration-mark, small Proof of Ready wordmark. 
+- **Title card:** paper background, oversized black `KNOW BEFORE YOU APPROVE.`, one yellow underline/registration-mark, small signoff wordmark.
 - **Problem card:** left `CONTRACTOR SAYS: DONE`, right `DEVICE SAYS: ?`; use real physical fixture photo (or neutral schematic clearly illustrative), never stock factory photo implied as a customer site.
 - **Measurement card:** dark graphite panel with real camera crop and annotation; big number (`37 mm off target`), `Allowed: 8 mm`; this is the signature visual moment. Use only if measurement genuinely from relevant attempt.
 - **Economic card:** `One bad handover → Another trip → Another invoice` (conceptual chain; no unsupported euro cost). `Detect it before acceptance.`

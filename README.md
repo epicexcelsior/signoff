@@ -1,4 +1,4 @@
-# Proof of Ready
+# signoff
 
 **Know before you approve.** Remote acceptance testing for monitoring equipment installed by independent contractors.
 
@@ -22,7 +22,7 @@ A facility operator needs evidence before accepting the handover. The recorded c
 
 The starting wedge is equipment handover for facility teams and installation contractors. The proposed business model is a paid inspection per handover. Demand and pricing remain unvalidated. The demo shows a real defect, a useful paid report, and the evidence that blocks acceptance.
 
-Proof of Ready coordinates equipment commissioning. An operator approves a work order. A technician supplies camera measurements and signed contact tests. An inspector explains defects and missing evidence.
+signoff coordinates equipment commissioning. An operator approves a work order. A technician supplies camera measurements and signed contact tests. An inspector explains defects and missing evidence.
 
 The goal is agent-orchestrated commissioning with a useful paid inspector and an evidence-bound acceptance decision. **The current station is deterministic and operator-driven.** It uses a fixed work-order template. Agent-generated requirements and autonomous orchestration remain planned.
 

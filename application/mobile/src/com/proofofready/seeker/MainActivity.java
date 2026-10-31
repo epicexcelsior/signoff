@@ -77,7 +77,7 @@ public final class MainActivity extends Activity implements TextureView.SurfaceT
             else { left=insets.getSystemWindowInsetLeft(); top=insets.getSystemWindowInsetTop(); right=insets.getSystemWindowInsetRight(); bottom=insets.getSystemWindowInsetBottom(); }
             view.setPadding(dp(16)+left,dp(12)+top,dp(16)+right,dp(12)+bottom); return insets;
         });
-        shell.addView(label("Proof of Ready · Seeker companion",22,true));
+        shell.addView(label("signoff · Seeker companion",22,true));
         LinearLayout navigation = new LinearLayout(this);
         for (int index = 0; index < 3; index++) { final int selected = index; Button item = new Button(this); item.setText(new String[]{"Station","Phone witness","BLE preflight"}[index]); item.setAllCaps(false); item.setTextSize(11); item.setOnClickListener(view -> layout(selected)); navigation.addView(item,new LinearLayout.LayoutParams(0,-2,1)); }
         shell.addView(navigation);
